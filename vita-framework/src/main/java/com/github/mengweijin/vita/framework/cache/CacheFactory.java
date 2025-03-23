@@ -36,7 +36,7 @@ public final class CacheFactory {
     }
 
     public static Cache<String, String> getDictDataLabelCache() {
-        return CACHE_MANAGER.getCache(CacheNames.DICT_DATA_VAL_TO_LABEL);
+        return CACHE_MANAGER.getCache(CacheNames.DICT_VAL_TO_LABEL);
     }
 
     public static Cache<String, String> getDeptIdNameCache() {

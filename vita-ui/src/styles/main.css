@@ -1,0 +1,101 @@
+/* 导入其它样式文件 */
+@import url("./menu.css");
+
+/* --：定义全局变量，可在文档任意位置通过 var() 调用。比如引用变量：color: var(--primary-color); */
+:root {
+  --primary-color: #1e9fff;
+}
+
+.dark {
+  --theme-color: #333333;
+}
+
+html, body, #app {
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  /* 兼容旧版浏览器 */
+  color: var(--primary-color);
+  /* 
+    hsl(from #1e9fff h s l): 提取颜色中的 h s l 的值（色相，饱和度，亮度）。
+    hsl() 语法：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#syntax
+    浏览器兼容性：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#browser_compatibility 
+  */
+  color: hsl(from var(--primary-color) h calc(s - 40) l);
+  text-decoration: underline;
+}
+
+/* 移动端样式 */
+@media screen and (max-width: 750px) {
+  .vt-login {
+    height: calc(100% - 74px);
+    --item-width: 320px;
+  }
+  .layui-layout-left {
+    left: 0px;
+  }
+  .layui-body {
+    left: 0px;
+  }
+}
+
+/* PC端样式 */
+@media screen and (min-width: 750px) {
+  .vt-login {
+    height: calc(100% - 34px);
+    --item-width: 320px;
+  }
+  .layui-layout-left {
+    left: 200px;
+  }
+  .layui-body {
+    left: 200px;
+  }
+}
+
+.layui-body {
+  padding: 0 15px;
+}
+
+.layui-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+/* 父子选择器 >。相邻兄弟选择器：+ 符号选择紧邻的后一个同级元素。*/
+.layui-footer > p + p {
+  margin-left: 15px;
+}
+
+.layui-form-label {
+  width: 150px;
+}
+
+.layui-input-block {
+  margin-left: 180px;
+}
+
+.layui-form-label.required:before {
+  content: "* ";
+  color: red;
+}
+
+.layui-layer-setwin .layui-layer-close2 {
+  right: -24px;
+  top: -24px;
+}
+

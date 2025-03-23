@@ -54,7 +54,7 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictData> {
         return this.page(page, query);
     }
 
-    @Cacheable(value = CacheNames.DICT_DATA_VAL_TO_LABEL, key = "#code + ':' + #val", unless = CacheConst.UNLESS_OBJECT_NULL)
+    @Cacheable(value = CacheNames.DICT_VAL_TO_LABEL, key = "#code + ':' + #val", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getLabelByCodeAndVal(String code, String val) {
         return this.lambdaQuery()
                 .select(DictData::getLabel)

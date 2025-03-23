@@ -1,7 +1,7 @@
 import "layui/dist/css/layui.css";
 import "layui";
 
-import "@/styles/index.css";
+import "@/styles/main.css";
 import { ajaxSetup } from "@/scripts/ajaxSetup.js";
 import { admin } from "@/scripts/admin.js";
 

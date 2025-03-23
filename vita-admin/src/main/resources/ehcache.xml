@@ -47,7 +47,7 @@
         <value-type>java.lang.String</value-type>
     </cache>
 
-    <cache alias="DICT_DATA_VAL_TO_LABEL" uses-template="DEFAULT_TEMPLATE">
+    <cache alias="DICT_VAL_TO_LABEL" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
     </cache>
 

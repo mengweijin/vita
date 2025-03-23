@@ -53,6 +53,7 @@ let ajaxSetup = function () {
             { icon: 0, closeBtn: 0, title: "会话过期提醒！" },
             function (index) {
               layer.close(index);
+              userStorage.del();
               admin.loadLogin();
             }
           );

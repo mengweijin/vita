@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CacheNames {
 
-    public static final String DICT_DATA_VAL_TO_LABEL = "DICT_DATA_VAL_TO_LABEL";
+    public static final String DICT_VAL_TO_LABEL = "DICT_VAL_TO_LABEL";
 
     public static final String DEPT_ID_TO_NAME = "DEPT_ID_TO_NAME";
 
