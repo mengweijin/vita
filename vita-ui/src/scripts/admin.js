@@ -3,18 +3,15 @@ import { userStorage } from "@/storage/system/userStorage.js";
 
 let $ = layui.$;
 
-/**
- * admin 组件
- */
+/** admin 组件 */
 let admin = {
+  /** 是否已登录 */
   isLogin: function () {
     let user = userStorage.get();
     return user !== undefined && user !== null;
   },
 
-  /**
-   * 登录
-   */
+  /** 登录 */
   login: function (data) {
     $.ajax({ url: "/login", method: "post", data: data }).then((r) => {
       userStorage.set(r.data);
@@ -22,9 +19,7 @@ let admin = {
     });
   },
 
-  /**
-   * 登出
-   */
+  /** 登出 */
   logout: function () {
     $.ajax({ url: "/logout", method: "post" }).then((r) => {
       // 前端登出
@@ -34,9 +29,7 @@ let admin = {
     });
   },
 
-  /**
-   * 默认值为 undefined 时才触发 ES6 函数默认值的赋值，null 不会触发。
-   */
+  /** 默认值为 undefined 时才触发 ES6 函数默认值的赋值，null 不会触发。*/
   loadAdmin: function () {
     template.load("#app", "src/views/admin.html");
   },
