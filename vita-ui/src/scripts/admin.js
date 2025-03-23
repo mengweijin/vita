@@ -29,7 +29,7 @@ let admin = {
     $.ajax({ url: "/logout", method: "post" }).then((r) => {
       // 前端登出
       userStorage.del();
-      // 跳转页面
+      // 跳转登录页
       this.loadLogin();
     });
   },

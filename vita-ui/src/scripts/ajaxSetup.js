@@ -53,7 +53,9 @@ let ajaxSetup = function () {
             { icon: 0, closeBtn: 0, title: "会话过期提醒！" },
             function (index) {
               layer.close(index);
+              // 前端登出
               userStorage.del();
+              // 跳转登录页
               admin.loadLogin();
             }
           );
@@ -66,7 +68,6 @@ let ajaxSetup = function () {
             closeBtn: 0,
             yes: function (index, layero, that) {
               layer.close(index);
-              // top.window.layui.admin.closeCurrentTab();
             },
           });
           break;
