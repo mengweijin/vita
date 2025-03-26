@@ -1,0 +1,1 @@
+System.register(["../modulepreload-polyfill-legacy-thrsW4a0.js","../admin-legacy-BliyJXra.js","../template-legacy-DpRAlyuz.js"],(function(e,l){"use strict";var a;return{setters:[null,e=>{a=e.a},null],execute:function(){a.loadHeader(),a.loadSide(),a.loadBody(),a.loadFooter()}}}));

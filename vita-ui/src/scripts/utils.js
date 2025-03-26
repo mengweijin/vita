@@ -35,6 +35,22 @@ let utils = {
   blankToDefault: function (val, defaultVal) {
     return this.isBlank(val) ? defaultVal : val;
   },
+
+  /** 去前缀 */
+  removePrefix: function (str, prefix) {
+    if(str.startsWith(prefix)) {
+      return str.slice(prefix.length);
+    }
+    return str;
+  },
+
+  /** 去后缀 */
+  removeSuffix: function (str, suffix) {
+    if(str.endsWith(suffix)) {
+      return str.slice(0,  -suffix.length);
+    }
+    return str;
+  },
 };
 
 export { utils };

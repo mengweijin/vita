@@ -1,5 +1,6 @@
 import { userStorage } from "@/storage/session/userStorage.js";
 import { admin } from "@/scripts/admin.js";
+import { utils } from "@/scripts/utils.js";
 
 let $ = layui.$;
 let layer = layui.layer;
@@ -24,13 +25,10 @@ let ajaxSetup = function () {
       }
 
       if (this.dataType !== "html") {
-        let prefix = "/";
-        let apiUrl = this.url;
-        if (apiUrl.startsWith(prefix)) {
-          // 去前缀
-          apiUrl = apiUrl.slice(prefix.length);
-        }
-        this.url = `${import.meta.env.VITE_API_BASE}/${apiUrl}`;
+        let delimiter = "/";
+        let apiUrl = utils.removePrefix(this.url, delimiter);
+        let apiBase = utils.removeSuffix(import.meta.env.VITE_API_BASE, delimiter);
+        this.url = `${apiBase}/${apiUrl}`;
       }
 
       if (this.data && this.contentType.indexOf("application/json") !== -1) {

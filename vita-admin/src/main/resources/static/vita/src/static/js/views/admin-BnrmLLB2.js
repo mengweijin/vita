@@ -1,0 +1,1 @@
+import"../modulepreload-polyfill-B5Qt9EMX.js";import{a as o}from"../admin-BEPcWGP1.js";import"../template-DLbTA-Nv.js";function a(){import.meta.url,import("_").catch(()=>1),async function*(){}().next()}o.loadHeader();o.loadSide();o.loadBody();o.loadFooter();export{a as __vite_legacy_guard};
