@@ -1,4 +1,5 @@
 import { utils } from "@/scripts/utils.js";
+import "layui";
 
 let $ = layui.jquery;
 let layer = layui.layer;

@@ -107,6 +107,12 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 4000,
+      minify: "terser",
+      terserOptions: {
+        mangle: {
+          reserved: ['layui'] // 禁止压缩 layui 变量名
+        }
+      },
       // https://rollupjs.org/configuration-options/
       rollupOptions: {
         input: rollupInput,
