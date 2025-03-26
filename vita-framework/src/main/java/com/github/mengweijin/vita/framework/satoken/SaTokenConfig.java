@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.satoken;
 
-import cn.dev33.satoken.filter.SaPathCheckFilterForJakartaServlet;
+import cn.dev33.satoken.filter.SaFirewallCheckFilterForJakartaServlet;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import java.io.IOException;
 
 /**
@@ -49,19 +50,22 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
     /**
      * 自定义当请求 path 校验不通过时 sa-token 处理方案。
      * Version <= 1.39.0：SaStrategy.instance.requestPathInvalidHandle
-     * Version >= 1.40.0：SaFirewallStrategy.instance.requestPathInvalidHandle
-     *
+     * Version = 1.40.0：SaFirewallStrategy.instance.requestPathInvalidHandle
+     * Version >= 1.41.0：SaFirewallStrategy.instance.checkFailHandle
+     * <p>
      * 比如访问：localhost:8080/.xxx
      * 上面这个 url 包含了 .xxx 这样包含小数点的非常规 url，很多漏洞扫描工具（比如：AppScan）会模拟类似的 url 对应用进行扫描。
      * sa-token 默认的处理方式会返回 http 状态为 200 和 “非法请求” 的文字提示，而漏洞扫描工具要求返回 400、500 这样的错误状态码。
      * 因此通过自定义修改 SaStrategy.instance.requestPathInvalidHandle 的处理默认处理方式来规避。
      * 这里直接 throw new RuntimeException(e);
-     * {@link SaPathCheckFilterForJakartaServlet } 在处理的时候就会抛运行时异常，客户端收到的就是 500 的异常。
+     * <p>
+     * Version = 1.40.0：cn.dev33.satoken.filter.SaPathCheckFilterForJakartaServlet.java
+     * Version >= 1.41.0：{@link SaFirewallCheckFilterForJakartaServlet } 在处理的时候就会抛运行时异常，客户端收到的就是 500 的异常。
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        SaFirewallStrategy.instance.requestPathInvalidHandle = (e, requestObject, responseObject) -> {
-            if(responseObject instanceof HttpServletResponse response) {
+        SaFirewallStrategy.instance.checkFailHandle = (e, req, res, extArg) -> {
+            if(res instanceof HttpServletResponse response) {
                 try {
                     response.setContentType("text/plain; charset=utf-8");
                     response.setStatus(HttpStatus.BAD_REQUEST.value());

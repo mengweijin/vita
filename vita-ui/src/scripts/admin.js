@@ -1,5 +1,6 @@
 import { template } from "@/scripts/template.js";
-import { userStorage } from "@/storage/system/userStorage.js";
+import { userStorage } from "@/storage/session/userStorage.js";
+import { utils } from "@/scripts/utils.js";
 
 let $ = layui.$;
 
@@ -7,8 +8,7 @@ let $ = layui.$;
 let admin = {
   /** 是否已登录 */
   isLogin: function () {
-    let user = userStorage.get();
-    return user !== undefined && user !== null;
+    return !utils.isEmpty(userStorage.get());
   },
 
   /** 登录 */
@@ -22,8 +22,8 @@ let admin = {
   /** 登出 */
   logout: function () {
     $.ajax({ url: "/logout", method: "post" }).then((r) => {
-      // 前端登出
-      userStorage.del();
+      // 清空 sessionStorage
+      sessionStorage.clear();
       // 跳转登录页
       this.loadLogin();
     });

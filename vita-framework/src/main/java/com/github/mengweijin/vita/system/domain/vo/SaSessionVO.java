@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
 import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.session.TokenSign;
+import cn.dev33.satoken.session.SaTerminalInfo;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.Data;
@@ -53,7 +53,7 @@ public class SaSessionVO {
     /**
      * 此 Session 绑定的 Token 签名列表
      */
-    private List<TokenSignVO> tokenSignList = new ArrayList<>();
+    private List<SaTerminalInfoVO> tokenSignList = new ArrayList<>();
 
     public SaSessionVO(SaSession session) {
         this.id = session.getId();
@@ -62,10 +62,10 @@ public class SaSessionVO {
         this.loginId = session.getLoginId();
         this.token = session.getToken();
         this.createTime = session.getCreateTime();
-        this.tokenSignList = this.copyTokenSignList(session.getTokenSignList());
+        this.tokenSignList = this.copyTokenSignList(session.getTerminalList());
     }
 
-    private List<TokenSignVO> copyTokenSignList(List<TokenSign> list) {
-        return list.stream().map(TokenSignVO::new).collect(Collectors.toList());
+    private List<SaTerminalInfoVO> copyTokenSignList(List<SaTerminalInfo> list) {
+        return list.stream().map(SaTerminalInfoVO::new).collect(Collectors.toList());
     }
 }

@@ -48,8 +48,8 @@
 
         <li class="layui-nav-item">
             <a href="javascript:;" class="vt-header-icon-size-right">
-                <img src="/favicon.svg" class="layui-nav-img" />
-                admin
+                <img id="avatar" src="/favicon.svg" class="layui-nav-img" />
+                <span id="nickname">admin</span>
             </a>
             <dl class="layui-nav-child">
                 <dd lay-on="profile"><a href="javascript:;">个人主页</a></dd>
@@ -64,12 +64,16 @@
     </ul>
 
     <script type="module">
-        import screenfull from 'screenfull';
+        import screenfull from "screenfull";
         import { admin } from "@/scripts/admin.js";
+        import { userStorage } from "@/storage/session/userStorage.js";
 
         let element = layui.element;
         let $ = layui.$;
         let util = layui.util;
+
+        $("#avatar").attr("src", userStorage.get().avatar ?? "/favicon.svg");
+        $("#nickname").text(userStorage.get().nickname);
 
         element.render();
 

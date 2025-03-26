@@ -1,4 +1,4 @@
-import { userStorage } from "@/storage/system/userStorage.js";
+import { userStorage } from "@/storage/session/userStorage.js";
 import { admin } from "@/scripts/admin.js";
 
 let $ = layui.$;
@@ -40,7 +40,7 @@ let ajaxSetup = function () {
       xhr.setRequestHeader("Authorization", "Bearer " + userStorage.getToken());
     },
     error: function (xhr, textStatus, errorThrown) {
-      let message = xhr?.responseJSON?.msg;;
+      let message = xhr?.responseJSON?.msg;
       console.error(xhr?.responseJSON);
       switch (xhr.status) {
         case 400:
@@ -53,8 +53,8 @@ let ajaxSetup = function () {
             { icon: 0, closeBtn: 0, title: "会话过期提醒！" },
             function (index) {
               layer.close(index);
-              // 前端登出
-              userStorage.del();
+              // 清空 sessionStorage
+              sessionStorage.clear();
               // 跳转登录页
               admin.loadLogin();
             }
@@ -72,7 +72,7 @@ let ajaxSetup = function () {
           });
           break;
         case 404:
-          layer.msg(message, { icon: 2, title:  "找不到资源！" });
+          layer.msg(message, { icon: 2, title: "找不到资源！" });
           break;
         case 408:
           layer.msg("请求超时！", { icon: 2 });

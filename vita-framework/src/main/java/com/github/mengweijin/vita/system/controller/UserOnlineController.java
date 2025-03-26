@@ -2,14 +2,14 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.session.TokenSign;
+import cn.dev33.satoken.session.SaTerminalInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.system.domain.vo.SaSessionVO;
-import com.github.mengweijin.vita.system.domain.vo.TokenSignVO;
+import com.github.mengweijin.vita.system.domain.vo.SaTerminalInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,11 +53,11 @@ public class UserOnlineController {
     }
 
     @SaCheckPermission("system:userOnline:query")
-    @GetMapping("/token-sign-list/{sessionId}")
-    public List<TokenSign> tokenSignList(@PathVariable("sessionId") String sessionId) {
+    @GetMapping("/terminal-list/{sessionId}")
+    public List<SaTerminalInfo> tokenSignList(@PathVariable("sessionId") String sessionId) {
         SaSession session = StpUtil.getSessionBySessionId(sessionId);
         // 查询这个账号都在哪些设备登录了
-        return session.getTokenSignList();
+        return session.getTerminalList();
     }
 
     @SaCheckPermission("system:userOnline:kickOut")
@@ -70,9 +70,9 @@ public class UserOnlineController {
 
     @SaCheckPermission("system:userOnline:kickOut")
     @PostMapping("/kick-out-by-token")
-    public R<Void> kickoffByToken(@RequestBody TokenSignVO vo) {
+    public R<Void> kickoffByToken(@RequestBody SaTerminalInfoVO vo) {
         // 强制指定 Token 注销下线
-        StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getValue()));
+        StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getEncryptTokenValue()));
         return R.success();
     }
 

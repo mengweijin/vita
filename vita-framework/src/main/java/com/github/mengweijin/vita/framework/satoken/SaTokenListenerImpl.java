@@ -2,10 +2,10 @@ package com.github.mengweijin.vita.framework.satoken;
 
 import cn.dev33.satoken.listener.SaTokenListener;
 import cn.dev33.satoken.listener.SaTokenListenerForLog;
-import cn.dev33.satoken.stp.SaLoginModel;
+import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.service.LogLoginService;
 import com.github.mengweijin.vita.system.enums.ELoginType;
+import com.github.mengweijin.vita.system.service.LogLoginService;
 import com.github.mengweijin.vita.system.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class SaTokenListenerImpl implements SaTokenListener {
      * 每次登录时触发。 这里的 loginId 即为用户登录名 username
      */
     @Override
-    public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
+    public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginParameter loginParameter) {
         logLoginService.addLoginLogAsync((String) loginId, ELoginType.LOGIN, null, ServletUtils.getRequest());
         userService.checkAndSendPasswordLongTimeNoChangeMessageAsync((String) loginId);
     }

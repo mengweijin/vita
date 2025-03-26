@@ -17,12 +17,12 @@ public class VitaAdminApplication {
 			SpringApplication.run(VitaAdminApplication.class, args);
             long end = System.currentTimeMillis();
             log.info("-----------------------------------------------------------------------");
-            log.info("----------- Vita Admin startup success!");
-            log.info("----------- Started Vita Admin in {} seconds", (end - start) / 1000D);
+            log.info("----------- Vita startup success!");
+            log.info("----------- Started Vita in {} seconds", (end - start) / 1000D);
             log.info("-----------------------------------------------------------------------");
 		} catch (Exception e) {
             log.error("----------------------------------------------------------------------");
-            log.error("---------- Vita Admin startup failed!");
+            log.error("---------- Vita startup failed!");
             log.error("----------------------------------------------------------------------");
 		}
 	}

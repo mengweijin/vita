@@ -31,11 +31,11 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mybatis-plus.version>3.5.10.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.11</mybatis-plus.version>
         <logback-classic-db.version>1.2.11.1</logback-classic-db.version>
         <hutool.version>6.0.0-M20</hutool.version>
-        <sa-token.version>1.40.0</sa-token.version>
-        <oshi.version>6.6.6</oshi.version>
+        <sa-token.version>1.41.0</sa-token.version>
+        <oshi.version>6.8.0</oshi.version>
         <zxing.version>3.5.3</zxing.version>
         <fastexcel.version>1.1.0</fastexcel.version>
         <ip2region.version>2.7.0</ip2region.version>

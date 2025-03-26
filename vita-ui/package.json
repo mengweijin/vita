@@ -15,12 +15,13 @@
   },
   "dependencies": {
     "layui": "2.10.1",
+    "lodash": "^4.17.21",
     "screenfull": "^6.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^6.0.1",
     "glob": "^11.0.1",
-    "vite": "^6.1.1"
+    "vite": "^6.2.3"
   },
   "packageManager": "pnpm@9.8.0+sha1.33f415ae4331f9b29a92dd9bbef959b916d65535"
 }

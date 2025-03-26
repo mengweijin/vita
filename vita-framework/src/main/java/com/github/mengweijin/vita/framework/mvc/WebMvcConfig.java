@@ -21,12 +21,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SuppressWarnings({"unused"})
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private static final String INDEX_PATH = "/vita/index.html";
+
     private VitaProperties vitaProperties;
 
     @Bean
     public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
         return (factory -> {
-            ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND, "/index.html");
+            ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND, INDEX_PATH);
             factory.addErrorPages(errorPage404);
         });
     }
@@ -49,7 +51,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/vita/index.html");
+        registry.addRedirectViewController("/", INDEX_PATH);
     }
 
 }
