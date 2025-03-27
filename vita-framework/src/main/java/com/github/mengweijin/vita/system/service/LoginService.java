@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
-import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.LoginFailedException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -69,7 +69,7 @@ public class LoginService {
                 throw new LoginFailedException("The username or password incorrect!");
             }
 
-            StpUtil.login(loginBO.getUsername(), new SaLoginModel().setIsLastingCookie(loginBO.isRememberMe()).setDevice(platformName));
+            StpUtil.login(loginBO.getUsername(), new SaLoginParameter().setIsLastingCookie(loginBO.isRememberMe()).setDeviceType(platformName));
 
             LoginUser loginUser = this.buildLoginUser(user);
             LoginHelper.setLoginUser(loginUser);

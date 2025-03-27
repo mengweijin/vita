@@ -1,34 +1,40 @@
 import _ from "lodash";
 import { STORAGE_NAME } from "@/storage/storage.js";
 import { utils } from "@/script/utils.js";
+import { dictDataApi } from "@/api/dictData.js";
 
 let dictStorage = {
   name: "dict",
 
-  get: function () {
+  init: async () => {
+    let list = null;
+    await dictDataApi.list().then((res) => {
+      list = res;
+    });
+    let groupedObject = _.groupBy(list, "code");
+    this.set(groupedObject);
+    return groupedObject;
+  },
+
+  get: () => {
     let data = layui.sessionData(STORAGE_NAME)[this.name];
     if (utils.isEmpty(data)) {
-      $.ajax({
-        url: "/system/dict-data/list",
-        method: "get",
-        async: false,
-      }).then((list) => {
-        let groupedObject = _.groupBy(list, "code");
-        this.set(groupedObject);
-        data = groupedObject;
-      });
+      return this.init();
     }
     return data;
   },
 
-  set: function (data) {
+  getByCode: (code) => {
+    return this.get()[code];
+  },
+
+  set: (data) => {
     layui.sessionData(STORAGE_NAME, { key: this.name, value: data });
   },
 
-  del: function () {
+  del: () => {
     layui.sessionData(STORAGE_NAME, { key: this.name, remove: true });
   },
-
 };
 
 export { dictStorage };

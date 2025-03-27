@@ -1,5 +1,5 @@
 import { utils } from "@/scripts/utils.js";
-import "layui";
+import { http } from "@/scripts/http.js";
 
 let $ = layui.jquery;
 let layer = layui.layer;
@@ -15,51 +15,30 @@ let template = {
    * - 模板的URL：'src/views/admin/admin.html'
    * - CSS选择器：'#id'
    * - 字符串：'我的名字是：<p>{{- name}}</p>'
-   * @returns 模板字符串
+   * @returns {Promise} 模板字符串的 Promise 对象
    */
   getTemplate: function (tpl) {
     let template;
     if (tpl.endsWith(".html")) {
-      // 加载页面。关闭 ajax 全局默认 loading。同步请求
-      $.ajax({
-        loading: false,
-        async: false,
-        url: tpl,
-        type: "get",
-        dataType: "html",
-        success: (str) => {
-          template = str;
-        },
-      });
-    } else if (utils.isValidCSSSelector(tpl)) {
+      // 加载页面。关闭 ajax 全局默认 loading
+      return http.get({ loading: false, url: tpl, dataType: "html" });
+    } else if (utils.isValidCssSelector(tpl)) {
       template = $(tpl).html();
     } else {
       template = tpl;
     }
-    return template;
+    return Promise.resolve(template);
   },
 
   /**
    * 获取模板渲染所需要的数据
    * @param {String | Object | Array} obj 模板渲染所需要的数据接口链接、对象、或数组的数据。
-   * @returns
+   * @returns {Promise} 模板数据的 Promise 对象
    */
-  getData: function (obj) {
-    let data;
-    if (utils.isString(obj)) {
-      $.ajax({
-        loading: false,
-        async: false,
-        url: obj,
-        method: "get",
-        success: (str) => {
-          data = str;
-        },
-      });
-    } else {
-      data = obj;
-    }
-    return data;
+  getData: function (obj = {}) {
+    return utils.isString(obj)
+      ? http.get({ loading: false, url: obj })
+      : Promise.resolve(obj);
   },
 
   /**
@@ -73,16 +52,20 @@ let template = {
    */
   load: function (elem, tpl, obj = {}) {
     let loading = layer.load(2, { shade: [1, "#FFF"] });
+
     // 获取模板字符串
-    let template = this.getTemplate(tpl);
+    let templatePromise = this.getTemplate(tpl);
     // 获取模板渲染需要的数据
-    let data = this.getData(obj);
-    // 渲染并输出结果
-    laytpl(template).render(data, (str) => {
-      // 先清空内容以及绑定的事件，避免残留元素导致事件叠加
-      $(elem).empty().html(str);
-      this.reloadScripts(elem);
-      layer.close(loading);
+    let dataPromise = this.getData(obj);
+
+    Promise.all([templatePromise, dataPromise]).then(([template, data]) => {
+      // 渲染并输出结果
+      laytpl(template).render(data, (str) => {
+        // 先清空内容以及绑定的事件，避免残留元素导致事件叠加
+        $(elem).empty().html(str);
+        this.reloadScripts(elem);
+        layer.close(loading);
+      });
     });
   },
 
@@ -91,7 +74,6 @@ let template = {
    * @param {String} elem
    */
   reloadScripts: function (elem) {
-    // 提取并触发执行所有script标签
     let targetElement = document.querySelector(elem);
     let scripts = targetElement.getElementsByTagName("script");
     Array.from(scripts).forEach((oldScript) => {

@@ -8,11 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>首页 | Vita 管理系统</title>
+    <link href="%VITE_PUBLIC_PATH%%VITE_LAYUI_PATH%/css/layui.css" rel="stylesheet">
+    <script src="%VITE_PUBLIC_PATH%%VITE_LAYUI_PATH%/layui.js"></script>
 </head>
 
 <body>
-    <script type="module" src="./src/main.js"></script>
     <div id="app"></div>
+    <script type="module">
+        import "@/styles/main.css";
+        import { admin } from "@/scripts/admin.js";
+        admin.isLogin() ? admin.loadAdmin() : admin.loadLogin();
+    </script>
 </body>
 
 </html>

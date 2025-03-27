@@ -1,1 +1,0 @@
-function o(){import.meta.url,import("_").catch((()=>1)),async function*(){}().next()}import"../modulepreload-polyfill-Dqv5PPZA.js";import{a}from"../admin-C0ASnni1.js";import"../template-7vu1SOT6.js";a.loadHeader(),a.loadSide(),a.loadBody(),a.loadFooter();export{o as __vite_legacy_guard};

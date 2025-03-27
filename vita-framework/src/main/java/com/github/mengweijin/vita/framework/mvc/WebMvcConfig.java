@@ -8,10 +8,13 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.time.Duration;
 
 /**
  * @author Meng Wei Jin
@@ -25,22 +28,37 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private VitaProperties vitaProperties;
 
+    /**
+     * 允许跨域。
+     * 也可以使用 WebMvcConfigurer 类中的 addCorsMappings(@NonNull CorsRegistry registry) 方法配置，但会存一个问题。
+     * 使用 addCorsMappings 实现跨域配置可能会失效：
+     * 原因：当项目中存在自定义拦截器时，请求会先进入拦截器，导致跨域响应头未添加。
+     * 解决：改用 CorsFilter 过滤器（优先级高于拦截器）。
+     * 因此这里使用 CorsFilter 配置。
+     * @return CorsFilter
+     */
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        // 允许的源域名
+        config.addAllowedOriginPattern(CorsConfiguration.ALL);
+        config.addAllowedMethod(CorsConfiguration.ALL);
+        config.addAllowedHeader(CorsConfiguration.ALL);
+        // 允许携带凭证（如Cookie）
+        config.setAllowCredentials(true);
+        // 缓存时间
+        config.setMaxAge(Duration.ofHours(1));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",  config);
+        return new CorsFilter(source);
+    }
+
     @Bean
     public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
         return (factory -> {
             ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND, INDEX_PATH);
             factory.addErrorPages(errorPage404);
         });
-    }
-
-    /**
-     * 允许跨域
-     *
-     * @param registry CorsRegistry
-     */
-    @Override
-    public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/**");
     }
 
     /**

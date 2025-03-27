@@ -23,7 +23,7 @@ let utils = {
     return Object.getOwnPropertyNames(obj).length === 0;
   },
 
-  isValidCSSSelector: function (selector) {
+  isValidCssSelector: function (selector) {
     try {
       document.querySelector(selector);
       return true;
@@ -51,6 +51,11 @@ let utils = {
     }
     return str;
   },
+
+  getCssVar: function(varName) {
+    let root = document.documentElement; 
+    return getComputedStyle(root).getPropertyValue(varName);
+  }
 };
 
 export { utils };

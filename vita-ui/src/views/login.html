@@ -132,7 +132,7 @@
                         lay-filter="radio-login-method-filter">
                 </span>
             </div>
-            <div class="layui-form-item login-other layui-hide">
+            <div class="layui-form-item login-other">
                 <label>社交账号登录</label>
                 <span style="padding: 0 21px 0 6px;">
                     <a href="javascript:;"><i class="layui-icon layui-icon-login-qq" style="color: #3492ed;"></i></a>
@@ -149,6 +149,7 @@
 
     <script type="module">
         import { admin } from "@/scripts/admin.js";
+        import { captchaApi, captchaEnabledApi } from "@/api/login.js";
 
         let $ = layui.$;
         let form = layui.form;
@@ -158,26 +159,11 @@
         admin.loadFooter();
 
         let initCaptcha = function () {
-            $.ajax({
-                loading: false,
-                url: "/captchaEnabled",
-                method: "get",
-                cache: false
-            }).then(function (enabled) {
+            captchaEnabledApi().then(function (enabled) {
                 if (enabled) {
                     // closest(): 筛选第一个符合条件的父元素
                     $("input[name='captcha']").attr("lay-verify", "required").closest(".layui-form-item").removeClass("layui-hide");
                 }
-            });
-        }
-
-        let refreshCaptcha = function () {
-            $.ajax({
-                url: "/captcha",
-                method: "get",
-                cache: false,
-            }).then((base64) => {
-                $("#captchaImg").attr('src', base64).parent().next().addClass("layui-hide");
             });
         }
 
@@ -202,9 +188,13 @@
 
         util.on({
             captcha: function () {
-                refreshCaptcha();
+                captchaApi().then((base64) => {
+                    $("#captchaImg").attr('src', base64).parent().next().addClass("layui-hide");
+                });
             },
         });
+
+
     </script>
 
 

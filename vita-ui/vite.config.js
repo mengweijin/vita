@@ -6,6 +6,7 @@ import { globSync } from "glob";
 // 使用 node: 前缀显式声明导入 Node.js 内置 path 模块，绕过模块缓存机制，直接调用核心模块
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import copy from "rollup-plugin-copy";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -22,20 +23,23 @@ export default defineConfig(({ mode }) => {
    *   index: "index.html",
    *   login: "login.html",
    * },
-   * 
+   *
    * 1.1  globSync：是一个用于文件路径匹配的函数，通常来自 glob 库。它会同步地查找所有匹配 views 下所有 .html 文件。
    * 1.2  .map((file) => [...])：对 globSync 返回的文件路径数组进行映射操作，为每个文件路径生成一个包含两个元素的子数组。
    * 1.3  path.extname(file) ：获取文件的扩展名，例如 .html
    * 1.4  file.slice(0, file.length - path.extname(file).length) ：去掉文件的扩展名，得到文件的基本名称。
    * 1.5  path.relative(from, to)：计算相对于当前工作目录的相对路径，这个相对路径将作为对象的键。
-   * 
+   *
    * 2.1  import.meta.url 表示当前模块的 URL。
    * 2.2  new URL(file, import.meta.url) ：创建一个基于 import.meta.url 的绝对 URL 对象。
    * 2.3  fileURLToPath(...)：将 URL 对象转换为文件系统路径，这个绝对路径将作为对象的值。
    */
   const rollupInput = Object.fromEntries(
     globSync("src/views/**/*.html").map((file) => [
-      path.relative( "src", file.slice(0, file.length - path.extname(file).length)),
+      path.relative(
+        "src",
+        file.slice(0, file.length - path.extname(file).length)
+      ),
       fileURLToPath(new URL(file, import.meta.url)),
     ])
   );
@@ -60,9 +64,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         // 目录 → src
         "@": path.resolve(__dirname, "src"),
-        // "@assets": path.resolve(__dirname, "src/assets"),
-        // "@scripts": path.resolve(__dirname, "src/scripts"),
-        // "@styles": path.resolve(__dirname, "src/styles"),
       },
     },
     // 设为 false 可以避免 Vite 清屏而错过在终端中打印某些关键信息。
@@ -94,6 +95,7 @@ export default defineConfig(({ mode }) => {
       legacy({
         targets: ["defaults", "not IE 11"],
       }),
+      
     ],
     build: {
       outDir: "dist",
@@ -107,12 +109,6 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 4000,
-      // minify: "terser",
-      // terserOptions: {
-      //   mangle: {
-      //     reserved: ['layui'] // 禁止压缩 layui 变量名
-      //   }
-      // },
       // https://rollupjs.org/configuration-options/
       rollupOptions: {
         input: rollupInput,
@@ -122,6 +118,18 @@ export default defineConfig(({ mode }) => {
           entryFileNames: "src/static/js/[name]-[hash].js",
           assetFileNames: "src/static/[ext]/[name]-[hash].[ext]",
         },
+        plugins: [
+          copy({
+            targets: [
+              // 格式：{ src: '源路径', dest: '目标路径' }
+              { src: "node_modules/layui/dist/*", dest: "dist/layui" },
+            ],
+            // 输出详细日志
+            verbose: true,
+            // 在打包的某个声明周期执行复制。 buildStart, buildEnd, generateBundle, writeBundle
+            hook: "writeBundle",
+          }),
+        ],
       },
     },
   };

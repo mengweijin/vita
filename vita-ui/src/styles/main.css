@@ -4,6 +4,7 @@
 /* --：定义全局变量，可在文档任意位置通过 var() 调用。比如引用变量：color: var(--primary-color); */
 :root {
   --primary-color: #1e9fff;
+  --vt-menu-width: 200px;
 }
 
 .dark {
@@ -41,6 +42,9 @@ a:hover {
   .layui-layout-left {
     left: 0px;
   }
+  .layui-layout-admin .layui-side {
+    width: 0px;
+  }
   .layui-body {
     left: 0px;
   }
@@ -49,10 +53,13 @@ a:hover {
 /* PC端样式 */
 @media screen and (min-width: 750px) {
   .layui-layout-left {
-    left: 200px;
+    left: var(--vt-menu-width);
+  }
+  .layui-layout-admin .layui-side {
+    width: var(--vt-menu-width);
   }
   .layui-body {
-    left: 200px;
+    left: var(--vt-menu-width);
   }
 }
 
