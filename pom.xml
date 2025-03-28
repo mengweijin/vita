@@ -26,11 +26,6 @@
         <gpg.skip>false</gpg.skip>
         <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
         <skipTests>true</skipTests>
-        <!-- Source File Exclusions -->
-        <sonar.exclusions>**/*.sql, **/static/vita/*</sonar.exclusions>
-        <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
-        <sonar.coverage.exclusions>src/main/**/*</sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/*.sql</sonar.cpd.exclusions>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
