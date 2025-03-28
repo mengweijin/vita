@@ -16,8 +16,8 @@
 
     <properties>
         <!-- Source File Exclusions -->
-        <sonar.exclusions>**/*.sql, **/static/vita/**/*</sonar.exclusions>
-        <sonar.cpd.exclusions>**/*.sql</sonar.cpd.exclusions>
+<!--        <sonar.exclusions>**/*.sql, **/static/vita/**/*</sonar.exclusions>-->
+<!--        <sonar.cpd.exclusions>**/*.sql</sonar.cpd.exclusions>-->
     </properties>
     <dependencies>
         <dependency> 
