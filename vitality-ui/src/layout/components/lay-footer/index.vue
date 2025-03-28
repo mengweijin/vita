@@ -10,19 +10,19 @@ const TITLE = getConfig("Title");
   <footer
     class="layout-footer text-[rgba(0,0,0,0.6)] dark:text-[rgba(220,220,242,0.8)]"
   >
-    <a class="a" href="https://vitality.aday.fun:8000" target="_blank">{{
+    <a class="a" href="https://vitality.aday.fun" target="_blank">{{
       TITLE
     }}</a>
     &nbsp;|&nbsp;
-    <a class="a" href="https://aday.fun:8000" target="_blank"
-      >https://aday.fun:8000</a
+    <a class="a" href="https://aday.fun" target="_blank"
+      >https://aday.fun</a
     >
     &nbsp;&nbsp;
     <a
       class="a"
-      href="https://beian.miit.gov.cn/#/Integrated/lawStatute"
+      href="https://beian.miit.gov.cn"
       target="_blank"
-      >陕ICP备2022013125号</a
+      >陕ICP备2025064396号</a
     >
     &nbsp;| Copyright © 2018 ~ {{ fullYear }} | Meng Wei Jin | APACHE LICENSED
     2.0
