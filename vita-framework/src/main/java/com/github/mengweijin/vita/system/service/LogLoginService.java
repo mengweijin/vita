@@ -13,9 +13,9 @@ import com.github.mengweijin.vita.system.mapper.LogLoginMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
+import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.dromara.hutool.http.useragent.UserAgent;
 import org.dromara.hutool.http.useragent.UserAgentInfo;
 import org.springframework.stereotype.Service;
@@ -72,7 +72,7 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLogin> {
             LogLogin logLogin = new LogLogin();
             if(request != null) {
                 UserAgent userAgent = ServletUtils.getUserAgent(request);
-                String ip = ServletUtils.getClientIP(request);
+                String ip = ServletUtil.getClientIP(request);
                 logLogin.setIp(ip);
                 logLogin.setIpLocation(Ip2regionUtils.search(ip));
                 logLogin.setBrowser(Optional.ofNullable(userAgent).map(UserAgent::getBrowser).map(UserAgentInfo::getName).orElse(null));
@@ -81,7 +81,7 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLogin> {
             }
             logLogin.setUsername(username);
             logLogin.setLoginType(loginType.getValue());
-            logLogin.setSuccess(StrUtil.isBlank(errorMsg) ? EYesNo.Y.getValue() : EYesNo.N.getValue());
+            logLogin.setSuccess(StrValidator.isBlank(errorMsg) ? EYesNo.Y.getValue() : EYesNo.N.getValue());
             logLogin.setErrorMsg(errorMsg);
 
             User user = userService.getByUsername(username);

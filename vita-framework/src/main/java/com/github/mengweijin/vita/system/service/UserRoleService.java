@@ -7,7 +7,7 @@ import com.github.mengweijin.vita.system.domain.entity.Role;
 import com.github.mengweijin.vita.system.domain.entity.UserRole;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRole> {
 
     public Set<Long> getUserIdsByRoleCode(String roleCode) {
         Set<Long> set = new HashSet<>();
-        if (StrUtil.isBlank(roleCode)) {
+        if (StrValidator.isBlank(roleCode)) {
             return set;
         }
         RoleService roleService = SpringUtil.getBean(RoleService.class);

@@ -14,7 +14,7 @@ import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.core.thread.ThreadUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
@@ -104,8 +104,8 @@ public class MessageService extends CrudRepository<MessageMapper, Message> {
             transactionTemplate.executeWithoutResult(status -> {
                 Message message = new Message();
                 message.setCategory(category.getValue());
-                message.setTitle(StrUtil.format(template.getTitle(), args));
-                message.setContent(StrUtil.format(template.getContent(), args));
+                message.setTitle(CharSequenceUtil.format(template.getTitle(), args));
+                message.setContent(CharSequenceUtil.format(template.getContent(), args));
 
                 message.setCreateBy(loginId);
                 message.setUpdateBy(loginId);

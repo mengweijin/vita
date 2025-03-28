@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictData;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,7 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictData> {
     public void checkValDuplicate(String code, String val) {
         Optional<DictData> optional = this.lambdaQuery().eq(DictData::getCode, code).eq(DictData::getVal, val).oneOpt();
         if (optional.isPresent()) {
-            throw new ClientException(StrUtil.format("The dict type code[{}] and value[{}] already exists!", code, val));
+            throw new ClientException(CharSequenceUtil.format("The dict type code[{}] and value[{}] already exists!", code, val));
         }
     }
 

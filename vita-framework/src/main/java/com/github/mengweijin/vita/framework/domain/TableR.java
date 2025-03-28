@@ -31,6 +31,7 @@ public class TableR<T> implements Serializable {
     /**
      * 数据
      */
+    @SuppressWarnings("java:S1948")
     private List<T> rows;
 
     /**

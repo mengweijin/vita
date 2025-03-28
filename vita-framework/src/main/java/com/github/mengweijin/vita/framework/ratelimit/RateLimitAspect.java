@@ -118,9 +118,11 @@ public class RateLimitAspect {
     public String getCacheKey(ERateLimitStrategy strategy, JoinPoint joinPoint) {
         String cacheKey = CACHE_NAME_PREFIX + strategy.name() + Const.UNDERSCORE;
         HttpServletRequest request = ServletUtils.getRequest();
-        switch (strategy) {
-            case API -> cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
-            case IP -> cacheKey += ServletUtil.getClientIP(request);
+
+        if(strategy == ERateLimitStrategy.API) {
+            cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
+        } else if(strategy == ERateLimitStrategy.IP) {
+            cacheKey += ServletUtil.getClientIP(request);
         }
         return cacheKey;
     }
