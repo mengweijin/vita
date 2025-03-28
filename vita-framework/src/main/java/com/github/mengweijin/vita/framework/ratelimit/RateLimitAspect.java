@@ -26,6 +26,7 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.date.TimeUtil;
 import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;
@@ -119,8 +120,7 @@ public class RateLimitAspect {
         HttpServletRequest request = ServletUtils.getRequest();
         switch (strategy) {
             case API -> cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
-            case IP -> cacheKey += ServletUtils.getClientIP(request);
-            default -> {}
+            case IP -> cacheKey += ServletUtil.getClientIP(request);
         }
         return cacheKey;
     }

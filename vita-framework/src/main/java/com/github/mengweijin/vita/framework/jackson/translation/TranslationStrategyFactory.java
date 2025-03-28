@@ -20,7 +20,7 @@ public class TranslationStrategyFactory {
 
     private List<ITranslationStrategy<Object>> translationList;
 
-    public static Map<ETranslateType, ITranslationStrategy<Object>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
+    public static final Map<ETranslateType, ITranslationStrategy<Object>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
 
     @SuppressWarnings({"unused"})
     @PostConstruct

@@ -65,10 +65,11 @@
 于是，就有了 **Vita**，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。
 
 ### 在线演示
-|        版本         |          演示链接          |
-|:-----------------:|:----------------------:|
-|    Vita Vue 版     |  https://vue.aday.fun  |
-|   Vita Layui 版    | https://layui.aday.fun |
+|        版本        |          演示链接          |
+|:----------------:|:----------------------:|
+|    Vita（开发中）     | https://vita.aday.fun  |
+|  Vitality Vue 版  |  https://vue.aday.fun  |
+| Vitality Layui 版 | https://layui.aday.fun |
 
 #### 最简单的启动
 

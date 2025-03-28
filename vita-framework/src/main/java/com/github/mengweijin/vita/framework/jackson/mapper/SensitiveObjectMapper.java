@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SensitiveObjectMapper {
 
-    public static String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token"};
+    public static final String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token"};
 
     public static final String HIDE_VALUE = "********";
 
