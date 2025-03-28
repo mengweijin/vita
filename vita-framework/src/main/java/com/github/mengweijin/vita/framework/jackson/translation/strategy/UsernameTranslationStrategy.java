@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.system.service.UserService;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,7 +27,7 @@ public class UsernameTranslationStrategy implements ITranslationStrategy<String>
     public String translation(Object value, Translation translation) {
         if (value instanceof Long id) {
             return userService.getUsernameById(id);
-        } else if(value instanceof String ids && StrUtil.isNotBlank(ids)) {
+        } else if(value instanceof String ids && StrValidator.isNotBlank(ids)) {
             return userService.getUsernameByIds(ids);
         }
         return null;

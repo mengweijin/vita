@@ -1,10 +1,13 @@
 package com.github.mengweijin.vita.framework.util;
 
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.jar.JarFile;
  * @author Meng Wei Jin
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JarFileUtils {
 
     /**
@@ -43,7 +47,7 @@ public class JarFileUtils {
                 return loadFileSystemContentInfo(urlConnection);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -99,7 +103,7 @@ public class JarFileUtils {
     }
 
     private static String getParentPath(String path) {
-        if (StrUtil.isBlank(path)) {
+        if (StrValidator.isBlank(path)) {
             return "";
         }
         String[] split = path.split("/");
@@ -108,7 +112,7 @@ public class JarFileUtils {
     }
 
     private static String getName(String path) {
-        if (StrUtil.isBlank(path)) {
+        if (StrValidator.isBlank(path)) {
             return "";
         }
         String[] split = path.split("/");

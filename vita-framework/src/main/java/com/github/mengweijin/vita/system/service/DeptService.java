@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.system.domain.entity.Dept;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +38,10 @@ public class DeptService extends CrudRepository<DeptMapper, Dept> {
         LambdaQueryWrapper<Dept> query = new LambdaQueryWrapper<>();
         query
                 .eq(!Objects.isNull(dept.getParentId()), Dept::getParentId, dept.getParentId())
-                .eq(StrUtil.isNotBlank(dept.getName()), Dept::getName, dept.getName())
+                .eq(StrValidator.isNotBlank(dept.getName()), Dept::getName, dept.getName())
                 .eq(!Objects.isNull(dept.getSeq()), Dept::getSeq, dept.getSeq())
-                .eq(StrUtil.isNotBlank(dept.getDisabled()), Dept::getDisabled, dept.getDisabled())
-                .eq(StrUtil.isNotBlank(dept.getRemark()), Dept::getRemark, dept.getRemark())
+                .eq(StrValidator.isNotBlank(dept.getDisabled()), Dept::getDisabled, dept.getDisabled())
+                .eq(StrValidator.isNotBlank(dept.getRemark()), Dept::getRemark, dept.getRemark())
                 .eq(!Objects.isNull(dept.getId()), Dept::getId, dept.getId())
                 .eq(!Objects.isNull(dept.getCreateBy()), Dept::getCreateBy, dept.getCreateBy())
                 .eq(!Objects.isNull(dept.getCreateTime()), Dept::getCreateTime, dept.getCreateTime())

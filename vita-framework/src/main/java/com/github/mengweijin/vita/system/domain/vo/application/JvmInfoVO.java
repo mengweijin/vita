@@ -10,6 +10,7 @@ import org.dromara.hutool.extra.management.JvmInfo;
 import org.dromara.hutool.extra.management.RuntimeInfo;
 import org.dromara.hutool.extra.management.UserInfo;
 
+import java.io.Serializable;
 import java.lang.management.ManagementFactory;
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
  * @since 2023/6/8
  */
 @Data
-public class JvmInfoVO {
+public class JvmInfoVO implements Serializable {
     private String jvmName;
     private String jvmVersion;
     private String jvmVendor;

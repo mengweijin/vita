@@ -1,8 +1,11 @@
 package com.github.mengweijin.vita.framework.util;
 
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.dromara.hutool.core.io.IoUtil;
@@ -15,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
@@ -25,13 +27,14 @@ import java.util.function.Function;
  * @author mengweijin
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DownLoadUtils {
 
     public static void download(File file, HttpServletRequest request, HttpServletResponse response) {
         try(FileInputStream in = new FileInputStream(file)) {
             download(in, file.getName(), request, response);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -47,7 +50,7 @@ public class DownLoadUtils {
             //捕获此异常表示用户停止下载
             log.warn("User cancel download.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         } finally {
             IoUtil.closeQuietly(in);
         }
@@ -165,18 +168,14 @@ public class DownLoadUtils {
         }
     }
 
-    public static String setFileName(HttpServletRequest request, String fileName) throws UnsupportedEncodingException {
+    public static String setFileName(HttpServletRequest request, String fileName) {
         final String agent = request.getHeader("USER-AGENT");
         String encodeFileName = fileName;
-        if (agent.contains("MSIE")) {
-            // IE浏览器
-            encodeFileName = URLEncoder.encode(encodeFileName, StandardCharsets.UTF_8);
-            encodeFileName = encodeFileName.replace("+", " ");
-        } else if (agent.contains("Firefox")) {
+        if (agent.contains("Firefox")) {
             // 火狐浏览器
             encodeFileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-        } else if (agent.contains("Chrome")) {
-            // google浏览器
+        } else if (agent.contains("Chrome") || agent.contains("MSIE")) {
+            // google浏览器 或 IE 浏览器
             encodeFileName = URLEncoder.encode(encodeFileName, StandardCharsets.UTF_8);
             encodeFileName = encodeFileName.replace("+", " ");
         } else {

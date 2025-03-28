@@ -6,12 +6,14 @@ import org.dromara.hutool.extra.management.HostInfo;
 import org.dromara.hutool.extra.management.OsInfo;
 import org.dromara.hutool.extra.management.oshi.OshiUtil;
 
+import java.io.Serializable;
+
 /**
  * @author mengweijin
  * @since 2023/6/8
  */
 @Data
-public class ServerInfoVO {
+public class ServerInfoVO implements Serializable {
 
     @JsonIgnore
     private HostInfo hostInfo = new HostInfo();

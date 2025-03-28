@@ -1,7 +1,9 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.date.DateFormatPool;
-import org.dromara.hutool.core.date.TimeUtil;
+import org.dromara.hutool.core.date.TemporalAccessorUtil;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
  *
  * @author mengweijin
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TimestampIdUtils {
 
 	/**
@@ -36,7 +39,7 @@ public class TimestampIdUtils {
 		synchronized (LOCK) {
 			now = LocalDateTime.now();
 		}
-        return Long.parseLong(TimeUtil.format(now, DateFormatPool.PURE_DATETIME_MS_PATTERN));
+        return Long.parseLong(TemporalAccessorUtil.format(now, DateFormatPool.PURE_DATETIME_MS_PATTERN));
 	}
 
 }

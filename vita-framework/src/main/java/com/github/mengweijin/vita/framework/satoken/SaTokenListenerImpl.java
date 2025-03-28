@@ -53,43 +53,43 @@ public class SaTokenListenerImpl implements SaTokenListener {
     /** 每次被封禁时触发 */
     @Override
     public void doDisable(String loginType, Object loginId, String service, int level, long disableTime) {
-
+        // ignore
     }
 
     /** 每次被解封时触发 */
     @Override
     public void doUntieDisable(String loginType, Object loginId, String service) {
-
+        // ignore
     }
 
     /** 每次二级认证时触发 */
     @Override
     public void doOpenSafe(String loginType, String tokenValue, String service, long safeTime) {
-
+        // ignore
     }
 
     /** 每次退出二级认证时触发 */
     @Override
     public void doCloseSafe(String loginType, String tokenValue, String service) {
-
+        // ignore
     }
 
     /** 每次创建Session时触发 */
     @Override
     public void doCreateSession(String id) {
-
+        // ignore
     }
 
     /** 每次注销Session时触发 */
     @Override
     public void doLogoutSession(String id) {
-
+        // ignore
     }
 
     /** 每次Token续期时触发 */
     @Override
     public void doRenewTimeout(String tokenValue, Object loginId, long timeout) {
-
+        // ignore
     }
 
 }

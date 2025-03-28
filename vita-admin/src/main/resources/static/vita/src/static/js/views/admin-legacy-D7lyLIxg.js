@@ -1,1 +1,0 @@
-System.register(["../modulepreload-polyfill-legacy-thrsW4a0.js","../admin-legacy-Dv8g8gJ8.js"],(function(e,l){"use strict";var o;return{setters:[null,e=>{o=e.a}],execute:function(){o.loadHeader(),o.loadSide(),o.loadBody(),o.loadFooter()}}}));

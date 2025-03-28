@@ -75,6 +75,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
             r.appendMessage(error.getField() + ": " + error.getDefaultMessage());
         }
         log.warn("Warn binding info: {}", r);
+        log.warn(e.getMessage(), e);
         return ResponseEntity.status(status).body(r);
     }
 
@@ -85,6 +86,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
             r.appendMessage(Objects.requireNonNull(error.getCodes())[0] + ": " + error.getDefaultMessage());
         });
         log.warn("Warn validation info: {}", r);
+        log.warn(e.getMessage(), e);
         return ResponseEntity.status(status).body(r);
     }
 

@@ -5,7 +5,8 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.system.domain.vo.CacheVO;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class CacheController {
         if (cache != null) {
             for (Cache.Entry<Object, Object> next : cache) {
                 if(next != null) {
-                    String key = StrUtil.toString(next.getKey());
+                    String key = CharSequenceUtil.toString(next.getKey());
                     list.add(new CacheVO(key, key, next.getValue()));
                 }
             }
@@ -56,7 +57,7 @@ public class CacheController {
     @PostMapping("/remove")
     public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey", required = false) Serializable cacheKey) {
         Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-        if (cacheKey == null || StrUtil.isBlank(cacheKey.toString())) {
+        if (cacheKey == null || StrValidator.isBlank(cacheKey.toString())) {
             cache.clear();
             return R.success();
         } else {

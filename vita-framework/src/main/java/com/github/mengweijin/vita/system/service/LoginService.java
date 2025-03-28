@@ -65,7 +65,7 @@ public class LoginService {
                 throw new LoginFailedException("The username or password incorrect!");
             }
 
-            if (!userService.checkPassword(loginBO.getPassword(), user.getPassword())) {
+            if (!userService.checkPassword(user, loginBO.getPassword())) {
                 throw new LoginFailedException("The username or password incorrect!");
             }
 

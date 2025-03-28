@@ -1,6 +1,9 @@
 package com.github.mengweijin.vita.framework.util;
 
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.dromara.hutool.core.io.file.FileUtil;
@@ -21,16 +24,17 @@ import java.util.List;
  * @author mengweijin
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class P7zipUtils {
 
-	private final static String CMD_PREFIX_WINDOWS = Const.PROJECT_DIR + File.separator + "files/7z/7z.exe";
+	private static final String CMD_PREFIX_WINDOWS = Const.PROJECT_DIR + File.separator + "files/7z/7z.exe";
 
-	private final static String CMD_PREFIX_LINUX = "7za";
+	private static final String CMD_PREFIX_LINUX = "7za";
 
 	/**
 	 * 压缩/解压缩命令前缀，根据操作系统类型决定
 	 */
-	private final static String CMD_PREFIX = new OsInfo().isWindows() ? CMD_PREFIX_WINDOWS : CMD_PREFIX_LINUX;
+	private static final String CMD_PREFIX = new OsInfo().isWindows() ? CMD_PREFIX_WINDOWS : CMD_PREFIX_LINUX;
 
 	public static void compress(List<String> filePathList, String destPath) {
 		compress(filePathList, null, destPath);
@@ -61,7 +65,7 @@ public class P7zipUtils {
 			RuntimeUtil.exec(command);
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 
 	}
@@ -106,7 +110,7 @@ public class P7zipUtils {
 			return destPath;
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
-			throw new RuntimeException(e);
+			throw new ServerException(e);
 		}
 	}
 }

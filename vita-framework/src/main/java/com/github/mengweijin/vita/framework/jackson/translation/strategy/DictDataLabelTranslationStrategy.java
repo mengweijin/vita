@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +25,7 @@ public class DictDataLabelTranslationStrategy implements ITranslationStrategy<St
 
     @Override
     public String translation(Object value, Translation translation) {
-        if (value instanceof String dictVal && StrUtil.isNotBlank(dictVal)) {
+        if (value instanceof String dictVal && StrValidator.isNotBlank(dictVal)) {
             return dictDataService.getLabelByCodeAndVal(translation.dictCode(), dictVal);
         }
         return null;

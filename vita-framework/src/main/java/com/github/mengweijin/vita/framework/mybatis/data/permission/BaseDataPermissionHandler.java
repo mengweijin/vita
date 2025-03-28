@@ -11,7 +11,7 @@ import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.schema.Column;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +51,7 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
         switch (dataScope.scope()) {
             case USER -> {
                 String loginUserId = this.getLoginUserId();
-                if (StrUtil.isNotBlank(loginUserId)) {
+                if (StrValidator.isNotBlank(loginUserId)) {
                     EqualsTo userEqualsTo = new EqualsTo();
                     userEqualsTo.setLeftExpression(buildColumn(dataScope));
                     userEqualsTo.setRightExpression(new StringValue(loginUserId));
@@ -100,11 +100,11 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
      */
     protected static Column buildColumn(DataScope dataScope) {
         String tableColumnName = dataScope.tableColumnName();
-        if(StrUtil.isBlank(tableColumnName)) {
+        if(StrValidator.isBlank(tableColumnName)) {
             tableColumnName = dataScope.scope().getColumnName();
         }
         String tableAlias = dataScope.tableAlias();
-        tableAlias = StrUtil.isBlank(tableAlias) ? Const.EMPTY : tableAlias + Const.DOT;
+        tableAlias = StrValidator.isBlank(tableAlias) ? Const.EMPTY : tableAlias + Const.DOT;
         return new Column(tableAlias + tableColumnName);
     }
 }

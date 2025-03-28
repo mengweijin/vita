@@ -4,12 +4,13 @@ package com.github.mengweijin.vita.system.constant;
  * @author mengweijin
  * @since 2023/4/16
  */
-public interface UserConst {
+@SuppressWarnings({"unused"})
+public abstract class UserConst {
 
-    long ADMIN_USER_ID = 1L;
+    public static final long ADMIN_USER_ID = 1L;
 
-    String ADMIN_USERNAME = "admin";
+    public static final String ADMIN_USERNAME = "admin";
 
-    String SESSION_LOGIN_USER = "loginUser";
+    public static final String SESSION_LOGIN_USER = "loginUser";
 
 }

@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.date.DateUtil;
 import org.springframework.scheduling.support.CronExpression;
 
@@ -8,6 +10,7 @@ import java.util.Date;
 /**
  * @author Meng Wei Jin
  **/
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CronDateUtils {
 
     public static final String CRON = "ss mm HH dd MM ? yyyy";

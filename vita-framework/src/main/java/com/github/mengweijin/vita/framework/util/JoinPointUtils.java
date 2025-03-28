@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -11,6 +13,7 @@ import java.lang.reflect.Method;
  * @author mengweijin
  * @since 2022/11/19
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JoinPointUtils {
 
     /**

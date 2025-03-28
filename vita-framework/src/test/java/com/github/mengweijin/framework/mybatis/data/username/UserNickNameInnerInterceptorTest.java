@@ -28,10 +28,10 @@ import java.util.LinkedList;
  * @author mengweijin
  * @since 2023/4/16
  */
-public class UserNickNameInnerInterceptorTest {
+class UserNickNameInnerInterceptorTest {
 
     @Test
-    public void plainSelectTest() throws JSQLParserException {
+    void plainSelectTest() throws JSQLParserException {
         String sql = """
             select * from SYS_DEPT 
             where TYPE = 'AA' AND CODE = '1001' 
@@ -77,7 +77,7 @@ public class UserNickNameInnerInterceptorTest {
     }
 
     @Test
-    public void plainSelectLeftJoinTest() throws JSQLParserException {
+    void plainSelectLeftJoinTest() throws JSQLParserException {
         String sql = """
             select dict.*, user.nick_name 
             from SYS_DICT dict 
@@ -116,7 +116,7 @@ public class UserNickNameInnerInterceptorTest {
     }
 
     @Test
-    public void plainSelectLeftJoinWithSubQueryTest() throws JSQLParserException {
+    void plainSelectLeftJoinWithSubQueryTest() throws JSQLParserException {
         String sql = """
             select t1.*, user.nick_name from (
                 select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
@@ -149,7 +149,7 @@ public class UserNickNameInnerInterceptorTest {
 
 
     @Test
-    public void plainSelectAddLeftJoinWithSubQueryTest() throws JSQLParserException {
+    void plainSelectAddLeftJoinWithSubQueryTest() throws JSQLParserException {
         String sql = """
             select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
             where TYPE = 'AA' AND CODE = '1001' 

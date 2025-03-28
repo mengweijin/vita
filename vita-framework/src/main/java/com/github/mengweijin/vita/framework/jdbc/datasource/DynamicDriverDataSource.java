@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jdbc.datasource;
 
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.Getter;
 import org.dromara.hutool.core.classloader.JarClassLoader;
 import org.dromara.hutool.core.io.file.FileUtil;
@@ -43,7 +44,7 @@ public class DynamicDriverDataSource implements DataSource {
     public DynamicDriverDataSource(File jarFile, String url, String username, String password) {
         Assert.notNull(jarFile);
         if (!FileUtil.exists(jarFile)) {
-            throw new RuntimeException("File not exist at path " + jarFile.getAbsolutePath());
+            throw new ServerException("File not exist at path " + jarFile.getAbsolutePath());
         }
         this.classLoader = JarClassLoader.loadJar(jarFile);
         this.url = url;
@@ -119,7 +120,7 @@ public class DynamicDriverDataSource implements DataSource {
             DriverManager.registerDriver(driverShim);
             return driverShim;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -129,7 +130,7 @@ public class DynamicDriverDataSource implements DataSource {
                 DriverManager.deregisterDriver(driverShim);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -143,7 +144,7 @@ public class DynamicDriverDataSource implements DataSource {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 

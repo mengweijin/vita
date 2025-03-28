@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Meng Wei Jin
  * Server Exception
  **/
-@SuppressWarnings({"unused"})
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal Server Error")
 public class ServerException extends RuntimeException {
+
+    public ServerException() {
+        super();
+    }
 
     public ServerException(String message) {
         super(message);

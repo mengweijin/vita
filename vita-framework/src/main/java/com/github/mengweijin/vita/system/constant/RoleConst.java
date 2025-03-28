@@ -4,10 +4,11 @@ package com.github.mengweijin.vita.system.constant;
  * @author mengweijin
  * @since 2023/4/16
  */
-public interface RoleConst {
+@SuppressWarnings({"unused"})
+public abstract class RoleConst {
 
-    String ADMIN = "admin";
+    public static final String ADMIN = "admin";
 
-    String GUEST = "guest";
+    public static final String GUEST = "guest";
 
 }

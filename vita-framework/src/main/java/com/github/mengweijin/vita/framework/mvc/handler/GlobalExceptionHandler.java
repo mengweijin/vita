@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.exception.LoginFailedException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<R<Void>> handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
         log.error("Request-URI: '{}', Records already exist in the database: '{}'", request.getRequestURI(), e.getMessage());
-        String message = StrUtil.format("The record already exists! | {} | {}...", request.getRequestURI(), StrUtil.subPre(e.getMessage(), 500));
+        String message = CharSequenceUtil.format("The record already exists! | {} | {}...", request.getRequestURI(), CharSequenceUtil.subPre(e.getMessage(), 500));
         R<Void> r = R.failure(HttpStatus.BAD_REQUEST.value(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }

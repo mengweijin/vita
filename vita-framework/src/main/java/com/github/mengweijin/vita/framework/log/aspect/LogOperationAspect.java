@@ -17,7 +17,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.dromara.hutool.core.io.IoUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.dromara.hutool.json.JSONUtil;
 
@@ -102,11 +103,11 @@ public class LogOperationAspect {
             }
             if (logAnnotation.saveResponseData() && object != null) {
                 String responseData = SensitiveObjectMapper.writeValueAsString(object);
-                logOperation.setResponseData(StrUtil.subByLength(responseData, 0, 2000));
+                logOperation.setResponseData(CharSequenceUtil.subByLength(responseData, 0, 2000));
             }
             logOperation.setSuccess(e == null ? EYesNo.Y.getValue() : EYesNo.N.getValue());
             if (e != null) {
-                logOperation.setErrorMsg(StrUtil.subByLength(e.getMessage(), 0, 2000));
+                logOperation.setErrorMsg(CharSequenceUtil.subByLength(e.getMessage(), 0, 2000));
             }
             StopWatch stopWatch = STOP_WATCH.get();
             stopWatch.stop();
@@ -146,7 +147,7 @@ public class LogOperationAspect {
         // 解决方法：添加可重复读取流的过滤器，详情参见 RepeatableFilter
         if (request instanceof RepeatedlyRequestWrapper repeatedlyRequest) {
             String body = IoUtil.read(repeatedlyRequest.getInputStream(), StandardCharsets.UTF_8);
-            if (StrUtil.isNotBlank(body)) {
+            if (StrValidator.isNotBlank(body)) {
                 if (JSONUtil.isTypeJSONObject(body)) {
                     Map<?, ?> map = SensitiveObjectMapper.readValue(body, Map.class);
                     dataMap.put(REQUEST_BODY, map);

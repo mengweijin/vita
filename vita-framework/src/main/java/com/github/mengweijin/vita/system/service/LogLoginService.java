@@ -6,14 +6,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.domain.entity.LogLogin;
-import com.github.mengweijin.vita.system.mapper.LogLoginMapper;
 import com.github.mengweijin.vita.system.domain.entity.User;
 import com.github.mengweijin.vita.system.enums.ELoginType;
 import com.github.mengweijin.vita.system.enums.EYesNo;
+import com.github.mengweijin.vita.system.mapper.LogLoginMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.dromara.hutool.http.useragent.UserAgent;
 import org.dromara.hutool.http.useragent.UserAgentInfo;
@@ -48,20 +49,20 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLogin> {
     public IPage<LogLogin> page(IPage<LogLogin> page, LogLogin logLogin){
         LambdaQueryWrapper<LogLogin> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(logLogin.getLoginType()), LogLogin::getLoginType, logLogin.getLoginType())
-                .eq(StrUtil.isNotBlank(logLogin.getIp()), LogLogin::getIp, logLogin.getIp())
-                .eq(StrUtil.isNotBlank(logLogin.getIpLocation()), LogLogin::getIpLocation, logLogin.getIpLocation())
-                .eq(StrUtil.isNotBlank(logLogin.getBrowser()), LogLogin::getBrowser, logLogin.getBrowser())
-                .eq(StrUtil.isNotBlank(logLogin.getPlatform()), LogLogin::getPlatform, logLogin.getPlatform())
-                .eq(StrUtil.isNotBlank(logLogin.getOs()), LogLogin::getOs, logLogin.getOs())
-                .eq(StrUtil.isNotBlank(logLogin.getSuccess()), LogLogin::getSuccess, logLogin.getSuccess())
-                .eq(StrUtil.isNotBlank(logLogin.getErrorMsg()), LogLogin::getErrorMsg, logLogin.getErrorMsg())
+                .eq(StrValidator.isNotBlank(logLogin.getLoginType()), LogLogin::getLoginType, logLogin.getLoginType())
+                .eq(StrValidator.isNotBlank(logLogin.getIp()), LogLogin::getIp, logLogin.getIp())
+                .eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLogin::getIpLocation, logLogin.getIpLocation())
+                .eq(StrValidator.isNotBlank(logLogin.getBrowser()), LogLogin::getBrowser, logLogin.getBrowser())
+                .eq(StrValidator.isNotBlank(logLogin.getPlatform()), LogLogin::getPlatform, logLogin.getPlatform())
+                .eq(StrValidator.isNotBlank(logLogin.getOs()), LogLogin::getOs, logLogin.getOs())
+                .eq(StrValidator.isNotBlank(logLogin.getSuccess()), LogLogin::getSuccess, logLogin.getSuccess())
+                .eq(StrValidator.isNotBlank(logLogin.getErrorMsg()), LogLogin::getErrorMsg, logLogin.getErrorMsg())
                 .eq(!Objects.isNull(logLogin.getId()), LogLogin::getId, logLogin.getId())
                 .eq(!Objects.isNull(logLogin.getCreateBy()), LogLogin::getCreateBy, logLogin.getCreateBy())
                 .eq(!Objects.isNull(logLogin.getCreateTime()), LogLogin::getCreateTime, logLogin.getCreateTime())
                 .eq(!Objects.isNull(logLogin.getUpdateBy()), LogLogin::getUpdateBy, logLogin.getUpdateBy())
                 .eq(!Objects.isNull(logLogin.getUpdateTime()), LogLogin::getUpdateTime, logLogin.getUpdateTime())
-                .like(StrUtil.isNotBlank(logLogin.getUsername()), LogLogin::getUsername, logLogin.getUsername());
+                .like(StrValidator.isNotBlank(logLogin.getUsername()), LogLogin::getUsername, logLogin.getUsername());
         query.orderByDesc(LogLogin::getCreateTime);
         return this.page(page, query);
     }

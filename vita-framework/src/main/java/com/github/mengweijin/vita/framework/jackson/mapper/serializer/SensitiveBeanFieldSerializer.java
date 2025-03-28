@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -28,7 +28,7 @@ public class SensitiveBeanFieldSerializer extends JsonSerializer<Object> impleme
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        if (Objects.equals(String.class, property.getType().getRawClass()) && StrUtil.containsAnyIgnoreCase(property.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
+        if (Objects.equals(String.class, property.getType().getRawClass()) && CharSequenceUtil.containsAnyIgnoreCase(property.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
             return this;
         }
         return prov.findValueSerializer(property.getType(), property);

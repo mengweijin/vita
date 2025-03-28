@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.framework.cache;
 
 import com.github.mengweijin.vita.framework.cache.listener.DefaultCacheEventListener;
-import lombok.AllArgsConstructor;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheEventListenerConfigurationBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
@@ -39,7 +38,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableCaching
 @Configuration
-@AllArgsConstructor
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class CacheConfig {
 

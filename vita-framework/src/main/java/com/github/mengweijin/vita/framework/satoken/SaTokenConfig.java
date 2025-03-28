@@ -41,7 +41,7 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
         registry.addInterceptor(new SaInterceptor(handler -> {
                     SaRouter.match("/**").check(r -> StpUtil.checkLogin());
                     // 根据路由划分模块，不同模块不同鉴权
-                    //SaRouter.match("/doc.html", r -> StpUtil.checkPermission("tool:api:view"));
+                    SaRouter.match("/doc.html", r -> StpUtil.checkLogin());
                 }))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/vita/**", "/doc.html", "/webjars/**", "/v3/api-docs/**");

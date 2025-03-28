@@ -9,7 +9,6 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.Menu;
-import com.github.mengweijin.vita.system.domain.pure.PureAsyncRoutes;
 import com.github.mengweijin.vita.system.service.MenuService;
 import com.github.mengweijin.vita.system.service.RoleMenuService;
 import lombok.AllArgsConstructor;
@@ -87,11 +86,6 @@ public class MenuController {
     @GetMapping("/get-menu-id-by-role/{roleId}")
     public List<Long> getMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
         return roleMenuService.getMenuIdsByRoleId(roleId);
-    }
-
-    @GetMapping("/get-async-routes")
-    public PureAsyncRoutes getAsyncRoutes() {
-        return menuService.getAsyncRoutes();
     }
 
     /**

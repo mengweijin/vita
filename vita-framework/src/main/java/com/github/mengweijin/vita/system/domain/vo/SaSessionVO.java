@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author mengweijin
@@ -66,6 +65,6 @@ public class SaSessionVO {
     }
 
     private List<SaTerminalInfoVO> copyTokenSignList(List<SaTerminalInfo> list) {
-        return list.stream().map(SaTerminalInfoVO::new).collect(Collectors.toList());
+        return list.stream().map(SaTerminalInfoVO::new).toList();
     }
 }

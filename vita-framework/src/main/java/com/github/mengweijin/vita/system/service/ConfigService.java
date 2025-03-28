@@ -7,7 +7,7 @@ import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.Config;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.core.util.BooleanUtil;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +41,15 @@ public class ConfigService extends CrudRepository<ConfigMapper, Config> {
     public IPage<Config> page(IPage<Config> page, Config config){
         LambdaQueryWrapper<Config> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(config.getVal()), Config::getVal, config.getVal())
-                .eq(StrUtil.isNotBlank(config.getRemark()), Config::getRemark, config.getRemark())
+                .eq(StrValidator.isNotBlank(config.getVal()), Config::getVal, config.getVal())
+                .eq(StrValidator.isNotBlank(config.getRemark()), Config::getRemark, config.getRemark())
                 .eq(!Objects.isNull(config.getId()), Config::getId, config.getId())
                 .eq(!Objects.isNull(config.getCreateBy()), Config::getCreateBy, config.getCreateBy())
                 .eq(!Objects.isNull(config.getCreateTime()), Config::getCreateTime, config.getCreateTime())
                 .eq(!Objects.isNull(config.getUpdateBy()), Config::getUpdateBy, config.getUpdateBy())
                 .eq(!Objects.isNull(config.getUpdateTime()), Config::getUpdateTime, config.getUpdateTime())
-                .like(StrUtil.isNotBlank(config.getName()), Config::getName, config.getName())
-                .like(StrUtil.isNotBlank(config.getCode()), Config::getCode, config.getCode());
+                .like(StrValidator.isNotBlank(config.getName()), Config::getName, config.getName())
+                .like(StrValidator.isNotBlank(config.getCode()), Config::getCode, config.getCode());
         return this.page(page, query);
     }
 

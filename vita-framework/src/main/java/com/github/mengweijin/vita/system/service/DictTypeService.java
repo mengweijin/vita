@@ -10,7 +10,7 @@ import com.github.mengweijin.vita.system.mapper.DictTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -54,14 +54,14 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictType> {
     public IPage<DictType> page(IPage<DictType> page, DictType dictType){
         LambdaQueryWrapper<DictType> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(dictType.getRemark()), DictType::getRemark, dictType.getRemark())
+                .eq(StrValidator.isNotBlank(dictType.getRemark()), DictType::getRemark, dictType.getRemark())
                 .eq(!Objects.isNull(dictType.getId()), DictType::getId, dictType.getId())
                 .eq(!Objects.isNull(dictType.getCreateBy()), DictType::getCreateBy, dictType.getCreateBy())
                 .eq(!Objects.isNull(dictType.getCreateTime()), DictType::getCreateTime, dictType.getCreateTime())
                 .eq(!Objects.isNull(dictType.getUpdateBy()), DictType::getUpdateBy, dictType.getUpdateBy())
                 .eq(!Objects.isNull(dictType.getUpdateTime()), DictType::getUpdateTime, dictType.getUpdateTime())
-                .like(StrUtil.isNotBlank(dictType.getName()), DictType::getName, dictType.getName())
-                .like(StrUtil.isNotBlank(dictType.getCode()), DictType::getCode, dictType.getCode());
+                .like(StrValidator.isNotBlank(dictType.getName()), DictType::getName, dictType.getName())
+                .like(StrValidator.isNotBlank(dictType.getCode()), DictType::getCode, dictType.getCode());
         return this.page(page, query);
     }
 

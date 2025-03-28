@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.util;
 
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class AESUtils {
 
     private static final AES INSTANCE = new AES(DEFAULT);
 
+    @SuppressWarnings("all")
     public static AES getAES() {
         return INSTANCE;
     }
@@ -107,7 +109,7 @@ public class AESUtils {
             SecretKey secretKey = KeyUtil.generateKey(SymmetricAlgorithm.AES.getValue(), keySize, secureRandom);
             return secretKey.getEncoded();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -117,8 +119,9 @@ public class AESUtils {
 
     /**
      * 使用 generateSecretKey 方法来代替。这里仅做原生的写法展示。
+     * @deprecated
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     private static byte[] generateSecretKeyByKeyGenerator(String key, int keySize) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(SymmetricAlgorithm.AES.getValue());
         SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");

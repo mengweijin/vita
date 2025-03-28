@@ -18,7 +18,7 @@ import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.io.file.FileNameUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,15 +74,15 @@ public class OssService extends CrudRepository<OssMapper, Oss> {
     public IPage<Oss> page(IPage<Oss> page, Oss oss){
         LambdaQueryWrapper<Oss> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(oss.getSuffix()), Oss::getSuffix, oss.getSuffix())
-                .eq(StrUtil.isNotBlank(oss.getStoragePath()), Oss::getStoragePath, oss.getStoragePath())
-                .eq(StrUtil.isNotBlank(oss.getMd5()), Oss::getMd5, oss.getMd5())
+                .eq(StrValidator.isNotBlank(oss.getSuffix()), Oss::getSuffix, oss.getSuffix())
+                .eq(StrValidator.isNotBlank(oss.getStoragePath()), Oss::getStoragePath, oss.getStoragePath())
+                .eq(StrValidator.isNotBlank(oss.getMd5()), Oss::getMd5, oss.getMd5())
                 .eq(!Objects.isNull(oss.getId()), Oss::getId, oss.getId())
                 .eq(!Objects.isNull(oss.getCreateBy()), Oss::getCreateBy, oss.getCreateBy())
                 .eq(!Objects.isNull(oss.getCreateTime()), Oss::getCreateTime, oss.getCreateTime())
                 .eq(!Objects.isNull(oss.getUpdateBy()), Oss::getUpdateBy, oss.getUpdateBy())
                 .eq(!Objects.isNull(oss.getUpdateTime()), Oss::getUpdateTime, oss.getUpdateTime())
-                .like(StrUtil.isNotBlank(oss.getName()), Oss::getName, oss.getName());
+                .like(StrValidator.isNotBlank(oss.getName()), Oss::getName, oss.getName());
         return this.page(page, query);
     }
 

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiver;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -36,7 +36,7 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
         query
                 .eq(!Objects.isNull(messageReceiver.getMessageId()), MessageReceiver::getMessageId, messageReceiver.getMessageId())
                 .eq(!Objects.isNull(messageReceiver.getUserId()), MessageReceiver::getUserId, messageReceiver.getUserId())
-                .eq(StrUtil.isNotBlank(messageReceiver.getViewed()), MessageReceiver::getViewed, messageReceiver.getViewed())
+                .eq(StrValidator.isNotBlank(messageReceiver.getViewed()), MessageReceiver::getViewed, messageReceiver.getViewed())
                 .eq(!Objects.isNull(messageReceiver.getViewedTime()), MessageReceiver::getViewedTime, messageReceiver.getViewedTime())
                 .eq(!Objects.isNull(messageReceiver.getId()), MessageReceiver::getId, messageReceiver.getId())
                 .eq(!Objects.isNull(messageReceiver.getCreateBy()), MessageReceiver::getCreateBy, messageReceiver.getCreateBy())

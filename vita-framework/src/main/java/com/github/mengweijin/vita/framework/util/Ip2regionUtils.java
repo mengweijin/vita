@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.io.IoUtil;
 import org.lionsoul.ip2region.xdb.Searcher;
@@ -13,6 +15,7 @@ import java.io.InputStream;
  * @since 2023/5/13
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Ip2regionUtils {
 
     /**

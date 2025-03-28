@@ -1,7 +1,10 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.codec.binary.Base32;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.crypto.digest.otp.HOTP;
 import org.dromara.hutool.crypto.digest.otp.TOTP;
 import org.dromara.hutool.swing.qrcode.QrCodeUtil;
 import org.dromara.hutool.swing.qrcode.QrConfig;
@@ -15,15 +18,13 @@ import java.time.Instant;
  * @author mengweijin
  * @since 2023/4/16
  */
-public final class TOTPUtils {
-
-    private TOTPUtils() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class TOTPUtils {
 
     private static final QrConfig QR_CONFIG = new QrConfig();
 
     public static String createSecretKey() {
-        return TOTP.generateSecretKey(16);
+        return HOTP.generateSecretKey(16);
     }
 
     /**
@@ -33,7 +34,7 @@ public final class TOTPUtils {
      * @return 图片 Base64 编码字符串
      */
     public static String createBase64(String secretKey, String label, String issuer) {
-        String qrCodeContent = StrUtil.format("otpauth://totp/{}?secret={}&issuer={}", label, secretKey, issuer);
+        String qrCodeContent = CharSequenceUtil.format("otpauth://totp/{}?secret={}&issuer={}", label, secretKey, issuer);
         return QrCodeUtil.generateAsBase64DataUri(qrCodeContent, QR_CONFIG, QrCodeUtil.QR_TYPE_SVG);
     }
 

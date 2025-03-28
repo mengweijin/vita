@@ -21,6 +21,7 @@ public class R<T> implements Serializable {
     /**
      * data
      */
+    @SuppressWarnings("java:S1948")
     private T data;
     /**
      * Error message

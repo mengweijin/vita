@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
 import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveBeanFieldSerializer;
 import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveMapSerializer;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class SensitiveBeanSerializerModifier extends BeanSerializerModifier {
     public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,
                                                      List<BeanPropertyWriter> beanProperties) {
         for (BeanPropertyWriter writer : beanProperties) {
-            if (writer.getType().isTypeOrSubTypeOf(String.class) && StrUtil.containsAnyIgnoreCase(writer.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
+            if (writer.getType().isTypeOrSubTypeOf(String.class) && CharSequenceUtil.containsAnyIgnoreCase(writer.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
                 // 如果是字符串，并且属性名称属于敏感字段名，则使用自定义处理
                 writer.assignSerializer(new SensitiveBeanFieldSerializer());
             }

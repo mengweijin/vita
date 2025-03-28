@@ -40,10 +40,10 @@ public @interface DataScope {
 
         ROLE(ColumnConst.ROLE_ID);
 
-        private String columnName;
+        private final String columnName;
 
         Scope(String columnName) {
-
+            this.columnName = columnName;
         }
     }
 }

@@ -4,14 +4,15 @@ package com.github.mengweijin.vita.system.constant;
  * @author mengweijin
  * @since 2023/4/16
  */
-public interface ConfigConst {
+@SuppressWarnings({"unused"})
+public abstract class ConfigConst {
 
-    String CAPTCHA_ENABLED = "vt_captcha_enabled";
+    public static final String CAPTCHA_ENABLED = "vt_captcha_enabled";
 
-    String USER_INIT_PASSWORD = "vt_user_init_password";
+    public static final String USER_INIT_PASSWORD = "vt_user_init_password";
 
-    String USER_PASSWORD_CHANGE_INTERVAL = "vt_user_password_change_interval";
+    public static final String USER_PASSWORD_CHANGE_INTERVAL = "vt_user_password_change_interval";
 
-    String SYSTEM_ADMIN_ROLE_CODE = "vt_system_admin_role_code";
+    public static final String SYSTEM_ADMIN_ROLE_CODE = "vt_system_admin_role_code";
 
 }

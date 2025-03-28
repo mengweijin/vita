@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
-import cn.dev33.satoken.secure.BCrypt;
+import cn.dev33.satoken.secure.SaSecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
@@ -19,9 +19,10 @@ import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.data.PasswdStrength;
+import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.date.TimeUtil;
 import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +60,20 @@ public class UserService extends CrudRepository<UserMapper, User> {
 
     @Override
     public boolean save(User user) {
+        String salt = this.generateSalt();
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
-        String hashedPwd = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        user.setPassword(hashedPwd);
+        user.setSalt(salt);
+        user.setPassword(this.hashPassword(user.getUsername(), user.getPassword(), user.getSalt()));
         user.setPasswordChangeTime(LocalDateTime.now());
         return super.save(user);
+    }
+
+    public String hashPassword(String username, String password, String salt) {
+        return SaSecureUtil.sha256(String.join(username, password, salt));
+    }
+
+    public String generateSalt() {
+        return IdUtil.simpleUUID().toUpperCase();
     }
 
     /**
@@ -80,21 +90,21 @@ public class UserService extends CrudRepository<UserMapper, User> {
         }
         LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(user.getPasswordLevel()), User::getPassword, user.getPasswordLevel())
-                .eq(StrUtil.isNotBlank(user.getIdCard()), User::getIdCard, user.getIdCard())
-                .eq(StrUtil.isNotBlank(user.getGender()), User::getGender, user.getGender())
-                .eq(StrUtil.isNotBlank(user.getDisabled()), User::getDisabled, user.getDisabled())
-                .eq(StrUtil.isNotBlank(user.getRemark()), User::getRemark, user.getRemark())
+                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), User::getPassword, user.getPasswordLevel())
+                .eq(StrValidator.isNotBlank(user.getIdCard()), User::getIdCard, user.getIdCard())
+                .eq(StrValidator.isNotBlank(user.getGender()), User::getGender, user.getGender())
+                .eq(StrValidator.isNotBlank(user.getDisabled()), User::getDisabled, user.getDisabled())
+                .eq(StrValidator.isNotBlank(user.getRemark()), User::getRemark, user.getRemark())
                 .eq(!Objects.isNull(user.getId()), User::getId, user.getId())
                 .eq(!Objects.isNull(user.getCreateBy()), User::getCreateBy, user.getCreateBy())
                 .eq(!Objects.isNull(user.getCreateTime()), User::getCreateTime, user.getCreateTime())
                 .eq(!Objects.isNull(user.getUpdateBy()), User::getUpdateBy, user.getUpdateBy())
                 .eq(!Objects.isNull(user.getUpdateTime()), User::getUpdateTime, user.getUpdateTime())
                 .in(!Objects.isNull(user.getDeptId()), User::getDeptId, deptIds)
-                .like(StrUtil.isNotBlank(user.getUsername()), User::getUsername, user.getUsername())
-                .like(StrUtil.isNotBlank(user.getNickname()), User::getNickname, user.getNickname())
-                .like(StrUtil.isNotBlank(user.getMobile()), User::getMobile, user.getMobile())
-                .like(StrUtil.isNotBlank(user.getEmail()), User::getEmail, user.getEmail());
+                .like(StrValidator.isNotBlank(user.getUsername()), User::getUsername, user.getUsername())
+                .like(StrValidator.isNotBlank(user.getNickname()), User::getNickname, user.getNickname())
+                .like(StrValidator.isNotBlank(user.getMobile()), User::getMobile, user.getMobile())
+                .like(StrValidator.isNotBlank(user.getEmail()), User::getEmail, user.getEmail());
         return this.page(page, query);
     }
 
@@ -144,23 +154,29 @@ public class UserService extends CrudRepository<UserMapper, User> {
                 .map(UserAvatar::getAvatar).orElse(null);
     }
 
-    public boolean checkPassword(String plaintext, String hashed) {
-        return BCrypt.checkpw(plaintext, hashed);
+    public boolean checkPassword(User user, String password) {
+        String passwordInDb = user.getPassword();
+        String hashedPassword = this.hashPassword(user.getUsername(), password, user.getSalt());
+        return passwordInDb.equals(hashedPassword);
     }
 
     public boolean changePassword(ChangePasswordBO bo) {
         User user = this.getByUsername(bo.getUsername());
-        boolean checked = this.checkPassword(bo.getPassword(), user.getPassword());
+        boolean checked = this.checkPassword(user, bo.getPassword());
         if (!checked) {
             throw new ClientException("User or password check failed!");
         }
+
         return this.updatePassword(bo.getUsername(), bo.getNewPassword());
     }
 
-    public boolean updatePassword(String username, String password) {
-        String passwordLevel = PasswdStrength.getLevel(password).name();
-        String hashedPwd = BCrypt.hashpw(password, BCrypt.gensalt());
+    public boolean updatePassword(String username, String newPassword) {
+        String passwordLevel = PasswdStrength.getLevel(newPassword).name();
+        String salt = this.generateSalt();
+        String hashedPwd = this.hashPassword(username, newPassword, salt);
+
         return this.lambdaUpdate()
+                .set(User::getSalt, salt)
                 .set(User::getPassword, hashedPwd)
                 .set(User::getPasswordLevel, passwordLevel)
                 .set(User::getPasswordChangeTime, LocalDateTime.now())
@@ -196,4 +212,5 @@ public class UserService extends CrudRepository<UserMapper, User> {
                     return null;
                 });
     }
+
 }

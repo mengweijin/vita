@@ -59,15 +59,4 @@ public class BaseEntityMetaObjectHandler implements MetaObjectHandler {
         }
     }
 
-    /**
-     * 填充策略
-     * MetaObjectHandler提供的默认方法的策略均为：如果属性有值则不覆盖，如果填充值为null则不填充
-     * 这里修改为：一律填充
-     */
-    // @Override
-    // public MetaObjectHandler strictFillStrategy(MetaObject metaObject, String fieldName, Supplier<?> fieldVal) {
-    //     metaObject.setValue(fieldName, fieldVal.get());
-    //     return this;
-    // }
-
 }

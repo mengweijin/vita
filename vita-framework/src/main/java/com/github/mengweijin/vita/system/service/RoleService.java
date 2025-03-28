@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.system.domain.entity.RoleMenu;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,11 +44,11 @@ public class RoleService extends CrudRepository<RoleMapper, Role> {
     public IPage<Role> page(IPage<Role> page, Role role){
         LambdaQueryWrapper<Role> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(role.getCode()), Role::getCode, role.getCode())
+                .eq(StrValidator.isNotBlank(role.getCode()), Role::getCode, role.getCode())
                 .eq(!Objects.isNull(role.getSeq()), Role::getSeq, role.getSeq())
-                .eq(StrUtil.isNotBlank(role.getDisabled()), Role::getDisabled, role.getDisabled())
-                .like(StrUtil.isNotBlank(role.getName()), Role::getName, role.getName())
-                .eq(StrUtil.isNotBlank(role.getRemark()), Role::getRemark, role.getRemark())
+                .eq(StrValidator.isNotBlank(role.getDisabled()), Role::getDisabled, role.getDisabled())
+                .like(StrValidator.isNotBlank(role.getName()), Role::getName, role.getName())
+                .eq(StrValidator.isNotBlank(role.getRemark()), Role::getRemark, role.getRemark())
                 .eq(!Objects.isNull(role.getId()), Role::getId, role.getId())
                 .eq(!Objects.isNull(role.getCreateBy()), Role::getCreateBy, role.getCreateBy())
                 .eq(!Objects.isNull(role.getCreateTime()), Role::getCreateTime, role.getCreateTime())

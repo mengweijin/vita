@@ -6,7 +6,8 @@ import com.github.mengweijin.vita.system.service.DictDataService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.hibernate.validator.internal.util.logging.Log;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
@@ -52,7 +53,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();
             String correctDictDataCode = dictDataList.stream().map(DictData::getVal).collect(Collectors.joining());
-            String message = StrUtil.format("The dict_data_code[{}] of dict_type_code[{}] is incorrect! The correct dict_data_code should be in [{}]", value, code, correctDictDataCode);
+            String message = CharSequenceUtil.format("The dict_data_code[{}] of dict_type_code[{}] is incorrect! The correct dict_data_code should be in [{}]", value, code, correctDictDataCode);
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }
@@ -61,7 +62,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
     }
 
     private void validateParameters() {
-        if (StrUtil.isBlankOrUndefined(code)) {
+        if (StrValidator.isBlankOrUndefined(code)) {
             throw LOG.getAnnotationDoesNotContainAParameterException(Dict.class, "code");
         }
     }

@@ -18,14 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 public class TranslationStrategyFactory {
 
-    private List<ITranslationStrategy<?>> translationList;
+    private List<ITranslationStrategy<Object>> translationList;
 
-    public static final Map<ETranslateType, ITranslationStrategy<?>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
+    public static Map<ETranslateType, ITranslationStrategy<Object>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
 
     @SuppressWarnings({"unused"})
     @PostConstruct
     public void init() {
-        for (ITranslationStrategy<?> strategy : translationList) {
+        for (ITranslationStrategy<Object> strategy : translationList) {
             if(strategy.translateType() == null) {
                 log.warn("{} : was not set translationType!", strategy.getClass().getName());
             }
@@ -33,7 +33,7 @@ public class TranslationStrategyFactory {
         }
     }
 
-    public static ITranslationStrategy<?> getTranslationStrategy(ETranslateType translateType) {
+    public static ITranslationStrategy<Object> getTranslationStrategy(ETranslateType translateType) {
         return TRANSLATION_STRATEGY_MAP.get(translateType);
     }
 }

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * @author mengweijin
  */
-public class DatasourceTest {
+class DatasourceTest {
 
     @Test
     void getDatabaseProductName() {

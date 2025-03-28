@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.framework.util.BeanUtils;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
@@ -27,7 +27,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +72,7 @@ public class UserController {
     @GetMapping("/page")
     public IPage<UserVO> page(Page<User> page, User user) {
         IPage<User> userPage = userService.page(page, user);
-        return BeanUtils.copyPage(userPage, UserVO.class);
+        return BeanCopyUtils.copyPage(userPage, UserVO.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class UserController {
     @GetMapping("/list")
     public List<UserVO> list(User user) {
         List<User> userList = userService.list(new LambdaQueryWrapper<>(user));
-        return BeanUtils.copyList(userList, UserVO.class);
+        return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 
     /**
@@ -102,7 +102,7 @@ public class UserController {
     @GetMapping("/{id}")
     public UserVO getById(@PathVariable("id") Long id) {
         User user = userService.getById(id);
-        return BeanUtils.copyBean(user, UserVO.class);
+        return BeanCopyUtils.copyBean(user, UserVO.class);
     }
 
     /**
@@ -130,7 +130,7 @@ public class UserController {
     @GetMapping("/sensitive-mine")
     public UserVO getSensitive() {
         User user = userService.getById(LoginHelper.getLoginUser().getUserId());
-        return BeanUtils.copyBean(user, new UserVO());
+        return BeanCopyUtils.copyBean(user, new UserVO());
     }
 
     /**
@@ -144,7 +144,7 @@ public class UserController {
     @GetMapping("/mine")
     public UserSensitiveVO getMine() {
         User user = userService.getById(LoginHelper.getLoginUser().getUserId());
-        return BeanUtils.copyBean(user, new UserSensitiveVO());
+        return BeanCopyUtils.copyBean(user, new UserSensitiveVO());
     }
 
     /**
@@ -158,7 +158,7 @@ public class UserController {
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO user) {
-        boolean bool = userService.save(BeanUtils.copyBean(user, new User()));
+        boolean bool = userService.save(BeanCopyUtils.copyBean(user, new User()));
         return R.ajax(bool);
     }
 
@@ -173,7 +173,7 @@ public class UserController {
     @SaCheckPermission("system:user:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO user) {
-        boolean bool = userService.updateById(BeanUtils.copyBean(user, new User()));
+        boolean bool = userService.updateById(BeanCopyUtils.copyBean(user, new User()));
         return R.ajax(bool);
     }
 
@@ -197,7 +197,7 @@ public class UserController {
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
         List<Long> list = Arrays.asList(ids);
-        boolean isAdmin = list.stream().anyMatch(id -> UserConst.ADMIN_USER_ID == NumberUtil.parseLong(StrUtil.toString(id)));
+        boolean isAdmin = list.stream().anyMatch(id -> UserConst.ADMIN_USER_ID == NumberUtil.parseLong(CharSequenceUtil.toString(id)));
         if (isAdmin) {
             throw new ClientException("Can't delete admin account!");
         }

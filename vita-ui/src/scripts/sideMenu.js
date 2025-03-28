@@ -15,6 +15,11 @@ let sideMenu = {
       { queue: false, duration: 300 },
       "linear"
     );
+    
+    if(utils.getCssVar("--vt-menu-width") === width && utils.isMobile()) {
+      return;
+    }
+    
     $(".layui-body").animate(
       { left: width },
       { queue: false, duration: 300 },

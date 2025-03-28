@@ -16,7 +16,7 @@ public final class AopUtils {
      * @param invoker invoker object
      * @return proxy object
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     public static <T> T getAopProxy(T invoker) {
         return (T) AopContext.currentProxy();
     }

@@ -4,12 +4,14 @@ import lombok.Data;
 import org.dromara.hutool.extra.management.oshi.CpuInfo;
 import org.dromara.hutool.extra.management.oshi.OshiUtil;
 
+import java.io.Serializable;
+
 /**
  * @author mengweijin
  * @since 2023/6/8
  */
 @Data
-public class CpuInfoVO {
+public class CpuInfoVO implements Serializable {
 
     /**
      * CPU核心数

@@ -6,6 +6,7 @@ import org.dromara.hutool.core.math.NumberUtil;
 import org.dromara.hutool.extra.management.oshi.OshiUtil;
 import oshi.software.os.OSFileStore;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @since 2023/6/8
  */
 @Data
-public class DiskInfoVO {
+public class DiskInfoVO implements Serializable {
 
     /**
      * 卷名称。如：C:\

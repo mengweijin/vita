@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.Post;
 import com.github.mengweijin.vita.system.mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -34,14 +34,14 @@ public class PostService extends CrudRepository<PostMapper, Post> {
         LambdaQueryWrapper<Post> query = new LambdaQueryWrapper<>();
         query
                 .eq(!Objects.isNull(post.getSeq()), Post::getSeq, post.getSeq())
-                .eq(StrUtil.isNotBlank(post.getDisabled()), Post::getDisabled, post.getDisabled())
-                .eq(StrUtil.isNotBlank(post.getRemark()), Post::getRemark, post.getRemark())
+                .eq(StrValidator.isNotBlank(post.getDisabled()), Post::getDisabled, post.getDisabled())
+                .eq(StrValidator.isNotBlank(post.getRemark()), Post::getRemark, post.getRemark())
                 .eq(!Objects.isNull(post.getId()), Post::getId, post.getId())
                 .eq(!Objects.isNull(post.getCreateBy()), Post::getCreateBy, post.getCreateBy())
                 .eq(!Objects.isNull(post.getCreateTime()), Post::getCreateTime, post.getCreateTime())
                 .eq(!Objects.isNull(post.getUpdateBy()), Post::getUpdateBy, post.getUpdateBy())
                 .eq(!Objects.isNull(post.getUpdateTime()), Post::getUpdateTime, post.getUpdateTime())
-                .like(StrUtil.isNotBlank(post.getName()), Post::getName, post.getName());
+                .like(StrValidator.isNotBlank(post.getName()), Post::getName, post.getName());
         return this.page(page, query);
     }
 }

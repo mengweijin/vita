@@ -1,8 +1,11 @@
 package com.github.mengweijin.vita.framework.util;
 
-import cn.idev.excel.FastExcel;
+import cn.idev.excel.FastExcelFactory;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 
@@ -19,6 +22,7 @@ import java.util.List;
  * @since 2022/11/20
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExcelUtils {
 
     /**
@@ -28,7 +32,7 @@ public class ExcelUtils {
      * @param cls 对象
      * */
     public static <T> List<T> read(String filePath, Class<T> cls) {
-        return FastExcel.read(filePath).head(cls).sheet().doReadSync();
+        return FastExcelFactory.read(filePath).head(cls).sheet().doReadSync();
     }
 
     /**
@@ -38,7 +42,7 @@ public class ExcelUtils {
      * @param cls 对象
      * */
     public static <T> List<T> read(InputStream in, Class<T> cls) {
-        return FastExcel.read(in).head(cls).sheet().doReadSync();
+        return FastExcelFactory.read(in).head(cls).sheet().doReadSync();
     }
 
     /**
@@ -51,7 +55,7 @@ public class ExcelUtils {
         try {
             return read(request.getInputStream(), cls);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -59,27 +63,27 @@ public class ExcelUtils {
      * 写数据到指定的 Excel 文件
      *
      * @param targetFile 文件
-     * @param cls
+     * @param cls cls
      * */
     public static <T> void write(Class<T> cls, List<T> list, File targetFile) {
-        FastExcel.write(targetFile, cls).sheet(0).doWrite(list);
+        FastExcelFactory.write(targetFile, cls).sheet(0).doWrite(list);
     }
 
     /**
      * 写数据到指定的 Excel 文件
      *
      * @param out OutputStream
-     * @param cls
+     * @param cls cls
      * */
     public static <T> void write(Class<T> cls, List<T> list, OutputStream out) {
-        FastExcel.write(out, cls).sheet(0).doWrite(list);
+        FastExcelFactory.write(out, cls).sheet(0).doWrite(list);
     }
 
     /**
      * 写 Excel
      *
      * @param response 响应对象
-     * @param cls
+     * @param cls cls
      * */
     public static <T> void write(String fileName, Class<T> cls, List<T> list, HttpServletRequest request, HttpServletResponse response) {
         try{
@@ -88,7 +92,7 @@ public class ExcelUtils {
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + DownLoadUtils.setFileName(request, fileName));
             write(cls, list, response.getOutputStream());
         }catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 

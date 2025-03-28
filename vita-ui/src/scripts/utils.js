@@ -1,4 +1,11 @@
+let $ = layui.$;
+
+
 let utils = {
+  isMobile: function() {
+    return $(window).width() <= 750;
+  },
+
   isString: function (obj) {
     return typeof obj === "string" || obj instanceof String;
   },

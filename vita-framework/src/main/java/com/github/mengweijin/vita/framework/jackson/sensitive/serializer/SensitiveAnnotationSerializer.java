@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class SensitiveAnnotationSerializer extends JsonSerializer<String> implem
         ESensitiveStrategy strategy = sensitive.strategy();
         if(strategy == null) {
             log.warn("Desensitization strategies don't exist! Default hide all value!");
-            gen.writeString(StrUtil.hide(value, 0, StrUtil.length(value)));
+            gen.writeString(CharSequenceUtil.hide(value, 0, CharSequenceUtil.length(value)));
         } else {
             gen.writeString(strategy.desensitize().apply(value));
         }

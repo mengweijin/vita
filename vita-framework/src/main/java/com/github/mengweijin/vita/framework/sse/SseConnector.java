@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.framework.sse;
 import cn.dev33.satoken.stp.StpUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.array.ArrayUtil;
 import org.dromara.hutool.core.thread.ThreadUtil;
@@ -56,7 +57,7 @@ public class SseConnector implements InitializingBean {
                 }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
-                throw new RuntimeException(e);
+                throw new ServerException(e);
             }
         }, executorService);
     }

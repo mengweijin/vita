@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.reflect.ReflectUtil;
 import org.dromara.hutool.core.reflect.method.MethodUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 
 import java.lang.reflect.Method;
 
@@ -27,7 +27,7 @@ public class ReflectUtils extends ReflectUtil {
     public static <E> E invokeGetter(Object obj, String propertyName) {
         Object object = obj;
         for (String name : propertyName.split("\\.")) {
-            object = MethodUtil.invoke(object, StrUtil.upperFirstAndAddPre(name, GETTER_PREFIX));
+            object = MethodUtil.invoke(object, CharSequenceUtil.upperFirstAndAddPre(name, GETTER_PREFIX));
         }
         return (E) object;
     }
@@ -41,10 +41,10 @@ public class ReflectUtils extends ReflectUtil {
         String[] names = propertyName.split("\\.");
         for (int i = 0; i < names.length; i++) {
             if (i < names.length - 1) {
-                String getterMethodName = StrUtil.upperFirstAndAddPre(names[i], GETTER_PREFIX);
+                String getterMethodName = CharSequenceUtil.upperFirstAndAddPre(names[i], GETTER_PREFIX);
                 object = MethodUtil.invoke(object, getterMethodName);
             } else {
-                String setterMethodName = StrUtil.upperFirstAndAddPre(names[i], SETTER_PREFIX);
+                String setterMethodName = CharSequenceUtil.upperFirstAndAddPre(names[i], SETTER_PREFIX);
                 Method method = MethodUtil.getMethodByName(object.getClass(), setterMethodName);
                 MethodUtil.invoke(object, method, value);
             }

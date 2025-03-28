@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
  * @author mengweijin
  */
 @Slf4j
-public class IdGeneratorTest {
+class IdGeneratorTest {
 
     @Test
-    public void generateId() {
+    void generateId() {
         for (int i = 0; i < 10; i++) {
             long id = IdUtil.getSnowflakeNextId();
             System.out.println(id);

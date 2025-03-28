@@ -1,8 +1,10 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.exception.BusinessException;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.crypto.digest.MD5;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,7 @@ import java.util.function.Function;
  * @author Meng Wei Jin
  **/
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UploadUtils {
 
     /**
@@ -49,7 +52,7 @@ public class UploadUtils {
                 throw new ClientException(message);
             }
         } catch (Exception e) {
-            throw new BusinessException(e);
+            throw new ServerException(e);
         }
         return fileList;
     }
@@ -58,7 +61,7 @@ public class UploadUtils {
         try {
             return MD5.of().digestHex(multipartFile.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.dromara.hutool.core.regex.RegexPool;
 
 /**
  * <p>
@@ -32,7 +33,7 @@ public class UserBO extends BaseEntity {
      * 用户登录名（字母数字下划线）
      */
     @NotBlank(groups = {Group.Create.class})
-    @Pattern(regexp = Regex.GENERAL, message = "{user.username.pattern}")
+    @Pattern(regexp = RegexPool.GENERAL, message = "{user.username.pattern}")
     @BusinessCheck(groups = {Group.Create.class}, checkRule = UsernameDuplicateCheckRule.class)
     private String username;
 
@@ -52,7 +53,7 @@ public class UserBO extends BaseEntity {
     /**
      * 身份证号
      */
-    @Pattern(regexp = Regex.CITIZEN_ID, message = "{user.idCard.pattern}")
+    @Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.idCard.pattern}")
     private String idCard;
 
     /**
@@ -69,7 +70,7 @@ public class UserBO extends BaseEntity {
     /**
      * 移动电话
      */
-    @Pattern(regexp = Regex.MOBILE, message = "{user.mobile.pattern}")
+    @Pattern(regexp = RegexPool.MOBILE, message = "{user.mobile.pattern}")
     private String mobile;
 
     /**

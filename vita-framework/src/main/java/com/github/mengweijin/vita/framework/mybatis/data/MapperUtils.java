@@ -1,6 +1,9 @@
 package com.github.mengweijin.vita.framework.mybatis.data;
 
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -10,6 +13,7 @@ import java.util.function.Function;
  * @author mengweijin
  * @since 2023/5/7
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MapperUtils {
 
     public static <T extends Annotation, R> R processMethodExpression(String mappedStatementId, Class<T> annotationClass, Function<T, R> function) {
@@ -24,7 +28,7 @@ public class MapperUtils {
                 }
             }
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
 
         return null;

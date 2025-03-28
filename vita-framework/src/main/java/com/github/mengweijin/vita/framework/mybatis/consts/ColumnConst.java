@@ -4,10 +4,11 @@ package com.github.mengweijin.vita.framework.mybatis.consts;
  * @author mengweijin
  * @since 2023/4/16
  */
-public interface ColumnConst {
+@SuppressWarnings({"unused"})
+public abstract class ColumnConst {
 
-    String DEPT_ID = "DEPT_ID";
-    String ROLE_ID = "ROLE_ID";
-    String CREATE_BY = "CREATE_BY";
-    String UPDATE_BY = "UPDATE_BY";
+    public static final String DEPT_ID = "DEPT_ID";
+    public static final String ROLE_ID = "ROLE_ID";
+    public static final String CREATE_BY = "CREATE_BY";
+    public static final String UPDATE_BY = "UPDATE_BY";
 }

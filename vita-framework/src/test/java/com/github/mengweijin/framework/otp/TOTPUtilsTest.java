@@ -38,7 +38,7 @@ class TOTPUtilsTest {
 
 
     @Test
-    public void mainTest() throws InterruptedException {
+    void mainTest() throws InterruptedException {
         // 0. 每个用户生成一个随机密钥，保存到数据库，后面用这个密钥。由于这里是测试，不用这个了。
         // generateSecretKey();
 
@@ -55,7 +55,7 @@ class TOTPUtilsTest {
 
     }
 
-    public void generateSecretKey() {
+    void generateSecretKey() {
         String secretKey = TOTP.generateSecretKey(16);
         System.out.println("SecretKey: " + secretKey);
     }
@@ -63,14 +63,14 @@ class TOTPUtilsTest {
     /**
      * 响应给客户端的二维码
      */
-    public void generateQRCode() {
+    void generateQRCode() {
         String qrCodeContent = StrUtil.format("otpauth://totp/{}?secret={}&issuer={}", label, SECRET_KEY, issuer);
         String filePath = Const.PROJECT_DIR + "target/qrcode.png";
         QrCodeUtil.generate(qrCodeContent, 300, 300, FileUtil.file(filePath));
         System.out.println("二维码路径：" + filePath);
     }
 
-    public void calculateVerificationCode() throws InterruptedException {
+    void calculateVerificationCode() throws InterruptedException {
         while (true) {
             // 服务端计算出来的一次性密码（后台对比用）
             int generate = instance.generate(Instant.now());
@@ -79,7 +79,7 @@ class TOTPUtilsTest {
         }
     }
 
-    public void verificationCode() {
+    void verificationCode() {
         Scanner sc = new Scanner(System.in);
         while (sc.hasNext()) {
             int code = sc.nextInt();

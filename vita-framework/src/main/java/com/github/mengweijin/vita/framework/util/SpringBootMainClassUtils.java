@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.reflect.ClassUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +13,7 @@ import java.util.Map;
  * @author mengweijin
  * @since 2022/12/24
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpringBootMainClassUtils {
     public static Class<?> getSpringBootApplicationClass() {
         ApplicationContext context = SpringUtil.getApplicationContext();

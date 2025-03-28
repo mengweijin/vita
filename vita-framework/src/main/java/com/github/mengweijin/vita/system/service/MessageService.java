@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.core.thread.ThreadUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
@@ -57,9 +58,9 @@ public class MessageService extends CrudRepository<MessageMapper, Message> {
     public IPage<Message> page(IPage<Message> page, Message message) {
         LambdaQueryWrapper<Message> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(message.getCategory()), Message::getCategory, message.getCategory())
-                .eq(StrUtil.isNotBlank(message.getTitle()), Message::getTitle, message.getTitle())
-                .eq(StrUtil.isNotBlank(message.getContent()), Message::getContent, message.getContent())
+                .eq(StrValidator.isNotBlank(message.getCategory()), Message::getCategory, message.getCategory())
+                .eq(StrValidator.isNotBlank(message.getTitle()), Message::getTitle, message.getTitle())
+                .eq(StrValidator.isNotBlank(message.getContent()), Message::getContent, message.getContent())
                 .eq(!Objects.isNull(message.getId()), Message::getId, message.getId())
                 .eq(!Objects.isNull(message.getCreateBy()), Message::getCreateBy, message.getCreateBy())
                 .eq(!Objects.isNull(message.getCreateTime()), Message::getCreateTime, message.getCreateTime())

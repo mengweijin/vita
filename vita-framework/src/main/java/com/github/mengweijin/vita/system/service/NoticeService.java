@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.Notice;
 import com.github.mengweijin.vita.system.mapper.NoticeMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -33,9 +33,9 @@ public class NoticeService extends CrudRepository<NoticeMapper, Notice> {
     public IPage<Notice> page(IPage<Notice> page, Notice notice){
         LambdaQueryWrapper<Notice> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(notice.getName()), Notice::getName, notice.getName())
-                .eq(StrUtil.isNotBlank(notice.getDescription()), Notice::getDescription, notice.getDescription())
-                .eq(StrUtil.isNotBlank(notice.getReleased()), Notice::getReleased, notice.getReleased())
+                .eq(StrValidator.isNotBlank(notice.getName()), Notice::getName, notice.getName())
+                .eq(StrValidator.isNotBlank(notice.getDescription()), Notice::getDescription, notice.getDescription())
+                .eq(StrValidator.isNotBlank(notice.getReleased()), Notice::getReleased, notice.getReleased())
                 .eq(!Objects.isNull(notice.getId()), Notice::getId, notice.getId())
                 .eq(!Objects.isNull(notice.getCreateBy()), Notice::getCreateBy, notice.getCreateBy())
                 .eq(!Objects.isNull(notice.getCreateTime()), Notice::getCreateTime, notice.getCreateTime())

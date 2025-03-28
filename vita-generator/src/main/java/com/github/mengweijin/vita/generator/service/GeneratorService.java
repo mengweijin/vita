@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.builder.GeneratorBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.util.BeanUtils;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorArgsBO;
 import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
 import com.github.mengweijin.vita.generator.domain.vo.ContentVO;
@@ -77,7 +77,7 @@ public class GeneratorService {
             dto.setHavePrimaryKey(table.isHavePrimaryKey());
             dto.setFieldNames(table.getFieldNames());
             dto.setComment(table.getComment());
-            dto.setFields(BeanUtils.copyList(table.getFields(), TableFieldVO.class));
+            dto.setFields(BeanCopyUtils.copyList(table.getFields(), TableFieldVO.class));
             dto.getFields().forEach(field -> {
                 field.setPropertyType(field.getColumnType().getType());
                 field.setPropertyTypePackage(field.getColumnType().getPkg());

@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.validator.rule;
 import com.github.mengweijin.vita.framework.validator.BusinessCheckValidator;
 import com.github.mengweijin.vita.system.domain.entity.User;
 import com.github.mengweijin.vita.system.service.UserService;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 
 /**
@@ -19,7 +19,7 @@ public class UsernameDuplicateCheckRule implements BusinessCheckValidator.CheckR
 
     @Override
     public String message(CharSequence value) {
-        return StrUtil.format("The username[{}] already exists!", value);
+        return CharSequenceUtil.format("The username[{}] already exists!", value);
     }
 
 }

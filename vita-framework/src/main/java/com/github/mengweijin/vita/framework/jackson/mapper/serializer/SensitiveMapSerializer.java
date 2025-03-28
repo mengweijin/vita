@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,13 +23,13 @@ import java.util.Set;
  */
 public class SensitiveMapSerializer extends MapSerializer {
 
-    private final static JavaType KEY_TYPE = TypeFactory.defaultInstance().constructSimpleType(String.class, null);
-    private final static JavaType VALUE_TYPE = KEY_TYPE;
+    private static final JavaType KEY_TYPE = TypeFactory.defaultInstance().constructSimpleType(String.class, null);
+    private static final JavaType VALUE_TYPE = KEY_TYPE;
 
-    private final static TypeSerializer VTS = null;
+    private static final TypeSerializer VTS = null;
 
-    private final static JsonSerializer<?> KEY_SERIALIZER = new StringSerializer();
-    private final static JsonSerializer<?> VALUE_SERIALIZER = new StringSerializer();
+    private static final JsonSerializer<?> KEY_SERIALIZER = new StringSerializer();
+    private static final JsonSerializer<?> VALUE_SERIALIZER = new StringSerializer();
 
     public SensitiveMapSerializer() {
         super(null, null, KEY_TYPE, VALUE_TYPE, false, VTS, KEY_SERIALIZER, VALUE_SERIALIZER);
@@ -48,11 +48,13 @@ public class SensitiveMapSerializer extends MapSerializer {
         super.serialize(this.processSensitive(value), gen, provider);
     }
 
+    /**
+     *  impl removed code：_ensureOverride("withResolved");
+     */
     @Override
     public MapSerializer withResolved(BeanProperty property,
                                       JsonSerializer<?> keySerializer, JsonSerializer<?> valueSerializer,
                                       Set<String> ignored, Set<String> included, boolean sortKeys) {
-        // _ensureOverride("withResolved");
         SensitiveMapSerializer ser = new SensitiveMapSerializer(this, property, keySerializer, valueSerializer, ignored, included);
         if (sortKeys != ser._sortKeys) {
             ser = new SensitiveMapSerializer(ser, _filterId, sortKeys);
@@ -63,7 +65,7 @@ public class SensitiveMapSerializer extends MapSerializer {
     private Map<?, ?> processSensitive(Map<?, ?> map) {
         Map<Object, Object> result = new HashMap<>();
         map.forEach((k, v) -> {
-            if (v instanceof CharSequence && StrUtil.containsAnyIgnoreCase(StrUtil.toString(k), SensitiveObjectMapper.SENSITIVE_KEY)) {
+            if (v instanceof CharSequence && CharSequenceUtil.containsAnyIgnoreCase(CharSequenceUtil.toString(k), SensitiveObjectMapper.SENSITIVE_KEY)) {
                 result.put(k, SensitiveObjectMapper.HIDE_VALUE);
             } else {
                 result.put(k, v);

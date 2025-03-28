@@ -5,6 +5,7 @@ import org.dromara.hutool.extra.management.oshi.OshiUtil;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.PhysicalMemory;
 
+import java.io.Serializable;
 import java.util.stream.Collectors;
 
 /**
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
  * @since 2023/6/8
  */
 @Data
-public class MemoryInfoVO {
+public class MemoryInfoVO implements Serializable {
 
     private String global;
 

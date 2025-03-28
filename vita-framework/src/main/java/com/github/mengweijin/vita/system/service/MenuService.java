@@ -4,19 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.system.constant.MenuConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.Menu;
-import com.github.mengweijin.vita.system.domain.pure.PureAsyncRoutes;
-import com.github.mengweijin.vita.system.enums.EMenuType;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,26 +43,26 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
         LambdaQueryWrapper<Menu> query = new LambdaQueryWrapper<>();
         query
                 .eq(!Objects.isNull(menu.getParentId()), Menu::getParentId, menu.getParentId())
-                .eq(StrUtil.isNotBlank(menu.getType()), Menu::getType, menu.getType())
-                .eq(StrUtil.isNotBlank(menu.getTitle()), Menu::getTitle, menu.getTitle())
-                .eq(StrUtil.isNotBlank(menu.getRouterName()), Menu::getRouterName, menu.getRouterName())
-                .eq(StrUtil.isNotBlank(menu.getRouterPath()), Menu::getRouterPath, menu.getRouterPath())
-                .eq(StrUtil.isNotBlank(menu.getComponentPath()), Menu::getComponentPath, menu.getComponentPath())
+                .eq(StrValidator.isNotBlank(menu.getType()), Menu::getType, menu.getType())
+                .eq(StrValidator.isNotBlank(menu.getTitle()), Menu::getTitle, menu.getTitle())
+                .eq(StrValidator.isNotBlank(menu.getRouterName()), Menu::getRouterName, menu.getRouterName())
+                .eq(StrValidator.isNotBlank(menu.getRouterPath()), Menu::getRouterPath, menu.getRouterPath())
+                .eq(StrValidator.isNotBlank(menu.getComponentPath()), Menu::getComponentPath, menu.getComponentPath())
                 .eq(!Objects.isNull(menu.getSeq()), Menu::getSeq, menu.getSeq())
-                .eq(StrUtil.isNotBlank(menu.getRedirect()), Menu::getRedirect, menu.getRedirect())
-                .eq(StrUtil.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
-                .eq(StrUtil.isNotBlank(menu.getExtraIcon()), Menu::getExtraIcon, menu.getExtraIcon())
-                .eq(StrUtil.isNotBlank(menu.getEnterTransition()), Menu::getEnterTransition, menu.getEnterTransition())
-                .eq(StrUtil.isNotBlank(menu.getLeaveTransition()), Menu::getLeaveTransition, menu.getLeaveTransition())
-                .eq(StrUtil.isNotBlank(menu.getActivePath()), Menu::getActivePath, menu.getActivePath())
-                .eq(StrUtil.isNotBlank(menu.getPermission()), Menu::getPermission, menu.getPermission())
-                .eq(StrUtil.isNotBlank(menu.getIframeSrc()), Menu::getIframeSrc, menu.getIframeSrc())
-                .eq(StrUtil.isNotBlank(menu.getIframeLoading()), Menu::getIframeLoading, menu.getIframeLoading())
-                .eq(StrUtil.isNotBlank(menu.getKeepAlive()), Menu::getKeepAlive, menu.getKeepAlive())
-                .eq(StrUtil.isNotBlank(menu.getHiddenTag()), Menu::getHiddenTag, menu.getHiddenTag())
-                .eq(StrUtil.isNotBlank(menu.getFixedTag()), Menu::getFixedTag, menu.getFixedTag())
-                .eq(StrUtil.isNotBlank(menu.getShowLink()), Menu::getShowLink, menu.getShowLink())
-                .eq(StrUtil.isNotBlank(menu.getShowParent()), Menu::getShowParent, menu.getShowParent())
+                .eq(StrValidator.isNotBlank(menu.getRedirect()), Menu::getRedirect, menu.getRedirect())
+                .eq(StrValidator.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
+                .eq(StrValidator.isNotBlank(menu.getExtraIcon()), Menu::getExtraIcon, menu.getExtraIcon())
+                .eq(StrValidator.isNotBlank(menu.getEnterTransition()), Menu::getEnterTransition, menu.getEnterTransition())
+                .eq(StrValidator.isNotBlank(menu.getLeaveTransition()), Menu::getLeaveTransition, menu.getLeaveTransition())
+                .eq(StrValidator.isNotBlank(menu.getActivePath()), Menu::getActivePath, menu.getActivePath())
+                .eq(StrValidator.isNotBlank(menu.getPermission()), Menu::getPermission, menu.getPermission())
+                .eq(StrValidator.isNotBlank(menu.getIframeSrc()), Menu::getIframeSrc, menu.getIframeSrc())
+                .eq(StrValidator.isNotBlank(menu.getIframeLoading()), Menu::getIframeLoading, menu.getIframeLoading())
+                .eq(StrValidator.isNotBlank(menu.getKeepAlive()), Menu::getKeepAlive, menu.getKeepAlive())
+                .eq(StrValidator.isNotBlank(menu.getHiddenTag()), Menu::getHiddenTag, menu.getHiddenTag())
+                .eq(StrValidator.isNotBlank(menu.getFixedTag()), Menu::getFixedTag, menu.getFixedTag())
+                .eq(StrValidator.isNotBlank(menu.getShowLink()), Menu::getShowLink, menu.getShowLink())
+                .eq(StrValidator.isNotBlank(menu.getShowParent()), Menu::getShowParent, menu.getShowParent())
                 .eq(!Objects.isNull(menu.getId()), Menu::getId, menu.getId())
                 .eq(!Objects.isNull(menu.getCreateBy()), Menu::getCreateBy, menu.getCreateBy())
                 .eq(!Objects.isNull(menu.getCreateTime()), Menu::getCreateTime, menu.getCreateTime())
@@ -80,14 +76,6 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
             return Collections.singleton(Const.ALL_PERMISSIONS);
         }
         return this.getBaseMapper().selectPermissionListByUsername(username);
-    }
-
-    public PureAsyncRoutes getAsyncRoutes() {
-        List<Menu> list = this.lambdaQuery()
-                .ne(Menu::getType, EMenuType.BTN.getValue())
-                .orderByAsc(Menu::getSeq)
-                .list();
-        return PureAsyncRoutes.tree(list, MenuConst.ROOT_ID);
     }
 
 }

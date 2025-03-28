@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @SuppressWarnings({"unused"})
-public class TableInfo<T> implements Serializable {
+public class TableR<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -43,8 +43,8 @@ public class TableInfo<T> implements Serializable {
      */
     private String msg;
 
-    public static <T> TableInfo<T> build(IPage<T> page) {
-        TableInfo<T> data = new TableInfo<>();
+    public static <T> TableR<T> build(IPage<T> page) {
+        TableR<T> data = new TableR<>();
         data.setCode(HttpStatus.OK.value());
         data.setMsg(Const.SUCCESS);
         data.setRows(page.getRecords());
@@ -52,12 +52,12 @@ public class TableInfo<T> implements Serializable {
         return data;
     }
 
-    public static <T> TableInfo<T> build(List<T> list) {
+    public static <T> TableR<T> build(List<T> list) {
         return build(list, list.size());
     }
 
-    public static <T> TableInfo<T> build(List<T> list, long total) {
-        TableInfo<T> data = new TableInfo<>();
+    public static <T> TableR<T> build(List<T> list, long total) {
+        TableR<T> data = new TableR<>();
         data.setCode(HttpStatus.OK.value());
         data.setMsg(Const.SUCCESS);
         data.setRows(list);

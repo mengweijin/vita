@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.framework.validator;
 
 
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -34,19 +35,19 @@ public class BusinessCheckValidator implements ConstraintValidator<BusinessCheck
 
         try {
             for (Class<? extends CheckRule> cls : checkRule) {
-                CheckRule checkRule = cls.getDeclaredConstructor().newInstance();
-                boolean valid = checkRule.isValid(value);
+                CheckRule checkRuleInstance = cls.getDeclaredConstructor().newInstance();
+                boolean valid = checkRuleInstance.isValid(value);
                 if (!valid) {
                     //禁止默认消息返回
                     context.disableDefaultConstraintViolation();
                     //自定义返回消息
-                    context.buildConstraintViolationWithTemplate(checkRule.message(value)).addConstraintViolation();
+                    context.buildConstraintViolationWithTemplate(checkRuleInstance.message(value)).addConstraintViolation();
                     return false;
                 }
             }
             return true;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 

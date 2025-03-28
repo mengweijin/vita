@@ -10,6 +10,7 @@ import com.github.mengweijin.vita.system.domain.entity.DictData;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -39,17 +40,17 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictData> {
     public IPage<DictData> page(IPage<DictData> page, DictData dictData){
         LambdaQueryWrapper<DictData> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrUtil.isNotBlank(dictData.getCode()), DictData::getCode, dictData.getCode())
-                .eq(StrUtil.isNotBlank(dictData.getVal()), DictData::getVal, dictData.getVal())
+                .eq(StrValidator.isNotBlank(dictData.getCode()), DictData::getCode, dictData.getCode())
+                .eq(StrValidator.isNotBlank(dictData.getVal()), DictData::getVal, dictData.getVal())
                 .eq(!Objects.isNull(dictData.getSeq()), DictData::getSeq, dictData.getSeq())
-                .eq(StrUtil.isNotBlank(dictData.getDisabled()), DictData::getDisabled, dictData.getDisabled())
-                .eq(StrUtil.isNotBlank(dictData.getRemark()), DictData::getRemark, dictData.getRemark())
+                .eq(StrValidator.isNotBlank(dictData.getDisabled()), DictData::getDisabled, dictData.getDisabled())
+                .eq(StrValidator.isNotBlank(dictData.getRemark()), DictData::getRemark, dictData.getRemark())
                 .eq(!Objects.isNull(dictData.getId()), DictData::getId, dictData.getId())
                 .eq(!Objects.isNull(dictData.getCreateBy()), DictData::getCreateBy, dictData.getCreateBy())
                 .eq(!Objects.isNull(dictData.getCreateTime()), DictData::getCreateTime, dictData.getCreateTime())
                 .eq(!Objects.isNull(dictData.getUpdateBy()), DictData::getUpdateBy, dictData.getUpdateBy())
                 .eq(!Objects.isNull(dictData.getUpdateTime()), DictData::getUpdateTime, dictData.getUpdateTime())
-                .like(StrUtil.isNotBlank(dictData.getLabel()), DictData::getLabel, dictData.getLabel());
+                .like(StrValidator.isNotBlank(dictData.getLabel()), DictData::getLabel, dictData.getLabel());
         query.orderByAsc(DictData::getSeq);
         return this.page(page, query);
     }

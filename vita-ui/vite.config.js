@@ -95,7 +95,6 @@ export default defineConfig(({ mode }) => {
       legacy({
         targets: ["defaults", "not IE 11"],
       }),
-      
     ],
     build: {
       outDir: "dist",

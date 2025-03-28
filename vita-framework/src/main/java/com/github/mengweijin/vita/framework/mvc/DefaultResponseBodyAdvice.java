@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.framework.mvc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mengweijin.vita.framework.domain.R;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @since 2022/5/17
  */
 @Slf4j
-@Deprecated
+@Deprecated(since = "2.0", forRemoval = true)
 //@RestControllerAdvice
 @AllArgsConstructor
 public class DefaultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
@@ -52,7 +53,6 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         return body;
     }
 
-    @Deprecated
     @SuppressWarnings({"unused"})
     private Object returnStringToR(Object body) {
         if(body instanceof String) {
@@ -62,7 +62,7 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                 return objectMapper.writeValueAsString(R.success(body));
             } catch (JsonProcessingException e) {
                 log.error("An exception has occurred that should not have occurred!", e);
-                throw new RuntimeException(e.getMessage());
+                throw new ServerException(e.getMessage());
             }
         }
         return body;

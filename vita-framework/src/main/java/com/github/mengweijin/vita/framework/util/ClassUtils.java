@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.util;
 
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import org.dromara.hutool.core.reflect.ClassUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +20,7 @@ public class ClassUtils {
 
     public static Class<?> getMainClass() {
         try {
-            throw new RuntimeException();
+            throw new ServerException();
         } catch (RuntimeException e) {
             StackTraceElement[] stackTraceArray = e.getStackTrace();
             Optional<StackTraceElement> first = Arrays.stream(stackTraceArray).filter(element -> "main".equals(element.getMethodName())).findFirst();

@@ -21,11 +21,11 @@ import java.text.SimpleDateFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SensitiveObjectMapper {
 
-    public static final String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token"};
+    public static String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token"};
 
     public static final String HIDE_VALUE = "********";
 
-    private volatile static ObjectMapper objectMapper;
+    private static volatile ObjectMapper objectMapper;
 
     public static ObjectMapper getObjectMapper() {
         if (objectMapper == null) {

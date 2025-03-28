@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.mybatis.data.permission;
 
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +22,11 @@ public class DefaultDataPermissionHandler extends BaseDataPermissionHandler {
 
     @Override
     protected List<String> getLoginUserDeptIdList() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     protected List<String> getLoginUserRoleIdList() {
-        return null;
+        return new ArrayList<>();
     }
 }

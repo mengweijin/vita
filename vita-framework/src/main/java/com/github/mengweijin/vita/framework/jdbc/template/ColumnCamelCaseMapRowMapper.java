@@ -3,8 +3,6 @@ package com.github.mengweijin.vita.framework.jdbc.template;
 import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 
-import java.util.Locale;
-
 /**
  * When use the JdbcTemplate to query data, you can set a ColumnMapRowMapper,
  * this class can convert underline to camel case when you use JdbcTemplate to return a Map data list.
@@ -13,7 +11,7 @@ import java.util.Locale;
  * @since 2022/10/29
  */
 @SuppressWarnings({"unused"})
-public class CamelCaseMapRowMapper extends ColumnMapRowMapper {
+public class ColumnCamelCaseMapRowMapper extends ColumnMapRowMapper {
 
     /**
      * column name underline to camel
@@ -23,6 +21,6 @@ public class CamelCaseMapRowMapper extends ColumnMapRowMapper {
      */
     @Override
     protected String getColumnKey(String columnName) {
-        return CharSequenceUtil.toCamelCase(columnName.toLowerCase(Locale.ROOT));
+        return CharSequenceUtil.toCamelCase(columnName);
     }
 }

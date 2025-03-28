@@ -23,8 +23,8 @@
     <properties>
         <!-- 全局版本控制，如果要修改版本号，修改此处即可-->
         <revision>2.0.0-SNAPSHOT</revision>
-        <!--<gpg.skip>true</gpg.skip>-->
-        <!--<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>-->
+        <gpg.skip>false</gpg.skip>
+        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
         <skipTests>true</skipTests>  
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
@@ -104,14 +104,7 @@
         </profile> 
     </profiles>  
     <dependencyManagement> 
-        <dependencies> 
-            <!--<dependency>-->  
-            <!--    <groupId>org.springframework.boot</groupId>-->  
-            <!--    <artifactId>spring-boot-dependencies</artifactId>-->  
-            <!--    <version>${spring.boot.version}</version>-->  
-            <!--    <type>pom</type>-->  
-            <!--    <scope>import</scope>-->
-            <!--</dependency>-->
+        <dependencies>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>

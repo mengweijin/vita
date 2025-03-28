@@ -24,7 +24,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.date.TimeUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;
@@ -89,7 +90,7 @@ public class RateLimitAspect {
         }
 
         // 超过最大限制，抛出异常
-        String msg = StrUtil.format("{} | cacheKey={}", rateLimit.message(), cacheKey);
+        String msg = CharSequenceUtil.format("{} | cacheKey={}", rateLimit.message(), cacheKey);
         log.warn(msg);
 
         Set<Long> userIds = this.getMessageReceivers();
@@ -104,7 +105,7 @@ public class RateLimitAspect {
     private Set<Long> getMessageReceivers() {
         Set<Long> userIds = new HashSet<>();
         Config config = configService.getByCode(ConfigConst.SYSTEM_ADMIN_ROLE_CODE);
-        if (config != null && StrUtil.isNotBlank(config.getVal())) {
+        if (config != null && StrValidator.isNotBlank(config.getVal())) {
             userIds = userRoleService.getUserIdsByRoleCode(config.getVal());
         }
         if (CollUtil.isEmpty(userIds)) {
@@ -117,14 +118,9 @@ public class RateLimitAspect {
         String cacheKey = CACHE_NAME_PREFIX + strategy.name() + Const.UNDERSCORE;
         HttpServletRequest request = ServletUtils.getRequest();
         switch (strategy) {
-            case API -> {
-                cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
-            }
-            case IP -> {
-                cacheKey += ServletUtils.getClientIP(request);
-            }
-            default -> {
-            }
+            case API -> cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
+            case IP -> cacheKey += ServletUtils.getClientIP(request);
+            default -> {}
         }
         return cacheKey;
     }

@@ -261,6 +261,7 @@ create TABLE VT_USER (
   USERNAME                      varchar(64) NOT NULL comment '用户登录名（字母数字下划线）',
   NICKNAME                      varchar(64) NOT NULL comment '用户昵称',
   PASSWORD                      varchar(64) NOT NULL comment '登录密码',
+  SALT                          varchar(32) NOT NULL comment '密码加盐',
   PASSWORD_LEVEL                varchar(30) DEFAULT 'MEDIUM' NOT NULL comment '密码强度。PasswdStrength.java',
   PASSWORD_CHANGE_TIME          datetime NULL DEFAULT CURRENT_TIMESTAMP comment '密码修改时间',
   ID_CARD                       varchar(20) DEFAULT NULL comment '身份证号',

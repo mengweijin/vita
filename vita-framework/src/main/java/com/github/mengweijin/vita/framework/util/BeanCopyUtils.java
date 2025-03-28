@@ -2,6 +2,8 @@ package com.github.mengweijin.vita.framework.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -10,9 +12,9 @@ import java.util.List;
 /**
  * @author mengweijin
  */
-public final class BeanUtils extends org.springframework.beans.BeanUtils {
+public final class BeanCopyUtils extends BeanUtils {
 
-    private BeanUtils() {}
+    private BeanCopyUtils() {}
 
     public static <T> T copyBean(Object source, T target) {
         if (source == null) {
@@ -30,7 +32,7 @@ public final class BeanUtils extends org.springframework.beans.BeanUtils {
         try {
             object = cls.getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
         copyProperties(source, object);
         return object;

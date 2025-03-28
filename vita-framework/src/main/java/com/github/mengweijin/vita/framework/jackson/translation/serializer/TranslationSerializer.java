@@ -10,7 +10,7 @@ import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.framework.jackson.translation.TranslationStrategyFactory;
 import com.github.mengweijin.vita.framework.jackson.translation.strategy.ITranslationStrategy;
 import com.github.mengweijin.vita.framework.util.ReflectUtils;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class TranslationSerializer extends JsonSerializer<Object> implements Con
             gen.writeObject(value);
         } else {
             // 优先取配置的映射字段属性值
-            if (StrUtil.isNotBlank(translation.field())) {
+            if (StrValidator.isNotBlank(translation.field())) {
                 value = ReflectUtils.invokeGetter(gen.currentValue(), translation.field());
             }
             // 如果 value 为 null 就不用翻译了
@@ -44,9 +44,9 @@ public class TranslationSerializer extends JsonSerializer<Object> implements Con
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        Translation translation = property.getAnnotation(Translation.class);
-        if (Objects.nonNull(translation)) {
-            this.translation = translation;
+        Translation translationAnnotation = property.getAnnotation(Translation.class);
+        if (Objects.nonNull(translationAnnotation)) {
+            this.translation = translationAnnotation;
             return this;
         }
         return prov.findValueSerializer(property.getType(), property);

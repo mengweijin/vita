@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.util.BeanUtils;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.system.domain.vo.LogLoginVO;
 import com.github.mengweijin.vita.system.domain.entity.LogLogin;
 import com.github.mengweijin.vita.system.service.LogLoginService;
@@ -54,7 +54,7 @@ public class LogLoginController {
     @GetMapping("/page")
     public IPage<LogLoginVO> page(Page<LogLogin> page, LogLogin logLogin) {
         IPage<LogLogin> paged = logLoginService.page(page, logLogin);
-        return BeanUtils.copyPage(paged, LogLoginVO.class);
+        return BeanCopyUtils.copyPage(paged, LogLoginVO.class);
     }
 
     /**
