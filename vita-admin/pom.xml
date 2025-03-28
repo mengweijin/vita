@@ -15,8 +15,10 @@
     <name>vita-admin</name>
     <properties>
         <!-- Source File Exclusions -->
-        <sonar.exclusions>vita-admin/src/main/resources/static/**/*</sonar.exclusions>
-        <sonar.exclusions>vita-admin/src/main/resources/db/**/*.sql</sonar.exclusions>
+        <sonar.exclusions>
+            src/main/resources/db/**/*.sql,
+            src/main/resources/static/**/*
+        </sonar.exclusions>
     </properties>
     <dependencies>
         <dependency> 
