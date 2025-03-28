@@ -16,8 +16,8 @@
     <properties>
         <!-- Source File Exclusions -->
         <sonar.exclusions>
-            src/main/resources/db/**/*.sql,
-            src/main/resources/static/**/*
+            **/src/main/resources/db/**/*.sql,
+            **/src/main/resources/static/**/*
         </sonar.exclusions>
     </properties>
     <dependencies>
