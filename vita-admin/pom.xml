@@ -15,10 +15,8 @@
     <name>vita-admin</name>
     <properties>
         <!-- Source File Exclusions -->
-        <sonar.exclusions>src/main/resources/static/**/*</sonar.exclusions>
-        <sonar.exclusions>src/main/resources/db/**/*.sql</sonar.exclusions>
-        <!-- Duplication Exclusions -->
-        <sonar.cpd.exclusions>src/main/resources/db/**/*.sql</sonar.cpd.exclusions>
+        <sonar.exclusions>vita-admin/src/main/resources/static/**/*</sonar.exclusions>
+        <sonar.exclusions>vita-admin/src/main/resources/db/**/*.sql</sonar.exclusions>
     </properties>
     <dependencies>
         <dependency> 
