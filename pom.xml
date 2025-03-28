@@ -27,10 +27,10 @@
         <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
         <skipTests>true</skipTests>
         <!-- Source File Exclusions -->
-        <sonar.exclusions>**/resources/db/**/*.sql, **/resources/static/**/*</sonar.exclusions>
+        <sonar.exclusions>**/*.sql, **/static/vita/*</sonar.exclusions>
         <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
         <sonar.coverage.exclusions>src/main/**/*</sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/resources/db/**/*.sql</sonar.cpd.exclusions>
+        <sonar.cpd.exclusions>**/*.sql</sonar.cpd.exclusions>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
