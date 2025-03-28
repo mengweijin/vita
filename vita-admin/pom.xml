@@ -13,13 +13,6 @@
 
     <packaging>jar</packaging>  
     <name>vita-admin</name>
-    <properties>
-        <!-- Source File Exclusions -->
-        <sonar.exclusions>
-            **/src/main/resources/db/**/*.sql,
-            **/src/main/resources/static/**/*
-        </sonar.exclusions>
-    </properties>
     <dependencies>
         <dependency> 
             <groupId>com.github.mengweijin</groupId>
