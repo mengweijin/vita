@@ -1,0 +1,1 @@
+import{bc as e}from"./index-CKX0gG-m.js";const p=t=>e.get("/system/dept/list",{params:t}),r=t=>e.post("/system/dept/create",{data:t}),o=t=>e.post("/system/dept/update",{data:t}),a=t=>e.post("/system/dept/delete/"+t);export{r as c,a as d,p as g,o as u};

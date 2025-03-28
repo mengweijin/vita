@@ -1,0 +1,1 @@
+import{bc as o}from"./index-CKX0gG-m.js";const a=t=>o.request("get","/get-map-info",{params:t}),e=t=>o.request("post","https://run.mocky.io/v3/3aa761d7-b0b3-4a03-96b3-6168d4f7467b",{data:t},{headers:{"Content-Type":"multipart/form-data"}});export{e as f,a as m};
