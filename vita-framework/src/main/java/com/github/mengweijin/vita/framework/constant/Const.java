@@ -140,11 +140,6 @@ public final class Const {
     public static final String JAVA_TMP_DIR = System.getProperty("java.io.tmpdir");
 
     /**
-     * 前端权限格式
-     */
-    public static final String ALL_PERMISSIONS = "*:*:*";
-
-    /**
      * Java虚拟机可用的CPU处理器个数
      */
     public static final int PROCESSORS = Runtime.getRuntime().availableProcessors();

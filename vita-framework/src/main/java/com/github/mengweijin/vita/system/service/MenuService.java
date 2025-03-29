@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.system.constant.MenuConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.Menu;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
@@ -45,24 +45,11 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
                 .eq(!Objects.isNull(menu.getParentId()), Menu::getParentId, menu.getParentId())
                 .eq(StrValidator.isNotBlank(menu.getType()), Menu::getType, menu.getType())
                 .eq(StrValidator.isNotBlank(menu.getTitle()), Menu::getTitle, menu.getTitle())
-                .eq(StrValidator.isNotBlank(menu.getRouterName()), Menu::getRouterName, menu.getRouterName())
-                .eq(StrValidator.isNotBlank(menu.getRouterPath()), Menu::getRouterPath, menu.getRouterPath())
-                .eq(StrValidator.isNotBlank(menu.getComponentPath()), Menu::getComponentPath, menu.getComponentPath())
-                .eq(!Objects.isNull(menu.getSeq()), Menu::getSeq, menu.getSeq())
-                .eq(StrValidator.isNotBlank(menu.getRedirect()), Menu::getRedirect, menu.getRedirect())
-                .eq(StrValidator.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
-                .eq(StrValidator.isNotBlank(menu.getExtraIcon()), Menu::getExtraIcon, menu.getExtraIcon())
-                .eq(StrValidator.isNotBlank(menu.getEnterTransition()), Menu::getEnterTransition, menu.getEnterTransition())
-                .eq(StrValidator.isNotBlank(menu.getLeaveTransition()), Menu::getLeaveTransition, menu.getLeaveTransition())
-                .eq(StrValidator.isNotBlank(menu.getActivePath()), Menu::getActivePath, menu.getActivePath())
                 .eq(StrValidator.isNotBlank(menu.getPermission()), Menu::getPermission, menu.getPermission())
-                .eq(StrValidator.isNotBlank(menu.getIframeSrc()), Menu::getIframeSrc, menu.getIframeSrc())
-                .eq(StrValidator.isNotBlank(menu.getIframeLoading()), Menu::getIframeLoading, menu.getIframeLoading())
-                .eq(StrValidator.isNotBlank(menu.getKeepAlive()), Menu::getKeepAlive, menu.getKeepAlive())
-                .eq(StrValidator.isNotBlank(menu.getHiddenTag()), Menu::getHiddenTag, menu.getHiddenTag())
-                .eq(StrValidator.isNotBlank(menu.getFixedTag()), Menu::getFixedTag, menu.getFixedTag())
-                .eq(StrValidator.isNotBlank(menu.getShowLink()), Menu::getShowLink, menu.getShowLink())
-                .eq(StrValidator.isNotBlank(menu.getShowParent()), Menu::getShowParent, menu.getShowParent())
+                .eq(StrValidator.isNotBlank(menu.getRedirect()), Menu::getRedirect, menu.getRedirect())
+                .eq(!Objects.isNull(menu.getSeq()), Menu::getSeq, menu.getSeq())
+                .eq(StrValidator.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
+                .eq(StrValidator.isNotBlank(menu.getDisabled()), Menu::getDisabled, menu.getDisabled())
                 .eq(!Objects.isNull(menu.getId()), Menu::getId, menu.getId())
                 .eq(!Objects.isNull(menu.getCreateBy()), Menu::getCreateBy, menu.getCreateBy())
                 .eq(!Objects.isNull(menu.getCreateTime()), Menu::getCreateTime, menu.getCreateTime())
@@ -73,7 +60,7 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
 
     public Set<String> getMenuPermissionListByLoginUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
-            return Collections.singleton(Const.ALL_PERMISSIONS);
+            return Collections.singleton(MenuConst.ALL_PERMISSIONS);
         }
         return this.getBaseMapper().selectPermissionListByUsername(username);
     }
