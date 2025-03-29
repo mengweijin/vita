@@ -1,14 +1,14 @@
 import _ from "lodash";
 import { STORAGE_NAME } from "@/storage/storage.js";
 import { utils } from "@/script/utils.js";
-import { dictDataApi } from "@/api/dictData.js";
+import { useDictData } from "@/api/dictData.js";
 
 let dictStorage = {
   name: "dict",
 
   init: async () => {
     let list = null;
-    await dictDataApi.list().then((res) => {
+    await useDictData.list().then((res) => {
       list = res;
     });
     let groupedObject = _.groupBy(list, "code");

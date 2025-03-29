@@ -149,7 +149,7 @@
 
     <script type="module">
         import { admin } from "@/scripts/admin.js";
-        import { captchaApi, captchaEnabledApi } from "@/api/login.js";
+        import useLogin from "@/api/login.js";
 
         let $ = layui.$;
         let form = layui.form;
@@ -159,7 +159,7 @@
         admin.loadFooter();
 
         let initCaptcha = function () {
-            captchaEnabledApi().then(function (enabled) {
+            useLogin.captchaEnabled().then(function (enabled) {
                 if (enabled) {
                     // closest(): 筛选第一个符合条件的父元素
                     $("input[name='captcha']").attr("lay-verify", "required").closest(".layui-form-item").removeClass("layui-hide");
@@ -188,7 +188,7 @@
 
         util.on({
             captcha: function () {
-                captchaApi().then((base64) => {
+                useLogin.captcha().then((base64) => {
                     $("#captchaImg").attr('src', base64).parent().next().addClass("layui-hide");
                 });
             },

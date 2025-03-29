@@ -1,7 +1,7 @@
 import { template } from "@/scripts/template.js";
 import { userStorage } from "@/storage/session/userStorage.js";
 import { utils } from "@/scripts/utils.js";
-import { loginApi, logoutApi } from "@/api/login.js";
+import useLogin from "@/api/login.js";
 
 /** admin 组件 */
 let admin = {
@@ -13,7 +13,7 @@ let admin = {
 
   /** 登录 */
   login: function (data) {
-    loginApi(data).then((r) => {
+    useLogin.login(data).then((r) => {
       userStorage.set(r.data);
       this.loadAdmin();
     });
@@ -21,7 +21,7 @@ let admin = {
 
   /** 登出 */
   logout: function () {
-    logoutApi().then((r) => {
+    useLogin.logout().then((r) => {
       // 清空 sessionStorage
       sessionStorage.clear();
       // 跳转登录页

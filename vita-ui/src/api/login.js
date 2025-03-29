@@ -1,9 +1,10 @@
 import { http } from "@/scripts/http.js";
 
-export const loginApi = (data) => http.post({ url: "/login", data: data });
+let useLogin = {
+  login: (data) => http.post({ url: "/login", data: data }),
+  logout: () => http.post({ url: "/logout"}),
+  captcha: () => http.get({ url: "/captcha"}),
+  captchaEnabled: () => http.get({ url: "/captchaEnabled"}),
+};
 
-export const logoutApi = () => http.post({ url: "/logout"});
-
-export const captchaApi = () => http.get({ url: "/captcha"});
-
-export const captchaEnabledApi = () => http.get({ url: "/captchaEnabled"});
+export { useLogin };
