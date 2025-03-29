@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  **/
 @Configuration
 @AutoConfigureAfter({DataSourceAutoConfiguration.class})
+@SuppressWarnings({"java:S1118"})
 public class GeneratorAutoConfiguration implements WebMvcConfigurer {
 
     @Bean

@@ -20,6 +20,7 @@ public class TranslationStrategyFactory {
 
     private List<ITranslationStrategy<Object>> translationList;
 
+    @SuppressWarnings({"java:S2386"})
     public static final Map<ETranslateType, ITranslationStrategy<Object>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
 
     @SuppressWarnings({"unused"})

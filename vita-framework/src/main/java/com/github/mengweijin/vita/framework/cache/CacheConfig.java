@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableCaching
 @Configuration
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked", "java:S1118"})
 public class CacheConfig {
 
     /**
