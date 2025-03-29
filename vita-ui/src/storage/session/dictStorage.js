@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { STORAGE_NAME } from "@/storage/storage.js";
 import { utils } from "@/script/utils.js";
-import { useDictData } from "@/api/dictData.js";
+import { useDictData } from "@/api/system/dictData.js";
 
 let dictStorage = {
   name: "dict",

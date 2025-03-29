@@ -1,11 +1,10 @@
 import { template } from "@/scripts/template.js";
 import { userStorage } from "@/storage/session/userStorage.js";
 import { utils } from "@/scripts/utils.js";
-import useLogin from "@/api/login.js";
+import { useLogin } from "@/api/login.js";
 
 /** admin 组件 */
 let admin = {
-
   /** 是否已登录 */
   isLogin: function () {
     return !utils.isEmpty(userStorage.get());
