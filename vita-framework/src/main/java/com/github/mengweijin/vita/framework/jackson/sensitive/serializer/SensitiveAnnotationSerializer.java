@@ -37,9 +37,9 @@ public class SensitiveAnnotationSerializer extends JsonSerializer<String> implem
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        Sensitive sensitive = property.getAnnotation(Sensitive.class);
-        if (Objects.nonNull(sensitive) && Objects.equals(String.class, property.getType().getRawClass())) {
-            this.sensitive = sensitive;
+        Sensitive sensitiveAnnotation = property.getAnnotation(Sensitive.class);
+        if (Objects.nonNull(sensitiveAnnotation) && Objects.equals(String.class, property.getType().getRawClass())) {
+            this.sensitive = sensitiveAnnotation;
             return this;
         }
         return prov.findValueSerializer(property.getType(), property);

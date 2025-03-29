@@ -84,7 +84,7 @@ public class GeneratorService {
                 field.setPropertyTypePackage(field.getColumnType().getPkg());
             });
             return dto;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private List<TableInfo> selectTableInfoList(@Nullable String tableName) {

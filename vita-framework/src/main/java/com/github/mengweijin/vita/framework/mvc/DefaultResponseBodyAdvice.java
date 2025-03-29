@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * enable response body advice.
  * @author mengweijin
  * @since 2022/5/17
+ * @deprecated
  */
 @Slf4j
 @Deprecated(since = "2.0", forRemoval = true)

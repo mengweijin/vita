@@ -39,6 +39,7 @@ public class TemplateService {
         return templateVOList;
     }
 
+    @SuppressWarnings("unused")
     private List<TemplateVO> treeTemplateVO(List<TemplateVO> list, String parentId) {
         Map<String, List<TemplateVO>> collect = list.stream().collect(Collectors.groupingBy(TemplateVO::getParentId));
         for (TemplateVO node : list) {

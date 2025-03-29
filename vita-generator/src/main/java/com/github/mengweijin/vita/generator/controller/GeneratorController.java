@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.generator.controller;
 
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorArgsBO;
-import com.github.mengweijin.vita.generator.domain.bo.GeneratorTestBO;
 import com.github.mengweijin.vita.generator.domain.vo.ContentVO;
 import com.github.mengweijin.vita.generator.domain.vo.TableInfoVO;
 import com.github.mengweijin.vita.generator.domain.vo.TemplateVO;
@@ -53,19 +52,6 @@ public class GeneratorController {
     public R<ContentVO> execute(@RequestBody GeneratorArgsBO bo) {
         ContentVO contentVO = generatorService.generate(bo);
         return R.success(contentVO);
-    }
-
-    /**
-     * Test Only.
-     *
-     * @param bo GeneratorTestBO
-     * @return ContentVO
-     */
-    @Deprecated
-    @PostMapping("/executeTest")
-    public String executeTest(@RequestBody GeneratorTestBO bo) {
-        ContentVO contentVO = generatorService.generate(bo.toGeneratorArgsBO());
-        return contentVO.getContent();
     }
 
     @PostMapping("/download")

@@ -2,7 +2,10 @@ package com.github.mengweijin.vita.generator.util;
 
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.reflect.FieldUtil;
 import org.dromara.hutool.core.text.CharSequenceUtil;
@@ -15,12 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * @author mengweijin
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GeneratorUtils {
 
     public static final PropertyPlaceholderHelper PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
@@ -40,10 +43,10 @@ public class GeneratorUtils {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Class<?> cls = Class.forName(baseEntity, true, classLoader);
             Field[] declaredFields = FieldUtil.getFieldsDirectly(cls, true);
-            return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).collect(Collectors.toList());
+            return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).toList();
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -75,19 +78,19 @@ public class GeneratorUtils {
     }
 
     public static List<String> resolveCommonColumns(List<TableField> commonFields) {
-        return commonFields.stream().map(tableField -> tableField.getColumnName().toUpperCase()).collect(Collectors.toList());
+        return commonFields.stream().map(tableField -> tableField.getColumnName().toUpperCase()).toList();
     }
 
     public static List<String> resolveEntityColumns(List<TableField> entityFields) {
-        return entityFields.stream().map(tableField -> tableField.getColumnName().toUpperCase()).collect(Collectors.toList());
+        return entityFields.stream().map(tableField -> tableField.getColumnName().toUpperCase()).toList();
     }
 
     public static List<TableField> resolveCommonFields(TableInfo tableInfo, List<String> baseEntityColumns) {
-        return tableInfo.getFields().stream().filter(tableField -> baseEntityColumns.contains(tableField.getColumnName().toUpperCase())).collect(Collectors.toList());
+        return tableInfo.getFields().stream().filter(tableField -> baseEntityColumns.contains(tableField.getColumnName().toUpperCase())).toList();
     }
 
     public static List<TableField> resolveEntityFields(TableInfo tableInfo, List<String> baseEntityColumns) {
-        return tableInfo.getFields().stream().filter(tableField -> !baseEntityColumns.contains(tableField.getColumnName().toUpperCase())).collect(Collectors.toList());
+        return tableInfo.getFields().stream().filter(tableField -> !baseEntityColumns.contains(tableField.getColumnName().toUpperCase())).toList();
     }
 
     public static TableField getIdField(TableInfo tableInfo) {

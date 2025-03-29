@@ -11,7 +11,6 @@ import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.core.util.BooleanUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,11 +25,6 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class ConfigService extends CrudRepository<ConfigMapper, Config> {
-
-    @Override
-    public List<Config> list() {
-        return super.list();
-    }
 
     /**
      * Custom paging query

@@ -99,7 +99,6 @@ public class LoginService {
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
         AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(200, 60, 4, 200);
-        // AbstractCaptcha captcha = CaptchaUtil.ofShearCaptcha(200, 60, 4, 5);
         captcha.createCode();
         // 放入缓存
         captchaCache.put(ip, captcha);

@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.generator.engine;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
 import com.github.mengweijin.vita.generator.util.GeneratorUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class VelocityTemplateEngine {
             return writer.toString();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new ServerException(e);
         }
     }
 
