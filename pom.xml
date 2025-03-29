@@ -58,6 +58,10 @@
                 <profiles.active>dev</profiles.active>
                 <logging.level>debug</logging.level>
             </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>h2</id>
@@ -66,10 +70,6 @@
                 <profiles.active>h2</profiles.active>
                 <logging.level>debug</logging.level>
             </properties>
-            <activation>
-                <!-- 默认环境 -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>postgresql</id>
