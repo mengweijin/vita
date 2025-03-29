@@ -21,7 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.compress.ZipUtil;
 import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -63,8 +64,8 @@ public class GeneratorService {
 
     public List<TableInfoVO> selectTableList(@Nullable String tableName) {
         List<TableInfoVO> list = this.getAllTableInfoVOList();
-        if(StrUtil.isNotBlank(tableName)) {
-            list = list.stream().filter(table -> StrUtil.containsIgnoreCase(table.getName(), tableName)).toList();
+        if(StrValidator.isNotBlank(tableName)) {
+            list = list.stream().filter(table -> CharSequenceUtil.containsIgnoreCase(table.getName(), tableName)).toList();
         }
         return list.stream().sorted(Comparator.comparing(TableInfoVO::getName)).collect(Collectors.toList());
     }
@@ -90,7 +91,7 @@ public class GeneratorService {
         DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(dataSource).build();
 
         StrategyConfig.Builder strategyConfigBuilder = GeneratorBuilder.strategyConfigBuilder();
-        if (StrUtil.isNotBlank(tableName)) {
+        if (StrValidator.isNotBlank(tableName)) {
             strategyConfigBuilder.addInclude(tableName);
         }
 
@@ -114,8 +115,8 @@ public class GeneratorService {
                 bo.setTemplateContent(tpl.getContent());
 
                 ContentVO contentVO = this.generate(bo);
-                String filePath = StrUtil.subAfter(tpl.getId(), TemplateService.TEMPLATE_DIR, false);
-                filePath = StrUtil.replace(filePath, contentVO.getTemplateName(), contentVO.getFileName());
+                String filePath = CharSequenceUtil.subAfter(tpl.getId(), TemplateService.TEMPLATE_DIR, false);
+                filePath = CharSequenceUtil.replace(filePath, contentVO.getTemplateName(), contentVO.getFileName());
                 String fullPath = String.join(File.separator, currentBasePath, filePath);
                 File file = FileUtil.file(fullPath);
                 FileUtil.mkParentDirs(file);

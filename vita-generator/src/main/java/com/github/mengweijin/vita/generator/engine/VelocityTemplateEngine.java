@@ -12,7 +12,9 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.date.DateFormatPool;
 import org.dromara.hutool.core.date.DateUtil;
 import org.dromara.hutool.core.net.NetUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -58,9 +60,9 @@ public class VelocityTemplateEngine {
         List<String> entityColumns = GeneratorUtils.resolveEntityColumns(entityFields);
         List<String> commonColumns = GeneratorUtils.resolveCommonColumns(commonFields);
 
-        String requestMapping = "/" + StrUtil.toSymbolCase(entityName, '-');
-        if (StrUtil.isNotBlank(args.getModuleName())) {
-            requestMapping = StrUtil.addPrefixIfNot(args.getModuleName(), "/") + requestMapping;
+        String requestMapping = "/" + CharSequenceUtil.toSymbolCase(entityName, '-');
+        if (StrValidator.isNotBlank(args.getModuleName())) {
+            requestMapping = CharSequenceUtil.addPrefixIfNot(args.getModuleName(), "/") + requestMapping;
         }
 
         Map<String, Object> objectMap = new HashMap<>();
@@ -69,8 +71,8 @@ public class VelocityTemplateEngine {
         objectMap.put("author", args.getAuthor());
         objectMap.put("date", DateUtil.format(LocalDateTime.now(), DateFormatPool.NORM_DATE_PATTERN));
         objectMap.put("baseEntity", args.getBaseEntity());
-        objectMap.put("baseEntityPackage", StrUtil.subBefore(args.getBaseEntity(), ".", true));
-        objectMap.put("baseEntityName", StrUtil.subAfter(args.getBaseEntity(), ".", true));
+        objectMap.put("baseEntityPackage", CharSequenceUtil.subBefore(args.getBaseEntity(), ".", true));
+        objectMap.put("baseEntityName", CharSequenceUtil.subAfter(args.getBaseEntity(), ".", true));
         objectMap.put("baseEntityColumns", baseEntityColumns);
         objectMap.put("table", tableInfo);
         objectMap.put("idField", GeneratorUtils.getIdField(tableInfo));
@@ -84,10 +86,10 @@ public class VelocityTemplateEngine {
         objectMap.put("allColumns", CollUtil.addAll(new ArrayList<>(entityColumns), new ArrayList<>(commonColumns)));
         objectMap.put("requestMapping", requestMapping);
 
-        objectMap.put("vueApiName", StrUtil.toSymbolCase(entityName, '-'));
+        objectMap.put("vueApiName", CharSequenceUtil.toSymbolCase(entityName, '-'));
         objectMap.put("hutoolStrUtil", StrUtil.class);
         String nextId = new DefaultIdentifierGenerator(NetUtil.getLocalhostV4()).nextId(null).toString();
-        objectMap.put("generatedId", StrUtil.subPre(nextId, nextId.length() - 2));
+        objectMap.put("generatedId", CharSequenceUtil.subPre(nextId, nextId.length() - 2));
         return objectMap;
     }
 

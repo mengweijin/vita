@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.generator;
 
 import org.dromara.hutool.core.reflect.ClassUtil;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
@@ -19,11 +18,6 @@ public class GeneratorBeanDefinitionRegistryPostProcessor implements BeanDefinit
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(beanDefinitionRegistry);
         String pkg = ClassUtil.getPackage(GeneratorAutoConfiguration.class);
         scanner.scan(pkg);
-    }
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
-
     }
 
 }

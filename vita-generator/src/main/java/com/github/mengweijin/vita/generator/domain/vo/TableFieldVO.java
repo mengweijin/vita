@@ -29,6 +29,7 @@ public class TableFieldVO implements Serializable {
     /**
      * 列类型。实际的 java 对象为 DbColumnType.java 的实例
      */
+    @SuppressWarnings("java:S1948")
     private IColumnType columnType;
 
     /**

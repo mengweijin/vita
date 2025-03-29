@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.generator.controller;
 
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorArgsBO;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorTestBO;
 import com.github.mengweijin.vita.generator.domain.vo.ContentVO;
@@ -12,6 +11,7 @@ import com.github.mengweijin.vita.generator.service.TemplateService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,7 +71,7 @@ public class GeneratorController {
     @PostMapping("/download")
     public void download(@RequestBody GeneratorArgsBO bo, HttpServletResponse response) {
         File file = generatorService.download(bo);
-        ServletUtils.write(response, file);
+        ServletUtil.write(response, file);
         FileUtil.del(file);
     }
 }

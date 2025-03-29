@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.VitaProperties;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.Oss;
 import com.github.mengweijin.vita.system.mapper.OssMapper;
@@ -119,7 +120,8 @@ public class OssService extends CrudRepository<OssMapper, Oss> {
             }
             return oss;
         });
-        this.saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+
+        AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
         return list;
     }
 

@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * UserService userService = (UserService) AopContext.currentProxy();
+ *
  * 当任务新增进来时：
  * 1. 当前运行的线程 < corePoolSize 时，新起一个线程执行新增进来的任务；
  * 2. 当前运行的线程 >= corePoolSize 时，新增进来的任务添加到阻塞队列；

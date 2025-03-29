@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.reflect.FieldUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.lang.reflect.Field;
@@ -32,14 +33,14 @@ public class GeneratorUtils {
      */
     public static List<String> resolveBaseEntityColumns(GeneratorArgs generatorArgs) {
         String baseEntity = generatorArgs.getBaseEntity();
-        if (StrUtil.isBlank(baseEntity)) {
+        if (StrValidator.isBlank(baseEntity)) {
             return new ArrayList<>();
         }
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Class<?> cls = Class.forName(baseEntity, true, classLoader);
             Field[] declaredFields = FieldUtil.getFieldsDirectly(cls, true);
-            return Arrays.stream(declaredFields).map(field -> StrUtil.toUnderlineCase(field.getName()).toUpperCase()).collect(Collectors.toList());
+            return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).collect(Collectors.toList());
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
@@ -54,7 +55,7 @@ public class GeneratorUtils {
     }
 
     public static String[] parseTablePrefix(String str) {
-        if (StrUtil.isBlank(str)) {
+        if (StrValidator.isBlank(str)) {
             return new String[]{};
         }
         return trimItems(str.split("[,，;； ]"));
@@ -70,7 +71,7 @@ public class GeneratorUtils {
                 }
             }
         }
-        return StrUtil.upperFirst(StrUtil.toCamelCase(val.toLowerCase()));
+        return CharSequenceUtil.upperFirst(CharSequenceUtil.toCamelCase(val.toLowerCase()));
     }
 
     public static List<String> resolveCommonColumns(List<TableField> commonFields) {
@@ -94,7 +95,7 @@ public class GeneratorUtils {
     }
 
     public static String getPackages(String packages, String moduleName) {
-        if (StrUtil.isBlank(moduleName)) {
+        if (StrValidator.isBlank(moduleName)) {
             return packages;
         }
         return String.join(".", packages, moduleName);
@@ -102,7 +103,7 @@ public class GeneratorUtils {
 
     public static String replaceTemplateString(String templateString, Map<String, Object> objectMap) {
         Properties props = new Properties();
-        objectMap.forEach((k, v) -> props.setProperty(k, StrUtil.toString(v)));
+        objectMap.forEach((k, v) -> props.setProperty(k, CharSequenceUtil.toString(v)));
         return PLACEHOLDER_HELPER.replacePlaceholders(templateString, props);
     }
 
