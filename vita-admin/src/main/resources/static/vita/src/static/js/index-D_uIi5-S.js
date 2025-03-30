@@ -1,1 +1,0 @@
-import"./modulepreload-polyfill-B5Qt9EMX.js";import{a as i}from"./admin-Bved_AUW.js";function o(){import.meta.url,import("_").catch(()=>1),async function*(){}().next()}i.isLogin()?i.loadAdmin():i.loadLogin();export{o as __vite_legacy_guard};

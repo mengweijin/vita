@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && pnpm copy",
+    "build": "vite build",
     "build:staging": "vite build --mode staging && pnpm copy",
     "copy": "rmdir /s /q ..\\vita-admin\\src\\main\\resources\\static\\vita && xcopy dist ..\\vita-admin\\src\\main\\resources\\static\\vita /s/e/i/y",
     "preview": "vite build && vite preview",
