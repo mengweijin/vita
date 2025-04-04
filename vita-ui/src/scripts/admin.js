@@ -34,7 +34,7 @@ let admin = {
   },
 
   loadLogin: function () {
-    template.load("#app", "src/views/login.html");
+    template.load("#app", "src/views/login.html", { name: "张三" });
   },
 
   loadHeader: function () {

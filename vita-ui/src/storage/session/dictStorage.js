@@ -1,10 +1,11 @@
 import _ from "lodash";
-import { STORAGE_NAME } from "@/storage/storage.js";
 import { utils } from "@/script/utils.js";
 import { useDictData } from "@/api/system/dictData.js";
 
+const STORAGE_NAME = import.meta.env.VITE_STORAGE_PREFIX + "dict";
+
 let dictStorage = {
-  name: "dict",
+  name: "dictInfo",
 
   init: async () => {
     let list = null;

@@ -24,7 +24,6 @@ let http = {
     return new Promise(function (resolve, reject) {
       $.ajax({
         loading: opts.loading ?? true,
-        layerIndex: opts.layerIndex ?? -1,
         method: opts.method ?? "POST",
         url: opts.url,
         data: opts.data,
@@ -41,8 +40,9 @@ let http = {
           Authorization: "Bearer " + userStorage.getToken(),
         },
         beforeSend: function (xhr) {
-          if (this.loading) {
-            this.layerIndex = layer.load(2, { shade: [0.5, "#393D49"] });
+          if (this.loading && loadingIndex === -1) {
+            layer.load(2, { shade: [0.5, "#393D49"] });
+            ++loadingIndex;
           }
 
           if (this.dataType !== "html") {
@@ -106,7 +106,10 @@ let http = {
         },
         // 请求完成时运行的函数（在请求成功或失败之后均调用，即在 success 和 error 函数之后）。
         complete: function (xhr, textStatus) {
-          layer.close(this.layerIndex);
+          if(--loadingIndex === -1) {
+            // 关闭所有loading
+            layer.closeAll('loading');
+          }
           if (this.url.endsWith("/login")) {
             return;
           } else if (this.method.toUpperCase() !== "GET" && xhr.status == 200) {

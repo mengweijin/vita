@@ -1,8 +1,8 @@
-import { STORAGE_NAME } from "@/storage/storage.js";
+const STORAGE_NAME = import.meta.env.VITE_STORAGE_PREFIX + "user";
 
 let userStorage = {
 
-  name: "user",
+  name: "userInfo",
 
   get: function () {
     return layui.sessionData(STORAGE_NAME)[this.name];

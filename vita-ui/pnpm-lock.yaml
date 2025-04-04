@@ -22,8 +22,8 @@ importers:
         specifier: ^11.0.1
         version: 11.0.1
       layui:
-        specifier: 2.10.2
-        version: 2.10.2
+        specifier: 2.10.3
+        version: 2.10.3
       rollup-plugin-copy:
         specifier: ^3.5.0
         version: 3.5.0
@@ -1105,8 +1105,8 @@ packages:
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
 
-  layui@2.10.2:
-    resolution: {integrity: sha512-1NsU3Rcs4rpuJHA/6RPCTUpkqusPoyyzqeDuJAyFjmPzWkD+cJkqLDMsCm1kt+bDdseNM9URnEg9WygtzLau+A==}
+  layui@2.10.3:
+    resolution: {integrity: sha512-stZ8kRfYyJDmgXaC9asz96vwax7U9PtOgN4qiaDVQhrUeuaO+sLYejMKPIMqHE0kFHpBcYKxG4hYGNsrzsU5QQ==}
 
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
@@ -2516,7 +2516,7 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
-  layui@2.10.2: {}
+  layui@2.10.3: {}
 
   lodash.debounce@4.0.8: {}
 
