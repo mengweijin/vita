@@ -1,5 +1,0 @@
-let auth = {
-    
-};
-
-export { auth };

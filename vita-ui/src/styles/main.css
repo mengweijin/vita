@@ -1,19 +1,29 @@
 /* 导入其它样式文件 */
-@import url("./menu.css");
+@import './vita.css';
+@import './modules/element-plus.css';
 
-/* --：定义全局变量，可在文档任意位置通过 var() 调用。比如引用变量：color: var(--primary-color); */
+/* --：定义全局变量，可在文档任意位置通过 var() 调用。比如引用变量：color: var(--vt-primary-color); */
 :root {
-  --primary-color: #1e9fff;
-  --vt-menu-width: 200px;
+  --vt-primary-color: #1e9fff;
 }
 
-.dark {
-  --theme-color: #333333;
+/* 1. 统一盒模型计算方式，宽度/高度计算方式变为：内容区 + 内边距 + 边框。这能避免传统模式下因添加 padding/border 导致元素实际尺寸超出预期的问题。
+ * 2. 消除默认外边距。
+ * 3. 标准化字体粗细
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
 }
 
-html, body, #app {
-  width: 100%;
-  height: 100%;
+#app {
+  /* 占满视口高度，内容超出时自动扩展 */
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
 }
 
 img {
@@ -22,79 +32,23 @@ img {
 }
 
 a {
-  color: var(--primary-color);
+  text-decoration: none;
+  color: var(--vt-primary-color);
+  transition: 0.4s;
+  padding: 3px;
 }
 
-a:hover {
-  /* 兼容旧版浏览器 */
-  color: var(--primary-color);
-  /* 
+/** 常用于保留 PC 端的 :hover 效果（如按钮悬停变色、下拉菜单），同时避免移动端点击后样式滞留问题。 */
+@media (hover: hover) {
+  a:hover {
+    /* 兼容旧版浏览器 */
+    color: var(--vt-primary-color);
+    /*
     hsl(from #1e9fff h s l): 提取颜色中的 h s l 的值（色相，饱和度，亮度）。
     hsl() 语法：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#syntax
-    浏览器兼容性：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#browser_compatibility 
+    浏览器兼容性：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#browser_compatibility
   */
-  color: hsl(from var(--primary-color) h calc(s - 40) l);
-  text-decoration: underline;
-}
-
-/* 移动端样式 */
-@media screen and (max-width: 750px) {
-  .layui-layout-left {
-    left: 0px;
-  }
-  .layui-layout-admin .layui-side {
-    width: 0px;
-  }
-  .layui-body {
-    left: 0px;
+    color: hsl(from var(--vt-primary-color) h calc(s - 40) l);
+    text-decoration: underline;
   }
 }
-
-/* PC端样式 */
-@media screen and (min-width: 750px) {
-  .layui-layout-left {
-    left: var(--vt-menu-width);
-  }
-  .layui-layout-admin .layui-side {
-    width: var(--vt-menu-width);
-  }
-  .layui-body {
-    left: var(--vt-menu-width);
-  }
-}
-
-.layui-body {
-  padding: 0 15px;
-}
-
-.layui-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-}
-
-/* 父子选择器 >。相邻兄弟选择器：+ 符号选择紧邻的后一个同级元素。*/
-.layui-footer > p + p {
-  margin-left: 15px;
-}
-
-.layui-form-label {
-  width: 150px;
-}
-
-.layui-input-block {
-  margin-left: 180px;
-}
-
-.layui-form-label.required:before {
-  content: "* ";
-  color: red;
-}
-
-.layui-layer-setwin .layui-layer-close2 {
-  right: -24px;
-  top: -24px;
-}
-
