@@ -65,7 +65,7 @@ public class UserOnlineController {
     public R<Void> kickoffByLoginId(@PathVariable("username") String loginId) {
         // 强制指定账号注销下线
         StpUtil.kickout(loginId);
-        return R.success();
+        return R.ok();
     }
 
     @SaCheckPermission("system:userOnline:kickOut")
@@ -73,7 +73,7 @@ public class UserOnlineController {
     public R<Void> kickoffByToken(@RequestBody SaTerminalInfoVO vo) {
         // 强制指定 Token 注销下线
         StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getEncryptTokenValue()));
-        return R.success();
+        return R.ok();
     }
 
 }

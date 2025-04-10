@@ -51,7 +51,7 @@ public class GeneratorController {
     @PostMapping("/execute")
     public R<ContentVO> execute(@RequestBody GeneratorArgsBO bo) {
         ContentVO contentVO = generatorService.generate(bo);
-        return R.success(contentVO);
+        return R.ok(contentVO);
     }
 
     @PostMapping("/download")

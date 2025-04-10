@@ -37,13 +37,13 @@ public class LoginController {
     @PostMapping("/login")
     public R<LoginUser> login(@Valid @RequestBody LoginBO loginBO) {
         LoginUser loginUser = loginService.login(loginBO);
-        return R.success(loginUser);
+        return R.ok(loginUser);
     }
 
     @PostMapping("/logout")
     public R<Void> logout() {
         StpUtil.logout();
-        return R.success();
+        return R.ok();
     }
 
     @SaIgnore

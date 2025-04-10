@@ -70,7 +70,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
      */
     private ResponseEntity<Object> errorBindingResultResponseEntity(Exception e, BindingResult bindingResult, HttpStatusCode status) {
         final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        R<Void> r = R.failure(status.value(), null);
+        R<Void> r = R.fail(status.value(), null);
         for (FieldError error : fieldErrors) {
             r.appendMessage(error.getField() + ": " + error.getDefaultMessage());
         }
@@ -81,7 +81,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
 
     private ResponseEntity<Object> errorMethodValidationResponseEntity(Exception e, MethodValidationResult result, HttpStatusCode status) {
         List<? extends MessageSourceResolvable> allErrors = result.getAllErrors();
-        R<Void> r = R.failure(status.value(), null);
+        R<Void> r = R.fail(status.value(), null);
         allErrors.forEach(error -> {
             r.appendMessage(Objects.requireNonNull(error.getCodes())[0] + ": " + error.getDefaultMessage());
         });

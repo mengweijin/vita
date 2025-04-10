@@ -35,35 +35,35 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     @ResponseBody
     ResponseEntity<R<Void>> handleClientException(Exception e, HttpServletRequest request) {
         log.warn(e.getMessage());
-        R<Void> r = R.failure(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 
     @ExceptionHandler({ LoginFailedException.class })
     @ResponseBody
     ResponseEntity<R<Void>> handleLoginFailedException(LoginFailedException e, HttpServletRequest request) {
-        R<Void> r = R.failure(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 
     @ExceptionHandler({ NotLoginException.class })
     @ResponseBody
     ResponseEntity<R<Void>> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
-        R<Void> r = R.failure(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        R<Void> r = R.fail(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(r);
     }
 
     @ExceptionHandler({ NotPermissionException.class })
     @ResponseBody
     ResponseEntity<R<Void>> handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
-        R<Void> r = R.failure(HttpStatus.FORBIDDEN.value(), e.getMessage());
+        R<Void> r = R.fail(HttpStatus.FORBIDDEN.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(r);
     }
 
     @ExceptionHandler({ NotRoleException.class })
     @ResponseBody
     ResponseEntity<R<Void>> handleNotRoleException(NotRoleException e, HttpServletRequest request) {
-        R<Void> r = R.failure(HttpStatus.FORBIDDEN.value(), e.getMessage());
+        R<Void> r = R.fail(HttpStatus.FORBIDDEN.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(r);
     }
 
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     public ResponseEntity<R<Void>> handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
         log.error("Request-URI: '{}', Records already exist in the database: '{}'", request.getRequestURI(), e.getMessage());
         String message = CharSequenceUtil.format("The record already exists! | {} | {}...", request.getRequestURI(), CharSequenceUtil.subPre(e.getMessage(), 500));
-        R<Void> r = R.failure(HttpStatus.BAD_REQUEST.value(), message);
+        R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     ResponseEntity<R<Void>> handleException(Exception e, HttpServletRequest request) {
         log.error(e.getMessage(), e);
         HttpStatus status = getStatus(request);
-        return ResponseEntity.status(status).body(R.failure(status.value(), e.getMessage()));
+        return ResponseEntity.status(status).body(R.fail(status.value(), e.getMessage()));
     }
 
     /**

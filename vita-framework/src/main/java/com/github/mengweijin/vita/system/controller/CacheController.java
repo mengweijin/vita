@@ -59,7 +59,7 @@ public class CacheController {
         Cache<Object, Object> cache = cacheManager.getCache(cacheName);
         if (cacheKey == null || StrValidator.isBlank(cacheKey.toString())) {
             cache.clear();
-            return R.success();
+            return R.ok();
         } else {
             boolean removed = cache.remove(cacheKey);
             return R.result(removed);
@@ -74,6 +74,6 @@ public class CacheController {
             Cache<Object, Object> cache = cacheManager.getCache(cacheName);
             cache.clear();
         }
-        return R.success();
+        return R.ok();
     }
 }

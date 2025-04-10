@@ -33,31 +33,31 @@ public class R<T> implements Serializable {
     private R() {
     }
 
-    public static <T> R<T> success() {
-        return success(null);
+    public static <T> R<T> ok() {
+        return ok(null);
     }
 
-    public static <T> R<T> success(T data) {
-        return success(HttpStatus.OK.value(), data);
+    public static <T> R<T> ok(T data) {
+        return ok(HttpStatus.OK.value(), data);
     }
 
-    public static <T> R<T> success(int code, T data) {
+    public static <T> R<T> ok(int code, T data) {
         return result(code, Const.SUCCESS, data);
     }
 
-    public static <T> R<T> failure() {
+    public static <T> R<T> fail() {
         return result(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
     }
 
-    public static <T> R<T> failure(int code) {
+    public static <T> R<T> fail(int code) {
         return result(code, null, null);
     }
 
-    public static <T> R<T> failure(String message) {
+    public static <T> R<T> fail(String message) {
         return result(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, null);
     }
 
-    public static <T> R<T> failure(int code, String message) {
+    public static <T> R<T> fail(int code, String message) {
         return result(code, message, null);
     }
 
@@ -71,7 +71,7 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> result(boolean flag) {
-        return flag ? R.success() : R.failure(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase() + " or Business Failed.");
+        return flag ? R.ok() : R.fail(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase() + " or Business Failed.");
     }
 
     public static <T> R<T> result(int i) {

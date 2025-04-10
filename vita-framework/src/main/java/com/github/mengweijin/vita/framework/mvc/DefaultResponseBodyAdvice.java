@@ -48,7 +48,7 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
         HttpMethod httpMethod = request.getMethod();
         if(HttpMethod.GET != httpMethod) {
-            return R.success(body);
+            return R.ok(body);
         }
 
         return body;
@@ -60,7 +60,7 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             // 这段代码一定要加，如果Controller直接返回String的话，SpringBoot是直接返回，故我们需要手动转换成json。
             // springmvc数据转换器对String是有特殊处理 StringHttpMessageConverter
             try {
-                return objectMapper.writeValueAsString(R.success(body));
+                return objectMapper.writeValueAsString(R.ok(body));
             } catch (JsonProcessingException e) {
                 log.error("An exception has occurred that should not have occurred!", e);
                 throw new ServerException(e.getMessage());
