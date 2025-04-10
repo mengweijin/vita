@@ -99,7 +99,7 @@ public class MenuController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Menu menu) {
         boolean bool = menuService.save(menu);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -113,7 +113,7 @@ public class MenuController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Menu menu) {
         boolean bool = menuService.updateById(menu);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -126,7 +126,7 @@ public class MenuController {
     @SaCheckPermission("system:menu:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(menuService.removeByIds(Arrays.asList(ids)));
+        return R.result(menuService.removeByIds(Arrays.asList(ids)));
     }
 
 }

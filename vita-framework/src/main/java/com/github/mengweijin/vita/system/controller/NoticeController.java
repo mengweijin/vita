@@ -91,7 +91,7 @@ public class NoticeController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Notice notice) {
         boolean bool = noticeService.save(notice);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -105,7 +105,7 @@ public class NoticeController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Notice notice) {
         boolean bool = noticeService.updateById(notice);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -118,7 +118,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(noticeService.removeByIds(Arrays.asList(ids)));
+        return R.result(noticeService.removeByIds(Arrays.asList(ids)));
     }
 
     @Log(operationType = EOperationType.UPDATE)
@@ -126,7 +126,7 @@ public class NoticeController {
     @PostMapping("/release/{id}")
     public R<Void> release(@PathVariable("id") Long id) {
         boolean bool = noticeService.lambdaUpdate().set(Notice::getReleased, EYesNo.Y.getValue()).eq(Notice::getId, id).update();
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     @Log(operationType = EOperationType.UPDATE)
@@ -134,7 +134,7 @@ public class NoticeController {
     @PostMapping("/revoke/{id}")
     public R<Void> revoke(@PathVariable("id") Long id) {
         boolean bool = noticeService.lambdaUpdate().set(Notice::getReleased, EYesNo.N.getValue()).eq(Notice::getId, id).update();
-        return R.ajax(bool);
+        return R.result(bool);
     }
 }
 

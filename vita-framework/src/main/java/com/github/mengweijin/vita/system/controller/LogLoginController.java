@@ -94,7 +94,7 @@ public class LogLoginController {
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody LogLogin logLogin) {
         boolean bool = logLoginService.save(logLogin);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -108,7 +108,7 @@ public class LogLoginController {
     @PostMapping("/update")
     public R<Void> update(@Valid @RequestBody LogLogin logLogin) {
         boolean bool = logLoginService.updateById(logLogin);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -122,7 +122,7 @@ public class LogLoginController {
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
         int i = logLoginService.getBaseMapper().deleteByIds(Arrays.asList(ids));
-        return R.ajax(i);
+        return R.result(i);
     }
 
 }

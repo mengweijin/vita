@@ -50,14 +50,14 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
      */
     private ResponseEntity<Object> errorResponseEntity(Exception e, HttpStatusCode status) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.status(status).body(R.ajax(status.value(), e.getMessage(), null));
+        return ResponseEntity.status(status).body(R.result(status.value(), e.getMessage(), null));
     }
 
     private ResponseEntity<Object> errorTypeMismatchResponseEntity(TypeMismatchException e, HttpStatusCode status) {
         log.error(e.getMessage(), e);
         Object[] args = {e.getPropertyName(), e.getValue()};
         String defaultMessage = "Failed to convert '" + args[0] + "' with value: '" + args[1] + "'";
-        return ResponseEntity.status(status).body(R.ajax(status.value(), defaultMessage, null));
+        return ResponseEntity.status(status).body(R.result(status.value(), defaultMessage, null));
     }
 
     /**

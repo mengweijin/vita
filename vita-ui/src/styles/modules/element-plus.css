@@ -1,11 +1,5 @@
 :root {
-  --el-header-height: 60px;
-
   --el-aside-width: 220px;
-}
-
-.el-container {
-  min-height: calc(100vh - var(--el-header-height));
 }
 
 /* 移动端样式 */

@@ -4,12 +4,11 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import legacy from '@vitejs/plugin-legacy'
+import svgLoader from 'vite-svg-loader'
 
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -61,26 +60,20 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueDevTools(),
+      svgLoader(),
       legacy({
         targets: ['defaults', 'not IE 11'],
       }),
       AutoImport({
-        resolvers: [
-          ElementPlusResolver(),
-          // 自动导入图标组件（设置前缀）。格式：{prefix}-{collection}-{icon}
-          IconsResolver({ prefix: 'i' }),
-        ],
+        resolvers: [ElementPlusResolver()],
+        eslintrc: {
+          enabled: true, // 自动生成 ESLint 全局变量声明文件
+          filepath: './.eslintrc-auto-import.json',
+        },
+        dts: false, // 禁用 TypeScript 类型声明生成（纯 JS 项目无需此文件）
       }),
       Components({
-        resolvers: [
-          ElementPlusResolver(),
-          // 自动注册图标组件（指定图标集）。'ep' 为 Element Plus 图标集。
-          // 直接使用：<i-ep-edit />
-          // 或者动态加载：<el-icon><component :is="`i-ep-${item.icon}`" /></el-icon>
-          IconsResolver({ enabledCollections: ['ep'] }),
-          // 自动安装图标库
-          Icons({ autoInstall: true }),
-        ],
+        resolvers: [ElementPlusResolver()],
       }),
     ],
     build: {

@@ -1,4 +1,4 @@
-package com.github.mengweijin.framework.util;
+package com.github.mengweijin.vita.framework.util;
 
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import lombok.SneakyThrows;

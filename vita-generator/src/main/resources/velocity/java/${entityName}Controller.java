@@ -73,7 +73,7 @@ public class ${entityName}Controller {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ${entityName} ${entityPropertyName}) {
         boolean bool = ${entityPropertyName}Service.save(${entityPropertyName});
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ${entityName}Controller {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ${entityName} ${entityPropertyName}) {
         boolean bool = ${entityPropertyName}Service.updateById(${entityPropertyName});
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ${entityName}Controller {
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") ${idField.columnType.type}[] ids) {
         boolean bool = ${entityPropertyName}Service.removeByIds(Arrays.asList(ids));
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
 }

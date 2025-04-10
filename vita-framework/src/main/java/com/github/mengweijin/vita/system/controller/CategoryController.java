@@ -83,7 +83,7 @@ public class CategoryController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Category category) {
         boolean bool = categoryService.save(category);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -96,7 +96,7 @@ public class CategoryController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Category category) {
         boolean bool = categoryService.updateById(category);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -109,7 +109,7 @@ public class CategoryController {
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
         boolean bool = categoryService.removeByIds(Arrays.asList(ids));
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
 }

@@ -90,7 +90,7 @@ public class MessageController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Message message) {
         boolean bool = messageService.save(message);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -104,7 +104,7 @@ public class MessageController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Message message) {
         boolean bool = messageService.updateById(message);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -117,7 +117,7 @@ public class MessageController {
     @SaCheckPermission("system:message:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(messageService.removeByIds(Arrays.asList(ids)));
+        return R.result(messageService.removeByIds(Arrays.asList(ids)));
     }
 
 }

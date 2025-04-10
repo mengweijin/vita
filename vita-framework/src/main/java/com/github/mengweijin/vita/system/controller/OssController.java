@@ -58,13 +58,13 @@ public class OssController {
      */
     @Log(operationType = EOperationType.DOWNLOAD)
     @GetMapping("/download/{id}")
-    public R<Void> download(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public void download(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
         Oss oss = ossService.getById(id);
         if(oss == null) {
-            return R.failure("No file was found!");
+            log.warn("No file was found!");
+            return;
         }
-        DownLoadUtils.download(FileUtil.getInputStream(oss.getStoragePath()), oss.getName(), request, response);
-        return R.success();
+        DownLoadUtils.simpleDownload(FileUtil.getInputStream(oss.getStoragePath()), oss.getName(), request, response);
     }
 
     /**
@@ -99,9 +99,9 @@ public class OssController {
 
     @SaIgnore
     @GetMapping("/download/wang-editor/{id}")
-    public R<Void> downloadForWangEditor(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
+    public void downloadForWangEditor(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
         String decrypted = AESUtils.getAES().decryptStr(id);
-        return this.download(Long.valueOf(decrypted), request, response);
+        this.download(Long.valueOf(decrypted), request, response);
     }
 
     /**
@@ -155,7 +155,7 @@ public class OssController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Oss oss) {
         boolean bool = ossService.save(oss);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -169,7 +169,7 @@ public class OssController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Oss oss) {
         boolean bool = ossService.updateById(oss);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -183,7 +183,7 @@ public class OssController {
     @SaCheckPermission("system:oss:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(ossService.removeByIds(Arrays.asList(ids)));
+        return R.result(ossService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -91,7 +91,7 @@ public class LogOperationController {
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody LogOperation logOperation) {
         boolean bool = logOperationService.save(logOperation);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -105,7 +105,7 @@ public class LogOperationController {
     @PostMapping("update")
     public R<Void> update(@Valid @RequestBody LogOperation logOperation) {
         boolean bool = logOperationService.updateById(logOperation);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -119,7 +119,7 @@ public class LogOperationController {
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
         int i = logOperationService.getBaseMapper().deleteByIds(Arrays.asList(ids));
-        return R.ajax(i);
+        return R.result(i);
     }
 
 }

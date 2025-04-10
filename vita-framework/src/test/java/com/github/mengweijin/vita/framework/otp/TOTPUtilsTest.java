@@ -1,4 +1,4 @@
-package com.github.mengweijin.framework.otp;
+package com.github.mengweijin.vita.framework.otp;
 
 import com.github.mengweijin.vita.framework.constant.Const;
 import org.dromara.hutool.core.codec.binary.Base32;

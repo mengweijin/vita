@@ -62,7 +62,7 @@ public class CacheController {
             return R.success();
         } else {
             boolean removed = cache.remove(cacheKey);
-            return R.ajax(removed);
+            return R.result(removed);
         }
     }
 

@@ -2,6 +2,8 @@ import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+// 导入自动生成的配置
+import autoImportConfig from './.eslintrc-auto-import.json'
 
 export default [
   {
@@ -25,4 +27,6 @@ export default [
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   skipFormatting,
+  // 合并自动导入的全局变量声明
+  ...autoImportConfig,
 ]

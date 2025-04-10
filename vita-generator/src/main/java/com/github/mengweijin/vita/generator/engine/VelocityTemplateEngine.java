@@ -78,7 +78,7 @@ public class VelocityTemplateEngine {
         objectMap.put("table", tableInfo);
         objectMap.put("idField", GeneratorUtils.getIdField(tableInfo));
         objectMap.put("entityName", entityName);
-        objectMap.put("entityPropertyName", StrUtil.lowerFirst(entityName));
+        objectMap.put("entityPropertyName", CharSequenceUtil.lowerFirst(entityName));
         objectMap.put("entityFields", entityFields);
         objectMap.put("commonFields", commonFields);
         objectMap.put("allFields", CollUtil.addAll(new ArrayList<>(entityFields), new ArrayList<>(commonFields)));

@@ -111,7 +111,7 @@ public class RoleController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Role role) {
         boolean bool = roleService.save(role);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -125,7 +125,7 @@ public class RoleController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Role role) {
         boolean bool = roleService.updateById(role);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     @Log(operationType = EOperationType.UPDATE)
@@ -133,7 +133,7 @@ public class RoleController {
     @PostMapping("/set-permission")
     public R<Void> setPermission(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
         boolean bool = roleService.setMenuPermission(rolePermissionBO);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -146,7 +146,7 @@ public class RoleController {
     @SaCheckPermission("system:role:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(roleService.removeByIds(Arrays.asList(ids)));
+        return R.result(roleService.removeByIds(Arrays.asList(ids)));
     }
 
 }

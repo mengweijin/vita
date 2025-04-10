@@ -1,4 +1,4 @@
-package com.github.mengweijin.framework.mybatis.data.username;
+package com.github.mengweijin.vita.framework.mybatis.data.username;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;

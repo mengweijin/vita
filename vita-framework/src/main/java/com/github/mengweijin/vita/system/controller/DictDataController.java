@@ -97,7 +97,7 @@ public class DictDataController {
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictData dictData) {
         dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.save(dictData);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -112,7 +112,7 @@ public class DictDataController {
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictData dictData) {
         dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.updateById(dictData);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -125,7 +125,7 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(dictDataService.removeByIds(Arrays.asList(ids)));
+        return R.result(dictDataService.removeByIds(Arrays.asList(ids)));
     }
 
 }

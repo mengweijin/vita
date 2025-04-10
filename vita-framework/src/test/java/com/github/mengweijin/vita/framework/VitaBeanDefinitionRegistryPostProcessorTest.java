@@ -1,4 +1,4 @@
-package com.github.mengweijin.framework;
+package com.github.mengweijin.vita.framework;
 
 import com.github.mengweijin.vita.framework.VitaBeanDefinitionRegistryPostProcessor;
 import com.github.mengweijin.vita.framework.constant.Const;

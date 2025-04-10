@@ -22,8 +22,8 @@
 #app {
   /* 占满视口高度，内容超出时自动扩展 */
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
+  /* color: var(--color-text);
+  background: var(--color-background); */
 }
 
 img {

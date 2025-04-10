@@ -159,7 +159,7 @@ public class UserController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO user) {
         boolean bool = userService.save(BeanCopyUtils.copyBean(user, new User()));
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -174,7 +174,7 @@ public class UserController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO user) {
         boolean bool = userService.updateById(BeanCopyUtils.copyBean(user, new User()));
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     @Log(operationType = EOperationType.UPDATE)
@@ -182,7 +182,7 @@ public class UserController {
     @PostMapping("/set-disabled")
     public R<Void> setDisabled(@NotNull Long id, @NotBlank String disabled) {
         boolean bool = userService.setDisabled(id, disabled);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -201,7 +201,7 @@ public class UserController {
         if (isAdmin) {
             throw new ClientException("Can't delete admin account!");
         }
-        return R.ajax(userService.removeByIds(list));
+        return R.result(userService.removeByIds(list));
     }
 
     /**
@@ -216,7 +216,7 @@ public class UserController {
     @PostMapping("/change-password")
     public R<Void> changePassword(@Validated @RequestBody ChangePasswordBO bo) {
         boolean bool = userService.changePassword(bo);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -231,7 +231,7 @@ public class UserController {
     @PostMapping("/reset-password")
     public R<Void> resetPassword(@Validated @RequestBody ChangePasswordBO bo) {
         boolean bool = userService.updatePassword(bo.getUsername(), bo.getNewPassword());
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -245,7 +245,7 @@ public class UserController {
     @PostMapping("/set-avatar")
     public R<Void> setAvatar(@Validated @RequestBody UserAvatar userAvatar) {
         boolean bool = userAvatarService.setAvatar(userAvatar);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -260,7 +260,7 @@ public class UserController {
     @PostMapping("/set-roles")
     public R<Void> setRoles(@Validated @RequestBody UserRolesBO bo) {
         boolean bool = userRoleService.setUserRoles(bo);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 }
 

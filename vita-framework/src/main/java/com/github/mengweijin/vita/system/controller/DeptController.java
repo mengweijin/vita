@@ -90,7 +90,7 @@ public class DeptController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Dept dept) {
         boolean bool = deptService.save(dept);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -104,7 +104,7 @@ public class DeptController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Dept dept) {
         boolean bool = deptService.updateById(dept);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     @Log(operationType = EOperationType.UPDATE)
@@ -112,7 +112,7 @@ public class DeptController {
     @PostMapping("/setDisabled/{id}/{disabled}")
     public R<Void> setDisabledValue(@PathVariable("id") Long id, @PathVariable("disabled") String disabled) {
         boolean bool = deptService.setDisabled(id, disabled);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -125,7 +125,7 @@ public class DeptController {
     @SaCheckPermission("system:dept:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(deptService.removeByIds(Arrays.asList(ids)));
+        return R.result(deptService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -90,7 +90,7 @@ public class DictTypeController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictType dictType) {
         boolean bool = dictTypeService.save(dictType);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -104,7 +104,7 @@ public class DictTypeController {
     @PostMapping("update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictType dictType) {
         boolean bool = dictTypeService.updateById(dictType);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -117,7 +117,7 @@ public class DictTypeController {
     @SaCheckPermission("system:dictType:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(dictTypeService.removeByIds(Arrays.asList(ids)));
+        return R.result(dictTypeService.removeByIds(Arrays.asList(ids)));
     }
 
 }

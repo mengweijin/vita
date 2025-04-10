@@ -102,7 +102,7 @@ public class ConfigController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Config config) {
         boolean bool = configService.save(config);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ConfigController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Config config) {
         boolean bool = configService.updateById(config);
-        return R.ajax(bool);
+        return R.result(bool);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ConfigController {
     @SaCheckPermission("system:config:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") Long[] ids) {
-        return R.ajax(configService.removeByIds(Arrays.asList(ids)));
+        return R.result(configService.removeByIds(Arrays.asList(ids)));
     }
 
 }

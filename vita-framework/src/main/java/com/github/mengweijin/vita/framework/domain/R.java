@@ -42,26 +42,26 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> success(int code, T data) {
-        return ajax(code, Const.SUCCESS, data);
+        return result(code, Const.SUCCESS, data);
     }
 
     public static <T> R<T> failure() {
-        return ajax(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+        return result(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
     }
 
     public static <T> R<T> failure(int code) {
-        return ajax(code, null, null);
+        return result(code, null, null);
     }
 
     public static <T> R<T> failure(String message) {
-        return ajax(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, null);
+        return result(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, null);
     }
 
     public static <T> R<T> failure(int code, String message) {
-        return ajax(code, message, null);
+        return result(code, message, null);
     }
 
-    public static <T> R<T> ajax(int code, String msg, T data) {
+    public static <T> R<T> result(int code, String msg, T data) {
         R<T> r = new R<>();
         r.setCode(code);
         r.setMsg(msg);
@@ -70,12 +70,12 @@ public class R<T> implements Serializable {
         return r;
     }
 
-    public static <T> R<T> ajax(boolean flag) {
+    public static <T> R<T> result(boolean flag) {
         return flag ? R.success() : R.failure(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase() + " or Business Failed.");
     }
 
-    public static <T> R<T> ajax(int i) {
-        return R.ajax(i > 0);
+    public static <T> R<T> result(int i) {
+        return R.result(i > 0);
     }
 
     /**
