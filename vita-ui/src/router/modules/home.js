@@ -8,17 +8,9 @@ export default {
     {
       path: '/home',
       name: 'HomeView',
-      component: () => import('@/views/HomeView.vue'),
+      component: () => import('@/views/home/HomeView.vue'),
       meta: {
         title: '首页',
-      },
-    },
-    {
-      path: '/about',
-      name: 'AboutView',
-      component: () => import('@/views/AboutView.vue'),
-      meta: {
-        title: '关于',
       },
     },
   ],
