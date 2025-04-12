@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { stringify } from 'qs'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import router from '@/router/index.js'
 
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
@@ -63,8 +62,6 @@ axiosInstance.interceptors.response.use(
           ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true })
           break
         case 401:
-          // 跳转登录页
-          //router.push('/login?redirect=' + encodeURIComponent(window.location.pathname))
           // 跳转时携带当前页面路径，登录后可返回
           router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } })
           // ElMessage.error({

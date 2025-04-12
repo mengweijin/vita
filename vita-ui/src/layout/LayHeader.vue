@@ -21,7 +21,7 @@ const toggleSideMenuOpened = () => sideMenuOpened.value = !sideMenuOpened.value;
 const refresh = () => { top.location.reload(true); };
 
 const onLogout = () => {
-  logout().then(() => {
+  logout().finally(() => {
     // 清理 store
     user.value = null;
     // 跳转登录页
