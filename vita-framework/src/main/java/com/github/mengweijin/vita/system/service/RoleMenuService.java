@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -22,9 +24,14 @@ import java.util.List;
 @Service
 public class RoleMenuService extends CrudRepository<RoleMenuMapper, RoleMenu> {
 
-    public List<Long> getMenuIdsByRoleId(Long roleId) {
+    public Set<Long> getMenuIdsByRoleId(Long roleId) {
         List<RoleMenu> roleMenuList = this.lambdaQuery().select(RoleMenu::getMenuId).eq(RoleMenu::getRoleId, roleId).list();
-        return roleMenuList.stream().map(RoleMenu::getMenuId).toList();
+        return roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
+    }
+
+    public Set<Long> getMenuIdsInRoleIds(Set<Long> roleIds) {
+        List<RoleMenu> roleMenuList = this.lambdaQuery().select(RoleMenu::getMenuId).in(RoleMenu::getRoleId, roleIds).list();
+        return roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
     }
 
     public void removeByRoleId(Long roleId) {
@@ -32,4 +39,6 @@ public class RoleMenuService extends CrudRepository<RoleMenuMapper, RoleMenu> {
         wrapper.eq(RoleMenu::getRoleId, roleId);
         this.getBaseMapper().delete(wrapper);
     }
+
+
 }

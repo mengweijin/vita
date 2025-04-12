@@ -118,12 +118,12 @@ public class UserService extends CrudRepository<UserMapper, User> {
         return list.stream().map(User::getId).collect(Collectors.toSet());
     }
 
-    public String getUsernameByIds(String ids) {
+    public String getUsernamesByIds(String ids) {
         List<Long> idList = Arrays.stream(ids.split(Const.COMMA)).map(NumberUtil::parseLong).distinct().toList();
         return idList.stream().map(this::getUsernameById).collect(Collectors.joining());
     }
 
-    public String getUserNicknameByIds(String ids) {
+    public String getUserNicknamesByIds(String ids) {
         List<Long> idList = Arrays.stream(ids.split(Const.COMMA)).map(NumberUtil::parseLong).distinct().toList();
         return idList.stream().map(this::getNicknameById).collect(Collectors.joining());
     }

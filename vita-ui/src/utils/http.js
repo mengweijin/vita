@@ -1,8 +1,11 @@
 import axios from 'axios'
 import router from '@/router/index.js'
 import { stringify } from 'qs'
+
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
-const { user } = useUserStore()
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
 const { VITE_API_BASE } = import.meta.env
 
@@ -29,7 +32,7 @@ let axiosInstance = axios.create({
 // 添加请求拦截器。在发送请求之前做些什么，比如设置 token，权限认证等
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = user?.token
+    const token = user?.value?.token
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -56,36 +59,23 @@ axiosInstance.interceptors.response.use(
     if (error.response.status) {
       switch (error.response.status) {
         case 400:
-          ElMessage.error({
-            offset: 0,
-            message: error.response.status + ': ' + JSON.stringify(error.response.data),
-            showClose: true,
-          })
+          ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true })
           break
         case 401:
           // 跳转登录页
           //router.push('/login?redirect=' + encodeURIComponent(window.location.pathname))
           // 跳转时携带当前页面路径，登录后可返回
-          router.push({
-            path: '/login',
-            query: { redirect: router.currentRoute.fullPath },
-          })
+          router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } })
           // ElMessage.error({
           //   message: error.response.status + ' Unauthorized',
           //   showClose: true,
           // })
           break
         case 403:
-          ElMessage.error({
-            message: error.response.status + ' Forbidden',
-            showClose: true,
-          })
+          ElMessage.error({ message: error.response.status + ' Forbidden', showClose: true })
           break
         case 404:
-          ElMessage.error({
-            message: error.response.status + ' Not Found',
-            showClose: true,
-          })
+          ElMessage.error({ message: error.response.status + ' Not Found', showClose: true })
           break
         case 405:
           ElMessage.error({
@@ -94,28 +84,16 @@ axiosInstance.interceptors.response.use(
           })
           break
         case 406:
-          ElMessage.error({
-            message: error.response.status + ' Not Acceptable',
-            showClose: true,
-          })
+          ElMessage.error({ message: error.response.status + ' Not Acceptable', showClose: true })
           break
         case 408:
-          ElMessage.error({
-            message: error.response.status + ' Request Timeout',
-            showClose: true,
-          })
+          ElMessage.error({ message: error.response.status + ' Request Timeout', showClose: true })
           break
         case 500:
-          ElMessage.error({
-            message: error.response.status + ' Internal Server Error',
-            showClose: true,
-          })
+          ElMessage.error({ message: error.response.status + ' Server Error', showClose: true })
           break
         default:
-          ElMessage.error({
-            message: error.response.status + ': ' + JSON.stringify(error.response.data),
-            showClose: true,
-          })
+          ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true })
           break
       }
     }

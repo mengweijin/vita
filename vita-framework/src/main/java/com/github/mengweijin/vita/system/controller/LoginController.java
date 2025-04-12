@@ -53,6 +53,7 @@ public class LoginController {
     }
 
     @SaIgnore
+    @RateLimit(duration = 3, max = 1, strategy = ERateLimitStrategy.IP)
     @GetMapping("/captcha")
     public String getCaptcha() {
         return loginService.getCaptcha();

@@ -9,7 +9,7 @@ import org.dromara.hutool.extra.spring.SpringUtil;
 /**
  * @author mengweijin
  */
-public class    CaptchaCheckRule implements BusinessCheckValidator.CheckRule {
+public class CaptchaMandatoryCheckRule implements BusinessCheckValidator.CheckRule {
     @Override
     public boolean isValid(CharSequence value) {
         ConfigService configService = SpringUtil.getBean(ConfigService.class);

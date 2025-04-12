@@ -87,7 +87,7 @@ public class LoginService {
         loginUser.setNickname(user.getNickname());
         loginUser.setAvatar(userService.getAvatarById(user.getId()));
         loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
-        loginUser.setPermissions(menuService.getMenuPermissionListByLoginUsername(user.getUsername()));
+        loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
         loginUser.setToken(StpUtil.getTokenValue());
         loginUser.setLoginTime(LocalDateTime.now());
         return loginUser;
@@ -98,7 +98,7 @@ public class LoginService {
         Cache<String, AbstractCaptcha> captchaCache = CacheFactory.getCaptchaCache();
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(200, 60, 4, 200);
+        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 100);
         captcha.createCode();
         // 放入缓存
         captchaCache.put(ip, captcha);

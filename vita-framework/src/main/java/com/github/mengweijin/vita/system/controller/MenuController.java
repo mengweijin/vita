@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -69,6 +70,12 @@ public class MenuController {
         return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(Menu::getSeq));
     }
 
+    @SaCheckPermission("system:menu:query")
+    @GetMapping("/list-side")
+    public List<Menu> getSideMenuByLoginUsername() {
+        return menuService.getSideMenuByLoginUserId();
+    }
+
     /**
      * <p>
      * Get Menu by id
@@ -84,7 +91,7 @@ public class MenuController {
 
     @SaCheckPermission("system:menu:query")
     @GetMapping("/get-menu-id-by-role/{roleId}")
-    public List<Long> getMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
+    public Set<Long> getMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
         return roleMenuService.getMenuIdsByRoleId(roleId);
     }
 

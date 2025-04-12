@@ -4,17 +4,29 @@ import { useFullscreen } from '@vueuse/core';
 import { Icon } from "@iconify/vue";
 import router from '@/router/index.js'
 import { logout } from '@/api/login';
+
 import { storeToRefs } from 'pinia';
+
+import { useUserStore } from '@/stores/userStore.js'
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
 import { useAppStore } from '@/stores/appStore.js';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
-const { toggleSideMenuOpened } = appStore;
+
+const toggleSideMenuOpened = () => sideMenuOpened.value = !sideMenuOpened.value;
 
 // 强制刷新（适合更新静态资源）
 const refresh = () => { top.location.reload(true); };
 
 const onLogout = () => {
-  logout().then(() => { router.push('/login'); });
+  logout().then(() => {
+    // 清理 store
+    user.value = null;
+    // 跳转登录页
+    router.push('/login');
+  });
 };
 
 // 绑定目标元素（不传则默认全屏整个页面）

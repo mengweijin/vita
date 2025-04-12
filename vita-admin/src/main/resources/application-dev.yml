@@ -22,7 +22,7 @@ spring:
   h2:
     console:
       # 是否允许网页访问，默认false
-      enabled: false
+      enabled: true
       # h2数据库的访问路径：http://localhost:8080/h2（默认为/h2-console）
       path: /h2
       settings:

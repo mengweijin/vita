@@ -28,7 +28,7 @@ public class UsernameTranslationStrategy implements ITranslationStrategy<String>
         if (value instanceof Long id) {
             return userService.getUsernameById(id);
         } else if(value instanceof String ids && StrValidator.isNotBlank(ids)) {
-            return userService.getUsernameByIds(ids);
+            return userService.getUsernamesByIds(ids);
         }
         return null;
     }

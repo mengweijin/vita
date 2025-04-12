@@ -2,16 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.mengweijin.vita.system.mapper.MenuMapper">
 
-    <select id="selectPermissionListByUsername" resultType="java.lang.String">
-        select distinct m.PERMISSION from VT_MENU m
-        INNER JOIN VT_ROLE_MENU rm on rm.MENU_ID = m.ID
-        AND rm.ROLE_ID IN (
-            SELECT ur.ROLE_ID FROM VT_USER_ROLE ur
-            INNER JOIN VT_USER u ON u.ID = ur.USER_ID
-            INNER JOIN VT_ROLE r ON r.ID = ur.ROLE_ID
-            WHERE r.DISABLED = 'N'
-            AND u.USERNAME = #{username}
-        )
-    </select>
-
 </mapper>

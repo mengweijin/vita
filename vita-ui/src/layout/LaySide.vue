@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import { getMenuList } from "@/api/system/menu";
+import { getMenuSideList } from "@/api/system/menu";
+import { toTree } from "@/utils/util";
+
 import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/stores/appStore.js';
 const appStore = useAppStore();
@@ -17,9 +19,9 @@ const handleClose = (key, keyPath) => {
 }
 
 onMounted(() => {
-  getMenuList().then((res) => {
-    menuList = res;
-    console.log(res);
+  getMenuSideList().then((res) => {
+    menuList.value = toTree(res, '0');
+    console.log(menuList.value);
   });
 });
 
