@@ -20,7 +20,7 @@ const handleClose = (key, keyPath) => {
 
 onMounted(() => {
   getMenuSideList().then((res) => {
-    menuList.value = toTree(res, '0');
+    menuList.value = toTree(res);
     console.log(menuList.value);
   });
 });
@@ -46,12 +46,12 @@ onMounted(() => {
 
     <el-menu-item index="999">
       <Icon icon="ri:github-fill" width="24" height="24" />
-      <span>https://github.com/mengweijin/vita</span>
+      <span>Vita（微塔）Github</span>
     </el-menu-item>
 
     <el-menu-item index="999">
       <Icon icon="simple-icons:gitee" width="24" height="24" />
-      <span>https://gitee.com/mengweijin/vita</span>
+      <span>Vita（微塔）Gitee</span>
     </el-menu-item>
 
   </el-menu>

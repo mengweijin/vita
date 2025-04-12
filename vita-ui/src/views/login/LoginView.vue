@@ -55,6 +55,7 @@ const onSubmit = async () => {
   await formRef.value.validate((valid, fields) => {
     if (valid) {
       login(form).then((r) => {
+        // 保存用户和token 到 userStore
         user.value = r.data;
         router.push('/');
       });
@@ -86,7 +87,7 @@ onBeforeUnmount(() => {
   <el-container>
     <el-main>
       <div class="vt-login-container">
-        <el-form :model="form" :rules="rules" ref="formRef" size="large" label-width="auto" style="max-width: 350px">
+        <el-form :model="form" :rules="rules" ref="formRef" size="large">
           <el-form-item>
             <div style="width: 100%;text-align: center;"><img src="/logo.svg" /></div>
           </el-form-item>
@@ -160,6 +161,22 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* 移动端样式 */
+@media screen and (max-width: 800px) {
+  .vt-login {
+    height: calc(100% - 74px);
+    --item-width: 320px;
+  }
+}
+
+/* PC端样式 */
+@media screen and (min-width: 800px) {
+  .vt-login {
+    height: calc(100% - 34px);
+    --item-width: 320px;
+  }
+}
+
 .vt-login-container {
   height: calc(100vh - var(--vt-footer-height));
   display: flex;
@@ -214,5 +231,6 @@ onBeforeUnmount(() => {
   align-items: center;
   align-content: center;
   background-color: #eeeeee;
+  height: var(--vt-footer-height);
 }
 </style>

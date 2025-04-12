@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useUserStore } from '@/stores/userStore.js'
+
 /** 路由数据 */
 const routes = []
 
@@ -14,12 +16,34 @@ Object.keys(modules).forEach((key) => {
   routes.push(modules[key].default)
 })
 
+// 捕获所有未匹配路径，跳转 404 页面。这个一定要放在路由列表的最后面！
+routes.push({
+  path: '/:pathMatch(.*)*',
+  redirect: '/error/404',
+})
+
 /** 路由实例 */
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: routes,
   // 严格匹配模式
   strict: true,
+})
+
+// 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+  const { isLogin } = userStore
+
+  if (!isLogin() && to.fullPath !== '/login') {
+    // 未登录且访问受保护路由，强制跳转登录页
+    return '/login'
+  }
+  if (isLogin() && to.fullPath === '/login') {
+    // 已登录但访问登录页。强制跳转首页
+    return '/'
+  }
+  // 其它情况默认放行路由
 })
 
 export default router

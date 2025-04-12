@@ -5,7 +5,20 @@
 /* semantic color variables for this project */
 :root {
   --vt-header-height: 60px;
-  --vt-footer-height: 60px;
+}
+
+/* 移动端样式 */
+@media screen and (max-width: 800px) {
+  :root {
+    --vt-footer-height: 110px;
+  }
+}
+
+/* PC端样式 */
+@media screen and (min-width: 800px) {
+  :root {
+    --vt-footer-height: 60px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

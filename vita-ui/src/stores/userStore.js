@@ -8,7 +8,9 @@ export const useUserStore = defineStore(
   () => {
     const user = ref(null)
 
-    return { user }
+    const isLogin = () => (user?.value?.token ? true : false)
+
+    return { user, isLogin }
   },
   {
     persist: {
