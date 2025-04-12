@@ -1,6 +1,7 @@
 import axios from 'axios'
-import router from '@/router/index.js'
 import { stringify } from 'qs'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'

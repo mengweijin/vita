@@ -37,7 +37,7 @@ router.beforeEach((to, from) => {
 
   if (!isLogin() && to.fullPath !== '/login') {
     // 未登录且访问受保护路由，强制跳转登录页
-    return '/login'
+    return { path: '/login' }
   }
   if (isLogin() && to.fullPath === '/login') {
     // 已登录但访问登录页。强制跳转首页
