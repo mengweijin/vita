@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "rimraf dist && vite build",
     "build:staging": "rimraf dist && vite build --mode staging",
+    "copy": "rmdir /s /q ..\\vita-admin\\src\\main\\resources\\static\\vita && xcopy dist ..\\vita-admin\\src\\main\\resources\\static\\vita /s/e/i/y",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",

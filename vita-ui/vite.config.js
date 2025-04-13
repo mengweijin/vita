@@ -77,8 +77,9 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     build: {
+      // 会先使用 legacy 中的 targets
       // https://cn.vitejs.dev/guide/build.html#browser-compatibility
-      target: 'es2015',
+      //target: 'es2015',
       // https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
       // 小于此阈值的导入或引用资源将内联为 base64 编码，以避免额外的 http 请求。设置为 0 可以完全禁用此项。
       assetsInlineLimit: 0,

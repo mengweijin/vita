@@ -1,1 +1,0 @@
-System.register(["../../modulepreload-polyfill-legacy-thrsW4a0.js"],(function(e,t){"use strict";return{setters:[null],execute:function(){(0,layui.$)("#footerYear").text((new Date).getFullYear())}}}));

@@ -1,1 +1,0 @@
-import"../../modulepreload-polyfill-B5Qt9EMX.js";function e(){import.meta.url,import("_").catch(()=>1),async function*(){}().next()}let t=layui.$;t("#footerYear").text(new Date().getFullYear());export{e as __vite_legacy_guard};

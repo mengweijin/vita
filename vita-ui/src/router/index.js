@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import { useUserStore } from '@/stores/userStore.js'
 
@@ -24,7 +24,7 @@ routes.push({
 
 /** 路由实例 */
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: routes,
   // 严格匹配模式
   strict: true,

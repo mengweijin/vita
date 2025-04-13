@@ -2,12 +2,8 @@ package com.github.mengweijin.vita.framework.mvc;
 
 import com.github.mengweijin.vita.framework.VitaProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.web.server.ConfigurableWebServerFactory;
-import org.springframework.boot.web.server.ErrorPage;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -23,8 +19,6 @@ import java.time.Duration;
 @AllArgsConstructor
 @SuppressWarnings({"unused"})
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    private static final String INDEX_PATH = "/vita/index.html";
 
     private VitaProperties vitaProperties;
 
@@ -53,14 +47,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new CorsFilter(source);
     }
 
-    @Bean
-    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
-        return (factory -> {
-            ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND, INDEX_PATH);
-            factory.addErrorPages(errorPage404);
-        });
-    }
-
     /**
      * 重定向：registry.addViewController("/").setViewName("/vita/index.html");
      * 转发：registry.addRedirectViewController("/", "/vita/index.html");
@@ -69,7 +55,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", INDEX_PATH);
+        // 将根路径 "/" 的请求转发到 "/index.html"
+        registry.addViewController("/").setViewName("forward:/vita/index.html");
     }
 
 }
