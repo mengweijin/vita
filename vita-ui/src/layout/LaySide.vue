@@ -1,15 +1,20 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import { getMenuSideList } from "@/api/system/menu";
 import { toTree } from "@/utils/util";
+
+import MenuTree from "./components/MenuTree.vue";
 
 import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/stores/appStore.js';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
-const menuList = ref([]);
+import { useUserStore } from '@/stores/userStore.js'
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
+const menuTreeList = ref([]);
 
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
@@ -19,40 +24,22 @@ const handleClose = (key, keyPath) => {
 }
 
 onMounted(() => {
-  getMenuSideList().then((res) => {
-    menuList.value = toTree(res);
-    console.log(menuList.value);
-  });
+  // 转为树状
+  menuTreeList.value = toTree(user.value.menus);
+  console.log(menuTreeList.value);
 });
 
 </script>
 
 <template>
-  <el-menu :collapse="!sideMenuOpened" :collapse-transition="true" :default-active="0" @open="handleOpen"
-    @close="handleClose">
-    <el-menu-item index="0">
+  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="'/home'"
+    @open="handleOpen" @close="handleClose" style="transition: width 0.3s;">
+    <el-menu-item index="/home">
       <Icon icon="ri:home-2-fill" width="24" height="24" />
       <span>首页</span>
     </el-menu-item>
 
-    <el-sub-menu index="1">
-      <template #title>
-        <Icon icon="ri:function-fill" width="24" height="24" />
-        <span>系统管理</span>
-      </template>
-      <el-menu-item index="1-1">部门管理</el-menu-item>
-      <el-menu-item index="1-2">用户管理</el-menu-item>
-    </el-sub-menu>
-
-    <el-menu-item index="999">
-      <Icon icon="ri:github-fill" width="24" height="24" />
-      <span>Vita（微塔）Github</span>
-    </el-menu-item>
-
-    <el-menu-item index="999">
-      <Icon icon="simple-icons:gitee" width="24" height="24" />
-      <span>Vita（微塔）Gitee</span>
-    </el-menu-item>
+    <MenuTree :menu-list="menuTreeList" />
 
   </el-menu>
 </template>

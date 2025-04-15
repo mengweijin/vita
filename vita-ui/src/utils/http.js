@@ -62,6 +62,8 @@ axiosInstance.interceptors.response.use(
           ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true })
           break
         case 401:
+          // 清理前端登录信息残留
+          user.value = null
           // 跳转时携带当前页面路径，登录后可返回
           router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } })
           // ElMessage.error({

@@ -9,8 +9,14 @@ import router from './router'
 
 const app = createApp(App)
 
+// 自定义指令
+import * as directives from '@/directives/index.js'
+Object.keys(directives).forEach((key) => {
+  app.directive(key, directives[key])
+})
+
 const pinia = createPinia()
-// 注册插件
+// pinia 注册插件
 pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)

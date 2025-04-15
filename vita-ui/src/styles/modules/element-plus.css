@@ -1,17 +1,2 @@
 :root {
-  --el-aside-width: 220px;
-}
-
-/* 移动端样式 */
-@media screen and (max-width: 800px) {
-  :root {
-    --el-aside-width: 0px;
-  }
-}
-
-/* PC端样式 */
-@media screen and (min-width: 800px) {
-  :root {
-    --el-aside-width: 220px;
-  }
 }

@@ -2,6 +2,7 @@ const Layout = () => import('@/layout/LayIndex.vue')
 
 export default {
   path: '/',
+  name: 'Layout',
   component: Layout,
   redirect: '/home',
   children: [

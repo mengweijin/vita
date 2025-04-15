@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && vite build",
-    "build:staging": "rimraf dist && vite build --mode staging",
+    "build": "vite build",
+    "build:staging": "vite build --mode staging && pnpm copy",
     "copy": "rmdir /s /q ..\\vita-admin\\src\\main\\resources\\static\\vita && xcopy dist ..\\vita-admin\\src\\main\\resources\\static\\vita /s/e/i/y",
     "preview": "vite preview",
     "lint": "eslint . --fix",

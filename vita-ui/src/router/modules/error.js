@@ -1,5 +1,6 @@
 export default {
   path: '/error',
+  name: 'Error',
   redirect: '/error/403',
   children: [
     {

@@ -39,9 +39,19 @@ public class Menu extends BaseEntity {
     private String permission;
 
     /**
-     * 菜单跳转路径。如：src/views/system/user/list.html 或者一个外部链接
+     * 路由名称。例如：SystemUser
      */
-    private String redirect;
+    private String routeName;
+
+    /**
+     * 路由路径。例如：/system/user
+     */
+    private String routePath;
+
+    /**
+     * 组件路径。例如：system/user/UserList.vue 或者一个外部 url
+     */
+    private String component;
 
     /**
      * 排序

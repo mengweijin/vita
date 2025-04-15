@@ -70,12 +70,6 @@ public class MenuController {
         return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(Menu::getSeq));
     }
 
-    @SaCheckPermission("system:menu:query")
-    @GetMapping("/list-side")
-    public List<Menu> getSideMenuByLoginUsername() {
-        return menuService.getSideMenuByLoginUserId();
-    }
-
     /**
      * <p>
      * Get Menu by id

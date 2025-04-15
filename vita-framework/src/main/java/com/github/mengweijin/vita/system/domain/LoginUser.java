@@ -1,9 +1,11 @@
 package com.github.mengweijin.vita.system.domain;
 
+import com.github.mengweijin.vita.system.domain.entity.Menu;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,6 +45,11 @@ public class LoginUser implements Serializable {
      * 用户权限
      */
     private Set<String> permissions;
+
+    /**
+     * 用户菜单
+     */
+    private List<Menu> menus;
 
     /**
      * 用户 token

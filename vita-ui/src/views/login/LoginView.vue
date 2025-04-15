@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* 移动端样式 */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
   .vt-login {
     height: calc(100% - 74px);
     --item-width: 320px;
@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
 }
 
 /* PC端样式 */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 768px) {
   .vt-login {
     height: calc(100% - 34px);
     --item-width: 320px;

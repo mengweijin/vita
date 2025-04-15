@@ -3,7 +3,6 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.constant.MenuConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.Menu;
@@ -56,7 +55,9 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
                 .eq(StrValidator.isNotBlank(menu.getType()), Menu::getType, menu.getType())
                 .eq(StrValidator.isNotBlank(menu.getTitle()), Menu::getTitle, menu.getTitle())
                 .eq(StrValidator.isNotBlank(menu.getPermission()), Menu::getPermission, menu.getPermission())
-                .eq(StrValidator.isNotBlank(menu.getRedirect()), Menu::getRedirect, menu.getRedirect())
+                .eq(StrValidator.isNotBlank(menu.getRouteName()), Menu::getRouteName, menu.getRouteName())
+                .eq(StrValidator.isNotBlank(menu.getRoutePath()), Menu::getRoutePath, menu.getRoutePath())
+                .eq(StrValidator.isNotBlank(menu.getComponent()), Menu::getComponent, menu.getComponent())
                 .eq(!Objects.isNull(menu.getSeq()), Menu::getSeq, menu.getSeq())
                 .eq(StrValidator.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
                 .eq(StrValidator.isNotBlank(menu.getDisabled()), Menu::getDisabled, menu.getDisabled())
@@ -81,12 +82,12 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
                 .stream().map(Menu::getPermission).collect(Collectors.toSet());
     }
 
-    public List<Menu> getSideMenuByLoginUserId() {
-        if (LoginHelper.isAdmin()) {
+    public List<Menu> getSideMenuByUserId(Long userId) {
+        if (userId.equals(UserConst.ADMIN_USER_ID)) {
             return this.lambdaQuery().eq(Menu::getDisabled, EYesNo.N.getValue()).ne(Menu::getType, EMenuType.BTN.getValue()).list();
         }
 
-        Set<Long> roleIds = userRoleService.getRoleIdsByUserId(LoginHelper.getLoginUserIdQuietly());
+        Set<Long> roleIds = userRoleService.getRoleIdsByUserId(userId);
         Set<Long> menuIds = roleMenuService.getMenuIdsInRoleIds(roleIds);
         // 这里排除掉按钮类型的和已禁用的菜单
         return this.getBaseMapper().selectByIds(menuIds).stream()

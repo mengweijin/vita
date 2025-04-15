@@ -88,6 +88,7 @@ public class LoginService {
         loginUser.setAvatar(userService.getAvatarById(user.getId()));
         loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
         loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
+        loginUser.setMenus(menuService.getSideMenuByUserId(user.getId()));
         loginUser.setToken(StpUtil.getTokenValue());
         loginUser.setLoginTime(LocalDateTime.now());
         return loginUser;

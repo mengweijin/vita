@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { getDeviceType } from '@/utils/device.js'
 
 const { VITE_APP_PREFIX } = import.meta.env
 
@@ -7,7 +8,7 @@ export const useAppStore = defineStore(
   `${VITE_APP_PREFIX}-app`,
   () => {
     // state 直接解构会丢失响应性，需要通过 storeToRefs 保留响应式
-    const sideMenuOpened = ref(true)
+    const sideMenuOpened = ref(getDeviceType() !== 'mobile')
 
     return { sideMenuOpened }
   },

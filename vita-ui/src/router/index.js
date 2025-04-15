@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
 
 /** 路由数据 */
@@ -22,6 +22,31 @@ routes.push({
   redirect: '/error/404',
 })
 
+/**
+ * 动态注册路由​
+ * 将接口数据转换为 Vue Router 可识别的路由对象，并用 router.addRoute() 动态添加
+ */
+const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
+  menuList
+    .filter((menu) => 'DIR' === menu.type || 'MENU' === menu.type)
+    .forEach((menu) => {
+      const config = {
+        name: menu.routeName,
+        path: menu.routePath,
+        component: () => import(/* @vite-ignore */ `/src/views/${menu.component}`),
+        meta: {
+          title: menu.title,
+        },
+        children: () => (menu.children ? formatDynamicRoutes(menu.children, menu.routeName) : []),
+      }
+
+      if (!router.hasRoute(menu.routeName)) {
+        // 添加到父路由或根路由
+        parentRouteName ? router.addRoute(parentRouteName, config) : router.addRoute(config)
+      }
+    })
+}
+
 /** 路由实例 */
 const router = createRouter({
   history: createWebHashHistory(),
@@ -30,10 +55,19 @@ const router = createRouter({
   strict: true,
 })
 
+let isDynamicRoutesAdded = false
+
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
 router.beforeEach((to, from) => {
   const userStore = useUserStore()
   const { isLogin } = userStore
+  const { user } = storeToRefs(userStore)
+
+  // 增加动态路由
+  if (isLogin() && !isDynamicRoutesAdded) {
+    addDynamicRoutes(user.value.menus)
+    isDynamicRoutesAdded = true
+  }
 
   if (!isLogin() && to.fullPath !== '/login') {
     // 未登录且访问受保护路由，强制跳转登录页

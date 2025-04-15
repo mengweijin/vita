@@ -37,18 +37,18 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
 <template>
   <el-menu mode="horizontal" :ellipsis="false">
-    <el-menu-item index="0" style="width: var(--el-aside-width);">
+    <el-menu-item index="0" style="width: 200px;">
       <img src="/logo.svg" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="toggleSideMenuOpened()">
       <Icon icon="ep:fold" width="24" height="24" v-if="sideMenuOpened" />
       <Icon icon="ep:expand" width="24" height="24" v-else />
     </el-menu-item>
-    <el-menu-item index="3" @click="refresh()">
+    <el-menu-item index="3" @click="refresh()" v-device.pc>
       <Icon icon="ep:refresh" width="24" height="24" />
     </el-menu-item>
 
-    <el-menu-item index="5" @click="toggleFullscreen()">
+    <el-menu-item index="5" @click="toggleFullscreen()" v-device.tablet.pc>
       <Icon icon="ri:fullscreen-exit-fill" width="24" height="24" v-if="isFullscreen" />
       <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
@@ -88,7 +88,7 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
 <style scoped>
 /* 左右布局显示 */
-.el-menu--horizontal>.el-menu-item:nth-child(3) {
+.el-menu--horizontal>.el-menu-item:nth-child(2) {
   margin-right: auto;
 }
 
