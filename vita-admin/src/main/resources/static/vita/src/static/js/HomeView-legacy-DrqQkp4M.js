@@ -1,1 +1,0 @@
-System.register(["./index-legacy-BUpXkeVg.js"],(function(e,t){"use strict";var n,r,i;return{setters:[e=>{n=e._,r=e.c,i=e.o}],execute:function(){e("default",n({},[["render",function(e,t){return i(),r("div",null,"This is Home View!")}]]))}}}));
