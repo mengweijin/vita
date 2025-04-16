@@ -29,6 +29,9 @@ routes.push({
  * 将接口数据转换为 Vue Router 可识别的路由对象，并用 router.addRoute() 动态添加
  */
 const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
+  if (!menuList) {
+    return
+  }
   menuList
     .filter((menu) => 'DIR' === menu.type || 'MENU' === menu.type)
     .forEach((menu) => {
@@ -66,10 +69,10 @@ const router = createRouter({
   // 刷新时，还原滚动条位置
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition;
+      return savedPosition
     }
-    return { top: 0 };
-  }
+    return { top: 0 }
+  },
 })
 
 let isDynamicRoutesAdded = false
