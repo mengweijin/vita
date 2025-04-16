@@ -38,7 +38,7 @@ const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
       const config = {
         name: menu.routeName,
         path: menu.routePath,
-        component: () => import(/* @vite-ignore */ `/src/views/${menu.component}`),
+        component: () => import(/* @vite-ignore */ `@/views/${menu.component}`),
         meta: {
           title: menu.title,
         },
