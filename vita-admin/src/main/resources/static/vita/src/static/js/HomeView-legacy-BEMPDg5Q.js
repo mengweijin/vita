@@ -1,1 +1,0 @@
-System.register(["./index-legacy-D6_pSTNr.js"],(function(e,t){"use strict";var r,n,u;return{setters:[e=>{r=e._,n=e.c,u=e.o}],execute:function(){e("default",r({},[["render",function(e,t){return u(),n("div")}]]))}}}));
