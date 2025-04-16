@@ -5,7 +5,7 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
-import router from './router'
+import {default as router, initDynamicRoutes } from './router/index.js'
 
 const app = createApp(App)
 
@@ -20,6 +20,9 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
+
+// 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
+initDynamicRoutes();
 app.use(router)
 
 app.mount('#app')

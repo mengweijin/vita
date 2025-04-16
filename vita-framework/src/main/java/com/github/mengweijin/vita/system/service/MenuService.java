@@ -3,7 +3,6 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.constant.MenuConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.Menu;
 import com.github.mengweijin.vita.system.domain.entity.User;
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -71,7 +69,8 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
 
     public Set<String> getMenuPermissionListByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
-            return Collections.singleton(MenuConst.ALL_PERMISSIONS);
+            return this.lambdaQuery().select(Menu::getPermission).list()
+                    .stream().map(Menu::getPermission).collect(Collectors.toSet());
         }
 
         User user = userService.getByUsername(username);

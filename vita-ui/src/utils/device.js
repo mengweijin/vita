@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce'
+import { debounce } from 'xe-utils'
 
 // 设备断点配置
 const BREAKPOINTS = {

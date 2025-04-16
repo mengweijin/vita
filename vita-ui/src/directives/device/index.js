@@ -1,4 +1,4 @@
-import { getDeviceType, listenResize } from '@/utils/device.js'
+import { getDeviceType } from '@/utils/device.js'
 
 export const device = {
   mounted(el, binding) {

@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
 
+const { VITE_PUBLIC_PATH } = import.meta.env
+
 /** 路由数据 */
 const routes = []
 
@@ -33,11 +35,12 @@ const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
       const config = {
         name: menu.routeName,
         path: menu.routePath,
-        component: () => import(/* @vite-ignore */ `/src/views/${menu.component}`),
+        component: () =>
+          import(/* @vite-ignore */ `${VITE_PUBLIC_PATH}src/views/${menu.component}`),
         meta: {
           title: menu.title,
         },
-        children: () => (menu.children ? formatDynamicRoutes(menu.children, menu.routeName) : []),
+        children: () => (menu.children ? addDynamicRoutes(menu.children, menu.routeName) : []),
       }
 
       if (!router.hasRoute(menu.routeName)) {
@@ -47,12 +50,26 @@ const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
     })
 }
 
+export const initDynamicRoutes = () => {
+  const userStore = useUserStore()
+  const { user } = storeToRefs(userStore)
+
+  addDynamicRoutes(user?.value?.menus)
+}
+
 /** 路由实例 */
 const router = createRouter({
   history: createWebHashHistory(),
   routes: routes,
   // 严格匹配模式
   strict: true,
+  // 刷新时，还原滚动条位置
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    return { top: 0 };
+  }
 })
 
 let isDynamicRoutesAdded = false
@@ -61,11 +78,11 @@ let isDynamicRoutesAdded = false
 router.beforeEach((to, from) => {
   const userStore = useUserStore()
   const { isLogin } = userStore
-  const { user } = storeToRefs(userStore)
 
   // 增加动态路由
-  if (isLogin() && !isDynamicRoutesAdded) {
-    addDynamicRoutes(user.value.menus)
+  if (!isDynamicRoutesAdded && isLogin()) {
+    // 还需要在 main.js 中调用一下，以免刷新页面时，页面空白或404
+    initDynamicRoutes()
     isDynamicRoutesAdded = true
   }
 

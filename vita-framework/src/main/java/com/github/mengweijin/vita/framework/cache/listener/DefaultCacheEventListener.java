@@ -10,7 +10,6 @@ import org.ehcache.event.CacheEventListener;
  * @since 2022/10/29
  */
 @Slf4j
-@AllArgsConstructor
 public class DefaultCacheEventListener implements CacheEventListener<Object, Object> {
 
     @Override

@@ -9,7 +9,6 @@ const { menuList } = defineProps({
 });
 
 const handleClick = (menu) => {
-  console.log(menu)
   if ('IFRAME' === menu.type) {
 
   } else if ('URL' === menu.type) {

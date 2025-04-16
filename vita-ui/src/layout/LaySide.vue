@@ -1,7 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import { toTree } from "@/utils/util";
+import { toArrayTree } from 'xe-utils';
+
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
 import MenuTree from "./components/MenuTree.vue";
 
@@ -14,33 +17,29 @@ import { useUserStore } from '@/stores/userStore.js'
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
-const menuTreeList = ref([]);
+const activeMenu = computed(() => {
+  const { meta, path } = route
+  return path || '/'
+});
 
-const handleOpen = (key, keyPath) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key, keyPath) => {
-  console.log(key, keyPath)
-}
+const menuTreeList = ref([]);
 
 onMounted(() => {
   // 转为树状
-  menuTreeList.value = toTree(user.value.menus);
-  console.log(menuTreeList.value);
+  menuTreeList.value = toArrayTree(user.value.menus, { sortKey: 'seq' });
 });
 
 </script>
 
 <template>
-  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="'/home'"
-    @open="handleOpen" @close="handleClose" style="transition: width 0.3s;">
+  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="activeMenu"
+    style="transition: width 0.3s;">
     <el-menu-item index="/home">
       <Icon icon="ri:home-2-fill" width="24" height="24" />
       <span>首页</span>
     </el-menu-item>
 
     <MenuTree :menu-list="menuTreeList" />
-
   </el-menu>
 </template>
 

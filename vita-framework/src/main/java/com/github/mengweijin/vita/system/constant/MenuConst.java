@@ -13,9 +13,4 @@ public abstract class MenuConst {
 
     public static final long ROOT_ID = 0L;
 
-    /**
-     * 拥有所有权限的格式
-     */
-    public static final String ALL_PERMISSIONS = "*:*:*";
-
 }
