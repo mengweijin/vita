@@ -1,9 +1,7 @@
-const Layout = () => import('@/layout/LayIndex.vue')
-
 export default {
   path: '/',
   name: 'Layout',
-  component: Layout,
+  component: () => import('@/layout/LayIndex.vue'),
   redirect: '/home',
   children: [
     {

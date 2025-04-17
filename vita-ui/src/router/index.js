@@ -2,8 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
 
-const { VITE_PUBLIC_PATH } = import.meta.env
-
 /** 路由数据 */
 const routes = []
 
@@ -24,21 +22,21 @@ routes.push({
   redirect: '/error/404',
 })
 
+// 路由组件列表（只有使用 Vite 的 glob 导入才不会在打包后路径失效）
+const components = import.meta.glob('../views/**/*.vue')
+
 /**
- * 动态注册路由​
+ * 动态注册路由​（全部作为 Layout 下的二级路由）
  * 将接口数据转换为 Vue Router 可识别的路由对象，并用 router.addRoute() 动态添加
  */
-const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
-  if (!menuList) {
-    return
-  }
+const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
   menuList
     .filter((menu) => 'DIR' === menu.type || 'MENU' === menu.type)
     .forEach((menu) => {
       const config = {
         name: menu.routeName,
         path: menu.routePath,
-        component: () => import(/* @vite-ignore */ `@/views/${menu.component}`),
+        component: components[`../views/${menu.component}`],
         meta: {
           title: menu.title,
         },
@@ -55,7 +53,6 @@ const addDynamicRoutes = (menuList, parentRouteName = 'Layout') => {
 export const initDynamicRoutes = () => {
   const userStore = useUserStore()
   const { user } = storeToRefs(userStore)
-
   addDynamicRoutes(user?.value?.menus)
 }
 
@@ -78,6 +75,12 @@ let isDynamicRoutesAdded = false
 
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
 router.beforeEach((to, from) => {
+  // 设置标题
+  let title = to?.meta?.title;
+  if(title) {
+    document.title = `${title} | ${document.title}`;
+  }
+
   const userStore = useUserStore()
   const { isLogin } = userStore
 

@@ -1,0 +1,1 @@
+System.register(["./index-legacy-Cxjn63HW.js"],(function(e,t){"use strict";var s,n,r,u,i;return{setters:[e=>{s=e.r,n=e.M,r=e.k,u=e.c,i=e.o}],execute:function(){e("default",{__name:"DeptList",props:{message:{type:String,default:""}},setup:e=>(s(!1),n({username:"admin"}),r((()=>{})),(e,t)=>(i(),u("div",null,"Dept")))})}}}));

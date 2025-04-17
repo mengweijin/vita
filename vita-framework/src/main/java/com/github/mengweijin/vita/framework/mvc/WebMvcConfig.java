@@ -56,7 +56,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 将根路径 "/" 的请求转发到 "/index.html"
-        registry.addViewController("/").setViewName("forward:/vita/index.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
 
 }

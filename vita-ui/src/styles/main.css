@@ -19,6 +19,11 @@
   font-weight: normal;
 }
 
+html,
+body {
+  overflow: hidden;
+}
+
 #app {
   /* 占满视口高度，内容超出时自动扩展 */
   min-height: 100vh;

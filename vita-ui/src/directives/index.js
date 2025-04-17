@@ -1,1 +1,1 @@
-export * from './device'
+export * from './modules/device.js'

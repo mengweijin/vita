@@ -25,26 +25,35 @@ import java.io.IOException;
 public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
 
     /**
-     * 注册sa-token的拦截器，打开注解式鉴权功能
+     * knife4j 文档: "/doc.html", "/webjars/**", "/v3/api-docs/**"
+     */
+    private static final String[] WHITE_LIST = new String[]{
+            "/doc.html",
+            "/webjars/**",
+            "/v3/api-docs/**",
+
+            "/",
+            "/**/*.css",
+            "/**/*.js",
+            "/**/*.svg",
+            "/**/*.html",
+    };
+
+    /**
+     * 注册sa-token的拦截器
      * // 指定一条 match 规则。拦截的 path 列表，可以写多个
      * SaRouter.match("/**")
      * // 要执行的校验动作，可以写完整的 lambda 表达式
      * .check(r -> StpUtil.checkLogin());
-     * <p>
-     * knife4j:
-     *      "/doc.html", "/webjars/**", "/v3/api-docs/**"
+     *
      * @param registry registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，定义详细认证规则
-        registry.addInterceptor(new SaInterceptor(handler -> {
-                    SaRouter.match("/**").check(r -> StpUtil.checkLogin());
-                    // 根据路由划分模块，不同模块不同鉴权
-                    SaRouter.match("/doc.html", r -> StpUtil.checkLogin());
-                }))
+        registry.addInterceptor(new SaInterceptor(handler -> SaRouter.match("/**").check(r -> StpUtil.checkLogin())))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/vita/**", "/doc.html", "/webjars/**", "/v3/api-docs/**");
+                .excludePathPatterns(WHITE_LIST);
     }
 
     /**
@@ -65,7 +74,7 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         SaFirewallStrategy.instance.checkFailHandle = (e, req, res, extArg) -> {
-            if(res instanceof HttpServletResponse response) {
+            if (res instanceof HttpServletResponse response) {
                 try {
                     response.setContentType("text/plain; charset=utf-8");
                     response.setStatus(HttpStatus.BAD_REQUEST.value());

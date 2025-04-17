@@ -33,7 +33,7 @@ onMounted(() => {
 
 <template>
   <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="activeMenu"
-    style="transition: width 0.3s;">
+    class="vt-menu">
     <el-menu-item index="/home">
       <Icon icon="ri:home-2-fill" width="24" height="24" />
       <span>首页</span>
@@ -44,6 +44,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.vt-menu {
+  transition: width 0.3s;
+  height: calc(100vh - var(--vt-header-height));
+  overflow-y: auto;
+}
+
 .el-menu-item>span,
 .el-sub-menu__title>span {
   padding-left: 5px;

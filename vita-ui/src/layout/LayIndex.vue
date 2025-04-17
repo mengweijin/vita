@@ -35,7 +35,8 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
 
 <style scoped>
 :deep(.el-main) {
-  min-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
+  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
+  overflow-y: auto;
 }
 
 :deep(.el-header) {

@@ -119,30 +119,3 @@ axiosInstance.download = async function (url, fileName) {
 }
 
 export default axiosInstance
-
-/**
- * 说明：
- * 1. 在 vue 中给 data() 中的对象赋值时，下面的 then() 需要用 => 方式，而不能用 function(response) {} 的方式，否则 then 代码块里面的 this 指向的是 axios，而不是 vue。
- *
- * 2. 当使用 get 请求时，参数传递的 key 要用 params
- * 假如请求参数对象为 let requestParams = {id: 1, name: 'jack'}
- * this.$http.get('/doc-namespace/' + namespaceId, { params: requestParams }).then((response) => {
- *    this.namespace = response.data
- * })
- *
- * 3. 当使用除了 get 方式以外的请求类型时，参数传递直接传入即可
- * 假如请求参数对象为 let requestParams = {id: 1, name: 'jack'}
- * this.$http.post('/doc-namespace/', requestParams).then((response) => {
- *    // do something
- * })
- *
- * 4. 这里扩展了一个 loading 全屏遮罩层的 get 方式的方法
- * 假如请求参数对象为 let requestParams = {id: 1, name: 'jack'}
- * this.$http.loading('/doc-namespace/' + namespaceId, { params: requestParams }).then((response) => {
- *    this.namespace = response.data
- * })
- *
- * 5. 这里扩展了一个 download 下载文件的 get 方式的方法
- * 假如: fileName = a.zip
- * this.$http.download('/common/download/' + fileId, fileName)
- */
