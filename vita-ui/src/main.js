@@ -9,6 +9,13 @@ import { default as router, initDynamicRoutes } from './router/index.js'
 
 const app = createApp(App)
 
+// 预加载全部 ep、ri 图标
+import { addCollection } from '@iconify/vue'
+import epIcons from '@iconify-json/ep/icons.json'
+import riIcons from '@iconify-json/ri/icons.json'
+addCollection(epIcons)
+addCollection(riIcons)
+
 // 自定义指令
 import * as directives from '@/directives/index.js'
 Object.keys(directives).forEach((key) => {

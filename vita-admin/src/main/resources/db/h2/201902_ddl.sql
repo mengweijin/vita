@@ -118,6 +118,22 @@ create TABLE VT_DICT_DATA (
 create unique index UIDX_VT_DICT_DATA_CODE_VAL on VT_DICT_DATA(CODE, VAL);
 
 
+drop table IF EXISTS VT_LOGS;
+create TABLE VT_LOGS (
+  ID                            bigint NOT NULL comment '主键ID',
+  LOGGER_LEVEL                  varchar(10) DEFAULT NULL comment '日志级别',
+  THREAD_NAME                   varchar(255) DEFAULT NULL comment '线程名称',
+  LOGGER_NAME                   varchar(255) DEFAULT NULL comment '日志名称。java 类名',
+  FORMATTED_MESSAGE             varchar(3000) DEFAULT NULL comment '格式化后的日志信息',
+  STACK_TRACE                   CLOB DEFAULT NULL comment 'stack trace',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+
+
 drop table IF EXISTS VT_LOG_OPERATION;
 create TABLE VT_LOG_OPERATION (
   ID                            bigint NOT NULL comment '主键ID',

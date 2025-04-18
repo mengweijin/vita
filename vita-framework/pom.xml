@@ -66,10 +66,6 @@
             <artifactId>p6spy-spring-boot-starter</artifactId> 
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback.db</groupId>
-            <artifactId>logback-classic-db</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>

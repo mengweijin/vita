@@ -10,6 +10,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // 根据当前工作目录中的 `mode` 加载 .env 文件
@@ -65,6 +68,9 @@ export default defineConfig(({ mode }) => {
         targets: ['defaults', 'not IE 11'],
       }),
       AutoImport({
+        // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
+        imports: ['vue'],
+        // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
         eslintrc: {
           enabled: true, // 自动生成 ESLint 全局变量声明文件
@@ -73,7 +79,22 @@ export default defineConfig(({ mode }) => {
         dts: false, // 禁用 TypeScript 类型声明生成（纯 JS 项目无需此文件）
       }),
       Components({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [
+          IconsResolver({
+            // 组件前缀。使用格式：{prefix}-{collection}-{icon} 或动态调用：<component :is="ep:home-filled" />
+            prefix: 'icon',
+            // 自动注册 iconify 图标组件。限制仅加载 ep、ri 和 mdi 图标集（collection）
+            enabledCollections: ['ep', 'ri', 'mdi'],
+          }),
+          // 自动注册 Element Plus 组件
+          ElementPlusResolver(),
+        ],
+      }),
+      Icons({
+        // 关闭自动联网安装。本项目采用离线的方式使用图标，因此关闭自动安装图标的功能。
+        autoInstall: false,
+        // 明确指定 Vue3 语法
+        compiler: 'vue3',
       }),
     ],
     build: {

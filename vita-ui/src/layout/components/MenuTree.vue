@@ -1,5 +1,4 @@
 <script setup>
-import { Icon } from "@iconify/vue";
 
 const { menuList } = defineProps({
   menuList: {
@@ -22,7 +21,7 @@ const handleClick = (menu) => {
     <!-- 有子菜单时渲染 el-sub-menu -->
     <el-sub-menu v-if="item.children?.length" :index="item.routePath">
       <template #title>
-        <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
+        <!-- <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" /> -->
         <span>{{ item.title }}</span>
       </template>
       <!-- 递归调用自身 -->
@@ -31,7 +30,7 @@ const handleClick = (menu) => {
 
     <!-- 无子菜单 el-menu-item -->
     <el-menu-item v-else :index="item.routePath" @click="handleClick(item)">
-      <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
+      <!-- <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" /> -->
       <span>{{ item.title }}</span>
     </el-menu-item>
   </template>

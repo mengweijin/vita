@@ -1,6 +1,4 @@
 <script setup>
-import { ref, reactive, onMounted, onBeforeUnmount, onBeforeMount } from 'vue';
-import { Icon } from '@iconify/vue';
 import LayFooter from "@/layout/LayFooter.vue";
 
 import { login, getCaptcha, getCaptchaEnabled } from '@/api/login';
@@ -97,7 +95,9 @@ onBeforeUnmount(() => {
           <el-form-item prop="username" class="vt-form-item">
             <el-input v-model="form.username" maxlength="30" clearable placeholder="请输入用户名">
               <template #prefix>
-                <Icon icon="ep:user" width="20" height="20" />
+                <el-icon :size="22">
+                  <icon-ep-user />
+                </el-icon>
               </template>
             </el-input>
           </el-form-item>
@@ -108,7 +108,9 @@ onBeforeUnmount(() => {
             <el-input v-model="form.password" maxlength="30" clearable type="password" placeholder="请输入密码"
               show-password>
               <template #prefix>
-                <Icon icon="ep:lock" width="20" height="20" />
+                <el-icon :size="22">
+                  <icon-ep-lock />
+                </el-icon>
               </template>
             </el-input>
           </el-form-item>
@@ -118,7 +120,9 @@ onBeforeUnmount(() => {
           ]">
             <el-input v-model="form.otp" maxlength="4" clearable placeholder="请输入动态口令" show-password>
               <template #prefix>
-                <Icon icon="teenyicons:otp-outline" width="20" height="20" />
+                <el-icon :size="22">
+                  <icon-mdi-lock-clock />
+                </el-icon>
               </template>
             </el-input>
           </el-form-item>
@@ -128,7 +132,9 @@ onBeforeUnmount(() => {
           ]">
             <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
               <template #prefix>
-                <Icon icon="mdi:security-lock-outline" width="20" height="20" />
+                <el-icon :size="22">
+                  <icon-mdi-security-lock-outline />
+                </el-icon>
               </template>
               <template #append>
                 <a href="javascript:;" class="vt-login-captcha" @click="onRefreshCaptcha"><img :src="captchaImg" /></a>
