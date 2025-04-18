@@ -1,1 +1,0 @@
-import{r as e,M as t,k as a,c as s,o as r}from"./index-Cf6JBYtb.js";const l={__name:"DeptList",props:{message:{type:String,default:""}},setup(n){return e(!1),t({username:"admin"}),a(()=>{}),(o,p)=>(r(),s("div",null,"Dept"))}};export{l as default};
