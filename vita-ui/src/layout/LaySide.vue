@@ -1,4 +1,5 @@
 <script setup>
+import { Icon } from "@iconify/vue";
 import { toArrayTree } from 'xe-utils';
 
 import { useRoute } from 'vue-router'
@@ -22,13 +23,6 @@ const activeMenu = computed(() => {
 
 const menuTreeList = ref([]);
 
-const getDynamicIcon = (name) => {
-  let [collection, icon] = name.split(':');
-  return defineComponent({
-    render: () => h(resolveComponent(`icon-${collection}-${icon}`))
-  })
-}
-
 onMounted(() => {
   // 转为树状
   menuTreeList.value = toArrayTree(user.value.menus, { sortKey: 'seq' });
@@ -40,10 +34,7 @@ onMounted(() => {
   <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="activeMenu"
     class="vt-menu">
     <el-menu-item index="/home">
-      <el-icon :size="24">
-        <!-- <icon-mdi-home /> -->
-        <iconify-icon icon="mdi:home"></iconify-icon>
-      </el-icon>
+      <Icon icon="ant-design:home-filled" width="24" height="24" />
       <span>首页</span>
     </el-menu-item>
 

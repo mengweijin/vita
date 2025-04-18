@@ -1,4 +1,5 @@
 <script setup>
+import { Icon } from "@iconify/vue";
 import LayFooter from "@/layout/LayFooter.vue";
 
 import { login, getCaptcha, getCaptchaEnabled } from '@/api/login';
@@ -96,7 +97,7 @@ onBeforeUnmount(() => {
             <el-input v-model="form.username" maxlength="30" clearable placeholder="请输入用户名">
               <template #prefix>
                 <el-icon :size="22">
-                  <icon-ep-user />
+                  <Icon icon="ep:user" />
                 </el-icon>
               </template>
             </el-input>
@@ -109,7 +110,7 @@ onBeforeUnmount(() => {
               show-password>
               <template #prefix>
                 <el-icon :size="22">
-                  <icon-ep-lock />
+                  <Icon icon="ep:lock" />
                 </el-icon>
               </template>
             </el-input>
@@ -121,7 +122,7 @@ onBeforeUnmount(() => {
             <el-input v-model="form.otp" maxlength="4" clearable placeholder="请输入动态口令" show-password>
               <template #prefix>
                 <el-icon :size="22">
-                  <icon-mdi-lock-clock />
+                  <Icon icon="ri:lock-password-line" />
                 </el-icon>
               </template>
             </el-input>
@@ -133,7 +134,7 @@ onBeforeUnmount(() => {
             <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
               <template #prefix>
                 <el-icon :size="22">
-                  <icon-mdi-security-lock-outline />
+                  <Icon icon="ri:shield-keyhole-line" />
                 </el-icon>
               </template>
               <template #append>

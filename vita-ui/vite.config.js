@@ -10,9 +10,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // 根据当前工作目录中的 `mode` 加载 .env 文件
@@ -80,21 +77,9 @@ export default defineConfig(({ mode }) => {
       }),
       Components({
         resolvers: [
-          IconsResolver({
-            // 组件前缀。使用格式：{prefix}-{collection}-{icon} 或动态调用：<component :is="ep:home-filled" />
-            prefix: 'icon',
-            // 自动注册 iconify 图标组件。限制仅加载 ep、ri 和 mdi 图标集（collection）
-            enabledCollections: ['ep', 'ri', 'mdi'],
-          }),
           // 自动注册 Element Plus 组件
           ElementPlusResolver(),
         ],
-      }),
-      Icons({
-        // 关闭自动联网安装。本项目采用离线的方式使用图标，因此关闭自动安装图标的功能。
-        autoInstall: false,
-        // 明确指定 Vue3 语法
-        compiler: 'vue3',
       }),
     ],
     build: {

@@ -1,4 +1,5 @@
 <script setup>
+import { Icon } from "@iconify/vue";
 import { useFullscreen } from '@vueuse/core';
 import router from '@/router/index.js'
 import { logout } from '@/api/login';
@@ -39,21 +40,23 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
       <img src="/logo.svg" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="toggleSideMenuOpened()">
-      <el-icon :size="24" v-if="sideMenuOpened"><icon-ep-fold /></el-icon>
-      <el-icon :size="24" v-else><icon-ep-expand /></el-icon>
+      <Icon icon="ep:fold" width="24" height="24" v-if="sideMenuOpened" />
+      <Icon icon="ep:expand" width="24" height="24" v-else />
     </el-menu-item>
     <el-menu-item index="3" @click="refresh()" v-device.pc>
-      <el-icon :size="24"><icon-ep-refresh /></el-icon>
+      <Icon icon="ep:refresh" width="24" height="24" />
     </el-menu-item>
 
     <el-menu-item index="5" @click="toggleFullscreen()" v-device.tablet.pc>
-      <el-icon :size="24" v-if="isFullscreen"><icon-ri-fullscreen-exit-fill /></el-icon>
-      <el-icon :size="24" v-else><icon-ri-fullscreen-fill /></el-icon>
+      <Icon icon="ri:fullscreen-exit-fill" width="24" height="24" v-if="isFullscreen" />
+      <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
     <el-menu-item index="6">
       <el-icon>
         <el-badge :value="100" :max="99">
-          <el-icon :size="24"><icon-ep-bell-filled /></el-icon>
+          <el-icon :size="24">
+            <Icon icon="ep:bell-filled" width="24" height="24" />
+          </el-icon>
         </el-badge>
       </el-icon>
     </el-menu-item>
@@ -64,20 +67,20 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
         admin
       </template>
       <el-menu-item index="8-1">
-        <el-icon :size="16"><icon-ri-home-9-fill /></el-icon>
+        <Icon icon="ri:home-9-fill" width="16" height="16" />
         <span>个人主页</span>
       </el-menu-item>
       <el-menu-item index="8-2">
-        <el-icon :size="16"><icon-ri-user-settings-line /></el-icon>
+        <Icon icon="ri:user-settings-line" width="16" height="16" />
         <span>偏好设置</span>
       </el-menu-item>
       <el-menu-item index="8-3">
-        <el-icon :size="16"><icon-ri-layout-3-fill /></el-icon>
+        <Icon icon="ri:layout-3-fill" width="16" height="16" />
         <span>布局设置</span>
       </el-menu-item>
       <el-divider />
       <el-menu-item index="8-99" @click="onLogout()">
-        <el-icon :size="16"><icon-ri-logout-box-line /></el-icon>
+        <Icon icon="ri:logout-box-line" width="16" height="16" />
         <span>退出</span>
       </el-menu-item>
     </el-sub-menu>

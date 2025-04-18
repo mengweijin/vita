@@ -51,7 +51,7 @@ onMounted(() => {
 
           <el-col :span="1.5" style="margin-left: auto;">
             <el-tooltip content="显示搜索/隐藏搜索" placement="top">
-              <el-button color="#e2e2e2" circle style="font-size: 20px;">
+              <el-button text circle style="font-size: 22px;">
                 <template #icon>
                   <!-- <Icon icon="ep:search" width="24" height="24"></Icon> -->
                   <Icon icon="mynaui:search-x" width="24" height="24" />
@@ -59,7 +59,7 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="刷新" placement="top">
-              <el-button color="#e2e2e2" circle style="font-size: 20px;">
+              <el-button text circle style="font-size: 22px;">
                 <template #icon>
                   <Icon icon="ep:refresh" width="24" height="24"></Icon>
                 </template>
@@ -67,7 +67,7 @@ onMounted(() => {
             </el-tooltip>
 
             <el-tooltip content="列设置" placement="top">
-              <el-button color="#e2e2e2" circle style="font-size: 20px;">
+              <el-button text circle style="font-size: 22px;">
                 <template #icon>
                   <Icon icon="ep:menu" width="24" height="24"></Icon>
                 </template>
