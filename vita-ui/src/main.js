@@ -9,7 +9,7 @@ import { default as router, initDynamicRoutes } from './router/index.js'
 
 const app = createApp(App)
 
-// 预加载全部 ep、ri、mdi 图标，以实现离线使用 iconify
+// 预加载全部 ep、ri、ant-design 图标，以实现离线使用 iconify
 import { addCollection } from '@iconify/vue'
 import epIcons from '@iconify-json/ep/icons.json'
 import riIcons from '@iconify-json/ri/icons.json'
