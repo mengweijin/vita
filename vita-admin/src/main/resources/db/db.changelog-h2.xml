@@ -4,9 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <include file="./h2/201901_ddl_logback.sql" relativeToChangelogFile="true"/>
-    <include file="./h2/201902_ddl.sql" relativeToChangelogFile="true"/>
-    <include file="./h2/201903_dml.sql" relativeToChangelogFile="true"/>
-    <include file="./h2/201904_dev.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201801_ddl.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201802_dml.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201803_dev.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
