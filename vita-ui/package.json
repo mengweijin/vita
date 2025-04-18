@@ -8,7 +8,7 @@
     "build": "vite build",
     "build:staging": "vite build --mode staging",
     "copy:windows": "rmdir /s /q ..\\vita-admin\\src\\main\\resources\\static && xcopy dist ..\\vita-admin\\src\\main\\resources\\static /s/e/i/y",
-    "copy:linux": "rm -rf ../vita-admin/src/main/resources/static/**/* && mv ./dist/**/* ../vita-admin/src/main/resources/static",
+    "copy:linux": "rm -rf ../vita-admin/src/main/resources/static/* && cp -r ./dist/* ../vita-admin/src/main/resources/static/",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
