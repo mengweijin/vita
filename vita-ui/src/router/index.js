@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore.js'
 
+const { VITE_APP_TITLE } = import.meta.env
+
 /** 路由数据 */
 const routes = []
 
@@ -76,9 +78,11 @@ let isDynamicRoutesAdded = false
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
 router.beforeEach((to, from) => {
   // 设置标题
-  let title = to?.meta?.title;
-  if(title) {
-    document.title = `${title} | ${document.title}`;
+  let title = to?.meta?.title
+  if (title) {
+    document.title = `${title} | ${VITE_APP_TITLE}`
+  } else {
+    document.title = `${VITE_APP_TITLE}`
   }
 
   const userStore = useUserStore()
