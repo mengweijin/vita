@@ -31,6 +31,8 @@ export default defineConfig(({ mode }) => {
      */
     base: env.VITE_PUBLIC_PATH,
     resolve: {
+      // 导入时可以省略的后缀名，可根据需求扩展。若同一目录下存在同名 `.js` 和 `.vue` 文件，按照配置的顺序优先加载。
+      extensions: ['.js'],
       alias: {
         /**
          * import.meta.url 表示当前模块的 URL。

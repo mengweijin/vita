@@ -37,6 +37,6 @@ public @interface Translation {
     /**
      * 字典类型编码 (sys_user_sex)
      */
-    String dictCode() default "";
+    String dictType() default "";
 
 }

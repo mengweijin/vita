@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
-import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.enums.EMessageCategory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

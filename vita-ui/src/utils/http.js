@@ -1,11 +1,9 @@
 import axios from 'axios'
 import { stringify } from 'qs'
-import router from '@/router/index.js'
+import router from '@/router/index'
 
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/userStore.js'
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+import { useUserStore } from '@/store/user-store'
+import { useDictStore } from '@/store/dict-store'
 
 const { VITE_API_BASE } = import.meta.env
 
@@ -32,7 +30,7 @@ let axiosInstance = axios.create({
 // 添加请求拦截器。在发送请求之前做些什么，比如设置 token，权限认证等
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = user?.value?.token
+    const token = useUserStore().getToken()
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -63,7 +61,8 @@ axiosInstance.interceptors.response.use(
           break
         case 401:
           // 清理前端登录信息残留
-          user.value = null
+          useDictStore().clear()
+          useUserStore().clear()
           // 跳转时携带当前页面路径，登录后可返回
           router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } })
           // ElMessage.error({

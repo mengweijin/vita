@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.domain.LoginUser;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.system.enums.ELoginType;
+import com.github.mengweijin.vita.enums.ELoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

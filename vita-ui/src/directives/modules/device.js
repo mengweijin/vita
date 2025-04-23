@@ -1,6 +1,6 @@
-import { getDeviceType } from '@/utils/device.js'
+import { getDeviceType } from '@/utils/tools'
 
-export const device = {
+export default {
   mounted(el, binding) {
     // 这里使用 modifiers，则使用时应为：v-device.pc 或者多个：v-device.mobile.tablet
     const modifiers = binding.modifiers

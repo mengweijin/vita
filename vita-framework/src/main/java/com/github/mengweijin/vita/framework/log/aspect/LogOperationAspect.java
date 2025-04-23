@@ -6,7 +6,7 @@ import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.domain.entity.LogOperation;
-import com.github.mengweijin.vita.system.enums.EYesNo;
+import com.github.mengweijin.vita.enums.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;

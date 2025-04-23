@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;

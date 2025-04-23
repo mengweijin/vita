@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.satoken;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.LoginUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

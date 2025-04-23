@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset admin:2 splitStatements:true
+--changeset admin:1 splitStatements:true
 
 -- 与 MySQL 区别
 -- 1、h2 中，创建表最后面不能添加 COMMENT = '表注释'；
@@ -105,7 +105,7 @@ create TABLE VT_DICT_DATA (
   CODE 		                    varchar(100) NOT NULL comment '字典类型编码',
   VAL 		                    varchar(100) NOT NULL comment '字典数据值',
   LABEL 		                varchar(100) NOT NULL comment '字典数据标签名称',
-  TAG_STYLE                     varchar(10) NULL comment '字典数据标签样式。["primary", "success", "warning", "danger", "info"]',
+  TAG                           varchar(10) NULL comment '字典数据标签样式。["primary", "success", "info", "warning", "danger"]',
   SEQ 		                    int DEFAULT 1 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否已禁用。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
@@ -175,8 +175,8 @@ create TABLE VT_LOG_LOGIN (
 );
 
 
-drop table IF EXISTS VT_OSS;
-create TABLE VT_OSS (
+drop table IF EXISTS VT_FILE;
+create TABLE VT_FILE (
   ID                            bigint NOT NULL comment '主键ID',
   NAME                          varchar(255) NOT NULL comment '原始文件名称',
   SUFFIX                        varchar(10) comment '文件后缀',
@@ -188,7 +188,7 @@ create TABLE VT_OSS (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-create index IDX_VT_OSS_MD5 on VT_OSS(MD5);
+create index IDX_VT_FILE_MD5 on VT_FILE(MD5);
 
 drop table IF EXISTS VT_MENU;
 create TABLE VT_MENU (

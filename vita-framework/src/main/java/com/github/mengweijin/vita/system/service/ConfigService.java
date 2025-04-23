@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
+import com.github.mengweijin.vita.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.Config;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;

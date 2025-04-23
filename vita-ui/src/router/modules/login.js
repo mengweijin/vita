@@ -1,7 +1,7 @@
 export default {
   path: '/login',
-  name: 'LoginView',
-  component: () => import('@/views/login/LoginView.vue'),
+  name: 'login-view',
+  component: () => import('@/views/login/login-view.vue'),
   meta: {
     title: '登录',
   },

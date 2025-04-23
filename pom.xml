@@ -248,8 +248,8 @@
                 <version>1.6.8</version>  
                 <extensions>true</extensions>  
                 <configuration> 
-                    <serverId>oss</serverId>  
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>  
+                    <serverId>fileEntity</serverId>
+                    <nexusUrl>https://fileEntity.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose> 
                 </configuration> 
             </plugin>
@@ -258,12 +258,12 @@
     <!--  提交到资料库的地址  -->  
     <distributionManagement> 
         <snapshotRepository> 
-            <id>oss</id>  
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url> 
+            <id>fileEntity</id>
+            <url>https://fileEntity.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>  
         <repository> 
-            <id>oss</id>  
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url> 
+            <id>fileEntity</id>
+            <url>https://fileEntity.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository> 
     </distributionManagement>  
     <repositories> 

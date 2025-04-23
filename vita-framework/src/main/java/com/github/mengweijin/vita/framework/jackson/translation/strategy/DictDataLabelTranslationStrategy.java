@@ -26,7 +26,7 @@ public class DictDataLabelTranslationStrategy implements ITranslationStrategy<St
     @Override
     public String translation(Object value, Translation translation) {
         if (value instanceof String dictVal && StrValidator.isNotBlank(dictVal)) {
-            return dictDataService.getLabelByCodeAndVal(translation.dictCode(), dictVal);
+            return dictDataService.getLabelByCodeAndVal(translation.dictType(), dictVal);
         }
         return null;
     }

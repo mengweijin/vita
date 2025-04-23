@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.Role;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenu;

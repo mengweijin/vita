@@ -25,3 +25,12 @@
   :root {
   }
 }
+
+.vt-search-container {
+  padding: 20px 0px 0px 0px;
+}
+
+.vt-table-container {
+  flex: 1;
+  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 62px);
+}

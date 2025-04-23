@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/userStore.js'
+import { useUserStore } from '@/store/user-store'
 
 const { VITE_APP_TITLE } = import.meta.env
 
@@ -54,8 +53,7 @@ const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
 
 export const initDynamicRoutes = () => {
   const userStore = useUserStore()
-  const { user } = storeToRefs(userStore)
-  addDynamicRoutes(user?.value?.menus)
+  addDynamicRoutes(userStore.getMenus())
 }
 
 /** 路由实例 */
