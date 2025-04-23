@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.system.domain.entity.DictData;
+import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.CharSequenceUtil;
@@ -29,52 +29,52 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class DictDataService extends CrudRepository<DictDataMapper, DictData> {
+public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> {
 
     /**
      * Custom paging query
      * @param page page
-     * @param dictData {@link DictData}
+     * @param dictData {@link DictDataDO}
      * @return IPage
      */
-    public IPage<DictData> page(IPage<DictData> page, DictData dictData){
-        LambdaQueryWrapper<DictData> query = new LambdaQueryWrapper<>();
+    public IPage<DictDataDO> page(IPage<DictDataDO> page, DictDataDO dictData){
+        LambdaQueryWrapper<DictDataDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(dictData.getCode()), DictData::getCode, dictData.getCode())
-                .eq(StrValidator.isNotBlank(dictData.getVal()), DictData::getVal, dictData.getVal())
-                .eq(!Objects.isNull(dictData.getSeq()), DictData::getSeq, dictData.getSeq())
-                .eq(StrValidator.isNotBlank(dictData.getDisabled()), DictData::getDisabled, dictData.getDisabled())
-                .eq(StrValidator.isNotBlank(dictData.getRemark()), DictData::getRemark, dictData.getRemark())
-                .eq(!Objects.isNull(dictData.getId()), DictData::getId, dictData.getId())
-                .eq(!Objects.isNull(dictData.getCreateBy()), DictData::getCreateBy, dictData.getCreateBy())
-                .eq(!Objects.isNull(dictData.getCreateTime()), DictData::getCreateTime, dictData.getCreateTime())
-                .eq(!Objects.isNull(dictData.getUpdateBy()), DictData::getUpdateBy, dictData.getUpdateBy())
-                .eq(!Objects.isNull(dictData.getUpdateTime()), DictData::getUpdateTime, dictData.getUpdateTime())
-                .like(StrValidator.isNotBlank(dictData.getLabel()), DictData::getLabel, dictData.getLabel());
-        query.orderByAsc(DictData::getSeq);
+                .eq(StrValidator.isNotBlank(dictData.getCode()), DictDataDO::getCode, dictData.getCode())
+                .eq(StrValidator.isNotBlank(dictData.getVal()), DictDataDO::getVal, dictData.getVal())
+                .eq(!Objects.isNull(dictData.getSeq()), DictDataDO::getSeq, dictData.getSeq())
+                .eq(StrValidator.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled())
+                .eq(StrValidator.isNotBlank(dictData.getRemark()), DictDataDO::getRemark, dictData.getRemark())
+                .eq(!Objects.isNull(dictData.getId()), DictDataDO::getId, dictData.getId())
+                .eq(!Objects.isNull(dictData.getCreateBy()), DictDataDO::getCreateBy, dictData.getCreateBy())
+                .eq(!Objects.isNull(dictData.getCreateTime()), DictDataDO::getCreateTime, dictData.getCreateTime())
+                .eq(!Objects.isNull(dictData.getUpdateBy()), DictDataDO::getUpdateBy, dictData.getUpdateBy())
+                .eq(!Objects.isNull(dictData.getUpdateTime()), DictDataDO::getUpdateTime, dictData.getUpdateTime())
+                .like(StrValidator.isNotBlank(dictData.getLabel()), DictDataDO::getLabel, dictData.getLabel());
+        query.orderByAsc(DictDataDO::getSeq);
         return this.page(page, query);
     }
 
     @Cacheable(value = CacheNames.DICT_VAL_TO_LABEL, key = "#code + ':' + #val", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getLabelByCodeAndVal(String code, String val) {
         return this.lambdaQuery()
-                .select(DictData::getLabel)
-                .eq(DictData::getCode, code)
-                .eq(DictData::getVal, val)
+                .select(DictDataDO::getLabel)
+                .eq(DictDataDO::getCode, code)
+                .eq(DictDataDO::getVal, val)
                 .oneOpt()
-                .map(DictData::getLabel)
+                .map(DictDataDO::getLabel)
                 .orElse(null);
     }
 
-    public List<DictData> getByCode(String code) {
+    public List<DictDataDO> getByCode(String code) {
         return this.lambdaQuery()
-                .eq(DictData::getCode, code)
-                .orderByAsc(DictData::getSeq)
+                .eq(DictDataDO::getCode, code)
+                .orderByAsc(DictDataDO::getSeq)
                 .list();
     }
 
     public void checkValDuplicate(String code, String val) {
-        Optional<DictData> optional = this.lambdaQuery().eq(DictData::getCode, code).eq(DictData::getVal, val).oneOpt();
+        Optional<DictDataDO> optional = this.lambdaQuery().eq(DictDataDO::getCode, code).eq(DictDataDO::getVal, val).oneOpt();
         if (optional.isPresent()) {
             throw new ClientException(CharSequenceUtil.format("The dict type code[{}] and value[{}] already exists!", code, val));
         }

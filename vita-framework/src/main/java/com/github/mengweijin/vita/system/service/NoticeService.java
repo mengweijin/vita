@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.Notice;
+import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import com.github.mengweijin.vita.system.mapper.NoticeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -22,25 +22,25 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class NoticeService extends CrudRepository<NoticeMapper, Notice> {
+public class NoticeService extends CrudRepository<NoticeMapper, NoticeDO> {
 
     /**
      * Custom paging query
      * @param page page
-     * @param notice {@link Notice}
+     * @param notice {@link NoticeDO}
      * @return IPage
      */
-    public IPage<Notice> page(IPage<Notice> page, Notice notice){
-        LambdaQueryWrapper<Notice> query = new LambdaQueryWrapper<>();
+    public IPage<NoticeDO> page(IPage<NoticeDO> page, NoticeDO notice){
+        LambdaQueryWrapper<NoticeDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(notice.getName()), Notice::getName, notice.getName())
-                .eq(StrValidator.isNotBlank(notice.getDescription()), Notice::getDescription, notice.getDescription())
-                .eq(StrValidator.isNotBlank(notice.getReleased()), Notice::getReleased, notice.getReleased())
-                .eq(!Objects.isNull(notice.getId()), Notice::getId, notice.getId())
-                .eq(!Objects.isNull(notice.getCreateBy()), Notice::getCreateBy, notice.getCreateBy())
-                .eq(!Objects.isNull(notice.getCreateTime()), Notice::getCreateTime, notice.getCreateTime())
-                .eq(!Objects.isNull(notice.getUpdateBy()), Notice::getUpdateBy, notice.getUpdateBy())
-                .eq(!Objects.isNull(notice.getUpdateTime()), Notice::getUpdateTime, notice.getUpdateTime());
+                .eq(StrValidator.isNotBlank(notice.getName()), NoticeDO::getName, notice.getName())
+                .eq(StrValidator.isNotBlank(notice.getDescription()), NoticeDO::getDescription, notice.getDescription())
+                .eq(StrValidator.isNotBlank(notice.getReleased()), NoticeDO::getReleased, notice.getReleased())
+                .eq(!Objects.isNull(notice.getId()), NoticeDO::getId, notice.getId())
+                .eq(!Objects.isNull(notice.getCreateBy()), NoticeDO::getCreateBy, notice.getCreateBy())
+                .eq(!Objects.isNull(notice.getCreateTime()), NoticeDO::getCreateTime, notice.getCreateTime())
+                .eq(!Objects.isNull(notice.getUpdateBy()), NoticeDO::getUpdateBy, notice.getUpdateBy())
+                .eq(!Objects.isNull(notice.getUpdateTime()), NoticeDO::getUpdateTime, notice.getUpdateTime());
         return this.page(page, query);
     }
 }

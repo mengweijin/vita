@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.UserAvatar;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.mapper.UserAvatarMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,10 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class UserAvatarService extends CrudRepository<UserAvatarMapper, UserAvatar> {
+public class UserAvatarService extends CrudRepository<UserAvatarMapper, UserAvatarDO> {
 
-    public boolean setAvatar(UserAvatar userAvatar) {
-        Optional<UserAvatar> optional = this.lambdaQuery().eq(UserAvatar::getUserId, userAvatar.getUserId()).oneOpt();
+    public boolean setAvatar(UserAvatarDO userAvatar) {
+        Optional<UserAvatarDO> optional = this.lambdaQuery().eq(UserAvatarDO::getUserId, userAvatar.getUserId()).oneOpt();
         optional.ifPresent(avatar -> userAvatar.setId(avatar.getId()));
         return this.saveOrUpdate(userAvatar);
     }

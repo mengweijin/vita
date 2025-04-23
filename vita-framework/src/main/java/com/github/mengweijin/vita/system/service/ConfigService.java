@@ -3,8 +3,8 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.constant.ConfigConst;
-import com.github.mengweijin.vita.system.domain.entity.Config;
+import com.github.mengweijin.vita.system.constant.ConfigConst;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -24,35 +24,35 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class ConfigService extends CrudRepository<ConfigMapper, Config> {
+public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
 
     /**
      * Custom paging query
      * @param page page
-     * @param config {@link Config}
+     * @param config {@link ConfigDO}
      * @return IPage
      */
-    public IPage<Config> page(IPage<Config> page, Config config){
-        LambdaQueryWrapper<Config> query = new LambdaQueryWrapper<>();
+    public IPage<ConfigDO> page(IPage<ConfigDO> page, ConfigDO config){
+        LambdaQueryWrapper<ConfigDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(config.getVal()), Config::getVal, config.getVal())
-                .eq(StrValidator.isNotBlank(config.getRemark()), Config::getRemark, config.getRemark())
-                .eq(!Objects.isNull(config.getId()), Config::getId, config.getId())
-                .eq(!Objects.isNull(config.getCreateBy()), Config::getCreateBy, config.getCreateBy())
-                .eq(!Objects.isNull(config.getCreateTime()), Config::getCreateTime, config.getCreateTime())
-                .eq(!Objects.isNull(config.getUpdateBy()), Config::getUpdateBy, config.getUpdateBy())
-                .eq(!Objects.isNull(config.getUpdateTime()), Config::getUpdateTime, config.getUpdateTime())
-                .like(StrValidator.isNotBlank(config.getName()), Config::getName, config.getName())
-                .like(StrValidator.isNotBlank(config.getCode()), Config::getCode, config.getCode());
+                .eq(StrValidator.isNotBlank(config.getVal()), ConfigDO::getVal, config.getVal())
+                .eq(StrValidator.isNotBlank(config.getRemark()), ConfigDO::getRemark, config.getRemark())
+                .eq(!Objects.isNull(config.getId()), ConfigDO::getId, config.getId())
+                .eq(!Objects.isNull(config.getCreateBy()), ConfigDO::getCreateBy, config.getCreateBy())
+                .eq(!Objects.isNull(config.getCreateTime()), ConfigDO::getCreateTime, config.getCreateTime())
+                .eq(!Objects.isNull(config.getUpdateBy()), ConfigDO::getUpdateBy, config.getUpdateBy())
+                .eq(!Objects.isNull(config.getUpdateTime()), ConfigDO::getUpdateTime, config.getUpdateTime())
+                .like(StrValidator.isNotBlank(config.getName()), ConfigDO::getName, config.getName())
+                .like(StrValidator.isNotBlank(config.getCode()), ConfigDO::getCode, config.getCode());
         return this.page(page, query);
     }
 
-    public Config getByCode(String code) {
-        return this.lambdaQuery().eq(Config::getCode, code).one();
+    public ConfigDO getByCode(String code) {
+        return this.lambdaQuery().eq(ConfigDO::getCode, code).one();
     }
 
     public boolean getCaptchaEnabled() {
-        Config config = this.getByCode(ConfigConst.CAPTCHA_ENABLED);
+        ConfigDO config = this.getByCode(ConfigConst.CAPTCHA_ENABLED);
         return BooleanUtil.toBoolean(config.getVal());
     }
 }

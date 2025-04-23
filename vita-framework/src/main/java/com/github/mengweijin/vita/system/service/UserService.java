@@ -8,13 +8,13 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.constant.ConfigConst;
+import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
-import com.github.mengweijin.vita.system.domain.entity.Config;
-import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.system.domain.entity.UserAvatar;
-import com.github.mengweijin.vita.enums.EMessageCategory;
-import com.github.mengweijin.vita.enums.EMessageTemplate;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
+import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class UserService extends CrudRepository<UserMapper, User> {
+public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     private UserAvatarService userAvatarService;
 
@@ -59,7 +59,7 @@ public class UserService extends CrudRepository<UserMapper, User> {
     private ConfigService configService;
 
     @Override
-    public boolean save(User user) {
+    public boolean save(UserDO user) {
         String salt = this.generateSalt();
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
         user.setSalt(salt);
@@ -80,42 +80,42 @@ public class UserService extends CrudRepository<UserMapper, User> {
      * Custom paging query
      *
      * @param page page
-     * @param user {@link User}
+     * @param user {@link UserDO}
      * @return IPage
      */
-    public IPage<User> page(IPage<User> page, User user) {
+    public IPage<UserDO> page(IPage<UserDO> page, UserDO user) {
         List<Long> deptIds = new ArrayList<>();
         if (!Objects.isNull(user.getDeptId())) {
             deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
         }
-        LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<UserDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), User::getPassword, user.getPasswordLevel())
-                .eq(StrValidator.isNotBlank(user.getIdCard()), User::getIdCard, user.getIdCard())
-                .eq(StrValidator.isNotBlank(user.getGender()), User::getGender, user.getGender())
-                .eq(StrValidator.isNotBlank(user.getDisabled()), User::getDisabled, user.getDisabled())
-                .eq(StrValidator.isNotBlank(user.getRemark()), User::getRemark, user.getRemark())
-                .eq(!Objects.isNull(user.getId()), User::getId, user.getId())
-                .eq(!Objects.isNull(user.getCreateBy()), User::getCreateBy, user.getCreateBy())
-                .eq(!Objects.isNull(user.getCreateTime()), User::getCreateTime, user.getCreateTime())
-                .eq(!Objects.isNull(user.getUpdateBy()), User::getUpdateBy, user.getUpdateBy())
-                .eq(!Objects.isNull(user.getUpdateTime()), User::getUpdateTime, user.getUpdateTime())
-                .in(!Objects.isNull(user.getDeptId()), User::getDeptId, deptIds)
-                .like(StrValidator.isNotBlank(user.getUsername()), User::getUsername, user.getUsername())
-                .like(StrValidator.isNotBlank(user.getNickname()), User::getNickname, user.getNickname())
-                .like(StrValidator.isNotBlank(user.getMobile()), User::getMobile, user.getMobile())
-                .like(StrValidator.isNotBlank(user.getEmail()), User::getEmail, user.getEmail());
+                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPassword, user.getPasswordLevel())
+                .eq(StrValidator.isNotBlank(user.getIdCard()), UserDO::getIdCard, user.getIdCard())
+                .eq(StrValidator.isNotBlank(user.getGender()), UserDO::getGender, user.getGender())
+                .eq(StrValidator.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled())
+                .eq(StrValidator.isNotBlank(user.getRemark()), UserDO::getRemark, user.getRemark())
+                .eq(!Objects.isNull(user.getId()), UserDO::getId, user.getId())
+                .eq(!Objects.isNull(user.getCreateBy()), UserDO::getCreateBy, user.getCreateBy())
+                .eq(!Objects.isNull(user.getCreateTime()), UserDO::getCreateTime, user.getCreateTime())
+                .eq(!Objects.isNull(user.getUpdateBy()), UserDO::getUpdateBy, user.getUpdateBy())
+                .eq(!Objects.isNull(user.getUpdateTime()), UserDO::getUpdateTime, user.getUpdateTime())
+                .in(!Objects.isNull(user.getDeptId()), UserDO::getDeptId, deptIds)
+                .like(StrValidator.isNotBlank(user.getUsername()), UserDO::getUsername, user.getUsername())
+                .like(StrValidator.isNotBlank(user.getNickname()), UserDO::getNickname, user.getNickname())
+                .like(StrValidator.isNotBlank(user.getMobile()), UserDO::getMobile, user.getMobile())
+                .like(StrValidator.isNotBlank(user.getEmail()), UserDO::getEmail, user.getEmail());
         return this.page(page, query);
     }
 
-    public User getByUsername(String username) {
-        return this.lambdaQuery().eq(User::getUsername, username).one();
+    public UserDO getByUsername(String username) {
+        return this.lambdaQuery().eq(UserDO::getUsername, username).one();
     }
 
     public Set<Long> getUserIdsInDeptId(Long deptId) {
         List<Long> deptIds = deptService.selectChildrenIdsWithCurrentIdById(deptId);
-        List<User> list = this.lambdaQuery().select(User::getId).in(User::getDeptId, deptIds).list();
-        return list.stream().map(User::getId).collect(Collectors.toSet());
+        List<UserDO> list = this.lambdaQuery().select(UserDO::getId).in(UserDO::getDeptId, deptIds).list();
+        return list.stream().map(UserDO::getId).collect(Collectors.toSet());
     }
 
     public String getUsernamesByIds(String ids) {
@@ -131,37 +131,37 @@ public class UserService extends CrudRepository<UserMapper, User> {
     @Cacheable(value = CacheNames.USER_ID_TO_USERNAME, key = "#id + ''", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getUsernameById(Long id) {
         return this.lambdaQuery()
-                .select(User::getUsername)
-                .eq(User::getId, id)
+                .select(UserDO::getUsername)
+                .eq(UserDO::getId, id)
                 .oneOpt()
-                .map(User::getUsername)
+                .map(UserDO::getUsername)
                 .orElse(null);
     }
 
     @Cacheable(value = CacheNames.USER_ID_TO_NICKNAME, key = "#id + ''", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getNicknameById(Long id) {
         return this.lambdaQuery()
-                .select(User::getNickname)
-                .eq(User::getId, id)
+                .select(UserDO::getNickname)
+                .eq(UserDO::getId, id)
                 .oneOpt()
-                .map(User::getNickname)
+                .map(UserDO::getNickname)
                 .orElse(null);
     }
 
     @Cacheable(value = CacheNames.USER_ID_TO_AVATAR, key = "#id + ''", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getAvatarById(Long id) {
-        return userAvatarService.lambdaQuery().eq(UserAvatar::getUserId, id).oneOpt()
-                .map(UserAvatar::getAvatar).orElse(null);
+        return userAvatarService.lambdaQuery().eq(UserAvatarDO::getUserId, id).oneOpt()
+                .map(UserAvatarDO::getAvatar).orElse(null);
     }
 
-    public boolean checkPassword(User user, String password) {
+    public boolean checkPassword(UserDO user, String password) {
         String passwordInDb = user.getPassword();
         String hashedPassword = this.hashPassword(user.getUsername(), password, user.getSalt());
         return passwordInDb.equals(hashedPassword);
     }
 
     public boolean changePassword(ChangePasswordBO bo) {
-        User user = this.getByUsername(bo.getUsername());
+        UserDO user = this.getByUsername(bo.getUsername());
         boolean checked = this.checkPassword(user, bo.getPassword());
         if (!checked) {
             throw new ClientException("User or password check failed!");
@@ -176,21 +176,21 @@ public class UserService extends CrudRepository<UserMapper, User> {
         String hashedPwd = this.hashPassword(username, newPassword, salt);
 
         return this.lambdaUpdate()
-                .set(User::getSalt, salt)
-                .set(User::getPassword, hashedPwd)
-                .set(User::getPasswordLevel, passwordLevel)
-                .set(User::getPasswordChangeTime, LocalDateTime.now())
-                .eq(User::getUsername, username)
+                .set(UserDO::getSalt, salt)
+                .set(UserDO::getPassword, hashedPwd)
+                .set(UserDO::getPasswordLevel, passwordLevel)
+                .set(UserDO::getPasswordChangeTime, LocalDateTime.now())
+                .eq(UserDO::getUsername, username)
                 .update();
     }
 
     public boolean setDisabled(Long id, String disabled) {
-        return this.lambdaUpdate().set(User::getDisabled, disabled).eq(User::getId, id).update();
+        return this.lambdaUpdate().set(UserDO::getDisabled, disabled).eq(UserDO::getId, id).update();
     }
 
     public void checkAndSendPasswordLongTimeNoChangeMessageAsync(String username) {
         CompletableFuture.runAsync(() -> {
-                    Config config = configService.getByCode(ConfigConst.USER_PASSWORD_CHANGE_INTERVAL);
+                    ConfigDO config = configService.getByCode(ConfigConst.USER_PASSWORD_CHANGE_INTERVAL);
                     if (config == null) {
                         return;
                     }
@@ -199,7 +199,7 @@ public class UserService extends CrudRepository<UserMapper, User> {
                         return;
                     }
 
-                    User user = this.getByUsername(username);
+                    UserDO user = this.getByUsername(username);
                     Duration duration = TimeUtil.between(user.getPasswordChangeTime(), LocalDateTime.now());
                     if (duration.toDays() < daysInterval) {
                         return;

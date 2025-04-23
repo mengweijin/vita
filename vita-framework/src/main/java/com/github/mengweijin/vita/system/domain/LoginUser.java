@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain;
 
-import com.github.mengweijin.vita.system.domain.entity.Menu;
+import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class LoginUser implements Serializable {
     /**
      * 用户菜单
      */
-    private List<Menu> menus;
+    private List<MenuDO> menus;
 
     /**
      * 用户 token

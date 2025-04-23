@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.mengweijin.vita.system.domain.entity.Logs;
+import com.github.mengweijin.vita.system.domain.entity.LogDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-06-03
  */
 @Mapper
-public interface LogsMapper extends BaseMapper<Logs> {
+public interface LogsMapper extends BaseMapper<LogDO> {
 
 }
 

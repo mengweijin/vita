@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
-import com.github.mengweijin.vita.system.domain.entity.User;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserVO extends User {
+public class UserVO extends UserDO {
 
     /**
      * 身份证号

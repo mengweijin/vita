@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.mengweijin.vita.system.domain.entity.Post;
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-06-03
  */
 @Mapper
-public interface PostMapper extends BaseMapper<Post> {
+public interface PostMapper extends BaseMapper<PostDO> {
 
 }
 

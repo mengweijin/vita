@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.entity.UserPost;
+import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +14,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserPostVO extends UserPost {
+public class UserPostVO extends UserPostDO {
 
 }

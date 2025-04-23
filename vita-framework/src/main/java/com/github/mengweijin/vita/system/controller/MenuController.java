@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Menu;
+import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.service.MenuService;
 import com.github.mengweijin.vita.system.service.RoleMenuService;
 import lombok.AllArgsConstructor;
@@ -48,12 +48,12 @@ public class MenuController {
      * Get Menu page by Menu
      * </p>
      * @param page page
-     * @param menu {@link Menu}
+     * @param menu {@link MenuDO}
      * @return Page<Menu>
      */
     @SaCheckPermission("system:menu:query")
     @GetMapping("/page")
-    public IPage<Menu> page(Page<Menu> page, Menu menu) {
+    public IPage<MenuDO> page(Page<MenuDO> page, MenuDO menu) {
         return menuService.page(page, menu);
     }
 
@@ -61,13 +61,13 @@ public class MenuController {
      * <p>
      * Get Menu list by Menu
      * </p>
-     * @param menu {@link Menu}
+     * @param menu {@link MenuDO}
      * @return List<Menu>
      */
     @SaCheckPermission("system:menu:query")
     @GetMapping("/list")
-    public List<Menu> list(Menu menu) {
-        return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(Menu::getSeq));
+    public List<MenuDO> list(MenuDO menu) {
+        return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(MenuDO::getSeq));
     }
 
     /**
@@ -79,7 +79,7 @@ public class MenuController {
      */
     @SaCheckPermission("system:menu:query")
     @GetMapping("/{id}")
-    public Menu getById(@PathVariable("id") Long id) {
+    public MenuDO getById(@PathVariable("id") Long id) {
         return menuService.getById(id);
     }
 
@@ -93,12 +93,12 @@ public class MenuController {
      * <p>
      * Add Menu
      * </p>
-     * @param menu {@link Menu}
+     * @param menu {@link MenuDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:menu:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Menu menu) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MenuDO menu) {
         boolean bool = menuService.save(menu);
         return R.result(bool);
     }
@@ -107,12 +107,12 @@ public class MenuController {
      * <p>
      * Update Menu
      * </p>
-     * @param menu {@link Menu}
+     * @param menu {@link MenuDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:menu:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Menu menu) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MenuDO menu) {
         boolean bool = menuService.updateById(menu);
         return R.result(bool);
     }

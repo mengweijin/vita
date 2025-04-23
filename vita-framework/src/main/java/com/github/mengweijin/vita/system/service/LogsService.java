@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.mengweijin.vita.system.domain.entity.Logs;
+import com.github.mengweijin.vita.system.domain.entity.LogDO;
 import com.github.mengweijin.vita.system.mapper.LogsMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @Service
-public class LogsService extends ServiceImpl<LogsMapper, Logs> {
+public class LogsService extends ServiceImpl<LogsMapper, LogDO> {
 
     private final ExecutorService executorService = ThreadUtil.newSingleExecutor();
 
@@ -33,24 +33,24 @@ public class LogsService extends ServiceImpl<LogsMapper, Logs> {
      * 使用单个线程异步执行，以保证日志的插入顺序
      */
     @EventListener
-    public void saveAsync(Logs entity) {
+    public void saveAsync(LogDO entity) {
         CompletableFuture.runAsync(() -> this.save(entity), executorService);
     }
 
     /**
      * Custom paging query
      * @param page page
-     * @param logs {@link Logs}
+     * @param logDO {@link LogDO}
      * @return IPage
      */
-    public IPage<Logs> page(IPage<Logs> page, Logs logs){
-        LambdaQueryWrapper<Logs> query = new LambdaQueryWrapper<>();
+    public IPage<LogDO> page(IPage<LogDO> page, LogDO logDO){
+        LambdaQueryWrapper<LogDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(logs.getLoggerLevel()), Logs::getLoggerLevel, logs.getLoggerLevel())
-                .like(StrValidator.isNotBlank(logs.getThreadName()), Logs::getThreadName, logs.getThreadName())
-                .like(StrValidator.isNotBlank(logs.getLoggerName()), Logs::getLoggerName, logs.getLoggerName())
-                .like(StrValidator.isNotBlank(logs.getFormattedMessage()), Logs::getFormattedMessage, logs.getFormattedMessage())
-                .like(StrValidator.isNotBlank(logs.getStackTrace()), Logs::getStackTrace, logs.getStackTrace());
+                .eq(StrValidator.isNotBlank(logDO.getLoggerLevel()), LogDO::getLoggerLevel, logDO.getLoggerLevel())
+                .like(StrValidator.isNotBlank(logDO.getThreadName()), LogDO::getThreadName, logDO.getThreadName())
+                .like(StrValidator.isNotBlank(logDO.getLoggerName()), LogDO::getLoggerName, logDO.getLoggerName())
+                .like(StrValidator.isNotBlank(logDO.getFormattedMessage()), LogDO::getFormattedMessage, logDO.getFormattedMessage())
+                .like(StrValidator.isNotBlank(logDO.getStackTrace()), LogDO::getStackTrace, logDO.getStackTrace());
         return this.page(page, query);
     }
 }

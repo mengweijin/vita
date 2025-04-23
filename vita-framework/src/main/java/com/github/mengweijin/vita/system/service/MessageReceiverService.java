@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.MessageReceiver;
+import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -22,27 +22,27 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class MessageReceiverService extends CrudRepository<MessageReceiverMapper, MessageReceiver> {
+public class MessageReceiverService extends CrudRepository<MessageReceiverMapper, MessageReceiverDO> {
 
     /**
      * Custom paging query
      *
      * @param page            page
-     * @param messageReceiver {@link MessageReceiver}
+     * @param messageReceiver {@link MessageReceiverDO}
      * @return IPage
      */
-    public IPage<MessageReceiver> page(IPage<MessageReceiver> page, MessageReceiver messageReceiver) {
-        LambdaQueryWrapper<MessageReceiver> query = new LambdaQueryWrapper<>();
+    public IPage<MessageReceiverDO> page(IPage<MessageReceiverDO> page, MessageReceiverDO messageReceiver) {
+        LambdaQueryWrapper<MessageReceiverDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(!Objects.isNull(messageReceiver.getMessageId()), MessageReceiver::getMessageId, messageReceiver.getMessageId())
-                .eq(!Objects.isNull(messageReceiver.getUserId()), MessageReceiver::getUserId, messageReceiver.getUserId())
-                .eq(StrValidator.isNotBlank(messageReceiver.getViewed()), MessageReceiver::getViewed, messageReceiver.getViewed())
-                .eq(!Objects.isNull(messageReceiver.getViewedTime()), MessageReceiver::getViewedTime, messageReceiver.getViewedTime())
-                .eq(!Objects.isNull(messageReceiver.getId()), MessageReceiver::getId, messageReceiver.getId())
-                .eq(!Objects.isNull(messageReceiver.getCreateBy()), MessageReceiver::getCreateBy, messageReceiver.getCreateBy())
-                .eq(!Objects.isNull(messageReceiver.getCreateTime()), MessageReceiver::getCreateTime, messageReceiver.getCreateTime())
-                .eq(!Objects.isNull(messageReceiver.getUpdateBy()), MessageReceiver::getUpdateBy, messageReceiver.getUpdateBy())
-                .eq(!Objects.isNull(messageReceiver.getUpdateTime()), MessageReceiver::getUpdateTime, messageReceiver.getUpdateTime());
+                .eq(!Objects.isNull(messageReceiver.getMessageId()), MessageReceiverDO::getMessageId, messageReceiver.getMessageId())
+                .eq(!Objects.isNull(messageReceiver.getUserId()), MessageReceiverDO::getUserId, messageReceiver.getUserId())
+                .eq(StrValidator.isNotBlank(messageReceiver.getViewed()), MessageReceiverDO::getViewed, messageReceiver.getViewed())
+                .eq(!Objects.isNull(messageReceiver.getViewedTime()), MessageReceiverDO::getViewedTime, messageReceiver.getViewedTime())
+                .eq(!Objects.isNull(messageReceiver.getId()), MessageReceiverDO::getId, messageReceiver.getId())
+                .eq(!Objects.isNull(messageReceiver.getCreateBy()), MessageReceiverDO::getCreateBy, messageReceiver.getCreateBy())
+                .eq(!Objects.isNull(messageReceiver.getCreateTime()), MessageReceiverDO::getCreateTime, messageReceiver.getCreateTime())
+                .eq(!Objects.isNull(messageReceiver.getUpdateBy()), MessageReceiverDO::getUpdateBy, messageReceiver.getUpdateBy())
+                .eq(!Objects.isNull(messageReceiver.getUpdateTime()), MessageReceiverDO::getUpdateTime, messageReceiver.getUpdateTime());
         return this.page(page, query);
     }
 }

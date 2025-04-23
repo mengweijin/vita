@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.validator.rule;
 
 import com.github.mengweijin.vita.framework.validator.BusinessCheckValidator;
-import com.github.mengweijin.vita.system.domain.entity.Category;
+import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
@@ -13,8 +13,8 @@ public class CategoryCodeDuplicateCheckRule implements BusinessCheckValidator.Ch
     @Override
     public boolean isValid(CharSequence value) {
         CategoryService categoryService = SpringUtil.getBean(CategoryService.class);
-        Category category = categoryService.getByCode((String) value);
-        return category == null;
+        CategoryDO categoryDO = categoryService.getByCode((String) value);
+        return categoryDO == null;
     }
 
     @Override

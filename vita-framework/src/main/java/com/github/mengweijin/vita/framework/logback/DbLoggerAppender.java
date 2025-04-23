@@ -12,7 +12,7 @@ import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.helpers.Transform;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.system.domain.entity.Logs;
+import com.github.mengweijin.vita.system.domain.entity.LogDO;
 import com.github.mengweijin.vita.system.mapper.LogsMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -80,19 +80,19 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
         Long loginUserId = LoginHelper.getLoginUserIdQuietly();
         LocalDateTime createTime = event.getInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        Logs logs = new Logs();
-        logs.setLoggerLevel(event.getLevel().levelStr);
-        logs.setThreadName(event.getThreadName());
-        logs.setLoggerName(loggerName);
-        logs.setFormattedMessage(CharSequenceUtil.subPre(event.getFormattedMessage(), 3000));
-        logs.setStackTrace(getStackTraceMsg(event.getThrowableProxy()));
+        LogDO logDO = new LogDO();
+        logDO.setLoggerLevel(event.getLevel().levelStr);
+        logDO.setThreadName(event.getThreadName());
+        logDO.setLoggerName(loggerName);
+        logDO.setFormattedMessage(CharSequenceUtil.subPre(event.getFormattedMessage(), 3000));
+        logDO.setStackTrace(getStackTraceMsg(event.getThrowableProxy()));
 
-        logs.setCreateBy(loginUserId);
-        logs.setUpdateBy(loginUserId);
-        logs.setCreateTime(createTime);
-        logs.setUpdateTime(createTime);
+        logDO.setCreateBy(loginUserId);
+        logDO.setUpdateBy(loginUserId);
+        logDO.setCreateTime(createTime);
+        logDO.setUpdateTime(createTime);
 
-        SpringUtil.publishEvent(logs);
+        SpringUtil.publishEvent(logDO);
     }
 
     /**

@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Message;
+import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.service.MessageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class MessageController {
      * Get Message page by Message
      * </p>
      * @param page page
-     * @param message {@link Message}
+     * @param message {@link MessageDO}
      * @return Page<Message>
      */
     @SaCheckPermission("system:message:query")
     @GetMapping("/page")
-    public IPage<Message> page(Page<Message> page, Message message) {
+    public IPage<MessageDO> page(Page<MessageDO> page, MessageDO message) {
         return messageService.page(page, message);
     }
 
@@ -57,12 +57,12 @@ public class MessageController {
      * <p>
      * Get Message list by Message
      * </p>
-     * @param message {@link Message}
+     * @param message {@link MessageDO}
      * @return List<Message>
      */
     @SaCheckPermission("system:message:query")
     @GetMapping("/list")
-    public List<Message> list(Message message) {
+    public List<MessageDO> list(MessageDO message) {
         return messageService.list(new LambdaQueryWrapper<>(message));
     }
 
@@ -75,7 +75,7 @@ public class MessageController {
      */
     @SaCheckPermission("system:message:query")
     @GetMapping("/{id}")
-    public Message getById(@PathVariable("id") Long id) {
+    public MessageDO getById(@PathVariable("id") Long id) {
         return messageService.getById(id);
     }
 
@@ -83,12 +83,12 @@ public class MessageController {
      * <p>
      * Add Message
      * </p>
-     * @param message {@link Message}
+     * @param message {@link MessageDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:message:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Message message) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MessageDO message) {
         boolean bool = messageService.save(message);
         return R.result(bool);
     }
@@ -97,12 +97,12 @@ public class MessageController {
      * <p>
      * Update Message
      * </p>
-     * @param message {@link Message}
+     * @param message {@link MessageDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:message:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Message message) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MessageDO message) {
         boolean bool = messageService.updateById(message);
         return R.result(bool);
     }

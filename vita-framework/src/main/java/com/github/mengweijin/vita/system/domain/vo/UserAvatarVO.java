@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.entity.UserAvatar;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +14,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserAvatarVO extends UserAvatar {
+public class UserAvatarVO extends UserAvatarDO {
 
 }

@@ -5,11 +5,11 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.constant.ConfigConst;
-import com.github.mengweijin.vita.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.entity.Config;
-import com.github.mengweijin.vita.enums.EMessageCategory;
-import com.github.mengweijin.vita.enums.EMessageTemplate;
+import com.github.mengweijin.vita.system.constant.ConfigConst;
+import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
@@ -105,7 +105,7 @@ public class RateLimitAspect {
 
     private Set<Long> getMessageReceivers() {
         Set<Long> userIds = new HashSet<>();
-        Config config = configService.getByCode(ConfigConst.SYSTEM_ADMIN_ROLE_CODE);
+        ConfigDO config = configService.getByCode(ConfigConst.SYSTEM_ADMIN_ROLE_CODE);
         if (config != null && StrValidator.isNotBlank(config.getVal())) {
             userIds = userRoleService.getUserIdsByRoleCode(config.getVal());
         }

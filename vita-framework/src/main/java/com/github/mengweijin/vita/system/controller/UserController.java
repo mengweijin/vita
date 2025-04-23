@@ -11,12 +11,12 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.constant.UserConst;
+import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
-import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.system.domain.entity.UserAvatar;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
 import com.github.mengweijin.vita.system.domain.vo.UserVO;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
@@ -65,13 +65,13 @@ public class UserController {
      * </p>
      *
      * @param page page
-     * @param user {@link User}
+     * @param user {@link UserDO}
      * @return Page<User>
      */
     @SaCheckPermission("system:user:query")
     @GetMapping("/page")
-    public IPage<UserVO> page(Page<User> page, User user) {
-        IPage<User> userPage = userService.page(page, user);
+    public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
+        IPage<UserDO> userPage = userService.page(page, user);
         return BeanCopyUtils.copyPage(userPage, UserVO.class);
     }
 
@@ -80,13 +80,13 @@ public class UserController {
      * Get User list by User
      * </p>
      *
-     * @param user {@link User}
+     * @param user {@link UserDO}
      * @return List<User>
      */
     @SaCheckPermission("system:user:query")
     @GetMapping("/list")
-    public List<UserVO> list(User user) {
-        List<User> userList = userService.list(new LambdaQueryWrapper<>(user));
+    public List<UserVO> list(UserDO user) {
+        List<UserDO> userList = userService.list(new LambdaQueryWrapper<>(user));
         return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 
@@ -101,7 +101,7 @@ public class UserController {
     @SaCheckPermission("system:user:query")
     @GetMapping("/{id}")
     public UserVO getById(@PathVariable("id") Long id) {
-        User user = userService.getById(id);
+        UserDO user = userService.getById(id);
         return BeanCopyUtils.copyBean(user, UserVO.class);
     }
 
@@ -115,7 +115,7 @@ public class UserController {
      */
     @SaCheckPermission("system:user:query")
     @GetMapping("/sensitive/{id}")
-    public User getSensitiveById(@PathVariable("id") Long id) {
+    public UserDO getSensitiveById(@PathVariable("id") Long id) {
         return userService.getById(id);
     }
 
@@ -129,7 +129,7 @@ public class UserController {
     @SaCheckPermission("system:user:query")
     @GetMapping("/sensitive-mine")
     public UserVO getSensitive() {
-        User user = userService.getById(LoginHelper.getLoginUser().getUserId());
+        UserDO user = userService.getById(LoginHelper.getLoginUser().getUserId());
         return BeanCopyUtils.copyBean(user, new UserVO());
     }
 
@@ -143,7 +143,7 @@ public class UserController {
     @SaCheckPermission("system:user:query")
     @GetMapping("/mine")
     public UserSensitiveVO getMine() {
-        User user = userService.getById(LoginHelper.getLoginUser().getUserId());
+        UserDO user = userService.getById(LoginHelper.getLoginUser().getUserId());
         return BeanCopyUtils.copyBean(user, new UserSensitiveVO());
     }
 
@@ -152,13 +152,13 @@ public class UserController {
      * Add User
      * </p>
      *
-     * @param user {@link User}
+     * @param user {@link UserDO}
      */
     @Log(operationType = EOperationType.INSERT, saveRequestData = false)
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO user) {
-        boolean bool = userService.save(BeanCopyUtils.copyBean(user, new User()));
+        boolean bool = userService.save(BeanCopyUtils.copyBean(user, new UserDO()));
         return R.result(bool);
     }
 
@@ -167,13 +167,13 @@ public class UserController {
      * Update User
      * </p>
      *
-     * @param user {@link User}
+     * @param user {@link UserDO}
      */
     @Log(operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO user) {
-        boolean bool = userService.updateById(BeanCopyUtils.copyBean(user, new User()));
+        boolean bool = userService.updateById(BeanCopyUtils.copyBean(user, new UserDO()));
         return R.result(bool);
     }
 
@@ -239,11 +239,11 @@ public class UserController {
      * set user avatar
      * </p>
      *
-     * @param userAvatar {@link UserAvatar}
+     * @param userAvatar {@link UserAvatarDO}
      */
     @SaCheckPermission("system:user:setAvatar")
     @PostMapping("/set-avatar")
-    public R<Void> setAvatar(@Validated @RequestBody UserAvatar userAvatar) {
+    public R<Void> setAvatar(@Validated @RequestBody UserAvatarDO userAvatar) {
         boolean bool = userAvatarService.setAvatar(userAvatar);
         return R.result(bool);
     }

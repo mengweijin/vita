@@ -8,8 +8,8 @@ import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.domain.LoginUser;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
-import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.enums.ELoginType;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.enums.ELoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -60,7 +60,7 @@ public class LoginService {
             // 校验指定账号是否已被封禁，如果被封禁则抛出异常 `DisableServiceException`
             StpUtil.checkDisable(loginBO.getUsername());
 
-            User user = userService.getByUsername(loginBO.getUsername());
+            UserDO user = userService.getByUsername(loginBO.getUsername());
             if (user == null) {
                 throw new LoginFailedException("The username or password incorrect!");
             }
@@ -80,7 +80,7 @@ public class LoginService {
         }
     }
 
-    private LoginUser buildLoginUser(User user) {
+    private LoginUser buildLoginUser(UserDO user) {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(user.getId());
         loginUser.setUsername(user.getUsername());

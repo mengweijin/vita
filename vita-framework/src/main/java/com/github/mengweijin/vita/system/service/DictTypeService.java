@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.system.domain.entity.DictData;
-import com.github.mengweijin.vita.system.domain.entity.DictType;
+import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import com.github.mengweijin.vita.system.mapper.DictTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,15 +29,15 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class DictTypeService extends CrudRepository<DictTypeMapper, DictType> {
+public class DictTypeService extends CrudRepository<DictTypeMapper, DictTypeDO> {
 
     private DictDataService dictDataService;
 
     @Override
     public boolean removeByIds(Collection<?> list) {
         for (Object id : list) {
-            DictType dictType = this.getById((Long) id);
-            List<DictData> dictDataList = dictDataService.getByCode(dictType.getCode());
+            DictTypeDO dictType = this.getById((Long) id);
+            List<DictDataDO> dictDataList = dictDataService.getByCode(dictType.getCode());
             if(CollUtil.isNotEmpty(dictDataList)) {
                 throw new ClientException("Please remove dict data first in dict type [" + dictType.getName() + "].");
             }
@@ -48,24 +48,24 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictType> {
     /**
      * Custom paging query
      * @param page page
-     * @param dictType {@link DictType}
+     * @param dictType {@link DictTypeDO}
      * @return IPage
      */
-    public IPage<DictType> page(IPage<DictType> page, DictType dictType){
-        LambdaQueryWrapper<DictType> query = new LambdaQueryWrapper<>();
+    public IPage<DictTypeDO> page(IPage<DictTypeDO> page, DictTypeDO dictType){
+        LambdaQueryWrapper<DictTypeDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(dictType.getRemark()), DictType::getRemark, dictType.getRemark())
-                .eq(!Objects.isNull(dictType.getId()), DictType::getId, dictType.getId())
-                .eq(!Objects.isNull(dictType.getCreateBy()), DictType::getCreateBy, dictType.getCreateBy())
-                .eq(!Objects.isNull(dictType.getCreateTime()), DictType::getCreateTime, dictType.getCreateTime())
-                .eq(!Objects.isNull(dictType.getUpdateBy()), DictType::getUpdateBy, dictType.getUpdateBy())
-                .eq(!Objects.isNull(dictType.getUpdateTime()), DictType::getUpdateTime, dictType.getUpdateTime())
-                .like(StrValidator.isNotBlank(dictType.getName()), DictType::getName, dictType.getName())
-                .like(StrValidator.isNotBlank(dictType.getCode()), DictType::getCode, dictType.getCode());
+                .eq(StrValidator.isNotBlank(dictType.getRemark()), DictTypeDO::getRemark, dictType.getRemark())
+                .eq(!Objects.isNull(dictType.getId()), DictTypeDO::getId, dictType.getId())
+                .eq(!Objects.isNull(dictType.getCreateBy()), DictTypeDO::getCreateBy, dictType.getCreateBy())
+                .eq(!Objects.isNull(dictType.getCreateTime()), DictTypeDO::getCreateTime, dictType.getCreateTime())
+                .eq(!Objects.isNull(dictType.getUpdateBy()), DictTypeDO::getUpdateBy, dictType.getUpdateBy())
+                .eq(!Objects.isNull(dictType.getUpdateTime()), DictTypeDO::getUpdateTime, dictType.getUpdateTime())
+                .like(StrValidator.isNotBlank(dictType.getName()), DictTypeDO::getName, dictType.getName())
+                .like(StrValidator.isNotBlank(dictType.getCode()), DictTypeDO::getCode, dictType.getCode());
         return this.page(page, query);
     }
 
-    public DictType getByCode(String code) {
-        return this.lambdaQuery().eq(DictType::getCode, code).one();
+    public DictTypeDO getByCode(String code) {
+        return this.lambdaQuery().eq(DictTypeDO::getCode, code).one();
     }
 }

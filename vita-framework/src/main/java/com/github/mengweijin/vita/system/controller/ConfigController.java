@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Config;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class ConfigController {
      * Get Config page by Config
      * </p>
      * @param page page
-     * @param config {@link Config}
+     * @param config {@link ConfigDO}
      * @return Page<Config>
      */
     @SaCheckPermission("system:config:query")
     @GetMapping("/page")
-    public IPage<Config> page(Page<Config> page, Config config) {
+    public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
         return configService.page(page, config);
     }
 
@@ -57,12 +57,12 @@ public class ConfigController {
      * <p>
      * Get Config list by Config
      * </p>
-     * @param config {@link Config}
+     * @param config {@link ConfigDO}
      * @return List<Config>
      */
     @SaCheckPermission("system:config:query")
     @GetMapping("/list")
-    public List<Config> list(Config config) {
+    public List<ConfigDO> list(ConfigDO config) {
         return configService.list(new LambdaQueryWrapper<>(config));
     }
 
@@ -75,7 +75,7 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:query")
     @GetMapping("/{id}")
-    public Config getById(@PathVariable("id") Long id) {
+    public ConfigDO getById(@PathVariable("id") Long id) {
         return configService.getById(id);
     }
 
@@ -88,19 +88,19 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:query")
     @GetMapping("/code/{code}")
-    public Config getByCode(@PathVariable("code") String code) {
+    public ConfigDO getByCode(@PathVariable("code") String code) {
         return configService.getByCode(code);
     }
     /**
      * <p>
      * Add Config
      * </p>
-     * @param config {@link Config}
+     * @param config {@link ConfigDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:config:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Config config) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigDO config) {
         boolean bool = configService.save(config);
         return R.result(bool);
     }
@@ -109,12 +109,12 @@ public class ConfigController {
      * <p>
      * Update Config
      * </p>
-     * @param config {@link Config}
+     * @param config {@link ConfigDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Config config) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigDO config) {
         boolean bool = configService.updateById(config);
         return R.result(bool);
     }

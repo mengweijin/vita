@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.RoleMenu;
+import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMenuMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,21 +22,21 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class RoleMenuService extends CrudRepository<RoleMenuMapper, RoleMenu> {
+public class RoleMenuService extends CrudRepository<RoleMenuMapper, RoleMenuDO> {
 
     public Set<Long> getMenuIdsByRoleId(Long roleId) {
-        List<RoleMenu> roleMenuList = this.lambdaQuery().select(RoleMenu::getMenuId).eq(RoleMenu::getRoleId, roleId).list();
-        return roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
+        List<RoleMenuDO> roleMenuList = this.lambdaQuery().select(RoleMenuDO::getMenuId).eq(RoleMenuDO::getRoleId, roleId).list();
+        return roleMenuList.stream().map(RoleMenuDO::getMenuId).collect(Collectors.toSet());
     }
 
     public Set<Long> getMenuIdsInRoleIds(Set<Long> roleIds) {
-        List<RoleMenu> roleMenuList = this.lambdaQuery().select(RoleMenu::getMenuId).in(RoleMenu::getRoleId, roleIds).list();
-        return roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
+        List<RoleMenuDO> roleMenuList = this.lambdaQuery().select(RoleMenuDO::getMenuId).in(RoleMenuDO::getRoleId, roleIds).list();
+        return roleMenuList.stream().map(RoleMenuDO::getMenuId).collect(Collectors.toSet());
     }
 
     public void removeByRoleId(Long roleId) {
-        LambdaQueryWrapper<RoleMenu> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(RoleMenu::getRoleId, roleId);
+        LambdaQueryWrapper<RoleMenuDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(RoleMenuDO::getRoleId, roleId);
         this.getBaseMapper().delete(wrapper);
     }
 

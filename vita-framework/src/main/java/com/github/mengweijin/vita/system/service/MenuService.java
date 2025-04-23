@@ -3,11 +3,11 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.entity.Menu;
-import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.enums.EMenuType;
-import com.github.mengweijin.vita.enums.EYesNo;
+import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.domain.entity.MenuDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.enums.EMenuType;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MenuService extends CrudRepository<MenuMapper, Menu> {
+public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
 
     private UserService userService;
 
@@ -43,47 +43,47 @@ public class MenuService extends CrudRepository<MenuMapper, Menu> {
      * Custom paging query
      *
      * @param page page
-     * @param menu {@link Menu}
+     * @param menu {@link MenuDO}
      * @return IPage
      */
-    public IPage<Menu> page(IPage<Menu> page, Menu menu) {
-        LambdaQueryWrapper<Menu> query = new LambdaQueryWrapper<>();
+    public IPage<MenuDO> page(IPage<MenuDO> page, MenuDO menu) {
+        LambdaQueryWrapper<MenuDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(!Objects.isNull(menu.getParentId()), Menu::getParentId, menu.getParentId())
-                .eq(StrValidator.isNotBlank(menu.getType()), Menu::getType, menu.getType())
-                .eq(StrValidator.isNotBlank(menu.getTitle()), Menu::getTitle, menu.getTitle())
-                .eq(StrValidator.isNotBlank(menu.getPermission()), Menu::getPermission, menu.getPermission())
-                .eq(StrValidator.isNotBlank(menu.getRouteName()), Menu::getRouteName, menu.getRouteName())
-                .eq(StrValidator.isNotBlank(menu.getRoutePath()), Menu::getRoutePath, menu.getRoutePath())
-                .eq(StrValidator.isNotBlank(menu.getComponent()), Menu::getComponent, menu.getComponent())
-                .eq(!Objects.isNull(menu.getSeq()), Menu::getSeq, menu.getSeq())
-                .eq(StrValidator.isNotBlank(menu.getIcon()), Menu::getIcon, menu.getIcon())
-                .eq(StrValidator.isNotBlank(menu.getDisabled()), Menu::getDisabled, menu.getDisabled())
-                .eq(!Objects.isNull(menu.getId()), Menu::getId, menu.getId())
-                .eq(!Objects.isNull(menu.getCreateBy()), Menu::getCreateBy, menu.getCreateBy())
-                .eq(!Objects.isNull(menu.getCreateTime()), Menu::getCreateTime, menu.getCreateTime())
-                .eq(!Objects.isNull(menu.getUpdateBy()), Menu::getUpdateBy, menu.getUpdateBy())
-                .eq(!Objects.isNull(menu.getUpdateTime()), Menu::getUpdateTime, menu.getUpdateTime());
+                .eq(!Objects.isNull(menu.getParentId()), MenuDO::getParentId, menu.getParentId())
+                .eq(StrValidator.isNotBlank(menu.getType()), MenuDO::getType, menu.getType())
+                .eq(StrValidator.isNotBlank(menu.getTitle()), MenuDO::getTitle, menu.getTitle())
+                .eq(StrValidator.isNotBlank(menu.getPermission()), MenuDO::getPermission, menu.getPermission())
+                .eq(StrValidator.isNotBlank(menu.getRouteName()), MenuDO::getRouteName, menu.getRouteName())
+                .eq(StrValidator.isNotBlank(menu.getRoutePath()), MenuDO::getRoutePath, menu.getRoutePath())
+                .eq(StrValidator.isNotBlank(menu.getComponent()), MenuDO::getComponent, menu.getComponent())
+                .eq(!Objects.isNull(menu.getSeq()), MenuDO::getSeq, menu.getSeq())
+                .eq(StrValidator.isNotBlank(menu.getIcon()), MenuDO::getIcon, menu.getIcon())
+                .eq(StrValidator.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled())
+                .eq(!Objects.isNull(menu.getId()), MenuDO::getId, menu.getId())
+                .eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy())
+                .eq(!Objects.isNull(menu.getCreateTime()), MenuDO::getCreateTime, menu.getCreateTime())
+                .eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy())
+                .eq(!Objects.isNull(menu.getUpdateTime()), MenuDO::getUpdateTime, menu.getUpdateTime());
         return this.page(page, query);
     }
 
     public Set<String> getMenuPermissionListByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
-            return this.lambdaQuery().select(Menu::getPermission).list()
-                    .stream().map(Menu::getPermission).collect(Collectors.toSet());
+            return this.lambdaQuery().select(MenuDO::getPermission).list()
+                    .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
         }
 
-        User user = userService.getByUsername(username);
+        UserDO user = userService.getByUsername(username);
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(user.getId());
         Set<Long> menuIds = roleMenuService.getMenuIdsInRoleIds(roleIds);
 
-        return this.lambdaQuery().select(Menu::getPermission).in(Menu::getId, menuIds).list()
-                .stream().map(Menu::getPermission).collect(Collectors.toSet());
+        return this.lambdaQuery().select(MenuDO::getPermission).in(MenuDO::getId, menuIds).list()
+                .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
     }
 
-    public List<Menu> getSideMenuByUserId(Long userId) {
+    public List<MenuDO> getSideMenuByUserId(Long userId) {
         if (userId.equals(UserConst.ADMIN_USER_ID)) {
-            return this.lambdaQuery().eq(Menu::getDisabled, EYesNo.N.getValue()).ne(Menu::getType, EMenuType.BTN.getValue()).list();
+            return this.lambdaQuery().eq(MenuDO::getDisabled, EYesNo.N.getValue()).ne(MenuDO::getType, EMenuType.BTN.getValue()).list();
         }
 
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(userId);

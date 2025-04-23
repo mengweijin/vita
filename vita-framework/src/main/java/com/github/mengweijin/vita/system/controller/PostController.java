@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Post;
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class PostController {
      * Get Post page by Post
      * </p>
      * @param page page
-     * @param post {@link Post}
+     * @param post {@link PostDO}
      * @return Page<Post>
      */
     @SaCheckPermission("system:post:query")
     @GetMapping("/page")
-    public IPage<Post> page(Page<Post> page, Post post) {
+    public IPage<PostDO> page(Page<PostDO> page, PostDO post) {
         return postService.page(page, post);
     }
 
@@ -57,12 +57,12 @@ public class PostController {
      * <p>
      * Get Post list by Post
      * </p>
-     * @param post {@link Post}
+     * @param post {@link PostDO}
      * @return List<Post>
      */
     @SaCheckPermission("system:post:query")
     @GetMapping("/list")
-    public List<Post> list(Post post) {
+    public List<PostDO> list(PostDO post) {
         return postService.list(new LambdaQueryWrapper<>(post));
     }
 
@@ -75,7 +75,7 @@ public class PostController {
      */
     @SaCheckPermission("system:post:query")
     @GetMapping("/{id}")
-    public Post getById(@PathVariable("id") Long id) {
+    public PostDO getById(@PathVariable("id") Long id) {
         return postService.getById(id);
     }
 
@@ -83,12 +83,12 @@ public class PostController {
      * <p>
      * Add Post
      * </p>
-     * @param post {@link Post}
+     * @param post {@link PostDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:post:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Post post) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody PostDO post) {
         boolean bool = postService.save(post);
         return R.result(bool);
     }
@@ -97,12 +97,12 @@ public class PostController {
      * <p>
      * Update Post
      * </p>
-     * @param post {@link Post}
+     * @param post {@link PostDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:post:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Post post) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody PostDO post) {
         boolean bool = postService.updateById(post);
         return R.result(bool);
     }

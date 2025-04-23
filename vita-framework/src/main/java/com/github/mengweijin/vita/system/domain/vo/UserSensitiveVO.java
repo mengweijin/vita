@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.domain.vo;
 
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
-import com.github.mengweijin.vita.system.domain.entity.User;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserSensitiveVO extends User {
+public class UserSensitiveVO extends UserDO {
 
     @Translation(translateType = ETranslateType.DEPT_ID_TO_NAME, field = "deptId")
     private String deptName;

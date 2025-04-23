@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.DictData;
+import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class DictDataController {
      * Get DictData page by DictData
      * </p>
      * @param page page
-     * @param dictData {@link DictData}
+     * @param dictData {@link DictDataDO}
      * @return Page<DictData>
      */
     @SaCheckPermission("system:dictData:query")
     @GetMapping("/page")
-    public IPage<DictData> page(Page<DictData> page, DictData dictData) {
+    public IPage<DictDataDO> page(Page<DictDataDO> page, DictDataDO dictData) {
         return dictDataService.page(page, dictData);
     }
 
@@ -57,13 +57,13 @@ public class DictDataController {
      * <p>
      * Get DictData list by DictData
      * </p>
-     * @param dictData {@link DictData}
+     * @param dictData {@link DictDataDO}
      * @return List<DictData>
      */
     @SaCheckPermission("system:dictData:query")
     @GetMapping("/list")
-    public List<DictData> list(DictData dictData) {
-        return dictDataService.list(new LambdaQueryWrapper<>(dictData).orderByAsc(DictData::getCode).orderByAsc(DictData::getSeq));
+    public List<DictDataDO> list(DictDataDO dictData) {
+        return dictDataService.list(new LambdaQueryWrapper<>(dictData).orderByAsc(DictDataDO::getCode).orderByAsc(DictDataDO::getSeq));
     }
 
     /**
@@ -75,13 +75,13 @@ public class DictDataController {
      */
     @SaCheckPermission("system:dictData:query")
     @GetMapping("/{id}")
-    public DictData getById(@PathVariable("id") Long id) {
+    public DictDataDO getById(@PathVariable("id") Long id) {
         return dictDataService.getById(id);
     }
 
     @SaCheckPermission("system:dictData:query")
     @GetMapping("/get-by-code/{code}")
-    public List<DictData> getByCode(@PathVariable("code") String code) {
+    public List<DictDataDO> getByCode(@PathVariable("code") String code) {
         return dictDataService.getByCode(code);
     }
 
@@ -89,12 +89,12 @@ public class DictDataController {
      * <p>
      * Add DictData
      * </p>
-     * @param dictData {@link DictData}
+     * @param dictData {@link DictDataDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictData:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictData dictData) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataDO dictData) {
         dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.save(dictData);
         return R.result(bool);
@@ -104,12 +104,12 @@ public class DictDataController {
      * <p>
      * Update DictData
      * </p>
-     * @param dictData {@link DictData}
+     * @param dictData {@link DictDataDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictData:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictData dictData) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataDO dictData) {
         dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.updateById(dictData);
         return R.result(bool);

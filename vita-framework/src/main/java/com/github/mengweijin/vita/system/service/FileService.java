@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
-import com.github.mengweijin.vita.system.domain.entity.FileEntity;
+import com.github.mengweijin.vita.system.domain.entity.FileDO;
 import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -43,14 +43,14 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class FileService extends CrudRepository<FileMapper, FileEntity> {
+public class FileService extends CrudRepository<FileMapper, FileDO> {
 
     private VitaProperties vitaProperties;
 
     @Override
     public boolean removeByIds(Collection<?> list) {
         // 注意顺序，先查出来
-        List<FileEntity> fileEntityList = this.lambdaQuery().in(FileEntity::getId, list).list();
+        List<FileDO> fileEntityList = this.lambdaQuery().in(FileDO::getId, list).list();
 
         List<String> shouldBeDeleteFromDistFilePathList = new ArrayList<>();
         fileEntityList.forEach(fileEntity -> {
@@ -69,44 +69,44 @@ public class FileService extends CrudRepository<FileMapper, FileEntity> {
     /**
      * Custom paging query
      * @param page page
-     * @param fileEntity {@link FileEntity}
+     * @param fileEntity {@link FileDO}
      * @return IPage
      */
-    public IPage<FileEntity> page(IPage<FileEntity> page, FileEntity fileEntity){
-        LambdaQueryWrapper<FileEntity> query = new LambdaQueryWrapper<>();
+    public IPage<FileDO> page(IPage<FileDO> page, FileDO fileEntity){
+        LambdaQueryWrapper<FileDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(fileEntity.getSuffix()), FileEntity::getSuffix, fileEntity.getSuffix())
-                .eq(StrValidator.isNotBlank(fileEntity.getStoragePath()), FileEntity::getStoragePath, fileEntity.getStoragePath())
-                .eq(StrValidator.isNotBlank(fileEntity.getMd5()), FileEntity::getMd5, fileEntity.getMd5())
-                .eq(!Objects.isNull(fileEntity.getId()), FileEntity::getId, fileEntity.getId())
-                .eq(!Objects.isNull(fileEntity.getCreateBy()), FileEntity::getCreateBy, fileEntity.getCreateBy())
-                .eq(!Objects.isNull(fileEntity.getCreateTime()), FileEntity::getCreateTime, fileEntity.getCreateTime())
-                .eq(!Objects.isNull(fileEntity.getUpdateBy()), FileEntity::getUpdateBy, fileEntity.getUpdateBy())
-                .eq(!Objects.isNull(fileEntity.getUpdateTime()), FileEntity::getUpdateTime, fileEntity.getUpdateTime())
-                .like(StrValidator.isNotBlank(fileEntity.getName()), FileEntity::getName, fileEntity.getName());
+                .eq(StrValidator.isNotBlank(fileEntity.getSuffix()), FileDO::getSuffix, fileEntity.getSuffix())
+                .eq(StrValidator.isNotBlank(fileEntity.getStoragePath()), FileDO::getStoragePath, fileEntity.getStoragePath())
+                .eq(StrValidator.isNotBlank(fileEntity.getMd5()), FileDO::getMd5, fileEntity.getMd5())
+                .eq(!Objects.isNull(fileEntity.getId()), FileDO::getId, fileEntity.getId())
+                .eq(!Objects.isNull(fileEntity.getCreateBy()), FileDO::getCreateBy, fileEntity.getCreateBy())
+                .eq(!Objects.isNull(fileEntity.getCreateTime()), FileDO::getCreateTime, fileEntity.getCreateTime())
+                .eq(!Objects.isNull(fileEntity.getUpdateBy()), FileDO::getUpdateBy, fileEntity.getUpdateBy())
+                .eq(!Objects.isNull(fileEntity.getUpdateTime()), FileDO::getUpdateTime, fileEntity.getUpdateTime())
+                .like(StrValidator.isNotBlank(fileEntity.getName()), FileDO::getName, fileEntity.getName());
         return this.page(page, query);
     }
 
-    public List<FileEntity> getByMd5(String md5) {
-        return this.lambdaQuery().eq(FileEntity::getMd5, md5).list();
+    public List<FileDO> getByMd5(String md5) {
+        return this.lambdaQuery().eq(FileDO::getMd5, md5).list();
     }
 
     public long countByMd5(String md5) {
-        return this.lambdaQuery().eq(FileEntity::getMd5, md5).count();
+        return this.lambdaQuery().eq(FileDO::getMd5, md5).count();
     }
 
-    public List<FileEntity> upload(HttpServletRequest request) {
-        List<FileEntity> list = UploadUtils.upload(request, multipartFile -> {
+    public List<FileDO> upload(HttpServletRequest request) {
+        List<FileDO> list = UploadUtils.upload(request, multipartFile -> {
             String md5 = UploadUtils.md5(multipartFile);
             String fileName = multipartFile.getOriginalFilename();
             String suffix = FileNameUtil.getSuffix(fileName);
 
-            FileEntity fileEntity = new FileEntity();
+            FileDO fileEntity = new FileDO();
             fileEntity.setMd5(md5);
             fileEntity.setName(fileName);
             fileEntity.setSuffix(suffix);
 
-            List<FileEntity> fileEntityList = this.getByMd5(md5);
+            List<FileDO> fileEntityList = this.getByMd5(md5);
             if (CollUtil.isEmpty(fileEntityList)) {
                 String storagePath = getPath(vitaProperties.getFileDir(), suffix);
                 copyFile(multipartFile, storagePath);

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
-import com.github.mengweijin.vita.system.domain.entity.Dept;
+import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -26,41 +26,41 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class DeptService extends CrudRepository<DeptMapper, Dept> {
+public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
 
     /**
      * Custom paging query
      * @param page page
-     * @param dept {@link Dept}
+     * @param dept {@link DeptDO}
      * @return IPage
      */
-    public IPage<Dept> page(IPage<Dept> page, Dept dept){
-        LambdaQueryWrapper<Dept> query = new LambdaQueryWrapper<>();
+    public IPage<DeptDO> page(IPage<DeptDO> page, DeptDO dept){
+        LambdaQueryWrapper<DeptDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(!Objects.isNull(dept.getParentId()), Dept::getParentId, dept.getParentId())
-                .eq(StrValidator.isNotBlank(dept.getName()), Dept::getName, dept.getName())
-                .eq(!Objects.isNull(dept.getSeq()), Dept::getSeq, dept.getSeq())
-                .eq(StrValidator.isNotBlank(dept.getDisabled()), Dept::getDisabled, dept.getDisabled())
-                .eq(StrValidator.isNotBlank(dept.getRemark()), Dept::getRemark, dept.getRemark())
-                .eq(!Objects.isNull(dept.getId()), Dept::getId, dept.getId())
-                .eq(!Objects.isNull(dept.getCreateBy()), Dept::getCreateBy, dept.getCreateBy())
-                .eq(!Objects.isNull(dept.getCreateTime()), Dept::getCreateTime, dept.getCreateTime())
-                .eq(!Objects.isNull(dept.getUpdateBy()), Dept::getUpdateBy, dept.getUpdateBy())
-                .eq(!Objects.isNull(dept.getUpdateTime()), Dept::getUpdateTime, dept.getUpdateTime());
+                .eq(!Objects.isNull(dept.getParentId()), DeptDO::getParentId, dept.getParentId())
+                .eq(StrValidator.isNotBlank(dept.getName()), DeptDO::getName, dept.getName())
+                .eq(!Objects.isNull(dept.getSeq()), DeptDO::getSeq, dept.getSeq())
+                .eq(StrValidator.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled())
+                .eq(StrValidator.isNotBlank(dept.getRemark()), DeptDO::getRemark, dept.getRemark())
+                .eq(!Objects.isNull(dept.getId()), DeptDO::getId, dept.getId())
+                .eq(!Objects.isNull(dept.getCreateBy()), DeptDO::getCreateBy, dept.getCreateBy())
+                .eq(!Objects.isNull(dept.getCreateTime()), DeptDO::getCreateTime, dept.getCreateTime())
+                .eq(!Objects.isNull(dept.getUpdateBy()), DeptDO::getUpdateBy, dept.getUpdateBy())
+                .eq(!Objects.isNull(dept.getUpdateTime()), DeptDO::getUpdateTime, dept.getUpdateTime());
         return this.page(page, query);
     }
 
     public boolean setDisabled(Long id, String disabled) {
-        return this.lambdaUpdate().set(Dept::getDisabled, disabled).eq(Dept::getId, id).update();
+        return this.lambdaUpdate().set(DeptDO::getDisabled, disabled).eq(DeptDO::getId, id).update();
     }
 
     @Cacheable(value = CacheNames.DEPT_ID_TO_NAME, key = "#id + ''", unless = CacheConst.UNLESS_OBJECT_NULL)
     public String getNameById(Long id) {
         return this.lambdaQuery()
-                .select(Dept::getName)
-                .eq(Dept::getId, id)
+                .select(DeptDO::getName)
+                .eq(DeptDO::getId, id)
                 .oneOpt()
-                .map(Dept::getName)
+                .map(DeptDO::getName)
                 .orElse(null);
     }
 

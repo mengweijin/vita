@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.FileEntity;
+import com.github.mengweijin.vita.system.domain.entity.FileDO;
 import com.github.mengweijin.vita.system.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,7 +49,7 @@ public class FileController {
 
     @Log(operationType = EOperationType.UPLOAD)
     @PostMapping("/upload")
-    public List<FileEntity> upload(HttpServletRequest request) {
+    public List<FileDO> upload(HttpServletRequest request) {
         return fileService.upload(request);
     }
 
@@ -59,7 +59,7 @@ public class FileController {
     @Log(operationType = EOperationType.DOWNLOAD)
     @GetMapping("/download/{id}")
     public void download(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-        FileEntity fileEntity = fileService.getById(id);
+        FileDO fileEntity = fileService.getById(id);
         if(fileEntity == null) {
             log.warn("No file was found!");
             return;
@@ -86,7 +86,7 @@ public class FileController {
      */
     @PostMapping("/upload/wang-editor")
     public Map<String, Object> uploadForWangEditor(HttpServletRequest request) {
-        FileEntity fileEntity = fileService.upload(request).get(0);
+        FileDO fileEntity = fileService.upload(request).get(0);
         String encrypt = AESUtils.getAES().encryptHex(String.valueOf(fileEntity.getId()));
         String url = "/system/oss/download/wang-editor/" + encrypt;
         Map<String, Object> data = new HashMap<>();
@@ -109,12 +109,12 @@ public class FileController {
      * Get File page by File
      * </p>
      * @param page page
-     * @param fileEntity {@link FileEntity}
+     * @param fileEntity {@link FileDO}
      * @return Page<File>
      */
     @SaCheckPermission("system:oss:query")
     @GetMapping("/page")
-    public IPage<FileEntity> page(Page<FileEntity> page, FileEntity fileEntity) {
+    public IPage<FileDO> page(Page<FileDO> page, FileDO fileEntity) {
         return fileService.page(page, fileEntity);
     }
 
@@ -122,12 +122,12 @@ public class FileController {
      * <p>
      * Get File list by File
      * </p>
-     * @param fileEntity {@link FileEntity}
+     * @param fileEntity {@link FileDO}
      * @return List<File>
      */
     @SaCheckPermission("system:oss:query")
     @GetMapping("/list")
-    public List<FileEntity> list(FileEntity fileEntity) {
+    public List<FileDO> list(FileDO fileEntity) {
         return fileService.list(new LambdaQueryWrapper<>(fileEntity));
     }
 
@@ -140,7 +140,7 @@ public class FileController {
      */
     @SaCheckPermission("system:oss:query")
     @GetMapping("/{id}")
-    public FileEntity getById(@PathVariable("id") Long id) {
+    public FileDO getById(@PathVariable("id") Long id) {
         return fileService.getById(id);
     }
 
@@ -148,12 +148,12 @@ public class FileController {
      * <p>
      * Add File
      * </p>
-     * @param fileEntity {@link FileEntity}
+     * @param fileEntity {@link FileDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:oss:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FileEntity fileEntity) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FileDO fileEntity) {
         boolean bool = fileService.save(fileEntity);
         return R.result(bool);
     }
@@ -162,12 +162,12 @@ public class FileController {
      * <p>
      * Update File
      * </p>
-     * @param fileEntity {@link FileEntity}
+     * @param fileEntity {@link FileDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:oss:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileEntity fileEntity) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileDO fileEntity) {
         boolean bool = fileService.updateById(fileEntity);
         return R.result(bool);
     }

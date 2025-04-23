@@ -6,10 +6,10 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.system.domain.entity.Message;
-import com.github.mengweijin.vita.system.domain.entity.MessageReceiver;
-import com.github.mengweijin.vita.enums.EMessageCategory;
-import com.github.mengweijin.vita.enums.EMessageTemplate;
+import com.github.mengweijin.vita.system.domain.entity.MessageDO;
+import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MessageService extends CrudRepository<MessageMapper, Message> {
+public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
 
     private MessageReceiverService messageReceiverService;
 
@@ -52,20 +52,20 @@ public class MessageService extends CrudRepository<MessageMapper, Message> {
      * Custom paging query
      *
      * @param page    page
-     * @param message {@link Message}
+     * @param message {@link MessageDO}
      * @return IPage
      */
-    public IPage<Message> page(IPage<Message> page, Message message) {
-        LambdaQueryWrapper<Message> query = new LambdaQueryWrapper<>();
+    public IPage<MessageDO> page(IPage<MessageDO> page, MessageDO message) {
+        LambdaQueryWrapper<MessageDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(message.getCategory()), Message::getCategory, message.getCategory())
-                .eq(StrValidator.isNotBlank(message.getTitle()), Message::getTitle, message.getTitle())
-                .eq(StrValidator.isNotBlank(message.getContent()), Message::getContent, message.getContent())
-                .eq(!Objects.isNull(message.getId()), Message::getId, message.getId())
-                .eq(!Objects.isNull(message.getCreateBy()), Message::getCreateBy, message.getCreateBy())
-                .eq(!Objects.isNull(message.getCreateTime()), Message::getCreateTime, message.getCreateTime())
-                .eq(!Objects.isNull(message.getUpdateBy()), Message::getUpdateBy, message.getUpdateBy())
-                .eq(!Objects.isNull(message.getUpdateTime()), Message::getUpdateTime, message.getUpdateTime());
+                .eq(StrValidator.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory())
+                .eq(StrValidator.isNotBlank(message.getTitle()), MessageDO::getTitle, message.getTitle())
+                .eq(StrValidator.isNotBlank(message.getContent()), MessageDO::getContent, message.getContent())
+                .eq(!Objects.isNull(message.getId()), MessageDO::getId, message.getId())
+                .eq(!Objects.isNull(message.getCreateBy()), MessageDO::getCreateBy, message.getCreateBy())
+                .eq(!Objects.isNull(message.getCreateTime()), MessageDO::getCreateTime, message.getCreateTime())
+                .eq(!Objects.isNull(message.getUpdateBy()), MessageDO::getUpdateBy, message.getUpdateBy())
+                .eq(!Objects.isNull(message.getUpdateTime()), MessageDO::getUpdateTime, message.getUpdateTime());
         return this.page(page, query);
     }
 
@@ -102,7 +102,7 @@ public class MessageService extends CrudRepository<MessageMapper, Message> {
         Long loginId = LoginHelper.getLoginUserIdQuietly();
         CompletableFuture.runAsync(() -> {
             transactionTemplate.executeWithoutResult(status -> {
-                Message message = new Message();
+                MessageDO message = new MessageDO();
                 message.setCategory(category.getValue());
                 message.setTitle(CharSequenceUtil.format(template.getTitle(), args));
                 message.setContent(CharSequenceUtil.format(template.getContent(), args));
@@ -116,9 +116,9 @@ public class MessageService extends CrudRepository<MessageMapper, Message> {
                     return;
                 }
 
-                List<MessageReceiver> messageReceiverList = new ArrayList<>();
+                List<MessageReceiverDO> messageReceiverList = new ArrayList<>();
                 userIds.forEach(userId -> {
-                    MessageReceiver msgReceiver = new MessageReceiver();
+                    MessageReceiverDO msgReceiver = new MessageReceiverDO();
                     msgReceiver.setMessageId(message.getId());
                     msgReceiver.setUserId(userId);
 

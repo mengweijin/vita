@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.constant.UserConst;
+import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
-import com.github.mengweijin.vita.system.domain.entity.Role;
-import com.github.mengweijin.vita.system.domain.entity.RoleMenu;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,37 +31,37 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RoleService extends CrudRepository<RoleMapper, Role> {
+public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
 
     private RoleMenuService roleMenuService;
 
     /**
      * Custom paging query
      * @param page page
-     * @param role {@link Role}
+     * @param role {@link RoleDO}
      * @return IPage
      */
-    public IPage<Role> page(IPage<Role> page, Role role){
-        LambdaQueryWrapper<Role> query = new LambdaQueryWrapper<>();
+    public IPage<RoleDO> page(IPage<RoleDO> page, RoleDO role){
+        LambdaQueryWrapper<RoleDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(role.getCode()), Role::getCode, role.getCode())
-                .eq(!Objects.isNull(role.getSeq()), Role::getSeq, role.getSeq())
-                .eq(StrValidator.isNotBlank(role.getDisabled()), Role::getDisabled, role.getDisabled())
-                .like(StrValidator.isNotBlank(role.getName()), Role::getName, role.getName())
-                .eq(StrValidator.isNotBlank(role.getRemark()), Role::getRemark, role.getRemark())
-                .eq(!Objects.isNull(role.getId()), Role::getId, role.getId())
-                .eq(!Objects.isNull(role.getCreateBy()), Role::getCreateBy, role.getCreateBy())
-                .eq(!Objects.isNull(role.getCreateTime()), Role::getCreateTime, role.getCreateTime())
-                .eq(!Objects.isNull(role.getUpdateBy()), Role::getUpdateBy, role.getUpdateBy())
-                .eq(!Objects.isNull(role.getUpdateTime()), Role::getUpdateTime, role.getUpdateTime());
+                .eq(StrValidator.isNotBlank(role.getCode()), RoleDO::getCode, role.getCode())
+                .eq(!Objects.isNull(role.getSeq()), RoleDO::getSeq, role.getSeq())
+                .eq(StrValidator.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled())
+                .like(StrValidator.isNotBlank(role.getName()), RoleDO::getName, role.getName())
+                .eq(StrValidator.isNotBlank(role.getRemark()), RoleDO::getRemark, role.getRemark())
+                .eq(!Objects.isNull(role.getId()), RoleDO::getId, role.getId())
+                .eq(!Objects.isNull(role.getCreateBy()), RoleDO::getCreateBy, role.getCreateBy())
+                .eq(!Objects.isNull(role.getCreateTime()), RoleDO::getCreateTime, role.getCreateTime())
+                .eq(!Objects.isNull(role.getUpdateBy()), RoleDO::getUpdateBy, role.getUpdateBy())
+                .eq(!Objects.isNull(role.getUpdateTime()), RoleDO::getUpdateTime, role.getUpdateTime());
 
-        query.orderByAsc(Role::getSeq);
+        query.orderByAsc(RoleDO::getSeq);
         return this.page(page, query);
     }
 
     public Set<String> getRoleCodeByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
-            return this.list().stream().map(Role::getCode).collect(Collectors.toSet());
+            return this.list().stream().map(RoleDO::getCode).collect(Collectors.toSet());
         }
         return this.getBaseMapper().getRoleCodeByUsername(username);
     }
@@ -69,8 +69,8 @@ public class RoleService extends CrudRepository<RoleMapper, Role> {
     public boolean setMenuPermission(RolePermissionBO bo) {
         roleMenuService.removeByRoleId(bo.getRoleId());
 
-        List<RoleMenu> collect = bo.getMenuIds().stream().map(menuId -> {
-            RoleMenu roleMenu = new RoleMenu();
+        List<RoleMenuDO> collect = bo.getMenuIds().stream().map(menuId -> {
+            RoleMenuDO roleMenu = new RoleMenuDO();
             roleMenu.setRoleId(bo.getRoleId());
             roleMenu.setMenuId(menuId);
             return roleMenu;
@@ -81,8 +81,8 @@ public class RoleService extends CrudRepository<RoleMapper, Role> {
         return true;
     }
 
-    public Role getByCode(String code) {
-        return this.lambdaQuery().eq(Role::getCode, code).one();
+    public RoleDO getByCode(String code) {
+        return this.lambdaQuery().eq(RoleDO::getCode, code).one();
     }
     
 }

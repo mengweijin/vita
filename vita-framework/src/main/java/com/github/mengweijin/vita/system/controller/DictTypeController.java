@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.DictType;
+import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import com.github.mengweijin.vita.system.service.DictTypeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class DictTypeController {
      * Get DictType page by DictType
      * </p>
      * @param page page
-     * @param dictType {@link DictType}
+     * @param dictType {@link DictTypeDO}
      * @return Page<DictType>
      */
     @SaCheckPermission("system:dictType:query")
     @GetMapping("/page")
-    public IPage<DictType> page(Page<DictType> page, DictType dictType) {
+    public IPage<DictTypeDO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
         return dictTypeService.page(page, dictType);
     }
 
@@ -57,12 +57,12 @@ public class DictTypeController {
      * <p>
      * Get DictType list by DictType
      * </p>
-     * @param dictType {@link DictType}
+     * @param dictType {@link DictTypeDO}
      * @return List<DictType>
      */
     @SaCheckPermission("system:dictType:query")
     @GetMapping("/list")
-    public List<DictType> list(DictType dictType) {
+    public List<DictTypeDO> list(DictTypeDO dictType) {
         return dictTypeService.list(new LambdaQueryWrapper<>(dictType));
     }
 
@@ -75,7 +75,7 @@ public class DictTypeController {
      */
     @SaCheckPermission("system:dictType:query")
     @GetMapping("/{id}")
-    public DictType getById(@PathVariable("id") Long id) {
+    public DictTypeDO getById(@PathVariable("id") Long id) {
         return dictTypeService.getById(id);
     }
 
@@ -83,12 +83,12 @@ public class DictTypeController {
      * <p>
      * Add DictType
      * </p>
-     * @param dictType {@link DictType}
+     * @param dictType {@link DictTypeDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictType:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictType dictType) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictTypeDO dictType) {
         boolean bool = dictTypeService.save(dictType);
         return R.result(bool);
     }
@@ -97,12 +97,12 @@ public class DictTypeController {
      * <p>
      * Update DictType
      * </p>
-     * @param dictType {@link DictType}
+     * @param dictType {@link DictTypeDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictType:update")
     @PostMapping("update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictType dictType) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictTypeDO dictType) {
         boolean bool = dictTypeService.updateById(dictType);
         return R.result(bool);
     }

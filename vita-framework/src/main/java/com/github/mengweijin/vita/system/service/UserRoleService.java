@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
-import com.github.mengweijin.vita.system.domain.entity.Role;
-import com.github.mengweijin.vita.system.domain.entity.UserRole;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -28,16 +28,16 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class UserRoleService extends CrudRepository<UserRoleMapper, UserRole> {
+public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> {
 
     public Set<Long> getRoleIdsByUserId(Long userId) {
-        List<UserRole> list = this.lambdaQuery().select(UserRole::getRoleId).eq(UserRole::getUserId, userId).list();
-        return list.stream().map(UserRole::getRoleId).collect(Collectors.toSet());
+        List<UserRoleDO> list = this.lambdaQuery().select(UserRoleDO::getRoleId).eq(UserRoleDO::getUserId, userId).list();
+        return list.stream().map(UserRoleDO::getRoleId).collect(Collectors.toSet());
     }
 
     public Set<Long> getUserIdsByRoleId(Long roleId) {
-        List<UserRole> list = this.lambdaQuery().select(UserRole::getUserId).eq(UserRole::getRoleId, roleId).list();
-        return list.stream().map(UserRole::getUserId).collect(Collectors.toSet());
+        List<UserRoleDO> list = this.lambdaQuery().select(UserRoleDO::getUserId).eq(UserRoleDO::getRoleId, roleId).list();
+        return list.stream().map(UserRoleDO::getUserId).collect(Collectors.toSet());
     }
 
     public Set<Long> getUserIdsByRoleCode(String roleCode) {
@@ -46,7 +46,7 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRole> {
             return set;
         }
         RoleService roleService = SpringUtil.getBean(RoleService.class);
-        Role role = roleService.getByCode(roleCode);
+        RoleDO role = roleService.getByCode(roleCode);
         if (role == null) {
             return set;
         }
@@ -56,10 +56,10 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRole> {
     public boolean setUserRoles(UserRolesBO bo) {
         Long userId = bo.getUserId();
         List<Long> roleIds = bo.getRoleIds();
-        this.lambdaUpdate().eq(UserRole::getUserId, userId).remove();
+        this.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
 
-        List<UserRole> list = roleIds.stream().map(roleId -> {
-            UserRole userRole = new UserRole();
+        List<UserRoleDO> list = roleIds.stream().map(roleId -> {
+            UserRoleDO userRole = new UserRoleDO();
             userRole.setUserId(userId);
             userRole.setRoleId(roleId);
             return userRole;

@@ -8,8 +8,8 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Notice;
-import com.github.mengweijin.vita.enums.EYesNo;
+import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.NoticeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,12 +45,12 @@ public class NoticeController {
      * Get Notice page by Notice
      * </p>
      * @param page page
-     * @param notice {@link Notice}
+     * @param notice {@link NoticeDO}
      * @return Page<Notice>
      */
     @SaCheckPermission("system:notice:query")
     @GetMapping("/page")
-    public IPage<Notice> page(Page<Notice> page, Notice notice) {
+    public IPage<NoticeDO> page(Page<NoticeDO> page, NoticeDO notice) {
         return noticeService.page(page, notice);
     }
 
@@ -58,12 +58,12 @@ public class NoticeController {
      * <p>
      * Get Notice list by Notice
      * </p>
-     * @param notice {@link Notice}
+     * @param notice {@link NoticeDO}
      * @return List<Notice>
      */
     @SaCheckPermission("system:notice:query")
     @GetMapping("/list")
-    public List<Notice> list(Notice notice) {
+    public List<NoticeDO> list(NoticeDO notice) {
         return noticeService.list(new LambdaQueryWrapper<>(notice));
     }
 
@@ -76,7 +76,7 @@ public class NoticeController {
      */
     @SaCheckPermission("system:notice:query")
     @GetMapping("/{id}")
-    public Notice getById(@PathVariable("id") Long id) {
+    public NoticeDO getById(@PathVariable("id") Long id) {
         return noticeService.getById(id);
     }
 
@@ -84,12 +84,12 @@ public class NoticeController {
      * <p>
      * Add Notice
      * </p>
-     * @param notice {@link Notice}
+     * @param notice {@link NoticeDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:notice:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Notice notice) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody NoticeDO notice) {
         boolean bool = noticeService.save(notice);
         return R.result(bool);
     }
@@ -98,12 +98,12 @@ public class NoticeController {
      * <p>
      * Update Notice
      * </p>
-     * @param notice {@link Notice}
+     * @param notice {@link NoticeDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:notice:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Notice notice) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody NoticeDO notice) {
         boolean bool = noticeService.updateById(notice);
         return R.result(bool);
     }
@@ -125,7 +125,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:release")
     @PostMapping("/release/{id}")
     public R<Void> release(@PathVariable("id") Long id) {
-        boolean bool = noticeService.lambdaUpdate().set(Notice::getReleased, EYesNo.Y.getValue()).eq(Notice::getId, id).update();
+        boolean bool = noticeService.lambdaUpdate().set(NoticeDO::getReleased, EYesNo.Y.getValue()).eq(NoticeDO::getId, id).update();
         return R.result(bool);
     }
 
@@ -133,7 +133,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:revocation")
     @PostMapping("/revoke/{id}")
     public R<Void> revoke(@PathVariable("id") Long id) {
-        boolean bool = noticeService.lambdaUpdate().set(Notice::getReleased, EYesNo.N.getValue()).eq(Notice::getId, id).update();
+        boolean bool = noticeService.lambdaUpdate().set(NoticeDO::getReleased, EYesNo.N.getValue()).eq(NoticeDO::getId, id).update();
         return R.result(bool);
     }
 }

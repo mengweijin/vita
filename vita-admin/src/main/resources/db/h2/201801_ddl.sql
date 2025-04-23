@@ -118,8 +118,8 @@ create TABLE VT_DICT_DATA (
 create unique index UIDX_VT_DICT_DATA_CODE_VAL on VT_DICT_DATA(CODE, VAL);
 
 
-drop table IF EXISTS VT_LOGS;
-create TABLE VT_LOGS (
+drop table IF EXISTS VT_LOG;
+create TABLE VT_LOG (
   ID                            bigint NOT NULL comment '主键ID',
   LOGGER_LEVEL                  varchar(10) DEFAULT NULL comment '日志级别',
   THREAD_NAME                   varchar(255) DEFAULT NULL comment '线程名称',

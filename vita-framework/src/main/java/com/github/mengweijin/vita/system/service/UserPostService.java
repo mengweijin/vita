@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.UserPost;
+import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
 import com.github.mengweijin.vita.system.mapper.UserPostMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class UserPostService extends CrudRepository<UserPostMapper, UserPost> {
+public class UserPostService extends CrudRepository<UserPostMapper, UserPostDO> {
 
     public Set<Long> getUserIdsByPostId(Long postId) {
-        List<UserPost> list = this.lambdaQuery().select(UserPost::getUserId).eq(UserPost::getPostId, postId).list();
-        return list.stream().map(UserPost::getUserId).collect(Collectors.toSet());
+        List<UserPostDO> list = this.lambdaQuery().select(UserPostDO::getUserId).eq(UserPostDO::getPostId, postId).list();
+        return list.stream().map(UserPostDO::getUserId).collect(Collectors.toSet());
     }
 
 }

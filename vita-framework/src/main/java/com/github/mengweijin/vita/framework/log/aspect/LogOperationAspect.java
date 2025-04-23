@@ -5,8 +5,8 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.domain.entity.LogOperation;
-import com.github.mengweijin.vita.enums.EYesNo;
+import com.github.mengweijin.vita.system.domain.entity.LogOperationDO;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -92,7 +92,7 @@ public class LogOperationAspect {
             HttpServletRequest request = ServletUtils.getRequest();
             String methodName = joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
 
-            LogOperation logOperation = new LogOperation();
+            LogOperationDO logOperation = new LogOperationDO();
             logOperation.setTitle(logAnnotation.title());
             logOperation.setOperationType(logAnnotation.operationType().name());
             logOperation.setHttpMethod(request.getMethod());
@@ -132,7 +132,7 @@ public class LogOperationAspect {
 
     private static final String REQUEST_BODY = "REQUEST_BODY";
 
-    private void setRequestData(HttpServletRequest request, LogOperation logOperation) throws IOException {
+    private void setRequestData(HttpServletRequest request, LogOperationDO logOperation) throws IOException {
         Map<String, Object> dataMap = new LinkedHashMap<>();
 
         // request.getParameterMap()也会发生下面注释中说到的流不能重复读取的问题，造成获取不到数据。

@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.Dept;
+import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class DeptController {
      * Get Dept page by Dept
      * </p>
      * @param page page
-     * @param dept {@link Dept}
+     * @param dept {@link DeptDO}
      * @return Page<Dept>
      */
     @SaCheckPermission("system:dept:query")
     @GetMapping("/page")
-    public IPage<Dept> page(Page<Dept> page, Dept dept) {
+    public IPage<DeptDO> page(Page<DeptDO> page, DeptDO dept) {
         return deptService.page(page, dept);
     }
 
@@ -57,13 +57,13 @@ public class DeptController {
      * <p>
      * Get Dept list by Dept
      * </p>
-     * @param dept {@link Dept}
+     * @param dept {@link DeptDO}
      * @return List<Dept>
      */
     @SaCheckPermission("system:dept:query")
     @GetMapping("/list")
-    public List<Dept> list(Dept dept) {
-        return deptService.list(new LambdaQueryWrapper<>(dept).orderByAsc(Dept::getSeq));
+    public List<DeptDO> list(DeptDO dept) {
+        return deptService.list(new LambdaQueryWrapper<>(dept).orderByAsc(DeptDO::getSeq));
     }
 
     /**
@@ -75,7 +75,7 @@ public class DeptController {
      */
     @SaCheckPermission("system:dept:query")
     @GetMapping("/{id}")
-    public Dept getById(@PathVariable("id") Long id) {
+    public DeptDO getById(@PathVariable("id") Long id) {
         return deptService.getById(id);
     }
 
@@ -83,12 +83,12 @@ public class DeptController {
      * <p>
      * Add Dept
      * </p>
-     * @param dept {@link Dept}
+     * @param dept {@link DeptDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dept:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Dept dept) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DeptDO dept) {
         boolean bool = deptService.save(dept);
         return R.result(bool);
     }
@@ -97,12 +97,12 @@ public class DeptController {
      * <p>
      * Update Dept
      * </p>
-     * @param dept {@link Dept}
+     * @param dept {@link DeptDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dept:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Dept dept) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DeptDO dept) {
         boolean bool = deptService.updateById(dept);
         return R.result(bool);
     }

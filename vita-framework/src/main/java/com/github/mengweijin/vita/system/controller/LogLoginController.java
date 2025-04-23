@@ -8,8 +8,8 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
-import com.github.mengweijin.vita.system.domain.vo.LogLoginVO;
-import com.github.mengweijin.vita.system.domain.entity.LogLogin;
+import com.github.mengweijin.vita.system.domain.vo.LogLoginDOVO;
+import com.github.mengweijin.vita.system.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.system.service.LogLoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,26 +47,26 @@ public class LogLoginController {
      * Get LogLogin page by LogLogin
      * </p>
      * @param page page
-     * @param logLogin {@link LogLogin}
+     * @param logLogin {@link LogLoginDO}
      * @return Page<LogLogin>
      */
     @SaCheckPermission("system:logLogin:query")
     @GetMapping("/page")
-    public IPage<LogLoginVO> page(Page<LogLogin> page, LogLogin logLogin) {
-        IPage<LogLogin> paged = logLoginService.page(page, logLogin);
-        return BeanCopyUtils.copyPage(paged, LogLoginVO.class);
+    public IPage<LogLoginDOVO> page(Page<LogLoginDO> page, LogLoginDO logLogin) {
+        IPage<LogLoginDO> paged = logLoginService.page(page, logLogin);
+        return BeanCopyUtils.copyPage(paged, LogLoginDOVO.class);
     }
 
     /**
      * <p>
      * Get LogLogin list by LogLogin
      * </p>
-     * @param logLogin {@link LogLogin}
+     * @param logLogin {@link LogLoginDO}
      * @return List<LogLogin>
      */
     @SaCheckPermission("system:logLogin:query")
     @GetMapping("/list")
-    public List<LogLogin> list(LogLogin logLogin) {
+    public List<LogLoginDO> list(LogLoginDO logLogin) {
         return logLoginService.list(new LambdaQueryWrapper<>(logLogin));
     }
 
@@ -79,7 +79,7 @@ public class LogLoginController {
      */
     @SaCheckPermission("system:logLogin:query")
     @GetMapping("/{id}")
-    public LogLogin getById(@PathVariable("id") Long id) {
+    public LogLoginDO getById(@PathVariable("id") Long id) {
         return logLoginService.getById(id);
     }
 
@@ -87,12 +87,12 @@ public class LogLoginController {
      * <p>
      * Add LogLogin
      * </p>
-     * @param logLogin {@link LogLogin}
+     * @param logLogin {@link LogLoginDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:logLogin:create")
     @PostMapping("/create")
-    public R<Void> create(@Valid @RequestBody LogLogin logLogin) {
+    public R<Void> create(@Valid @RequestBody LogLoginDO logLogin) {
         boolean bool = logLoginService.save(logLogin);
         return R.result(bool);
     }
@@ -101,12 +101,12 @@ public class LogLoginController {
      * <p>
      * Update LogLogin
      * </p>
-     * @param logLogin {@link LogLogin}
+     * @param logLogin {@link LogLoginDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:logLogin:update")
     @PostMapping("/update")
-    public R<Void> update(@Valid @RequestBody LogLogin logLogin) {
+    public R<Void> update(@Valid @RequestBody LogLoginDO logLogin) {
         boolean bool = logLoginService.updateById(logLogin);
         return R.result(bool);
     }

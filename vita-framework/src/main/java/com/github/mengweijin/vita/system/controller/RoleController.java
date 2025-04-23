@@ -9,8 +9,8 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
-import com.github.mengweijin.vita.system.domain.entity.Role;
-import com.github.mengweijin.vita.enums.EYesNo;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import jakarta.validation.Valid;
@@ -51,12 +51,12 @@ public class RoleController {
      * Get Role page by Role
      * </p>
      * @param page page
-     * @param role {@link Role}
+     * @param role {@link RoleDO}
      * @return Page<Role>
      */
     @SaCheckPermission("system:role:query")
     @GetMapping("/page")
-    public IPage<Role> page(Page<Role> page, Role role) {
+    public IPage<RoleDO> page(Page<RoleDO> page, RoleDO role) {
         return roleService.page(page, role);
     }
 
@@ -64,13 +64,13 @@ public class RoleController {
      * <p>
      * Get Role list by Role
      * </p>
-     * @param role {@link Role}
+     * @param role {@link RoleDO}
      * @return List<Role>
      */
     @SaCheckPermission("system:role:query")
     @GetMapping("/list")
-    public List<Role> list(Role role) {
-        return roleService.list(new LambdaQueryWrapper<>(role).eq(Role::getDisabled, EYesNo.N.getValue()));
+    public List<RoleDO> list(RoleDO role) {
+        return roleService.list(new LambdaQueryWrapper<>(role).eq(RoleDO::getDisabled, EYesNo.N.getValue()));
     }
 
     /**
@@ -96,7 +96,7 @@ public class RoleController {
      */
     @SaCheckPermission("system:role:query")
     @GetMapping("/{id}")
-    public Role getById(@PathVariable("id") Long id) {
+    public RoleDO getById(@PathVariable("id") Long id) {
         return roleService.getById(id);
     }
 
@@ -104,12 +104,12 @@ public class RoleController {
      * <p>
      * Add Role
      * </p>
-     * @param role {@link Role}
+     * @param role {@link RoleDO}
      */
     @Log(operationType = EOperationType.INSERT)
     @SaCheckPermission("system:role:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody Role role) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody RoleDO role) {
         boolean bool = roleService.save(role);
         return R.result(bool);
     }
@@ -118,12 +118,12 @@ public class RoleController {
      * <p>
      * Update Role
      * </p>
-     * @param role {@link Role}
+     * @param role {@link RoleDO}
      */
     @Log(operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:role:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody Role role) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody RoleDO role) {
         boolean bool = roleService.updateById(role);
         return R.result(bool);
     }

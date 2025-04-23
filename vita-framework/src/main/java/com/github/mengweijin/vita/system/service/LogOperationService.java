@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.mengweijin.vita.system.domain.entity.LogOperation;
+import com.github.mengweijin.vita.system.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.system.mapper.LogOperationMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;
@@ -24,35 +24,35 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class LogOperationService extends ServiceImpl<LogOperationMapper, LogOperation> {
+public class LogOperationService extends ServiceImpl<LogOperationMapper, LogOperationDO> {
 
     @Async
     @EventListener
-    public void saveAsync(LogOperation entity) {
+    public void saveAsync(LogOperationDO entity) {
         this.save(entity);
     }
 
     /**
      * Custom paging query
      * @param page page
-     * @param logOperation {@link LogOperation}
+     * @param logOperation {@link LogOperationDO}
      * @return IPage
      */
-    public IPage<LogOperation> page(IPage<LogOperation> page, LogOperation logOperation){
-        LambdaQueryWrapper<LogOperation> query = new LambdaQueryWrapper<>();
+    public IPage<LogOperationDO> page(IPage<LogOperationDO> page, LogOperationDO logOperation){
+        LambdaQueryWrapper<LogOperationDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(logOperation.getOperationType()), LogOperation::getOperationType, logOperation.getOperationType())
-                .eq(StrValidator.isNotBlank(logOperation.getHttpMethod()), LogOperation::getHttpMethod, logOperation.getHttpMethod())
-                .eq(StrValidator.isNotBlank(logOperation.getSuccess()), LogOperation::getSuccess, logOperation.getSuccess())
-                .eq(StrValidator.isNotBlank(logOperation.getErrorMsg()), LogOperation::getErrorMsg, logOperation.getErrorMsg())
-                .eq(!Objects.isNull(logOperation.getId()), LogOperation::getId, logOperation.getId())
-                .eq(!Objects.isNull(logOperation.getCreateBy()), LogOperation::getCreateBy, logOperation.getCreateBy())
-                .eq(!Objects.isNull(logOperation.getCreateTime()), LogOperation::getCreateTime, logOperation.getCreateTime())
-                .eq(!Objects.isNull(logOperation.getUpdateBy()), LogOperation::getUpdateBy, logOperation.getUpdateBy())
-                .eq(!Objects.isNull(logOperation.getUpdateTime()), LogOperation::getUpdateTime, logOperation.getUpdateTime())
-                .like(StrValidator.isNotBlank(logOperation.getTitle()), LogOperation::getTitle, logOperation.getTitle())
-                .like(StrValidator.isNotBlank(logOperation.getUrl()), LogOperation::getUrl, logOperation.getUrl())
-                .like(StrValidator.isNotBlank(logOperation.getMethodName()), LogOperation::getMethodName, logOperation.getMethodName());
+                .eq(StrValidator.isNotBlank(logOperation.getOperationType()), LogOperationDO::getOperationType, logOperation.getOperationType())
+                .eq(StrValidator.isNotBlank(logOperation.getHttpMethod()), LogOperationDO::getHttpMethod, logOperation.getHttpMethod())
+                .eq(StrValidator.isNotBlank(logOperation.getSuccess()), LogOperationDO::getSuccess, logOperation.getSuccess())
+                .eq(StrValidator.isNotBlank(logOperation.getErrorMsg()), LogOperationDO::getErrorMsg, logOperation.getErrorMsg())
+                .eq(!Objects.isNull(logOperation.getId()), LogOperationDO::getId, logOperation.getId())
+                .eq(!Objects.isNull(logOperation.getCreateBy()), LogOperationDO::getCreateBy, logOperation.getCreateBy())
+                .eq(!Objects.isNull(logOperation.getCreateTime()), LogOperationDO::getCreateTime, logOperation.getCreateTime())
+                .eq(!Objects.isNull(logOperation.getUpdateBy()), LogOperationDO::getUpdateBy, logOperation.getUpdateBy())
+                .eq(!Objects.isNull(logOperation.getUpdateTime()), LogOperationDO::getUpdateTime, logOperation.getUpdateTime())
+                .like(StrValidator.isNotBlank(logOperation.getTitle()), LogOperationDO::getTitle, logOperation.getTitle())
+                .like(StrValidator.isNotBlank(logOperation.getUrl()), LogOperationDO::getUrl, logOperation.getUrl())
+                .like(StrValidator.isNotBlank(logOperation.getMethodName()), LogOperationDO::getMethodName, logOperation.getMethodName());
         return this.page(page, query);
     }
 }

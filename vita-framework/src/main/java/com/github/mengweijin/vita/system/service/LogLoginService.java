@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.domain.entity.LogLogin;
-import com.github.mengweijin.vita.system.domain.entity.User;
-import com.github.mengweijin.vita.enums.ELoginType;
-import com.github.mengweijin.vita.enums.EYesNo;
+import com.github.mengweijin.vita.system.domain.entity.LogLoginDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.enums.ELoginType;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.LogLoginMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -36,40 +36,40 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLogin> {
+public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLoginDO> {
 
     private UserService userService;
 
     /**
      * Custom paging query
      * @param page page
-     * @param logLogin {@link LogLogin}
+     * @param logLogin {@link LogLoginDO}
      * @return IPage
      */
-    public IPage<LogLogin> page(IPage<LogLogin> page, LogLogin logLogin){
-        LambdaQueryWrapper<LogLogin> query = new LambdaQueryWrapper<>();
+    public IPage<LogLoginDO> page(IPage<LogLoginDO> page, LogLoginDO logLogin){
+        LambdaQueryWrapper<LogLoginDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(logLogin.getLoginType()), LogLogin::getLoginType, logLogin.getLoginType())
-                .eq(StrValidator.isNotBlank(logLogin.getIp()), LogLogin::getIp, logLogin.getIp())
-                .eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLogin::getIpLocation, logLogin.getIpLocation())
-                .eq(StrValidator.isNotBlank(logLogin.getBrowser()), LogLogin::getBrowser, logLogin.getBrowser())
-                .eq(StrValidator.isNotBlank(logLogin.getPlatform()), LogLogin::getPlatform, logLogin.getPlatform())
-                .eq(StrValidator.isNotBlank(logLogin.getOs()), LogLogin::getOs, logLogin.getOs())
-                .eq(StrValidator.isNotBlank(logLogin.getSuccess()), LogLogin::getSuccess, logLogin.getSuccess())
-                .eq(StrValidator.isNotBlank(logLogin.getErrorMsg()), LogLogin::getErrorMsg, logLogin.getErrorMsg())
-                .eq(!Objects.isNull(logLogin.getId()), LogLogin::getId, logLogin.getId())
-                .eq(!Objects.isNull(logLogin.getCreateBy()), LogLogin::getCreateBy, logLogin.getCreateBy())
-                .eq(!Objects.isNull(logLogin.getCreateTime()), LogLogin::getCreateTime, logLogin.getCreateTime())
-                .eq(!Objects.isNull(logLogin.getUpdateBy()), LogLogin::getUpdateBy, logLogin.getUpdateBy())
-                .eq(!Objects.isNull(logLogin.getUpdateTime()), LogLogin::getUpdateTime, logLogin.getUpdateTime())
-                .like(StrValidator.isNotBlank(logLogin.getUsername()), LogLogin::getUsername, logLogin.getUsername());
-        query.orderByDesc(LogLogin::getCreateTime);
+                .eq(StrValidator.isNotBlank(logLogin.getLoginType()), LogLoginDO::getLoginType, logLogin.getLoginType())
+                .eq(StrValidator.isNotBlank(logLogin.getIp()), LogLoginDO::getIp, logLogin.getIp())
+                .eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLoginDO::getIpLocation, logLogin.getIpLocation())
+                .eq(StrValidator.isNotBlank(logLogin.getBrowser()), LogLoginDO::getBrowser, logLogin.getBrowser())
+                .eq(StrValidator.isNotBlank(logLogin.getPlatform()), LogLoginDO::getPlatform, logLogin.getPlatform())
+                .eq(StrValidator.isNotBlank(logLogin.getOs()), LogLoginDO::getOs, logLogin.getOs())
+                .eq(StrValidator.isNotBlank(logLogin.getSuccess()), LogLoginDO::getSuccess, logLogin.getSuccess())
+                .eq(StrValidator.isNotBlank(logLogin.getErrorMsg()), LogLoginDO::getErrorMsg, logLogin.getErrorMsg())
+                .eq(!Objects.isNull(logLogin.getId()), LogLoginDO::getId, logLogin.getId())
+                .eq(!Objects.isNull(logLogin.getCreateBy()), LogLoginDO::getCreateBy, logLogin.getCreateBy())
+                .eq(!Objects.isNull(logLogin.getCreateTime()), LogLoginDO::getCreateTime, logLogin.getCreateTime())
+                .eq(!Objects.isNull(logLogin.getUpdateBy()), LogLoginDO::getUpdateBy, logLogin.getUpdateBy())
+                .eq(!Objects.isNull(logLogin.getUpdateTime()), LogLoginDO::getUpdateTime, logLogin.getUpdateTime())
+                .like(StrValidator.isNotBlank(logLogin.getUsername()), LogLoginDO::getUsername, logLogin.getUsername());
+        query.orderByDesc(LogLoginDO::getCreateTime);
         return this.page(page, query);
     }
 
     public void addLoginLogAsync(String username, ELoginType loginType, String errorMsg, HttpServletRequest request) {
         CompletableFuture.runAsync(() -> {
-            LogLogin logLogin = new LogLogin();
+            LogLoginDO logLogin = new LogLoginDO();
             if(request != null) {
                 UserAgent userAgent = ServletUtils.getUserAgent(request);
                 String ip = ServletUtil.getClientIP(request);
@@ -84,8 +84,8 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLogin> {
             logLogin.setSuccess(StrValidator.isBlank(errorMsg) ? EYesNo.Y.getValue() : EYesNo.N.getValue());
             logLogin.setErrorMsg(errorMsg);
 
-            User user = userService.getByUsername(username);
-            Long userId = Optional.ofNullable(user).map(User::getId).orElse(null);
+            UserDO user = userService.getByUsername(username);
+            Long userId = Optional.ofNullable(user).map(UserDO::getId).orElse(null);
             logLogin.setCreateBy(userId);
             logLogin.setUpdateBy(userId);
 
