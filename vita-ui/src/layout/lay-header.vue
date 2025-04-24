@@ -15,16 +15,20 @@ import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
+const loading = ref(false);
+
 // 强制刷新（适合更新静态资源）
 const refresh = () => { top.location.reload(true); };
 
 const onLogout = () => {
+  loading.value = true;
   loginApi.logout().finally(() => {
     // 清理前端登录信息残留
     dictStore.clear()
     userStore.clear()
     // 跳转登录页
     router.push('/login');
+    loading.value = false;
   });
 };
 
@@ -79,7 +83,7 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
         <span>布局设置</span>
       </el-menu-item>
       <el-divider />
-      <el-menu-item index="8-99" @click="onLogout()">
+      <el-menu-item index="8-99" @click="onLogout()" v-loading.fullscreen.lock="loading">
         <Icon icon="ri:logout-box-line" width="16" height="16" />
         <span>退出</span>
       </el-menu-item>

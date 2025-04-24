@@ -1,8 +1,7 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
 import { toArrayTree } from 'xe-utils';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
+import { columns } from './menu-list-hook.js'
 
 const tableRef = ref(null);
 
@@ -14,25 +13,6 @@ const treeProps = reactive({
   // 父子节点默认联动
   checkStrictly: false,
 })
-
-const columns = reactive({
-  index: false,
-  id: false,
-  title: true,
-  icon: true,
-  type: true,
-  disabled: true,
-  seq: true,
-  permission: true,
-  component: true,
-  routeName: false,
-  routePath: false,
-  createByName: true,
-  createTime: true,
-  updateByName: false,
-  updateTime: false,
-  operations: true,
-});
 
 /** selected rows */
 const selected = ref([]);
@@ -58,8 +38,8 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form :inline="true" class="vt-search-container">
-    <el-form-item label="菜单名称">
-      <el-input placeholder="菜单名称" clearable />
+    <el-form-item label="名称">
+      <el-input placeholder="名称" clearable />
     </el-form-item>
     <el-form-item>
       <el-button type="primary">搜索</el-button>
@@ -79,7 +59,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5">
+    <el-col :span="1.5" v-if="false">
       <el-button type="danger" v-show="selected.length">
         <template #icon>
           <Icon icon="ep:delete" width="24" height="24"></Icon>
@@ -87,7 +67,7 @@ onMounted(() => {
         批量删除
       </el-button>
     </el-col>
-    <el-col :span="1.5">
+    <el-col :span="1.5" v-if="false">
       <el-checkbox v-model="treeProps.checkStrictly">
         取消父子联动
       </el-checkbox>
@@ -100,28 +80,28 @@ onMounted(() => {
   <div class="vt-table-container">
     <el-table ref="tableRef" v-loading="loading" :data="tableDataList" :tree-props="treeProps" row-key="id"
       height="100%" stripe border show-overflow-tooltip highlight-current-row @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" />
-      <el-table-column v-if="columns.index" type="index" label="编号" width="60" fixed="left" />
-      <el-table-column v-if="columns.id" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.title" prop="title" label="菜单标题" min-width="260" fixed="left" />
-      <el-table-column v-if="columns.icon" prop="icon" label="图标" min-width="80" align="center">
+      <el-table-column v-if="columns[0].visible" type="selection" width="55" />
+      <el-table-column v-if="columns[1].visible" type="index" label="序号" width="60" fixed="left" />
+      <el-table-column v-if="columns[2].visible" prop="id" label="ID" min-width="180" />
+      <el-table-column v-if="columns[3].visible" prop="title" label="菜单标题" min-width="260" fixed="left" />
+      <el-table-column v-if="columns[4].visible" prop="icon" label="图标" min-width="80" align="center">
         <template #default="{ row }">
           <Icon :icon="row.icon" width="24" height="24" v-if="row.icon" />
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.type" prop="type" label="菜单类型" min-width="120" align="center">
+      <el-table-column v-if="columns[5].visible" prop="type" label="菜单类型" min-width="120" align="center">
         <template #default="{ row }">
           <VtDictTag :code="'vt_menu_type'" :value="row.type"></VtDictTag>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.disabled" prop="disabled" label="状态" min-width="80" align="center">
+      <el-table-column v-if="columns[6].visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
           <VtDictTag :code="'vt_disabled'" :value="row.disabled"></VtDictTag>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.seq" prop="seq" label="排序" min-width="80" sortable />
-      <el-table-column v-if="columns.permission" prop="permission" label="权限字符" min-width="200" />
-      <el-table-column v-if="columns.component" prop="component" label="组件" min-width="260">
+      <el-table-column v-if="columns[7].visible" prop="seq" label="排序" min-width="80" sortable align="center" />
+      <el-table-column v-if="columns[8].visible" prop="permission" label="权限字符" min-width="200" />
+      <el-table-column v-if="columns[9].visible" prop="component" label="组件" min-width="260">
         <template #default="scope">
           <el-popover effect="light" trigger="hover" placement="top" width="auto">
             <template #default>
@@ -135,13 +115,13 @@ onMounted(() => {
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.routeName" prop="routeName" label="路由名称" min-width="180" />
-      <el-table-column v-if="columns.routePath" prop="routePath" label="路由路径" min-width="200" />
-      <el-table-column v-if="columns.createByName" prop="createByName" label="创建者" align="center" min-width="100" />
-      <el-table-column v-if="columns.createTime" prop="createTime" label="创建时间" align="center" min-width="180" />
-      <el-table-column v-if="columns.updateByName" prop="updateByName" label="更新者" align="center" min-width="100" />
-      <el-table-column v-if="columns.updateTime" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns.operations" label="操作" fixed="right" min-width="180">
+      <el-table-column v-if="columns[10].visible" prop="routeName" label="路由名称" min-width="180" />
+      <el-table-column v-if="columns[11].visible" prop="routePath" label="路由路径" min-width="200" />
+      <el-table-column v-if="columns[12].visible" prop="createByName" label="创建者" align="center" min-width="100" />
+      <el-table-column v-if="columns[13].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
+      <el-table-column v-if="columns[14].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
+      <el-table-column v-if="columns[15].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
+      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="180">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
