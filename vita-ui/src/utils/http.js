@@ -98,6 +98,7 @@ axiosInstance.interceptors.response.use(
           break
       }
     }
+    loadingInstance?.close()
     return Promise.reject(error)
   },
 )

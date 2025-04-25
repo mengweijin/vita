@@ -36,6 +36,8 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
             "/**/*.css",
             "/**/*.js",
             "/**/*.svg",
+            "/**/*.jpg",
+            "/**/*.png",
             "/**/*.html",
     };
 
