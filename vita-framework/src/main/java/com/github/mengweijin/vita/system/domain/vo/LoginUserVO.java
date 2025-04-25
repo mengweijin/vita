@@ -1,0 +1,58 @@
+package com.github.mengweijin.vita.system.domain.vo;
+
+import com.github.mengweijin.vita.system.domain.MenuDO;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * <p>
+ * Login User
+ * </p>
+ *
+ * @author mengweijin
+ * @since 2023-06-03
+ */
+@Data
+public class LoginUserVO implements Serializable {
+
+    private Long userId;
+
+    /**
+     * 用户登录名（字母数字下划线）
+     */
+    private String username;
+
+    /**
+     * 用户昵称
+     */
+    private String nickname;
+
+    /**
+     * 用户图像
+     */
+    private String avatar;
+
+    /**
+     * 用户角色
+     */
+    private Set<String> roles;
+
+    /**
+     * 用户权限
+     */
+    private Set<String> permissions;
+
+    /**
+     * 用户菜单
+     */
+    private List<MenuDO> menus;
+
+    /**
+     * 用户 token
+     */
+    private String token;
+
+}

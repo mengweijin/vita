@@ -67,8 +67,8 @@ export default defineConfig(({ mode }) => {
         targets: ['defaults', 'not IE 11'],
       }),
       AutoImport({
-        // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-        imports: ['vue'],
+        // 自动导入 vue, pinia 等相关函数，如：ref, reactive, toRef, storeToRefs 等
+        imports: ['vue', 'pinia'],
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
         eslintrc: {

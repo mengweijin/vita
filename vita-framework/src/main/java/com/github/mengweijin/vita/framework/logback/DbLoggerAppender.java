@@ -12,8 +12,8 @@ import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.helpers.Transform;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.system.domain.entity.LogDO;
-import com.github.mengweijin.vita.system.mapper.LogsMapper;
+import com.github.mengweijin.vita.monitor.domain.LogDO;
+import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
      */
     private static final String[] LOGGER_NAME_WHITE_LIST = new String[]{
             "p6spy",
-            ClassUtil.getClassName(LogsMapper.class, false) + ".insert",
+            ClassUtil.getClassName(LogMapper.class, false) + ".insert",
             "org.springframework.web.servlet.DispatcherServlet"
     };
 

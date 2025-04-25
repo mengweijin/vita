@@ -36,7 +36,7 @@ public class ${entityName}Controller {
      * @param ${entityPropertyName} {@link ${entityName}}
      * @return Page<${entityName}>
      */
-    @SaCheckPermission("${module}:${entityPropertyName}:query")
+    @SaCheckPermission("${module}:${entityPropertyName}:select")
     @GetMapping("/page")
     public IPage<${entityName}> page(Page<${entityName}> page, ${entityName} ${entityPropertyName}) {
         return ${entityPropertyName}Service.page(page, ${entityPropertyName});
@@ -47,7 +47,7 @@ public class ${entityName}Controller {
      * @param ${entityPropertyName} {@link ${entityName}}
      * @return List<${entityName}>
      */
-    @SaCheckPermission("${module}:${entityPropertyName}:query")
+    @SaCheckPermission("${module}:${entityPropertyName}:select")
     @GetMapping("/list")
     public List<${entityName}> list(${entityName} ${entityPropertyName}) {
         return ${entityPropertyName}Service.list(new LambdaQueryWrapper<>(${entityPropertyName}));
@@ -58,7 +58,7 @@ public class ${entityName}Controller {
      * @param id id
      * @return ${entityName}
      */
-    @SaCheckPermission("${module}:${entityPropertyName}:query")
+    @SaCheckPermission("${module}:${entityPropertyName}:select")
     @GetMapping("/{id}")
     public ${entityName} getById(@PathVariable("id") ${idField.columnType.type} id) {
         return ${entityPropertyName}Service.getById(id);
@@ -92,7 +92,7 @@ public class ${entityName}Controller {
      * Delete ${entityName} by id(s), Multiple ids can be separated by commas ",".
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
+    @Log(operationType = EOperationType.REMOVE)
     @SaCheckPermission("${module}:${entityPropertyName}:delete")
     @PostMapping("/delete/{ids}")
     public R<Void> delete(@PathVariable("ids") ${idField.columnType.type}[] ids) {

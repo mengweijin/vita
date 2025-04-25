@@ -23,7 +23,7 @@ public enum EOperationType {
     /**
      * 删除
      */
-    DELETE,
+    REMOVE,
 
     /**
      * 导入

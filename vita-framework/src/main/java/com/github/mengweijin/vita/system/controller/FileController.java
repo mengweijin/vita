@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.FileDO;
+import com.github.mengweijin.vita.system.domain.FileDO;
 import com.github.mengweijin.vita.system.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,7 +54,7 @@ public class FileController {
     }
 
     /**
-     * @param id id in table VT_OSS
+     * @param id id in table VT_FILE
      */
     @Log(operationType = EOperationType.DOWNLOAD)
     @GetMapping("/download/{id}")
@@ -88,7 +88,7 @@ public class FileController {
     public Map<String, Object> uploadForWangEditor(HttpServletRequest request) {
         FileDO fileEntity = fileService.upload(request).get(0);
         String encrypt = AESUtils.getAES().encryptHex(String.valueOf(fileEntity.getId()));
-        String url = "/system/oss/download/wang-editor/" + encrypt;
+        String url = "/system/file/download/wang-editor/" + encrypt;
         Map<String, Object> data = new HashMap<>();
         data.put("url", url);
         Map<String, Object> result = new HashMap<>();
@@ -112,7 +112,7 @@ public class FileController {
      * @param fileEntity {@link FileDO}
      * @return Page<File>
      */
-    @SaCheckPermission("system:oss:query")
+    @SaCheckPermission("system:file:select")
     @GetMapping("/page")
     public IPage<FileDO> page(Page<FileDO> page, FileDO fileEntity) {
         return fileService.page(page, fileEntity);
@@ -125,7 +125,7 @@ public class FileController {
      * @param fileEntity {@link FileDO}
      * @return List<File>
      */
-    @SaCheckPermission("system:oss:query")
+    @SaCheckPermission("system:file:select")
     @GetMapping("/list")
     public List<FileDO> list(FileDO fileEntity) {
         return fileService.list(new LambdaQueryWrapper<>(fileEntity));
@@ -138,7 +138,7 @@ public class FileController {
      * @param id id
      * @return File
      */
-    @SaCheckPermission("system:oss:query")
+    @SaCheckPermission("system:file:select")
     @GetMapping("/{id}")
     public FileDO getById(@PathVariable("id") Long id) {
         return fileService.getById(id);
@@ -151,7 +151,7 @@ public class FileController {
      * @param fileEntity {@link FileDO}
      */
     @Log(operationType = EOperationType.INSERT)
-    @SaCheckPermission("system:oss:create")
+    @SaCheckPermission("system:file:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FileDO fileEntity) {
         boolean bool = fileService.save(fileEntity);
@@ -165,7 +165,7 @@ public class FileController {
      * @param fileEntity {@link FileDO}
      */
     @Log(operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:oss:update")
+    @SaCheckPermission("system:file:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileDO fileEntity) {
         boolean bool = fileService.updateById(fileEntity);
@@ -179,10 +179,10 @@ public class FileController {
      * @param ids id
      */
 
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:oss:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:file:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(fileService.removeByIds(Arrays.asList(ids)));
     }
 

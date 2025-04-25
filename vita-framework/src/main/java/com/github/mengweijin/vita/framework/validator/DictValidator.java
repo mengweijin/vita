@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.validator;
 
 import com.github.mengweijin.vita.framework.validator.annotation.Dict;
-import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.DictDataDO;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

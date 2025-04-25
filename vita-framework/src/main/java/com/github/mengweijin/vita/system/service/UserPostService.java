@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
+import com.github.mengweijin.vita.system.domain.UserPostDO;
 import com.github.mengweijin.vita.system.mapper.UserPostMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

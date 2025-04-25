@@ -6,7 +6,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.ratelimit.ERateLimitStrategy;
 import com.github.mengweijin.vita.framework.ratelimit.RateLimit;
 import com.github.mengweijin.vita.framework.repeatsubmit.RepeatSubmit;
-import com.github.mengweijin.vita.system.domain.LoginUser;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.LoginService;
@@ -35,8 +35,8 @@ public class LoginController {
     @RepeatSubmit(interval = 3000)
     @RateLimit(duration = 5, max = 1, strategy = ERateLimitStrategy.IP)
     @PostMapping("/login")
-    public R<LoginUser> login(@Valid @RequestBody LoginBO loginBO) {
-        LoginUser loginUser = loginService.login(loginBO);
+    public R<LoginUserVO> login(@Valid @RequestBody LoginBO loginBO) {
+        LoginUserVO loginUser = loginService.login(loginBO);
         return R.ok(loginUser);
     }
 

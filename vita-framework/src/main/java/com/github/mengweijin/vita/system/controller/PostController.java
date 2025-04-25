@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.PostDO;
+import com.github.mengweijin.vita.system.domain.PostDO;
 import com.github.mengweijin.vita.system.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class PostController {
      * @param post {@link PostDO}
      * @return Page<Post>
      */
-    @SaCheckPermission("system:post:query")
+    @SaCheckPermission("system:post:select")
     @GetMapping("/page")
     public IPage<PostDO> page(Page<PostDO> page, PostDO post) {
         return postService.page(page, post);
@@ -60,7 +60,7 @@ public class PostController {
      * @param post {@link PostDO}
      * @return List<Post>
      */
-    @SaCheckPermission("system:post:query")
+    @SaCheckPermission("system:post:select")
     @GetMapping("/list")
     public List<PostDO> list(PostDO post) {
         return postService.list(new LambdaQueryWrapper<>(post));
@@ -73,7 +73,7 @@ public class PostController {
      * @param id id
      * @return Post
      */
-    @SaCheckPermission("system:post:query")
+    @SaCheckPermission("system:post:select")
     @GetMapping("/{id}")
     public PostDO getById(@PathVariable("id") Long id) {
         return postService.getById(id);
@@ -113,10 +113,10 @@ public class PostController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:post:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:post:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(postService.removeByIds(Arrays.asList(ids)));
     }
 

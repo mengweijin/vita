@@ -1,5 +1,4 @@
-import { groupBy } from 'xe-utils'
-import { defineStore } from 'pinia'
+import { groupBy, orderBy } from 'xe-utils'
 import { dictDataApi } from '@/api/system/dict-api'
 
 const { VITE_APP_PREFIX } = import.meta.env
@@ -15,7 +14,8 @@ export const useDictStore = defineStore(
     }
 
     const getDicts = (code) => {
-      return code ? dicts.value[code] : dicts.value
+      let list = code ? dicts.value[code] : dicts.value
+      return orderBy(list, ['seq', 'asc'])
     }
 
     const clear = () => (dicts.value = null)

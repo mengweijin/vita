@@ -8,16 +8,14 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.domain.UserAvatarDO;
+import com.github.mengweijin.vita.system.domain.UserDO;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
-import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
-import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
 import com.github.mengweijin.vita.system.domain.vo.UserVO;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -68,7 +66,7 @@ public class UserController {
      * @param user {@link UserDO}
      * @return Page<User>
      */
-    @SaCheckPermission("system:user:query")
+    @SaCheckPermission("system:user:select")
     @GetMapping("/page")
     public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
         IPage<UserDO> userPage = userService.page(page, user);
@@ -83,7 +81,7 @@ public class UserController {
      * @param user {@link UserDO}
      * @return List<User>
      */
-    @SaCheckPermission("system:user:query")
+    @SaCheckPermission("system:user:select")
     @GetMapping("/list")
     public List<UserVO> list(UserDO user) {
         List<UserDO> userList = userService.list(new LambdaQueryWrapper<>(user));
@@ -98,7 +96,7 @@ public class UserController {
      * @param id id
      * @return User
      */
-    @SaCheckPermission("system:user:query")
+    @SaCheckPermission("system:user:select")
     @GetMapping("/{id}")
     public UserVO getById(@PathVariable("id") Long id) {
         UserDO user = userService.getById(id);
@@ -113,38 +111,10 @@ public class UserController {
      * @param id id
      * @return User
      */
-    @SaCheckPermission("system:user:query")
+    @SaCheckPermission("system:user:select")
     @GetMapping("/sensitive/{id}")
     public UserDO getSensitiveById(@PathVariable("id") Long id) {
         return userService.getById(id);
-    }
-
-    /**
-     * <p>
-     * Get Sensitive Login User
-     * </p>
-     *
-     * @return User
-     */
-    @SaCheckPermission("system:user:query")
-    @GetMapping("/sensitive-mine")
-    public UserVO getSensitive() {
-        UserDO user = userService.getById(LoginHelper.getLoginUser().getUserId());
-        return BeanCopyUtils.copyBean(user, new UserVO());
-    }
-
-    /**
-     * <p>
-     * Get mine User by id
-     * </p>
-     *
-     * @return User
-     */
-    @SaCheckPermission("system:user:query")
-    @GetMapping("/mine")
-    public UserSensitiveVO getMine() {
-        UserDO user = userService.getById(LoginHelper.getLoginUser().getUserId());
-        return BeanCopyUtils.copyBean(user, new UserSensitiveVO());
     }
 
     /**
@@ -192,10 +162,10 @@ public class UserController {
      *
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:user:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:user:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         List<Long> list = Arrays.asList(ids);
         boolean isAdmin = list.stream().anyMatch(id -> UserConst.ADMIN_USER_ID == NumberUtil.parseLong(CharSequenceUtil.toString(id)));
         if (isAdmin) {

@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.mengweijin.vita.system.domain.entity.MenuDO;
+import com.github.mengweijin.vita.system.domain.MenuDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

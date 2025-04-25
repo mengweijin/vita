@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class ConfigController {
      * @param config {@link ConfigDO}
      * @return Page<Config>
      */
-    @SaCheckPermission("system:config:query")
+    @SaCheckPermission("system:config:select")
     @GetMapping("/page")
     public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
         return configService.page(page, config);
@@ -60,7 +60,7 @@ public class ConfigController {
      * @param config {@link ConfigDO}
      * @return List<Config>
      */
-    @SaCheckPermission("system:config:query")
+    @SaCheckPermission("system:config:select")
     @GetMapping("/list")
     public List<ConfigDO> list(ConfigDO config) {
         return configService.list(new LambdaQueryWrapper<>(config));
@@ -73,7 +73,7 @@ public class ConfigController {
      * @param id id
      * @return Config
      */
-    @SaCheckPermission("system:config:query")
+    @SaCheckPermission("system:config:select")
     @GetMapping("/{id}")
     public ConfigDO getById(@PathVariable("id") Long id) {
         return configService.getById(id);
@@ -86,7 +86,7 @@ public class ConfigController {
      * @param code code
      * @return Config
      */
-    @SaCheckPermission("system:config:query")
+    @SaCheckPermission("system:config:select")
     @GetMapping("/code/{code}")
     public ConfigDO getByCode(@PathVariable("code") String code) {
         return configService.getByCode(code);
@@ -125,10 +125,10 @@ public class ConfigController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:config:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:config:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(configService.removeByIds(Arrays.asList(ids)));
     }
 

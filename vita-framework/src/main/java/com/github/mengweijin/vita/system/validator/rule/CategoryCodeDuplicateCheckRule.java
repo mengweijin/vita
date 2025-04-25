@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.validator.rule;
 
 import com.github.mengweijin.vita.framework.validator.BusinessCheckValidator;
-import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
+import com.github.mengweijin.vita.system.domain.CategoryDO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;

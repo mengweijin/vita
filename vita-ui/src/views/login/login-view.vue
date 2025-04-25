@@ -21,8 +21,6 @@ const form = reactive({
 
 const formRef = ref(null);
 
-const loading = ref(false);
-
 const rules = reactive({
   username: [
     { required: true, message: '必填', trigger: 'blur' },
@@ -55,15 +53,12 @@ const onForgetPassword = () => {
 const onSubmit = async () => {
   await formRef.value.validate((valid, fields) => {
     if (valid) {
-      loading.value = true;
       loginApi.login(form).then((r) => {
         // 保存用户和token 到 userStore
         userStore.initUser(r.data);
         // 加载字典
         dictStore.initDicts();
         router.push('/');
-      }).finally(() => {
-        loading.value = false;
       });
     } else {
       // fields 只有在验证失败的情况下才有值
@@ -90,7 +85,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <el-container v-loading.fullscreen.lock="loading">
+  <el-container>
     <el-main>
       <div class="vt-login-container">
         <el-form :model="form" :rules="rules" ref="formRef" size="large">

@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
+import com.github.mengweijin.vita.system.domain.NoticeDO;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.NoticeService;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class NoticeController {
      * @param notice {@link NoticeDO}
      * @return Page<Notice>
      */
-    @SaCheckPermission("system:notice:query")
+    @SaCheckPermission("system:notice:select")
     @GetMapping("/page")
     public IPage<NoticeDO> page(Page<NoticeDO> page, NoticeDO notice) {
         return noticeService.page(page, notice);
@@ -61,7 +61,7 @@ public class NoticeController {
      * @param notice {@link NoticeDO}
      * @return List<Notice>
      */
-    @SaCheckPermission("system:notice:query")
+    @SaCheckPermission("system:notice:select")
     @GetMapping("/list")
     public List<NoticeDO> list(NoticeDO notice) {
         return noticeService.list(new LambdaQueryWrapper<>(notice));
@@ -74,7 +74,7 @@ public class NoticeController {
      * @param id id
      * @return Notice
      */
-    @SaCheckPermission("system:notice:query")
+    @SaCheckPermission("system:notice:select")
     @GetMapping("/{id}")
     public NoticeDO getById(@PathVariable("id") Long id) {
         return noticeService.getById(id);
@@ -114,10 +114,10 @@ public class NoticeController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:notice:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:notice:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(noticeService.removeByIds(Arrays.asList(ids)));
     }
 

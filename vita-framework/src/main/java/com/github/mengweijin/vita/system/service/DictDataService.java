@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.DictDataDO;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.CharSequenceUtil;

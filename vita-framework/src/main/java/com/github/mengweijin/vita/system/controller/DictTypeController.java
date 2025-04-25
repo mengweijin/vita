@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
+import com.github.mengweijin.vita.system.domain.DictTypeDO;
 import com.github.mengweijin.vita.system.service.DictTypeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class DictTypeController {
      * @param dictType {@link DictTypeDO}
      * @return Page<DictType>
      */
-    @SaCheckPermission("system:dictType:query")
+    @SaCheckPermission("system:dictType:select")
     @GetMapping("/page")
     public IPage<DictTypeDO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
         return dictTypeService.page(page, dictType);
@@ -60,7 +60,7 @@ public class DictTypeController {
      * @param dictType {@link DictTypeDO}
      * @return List<DictType>
      */
-    @SaCheckPermission("system:dictType:query")
+    @SaCheckPermission("system:dictType:select")
     @GetMapping("/list")
     public List<DictTypeDO> list(DictTypeDO dictType) {
         return dictTypeService.list(new LambdaQueryWrapper<>(dictType));
@@ -73,7 +73,7 @@ public class DictTypeController {
      * @param id id
      * @return DictType
      */
-    @SaCheckPermission("system:dictType:query")
+    @SaCheckPermission("system:dictType:select")
     @GetMapping("/{id}")
     public DictTypeDO getById(@PathVariable("id") Long id) {
         return dictTypeService.getById(id);
@@ -113,10 +113,10 @@ public class DictTypeController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:dictType:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:dictType:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(dictTypeService.removeByIds(Arrays.asList(ids)));
     }
 

@@ -1,7 +1,7 @@
 <script setup>
 import { deptApi } from "@/api/system/dept-api";
 import { toArrayTree } from 'xe-utils';
-import { columns } from './dept-list-hook.js'
+import { columns } from './dept-hook.js'
 
 const tableRef = ref(null);
 
@@ -79,7 +79,8 @@ onMounted(() => {
   <!-- 表格 -->
   <div class="vt-table-container">
     <el-table ref="tableRef" v-loading="loading" :data="tableDataList" :tree-props="treeProps" row-key="id"
-      height="100%" stripe border show-overflow-tooltip highlight-current-row default-expand-all @selection-change="handleSelectionChange">
+      height="100%" stripe border show-overflow-tooltip highlight-current-row default-expand-all
+      @selection-change="handleSelectionChange">
       <el-table-column v-if="columns[0].visible" type="selection" width="55" />
       <el-table-column v-if="columns[1].visible" type="index" label="序号" width="60" fixed="left" />
       <el-table-column v-if="columns[2].visible" prop="id" label="ID" min-width="180" />

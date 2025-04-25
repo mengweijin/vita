@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
+import com.github.mengweijin.vita.system.domain.CategoryDO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class CategoryController {
      * @param categoryDO {@link CategoryDO}
      * @return Page<Category>
      */
-    @SaCheckPermission("system:category:query")
+    @SaCheckPermission("system:category:select")
     @GetMapping("/page")
     public IPage<CategoryDO> page(Page<CategoryDO> page, CategoryDO categoryDO) {
         return categoryService.page(page, categoryDO);
@@ -55,7 +55,7 @@ public class CategoryController {
      * @param categoryDO {@link CategoryDO}
      * @return List<Category>
      */
-    @SaCheckPermission("system:category:query")
+    @SaCheckPermission("system:category:select")
     @GetMapping("/list")
     public List<CategoryDO> list(CategoryDO categoryDO) {
         return categoryService.list(new LambdaQueryWrapper<>(categoryDO));
@@ -67,7 +67,7 @@ public class CategoryController {
      * @param id id
      * @return Category
      */
-    @SaCheckPermission("system:category:query")
+    @SaCheckPermission("system:category:select")
     @GetMapping("/{id}")
     public CategoryDO getById(@PathVariable("id") Long id) {
         return categoryService.getById(id);
@@ -104,10 +104,10 @@ public class CategoryController {
      *
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:category:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:category:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = categoryService.removeByIds(Arrays.asList(ids));
         return R.result(bool);
     }

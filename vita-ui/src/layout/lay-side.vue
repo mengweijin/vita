@@ -6,7 +6,6 @@ const route = useRoute()
 
 import MenuTree from "./components/MenuTree.vue";
 
-import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/store/app-store.js';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);

@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.MenuDO;
+import com.github.mengweijin.vita.system.domain.MenuDO;
 import com.github.mengweijin.vita.system.service.MenuService;
 import com.github.mengweijin.vita.system.service.RoleMenuService;
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class MenuController {
      * @param menu {@link MenuDO}
      * @return Page<Menu>
      */
-    @SaCheckPermission("system:menu:query")
+    @SaCheckPermission("system:menu:select")
     @GetMapping("/page")
     public IPage<MenuDO> page(Page<MenuDO> page, MenuDO menu) {
         return menuService.page(page, menu);
@@ -64,7 +64,7 @@ public class MenuController {
      * @param menu {@link MenuDO}
      * @return List<Menu>
      */
-    @SaCheckPermission("system:menu:query")
+    @SaCheckPermission("system:menu:select")
     @GetMapping("/list")
     public List<MenuDO> list(MenuDO menu) {
         return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(MenuDO::getSeq));
@@ -77,13 +77,13 @@ public class MenuController {
      * @param id id
      * @return Menu
      */
-    @SaCheckPermission("system:menu:query")
+    @SaCheckPermission("system:menu:select")
     @GetMapping("/{id}")
     public MenuDO getById(@PathVariable("id") Long id) {
         return menuService.getById(id);
     }
 
-    @SaCheckPermission("system:menu:query")
+    @SaCheckPermission("system:menu:select")
     @GetMapping("/get-menu-id-by-role/{roleId}")
     public Set<Long> getMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
         return roleMenuService.getMenuIdsByRoleId(roleId);
@@ -123,10 +123,10 @@ public class MenuController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:menu:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:menu:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(menuService.removeByIds(Arrays.asList(ids)));
     }
 

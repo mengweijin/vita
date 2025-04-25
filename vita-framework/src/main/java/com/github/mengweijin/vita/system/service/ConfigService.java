@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;

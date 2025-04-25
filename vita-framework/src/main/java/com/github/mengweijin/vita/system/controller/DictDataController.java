@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.DictDataDO;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class DictDataController {
      * @param dictData {@link DictDataDO}
      * @return Page<DictData>
      */
-    @SaCheckPermission("system:dictData:query")
+    @SaCheckPermission("system:dictData:select")
     @GetMapping("/page")
     public IPage<DictDataDO> page(Page<DictDataDO> page, DictDataDO dictData) {
         return dictDataService.page(page, dictData);
@@ -60,7 +60,7 @@ public class DictDataController {
      * @param dictData {@link DictDataDO}
      * @return List<DictData>
      */
-    @SaCheckPermission("system:dictData:query")
+    @SaCheckPermission("system:dictData:select")
     @GetMapping("/list")
     public List<DictDataDO> list(DictDataDO dictData) {
         return dictDataService.list(new LambdaQueryWrapper<>(dictData).orderByAsc(DictDataDO::getCode).orderByAsc(DictDataDO::getSeq));
@@ -73,13 +73,13 @@ public class DictDataController {
      * @param id id
      * @return DictData
      */
-    @SaCheckPermission("system:dictData:query")
+    @SaCheckPermission("system:dictData:select")
     @GetMapping("/{id}")
     public DictDataDO getById(@PathVariable("id") Long id) {
         return dictDataService.getById(id);
     }
 
-    @SaCheckPermission("system:dictData:query")
+    @SaCheckPermission("system:dictData:select")
     @GetMapping("/get-by-code/{code}")
     public List<DictDataDO> getByCode(@PathVariable("code") String code) {
         return dictDataService.getByCode(code);
@@ -121,10 +121,10 @@ public class DictDataController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:dictData:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:dictData:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(dictDataService.removeByIds(Arrays.asList(ids)));
     }
 

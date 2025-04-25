@@ -5,7 +5,7 @@ import cn.dev33.satoken.listener.SaTokenListenerForLog;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.enums.ELoginType;
-import com.github.mengweijin.vita.system.service.LogLoginService;
+import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

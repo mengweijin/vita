@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.framework.satoken;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import com.github.mengweijin.vita.system.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.LoginUser;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,18 +21,18 @@ public class LoginHelper {
     /**
      * 设置登录用户缓存
      */
-    public static void setLoginUser(LoginUser loginUser) {
+    public static void setLoginUser(LoginUserVO loginUser) {
         StpUtil.getTokenSession().set(UserConst.SESSION_LOGIN_USER, loginUser);
     }
 
     /**
      * 获取登录用户
      */
-    public static LoginUser getLoginUser() {
+    public static LoginUserVO getLoginUser() {
         return getLoginUser(StpUtil.getTokenSession());
     }
 
-    public static LoginUser getLoginUserQuietly() {
+    public static LoginUserVO getLoginUserQuietly() {
         try {
             return getLoginUser();
         } catch (Exception e) {
@@ -41,21 +41,21 @@ public class LoginHelper {
     }
 
     public static Long getLoginUserIdQuietly() {
-        return Optional.ofNullable(getLoginUserQuietly()).map(LoginUser::getUserId).orElse(null);
+        return Optional.ofNullable(getLoginUserQuietly()).map(LoginUserVO::getUserId).orElse(null);
     }
 
     /**
      * 获取登录用户
      */
-    public static LoginUser getLoginUser(String token) {
+    public static LoginUserVO getLoginUser(String token) {
         return getLoginUser(StpUtil.getTokenSessionByToken(token));
     }
 
-    private static LoginUser getLoginUser(SaSession session){
+    private static LoginUserVO getLoginUser(SaSession session){
         if (session == null) {
             return null;
         }
-        return (LoginUser) session.get(UserConst.SESSION_LOGIN_USER);
+        return (LoginUserVO) session.get(UserConst.SESSION_LOGIN_USER);
     }
 
     public static List<String> getPermissionList() {
@@ -72,7 +72,7 @@ public class LoginHelper {
      * @return boolean
      */
     public static boolean isAdmin() {
-        LoginUser loginUser = getLoginUser();
+        LoginUserVO loginUser = getLoginUser();
         return UserConst.ADMIN_USER_ID == loginUser.getUserId() && UserConst.ADMIN_USERNAME.equals(loginUser.getUsername());
     }
 }

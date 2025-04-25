@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia'
-
 const { VITE_APP_PREFIX } = import.meta.env
 
 export const useUserStore = defineStore(
@@ -11,15 +9,19 @@ export const useUserStore = defineStore(
       user.value = data
     }
 
-    const getToken = () => user?.value?.token
+    const getToken = () => user.value?.token
 
-    const getMenus = () => user?.value?.menus
+    const getMenus = () => user.value?.menus
 
-    const isLogin = () => (user?.value?.token ? true : false)
+    const getRoles = () => user.value?.roles
+
+    const getPermissions = () => user.value?.permissions
+
+    const isLogin = () => (user.value?.token ? true : false)
 
     const clear = () => (user.value = null)
 
-    return { user, initUser, getToken, getMenus, isLogin, clear }
+    return { user, initUser, getToken, getMenus, getRoles, getPermissions, isLogin, clear }
   },
   {
     persist: {

@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.DeptDO;
+import com.github.mengweijin.vita.system.domain.DeptDO;
 import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class DeptController {
      * @param dept {@link DeptDO}
      * @return Page<Dept>
      */
-    @SaCheckPermission("system:dept:query")
+    @SaCheckPermission("system:dept:select")
     @GetMapping("/page")
     public IPage<DeptDO> page(Page<DeptDO> page, DeptDO dept) {
         return deptService.page(page, dept);
@@ -60,7 +60,7 @@ public class DeptController {
      * @param dept {@link DeptDO}
      * @return List<Dept>
      */
-    @SaCheckPermission("system:dept:query")
+    @SaCheckPermission("system:dept:select")
     @GetMapping("/list")
     public List<DeptDO> list(DeptDO dept) {
         return deptService.list(new LambdaQueryWrapper<>(dept).orderByAsc(DeptDO::getSeq));
@@ -73,7 +73,7 @@ public class DeptController {
      * @param id id
      * @return Dept
      */
-    @SaCheckPermission("system:dept:query")
+    @SaCheckPermission("system:dept:select")
     @GetMapping("/{id}")
     public DeptDO getById(@PathVariable("id") Long id) {
         return deptService.getById(id);
@@ -121,10 +121,10 @@ public class DeptController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:dept:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:dept:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(deptService.removeByIds(Arrays.asList(ids)));
     }
 

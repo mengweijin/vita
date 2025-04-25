@@ -6,9 +6,10 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.LoginFailedException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.domain.LoginUser;
+import com.github.mengweijin.vita.monitor.service.LogLoginService;
+import com.github.mengweijin.vita.system.domain.UserDO;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
-import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.enums.ELoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +22,6 @@ import org.dromara.hutool.swing.captcha.CaptchaUtil;
 import org.springframework.stereotype.Service;
 
 import javax.cache.Cache;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -44,7 +44,7 @@ public class LoginService {
 
     private ConfigService configService;
 
-    public LoginUser login(LoginBO loginBO) {
+    public LoginUserVO login(LoginBO loginBO) {
         HttpServletRequest request = ServletUtils.getRequest();
         try {
             if(configService.getCaptchaEnabled()) {
@@ -71,7 +71,7 @@ public class LoginService {
 
             StpUtil.login(loginBO.getUsername(), new SaLoginParameter().setIsLastingCookie(loginBO.isRememberMe()).setDeviceType(platformName));
 
-            LoginUser loginUser = this.buildLoginUser(user);
+            LoginUserVO loginUser = this.buildLoginUser(user);
             LoginHelper.setLoginUser(loginUser);
             return loginUser;
         } catch (RuntimeException e) {
@@ -80,8 +80,8 @@ public class LoginService {
         }
     }
 
-    private LoginUser buildLoginUser(UserDO user) {
-        LoginUser loginUser = new LoginUser();
+    private LoginUserVO buildLoginUser(UserDO user) {
+        LoginUserVO loginUser = new LoginUserVO();
         loginUser.setUserId(user.getId());
         loginUser.setUsername(user.getUsername());
         loginUser.setNickname(user.getNickname());
@@ -90,7 +90,6 @@ public class LoginService {
         loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
         loginUser.setMenus(menuService.getSideMenuByUserId(user.getId()));
         loginUser.setToken(StpUtil.getTokenValue());
-        loginUser.setLoginTime(LocalDateTime.now());
         return loginUser;
     }
 

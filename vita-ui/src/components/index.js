@@ -1,4 +1,4 @@
-import { pascalCase } from '@/utils/tools'
+import { pascalCase } from '@/utils/tool'
 
 /** 动态注册组件 */
 const components = import.meta.glob('./modules/**/*.vue', { eager: true })

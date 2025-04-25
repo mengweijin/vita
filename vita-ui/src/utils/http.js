@@ -7,6 +7,8 @@ import { useDictStore } from '@/store/dict-store'
 
 const { VITE_API_BASE } = import.meta.env
 
+let loadingInstance
+
 // 创建axios实例
 let axiosInstance = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分。参考文档 https://cn.vitejs.dev/guide/env-and-mode.html
@@ -30,6 +32,10 @@ let axiosInstance = axios.create({
 // 添加请求拦截器。在发送请求之前做些什么，比如设置 token，权限认证等
 axiosInstance.interceptors.request.use(
   (config) => {
+    if (config.method?.toUpperCase() === 'POST') {
+      loadingInstance = ElLoading.service({ fullscreen: true })
+    }
+
     const token = useUserStore().getToken()
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
@@ -47,13 +53,13 @@ axiosInstance.interceptors.response.use(
   (response) => {
     // 获取请求方式
     const method = response.config.method
-    if (method === 'post') {
+    if (method.toUpperCase() === 'POST') {
+      loadingInstance?.close()
       ElMessage.success({ message: '操作成功!', duration: 3000, showClose: true })
     }
     return response.data
   },
   (error) => {
-    console.log(error)
     if (error.response.status) {
       switch (error.response.status) {
         case 400:
@@ -65,10 +71,6 @@ axiosInstance.interceptors.response.use(
           useUserStore().clear()
           // 跳转时携带当前页面路径，登录后可返回
           router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } })
-          // ElMessage.error({
-          //   message: error.response.status + ' Unauthorized',
-          //   showClose: true,
-          // })
           break
         case 403:
           ElMessage.error({ message: error.response.status + ' Forbidden', showClose: true })

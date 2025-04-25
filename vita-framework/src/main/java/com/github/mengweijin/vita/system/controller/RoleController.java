@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
-import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.domain.RoleDO;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -54,7 +54,7 @@ public class RoleController {
      * @param role {@link RoleDO}
      * @return Page<Role>
      */
-    @SaCheckPermission("system:role:query")
+    @SaCheckPermission("system:role:select")
     @GetMapping("/page")
     public IPage<RoleDO> page(Page<RoleDO> page, RoleDO role) {
         return roleService.page(page, role);
@@ -67,7 +67,7 @@ public class RoleController {
      * @param role {@link RoleDO}
      * @return List<Role>
      */
-    @SaCheckPermission("system:role:query")
+    @SaCheckPermission("system:role:select")
     @GetMapping("/list")
     public List<RoleDO> list(RoleDO role) {
         return roleService.list(new LambdaQueryWrapper<>(role).eq(RoleDO::getDisabled, EYesNo.N.getValue()));
@@ -81,7 +81,7 @@ public class RoleController {
      * @param userId userId
      * @return Role
      */
-    @SaCheckPermission("system:role:query")
+    @SaCheckPermission("system:role:select")
     @GetMapping("/list-role-ids-by-user-id/{userId}")
     public Set<Long> getRoleIdsByUserId(@PathVariable("userId") Long userId) {
         return userRoleService.getRoleIdsByUserId(userId);
@@ -94,7 +94,7 @@ public class RoleController {
      * @param id id
      * @return Role
      */
-    @SaCheckPermission("system:role:query")
+    @SaCheckPermission("system:role:select")
     @GetMapping("/{id}")
     public RoleDO getById(@PathVariable("id") Long id) {
         return roleService.getById(id);
@@ -142,10 +142,10 @@ public class RoleController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:role:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:role:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(roleService.removeByIds(Arrays.asList(ids)));
     }
 

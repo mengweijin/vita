@@ -7,7 +7,7 @@ import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.ConfigDO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.service.ConfigService;

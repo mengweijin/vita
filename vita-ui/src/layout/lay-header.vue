@@ -1,34 +1,28 @@
 <script setup>
 import { useFullscreen } from '@vueuse/core';
-import router from '@/router/index'
+import router from '@/router/index';
 import { loginApi } from '@/api/login-api';
 
-import { storeToRefs } from 'pinia';
-
-import { useUserStore } from '@/store/user-store'
+import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 
-import { useDictStore } from '@/store/dict-store'
-const dictStore = useDictStore()
+import { useDictStore } from '@/store/dict-store';
+const dictStore = useDictStore();
 
 import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
-const loading = ref(false);
-
 // 强制刷新（适合更新静态资源）
 const refresh = () => { top.location.reload(true); };
 
 const onLogout = () => {
-  loading.value = true;
   loginApi.logout().finally(() => {
     // 清理前端登录信息残留
     dictStore.clear()
     userStore.clear()
     // 跳转登录页
     router.push('/login');
-    loading.value = false;
   });
 };
 
@@ -51,7 +45,7 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
       <Icon icon="ep:refresh" width="24" height="24" />
     </el-menu-item>
 
-    <el-menu-item index="5" @click="toggleFullscreen()" v-device.tablet.pc>
+    <el-menu-item index="5" @click="toggleFullscreen()" v-device.pc>
       <Icon icon="ri:fullscreen-exit-fill" width="24" height="24" v-if="isFullscreen" />
       <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
@@ -67,8 +61,9 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
     <el-sub-menu index="8">
       <template #title>
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-        admin
+        <el-avatar :src="userStore.user.avatar" v-if="userStore.user?.avatar" />
+        <el-avatar src="/avatar.jpg" v-else />
+        <span style="margin-left: 10px;">{{ userStore.user?.nickname }}</span>
       </template>
       <el-menu-item index="8-1">
         <Icon icon="ri:home-9-fill" width="16" height="16" />
@@ -82,8 +77,8 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
         <Icon icon="ri:layout-3-fill" width="16" height="16" />
         <span>布局设置</span>
       </el-menu-item>
-      <el-divider />
-      <el-menu-item index="8-99" @click="onLogout()" v-loading.fullscreen.lock="loading">
+      <el-divider style="margin: 5px 0;" />
+      <el-menu-item index="8-99" @click="onLogout()">
         <Icon icon="ri:logout-box-line" width="16" height="16" />
         <span>退出</span>
       </el-menu-item>
@@ -95,11 +90,6 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 /* 左右布局显示 */
 .el-menu--horizontal>.el-menu-item:nth-child(2) {
   margin-right: auto;
-}
-
-/* header 下拉列表中分隔线 */
-.el-menu--horizontal .el-divider--horizontal {
-  margin: 5px 0;
 }
 
 .el-menu-item>span {

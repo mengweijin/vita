@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.MessageDO;
+import com.github.mengweijin.vita.system.domain.MessageDO;
 import com.github.mengweijin.vita.system.service.MessageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class MessageController {
      * @param message {@link MessageDO}
      * @return Page<Message>
      */
-    @SaCheckPermission("system:message:query")
+    @SaCheckPermission("system:message:select")
     @GetMapping("/page")
     public IPage<MessageDO> page(Page<MessageDO> page, MessageDO message) {
         return messageService.page(page, message);
@@ -60,7 +60,7 @@ public class MessageController {
      * @param message {@link MessageDO}
      * @return List<Message>
      */
-    @SaCheckPermission("system:message:query")
+    @SaCheckPermission("system:message:select")
     @GetMapping("/list")
     public List<MessageDO> list(MessageDO message) {
         return messageService.list(new LambdaQueryWrapper<>(message));
@@ -73,7 +73,7 @@ public class MessageController {
      * @param id id
      * @return Message
      */
-    @SaCheckPermission("system:message:query")
+    @SaCheckPermission("system:message:select")
     @GetMapping("/{id}")
     public MessageDO getById(@PathVariable("id") Long id) {
         return messageService.getById(id);
@@ -113,10 +113,10 @@ public class MessageController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.DELETE)
-    @SaCheckPermission("system:message:delete")
-    @PostMapping("/delete/{ids}")
-    public R<Void> delete(@PathVariable("ids") Long[] ids) {
+    @Log(operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:message:remove")
+    @PostMapping("/remove/{ids}")
+    public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(messageService.removeByIds(Arrays.asList(ids)));
     }
 

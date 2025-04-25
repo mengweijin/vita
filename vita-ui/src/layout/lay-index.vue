@@ -3,7 +3,6 @@ import LayHeader from "./lay-header.vue";
 import LaySide from "./lay-side.vue";
 import LayFooter from "./lay-footer.vue";
 
-import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);

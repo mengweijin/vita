@@ -62,5 +62,5 @@
     "vite-plugin-vue-devtools": "^7.7.2",
     "vite-svg-loader": "^5.1.0"
   },
-  "packageManager": "pnpm@9.8.0+sha1.33f415ae4331f9b29a92dd9bbef959b916d65535"
+  "packageManager": "pnpm@9.8.0"
 }
