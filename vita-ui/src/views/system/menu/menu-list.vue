@@ -22,15 +22,12 @@ const treeProps = reactive({
 const tableData = ref([]);
 
 /**
- * input 需要初始化为空字符串
- * select 需要初始化为数组
- *
- * 否则 resetFields() 不生效
+ * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: '',
-  type: [],
-  disabled: [],
+  keywords: undefined,
+  type: undefined,
+  disabled: undefined,
 })
 
 const queryFormRef = ref(null);
@@ -214,7 +211,7 @@ onMounted(() => {
       <el-table-column v-if="columns[13].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
       <el-table-column v-if="columns[14].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
       <el-table-column v-if="columns[15].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="80">
+      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="100">
         <template #default="scope">
           <div>
             <el-tooltip content="编辑" placement="top">
