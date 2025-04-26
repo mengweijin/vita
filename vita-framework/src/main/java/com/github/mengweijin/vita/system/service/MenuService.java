@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
@@ -39,33 +38,28 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
 
     private RoleMenuService roleMenuService;
 
-    /**
-     * Custom paging query
-     *
-     * @param page page
-     * @param menu {@link MenuDO}
-     * @return IPage
-     */
-    public IPage<MenuDO> page(IPage<MenuDO> page, MenuDO menu) {
-        LambdaQueryWrapper<MenuDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(!Objects.isNull(menu.getParentId()), MenuDO::getParentId, menu.getParentId())
-                .eq(StrValidator.isNotBlank(menu.getType()), MenuDO::getType, menu.getType())
-                .eq(StrValidator.isNotBlank(menu.getTitle()), MenuDO::getTitle, menu.getTitle())
-                .eq(StrValidator.isNotBlank(menu.getPermission()), MenuDO::getPermission, menu.getPermission())
-                .eq(StrValidator.isNotBlank(menu.getRouteName()), MenuDO::getRouteName, menu.getRouteName())
-                .eq(StrValidator.isNotBlank(menu.getRoutePath()), MenuDO::getRoutePath, menu.getRoutePath())
-                .eq(StrValidator.isNotBlank(menu.getComponent()), MenuDO::getComponent, menu.getComponent())
-                .eq(!Objects.isNull(menu.getSeq()), MenuDO::getSeq, menu.getSeq())
-                .eq(StrValidator.isNotBlank(menu.getIcon()), MenuDO::getIcon, menu.getIcon())
-                .eq(StrValidator.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled())
-                .eq(!Objects.isNull(menu.getId()), MenuDO::getId, menu.getId())
-                .eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy())
-                .eq(!Objects.isNull(menu.getCreateTime()), MenuDO::getCreateTime, menu.getCreateTime())
-                .eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy())
-                .eq(!Objects.isNull(menu.getUpdateTime()), MenuDO::getUpdateTime, menu.getUpdateTime());
-        return this.page(page, query);
+    public LambdaQueryWrapper<MenuDO> getQueryWrapper(MenuDO menu) {
+        LambdaQueryWrapper<MenuDO> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(!Objects.isNull(menu.getId()), MenuDO::getId, menu.getId());
+        wrapper.eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy());
+        wrapper.eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy());
+
+        wrapper.eq(!Objects.isNull(menu.getParentId()), MenuDO::getParentId, menu.getParentId());
+        wrapper.eq(StrValidator.isNotBlank(menu.getType()), MenuDO::getType, menu.getType());
+        wrapper.eq(StrValidator.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled());
+
+        wrapper.gt(!Objects.isNull(menu.getSearchStartTime()), MenuDO::getCreateTime, menu.getSearchStartTime());
+        wrapper.le(!Objects.isNull(menu.getSearchEndTime()), MenuDO::getCreateTime, menu.getSearchEndTime());
+
+        if (StrValidator.isNotBlank(menu.getKeywords())) {
+            wrapper.or(w -> w.like(MenuDO::getTitle, menu.getKeywords()));
+            wrapper.or(w -> w.like(MenuDO::getPermission, menu.getKeywords()));
+            wrapper.or(w -> w.like(MenuDO::getComponent, menu.getKeywords()));
+        }
+        return wrapper;
     }
+
 
     public Set<String> getMenuPermissionListByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {

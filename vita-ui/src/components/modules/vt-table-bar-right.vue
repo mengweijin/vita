@@ -16,10 +16,10 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['update-size'])
+const emit = defineEmits(['update-size'])
 
 const handleSizeCommand = (command) => {
-  emits('update-size', command);
+  emit('update-size', command);
 }
 
 const onToggleFullscreen = async () => {

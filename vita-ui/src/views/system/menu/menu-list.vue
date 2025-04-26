@@ -1,15 +1,18 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
-import { toArrayTree } from 'xe-utils';
+import { toArrayTree, isString } from 'xe-utils';
 import { columns } from './menu-hook.js';
+import MenuEdit from './menu-edit.vue';
 
 import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
 
 const loading = ref(true);
 
+const size = ref('default');
+
 /** table */
-const tableRef = ref(null);
+const tableRef = ref({});
 
 const treeProps = reactive({
   // 父子节点默认联动
@@ -34,10 +37,10 @@ const queryFormRef = ref(null);
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
-  refreshTable();
+  loadTableData();
 };
 
-const refreshTable = () => {
+const loadTableData = () => {
   loading.value = true;
   menuApi.list(queryParams).then((res) => {
     tableData.value = toArrayTree(res, { sortKey: 'seq' });
@@ -45,26 +48,51 @@ const refreshTable = () => {
   });
 };
 
+const editDialogVisible = ref(false)
+
+const currentRowData = ref(null);
+
+const handleAdd = () => {
+  editDialogVisible.value = true;
+}
+
+const handleEdit = (row) => {
+  currentRowData.value = { ...row };
+  editDialogVisible.value = true;
+}
+
+const closeEditDialog = () => {
+  editDialogVisible.value = false;
+  // 清理残留数据
+  currentRowData.value = null;
+};
+
 /** selected rows */
 const selected = ref([]);
 
-const handleSelectionChange = (val) => {
-  selected.value = val;
+const handleDelete = (ids) => {
+  menuApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 }
 
-const size = ref('default');
-
-const changeSize = (val) => size.value = val
+const handleBatchDelete = () => {
+  let ids = selected.value.map(item => item.id).join();
+  handleDelete(ids);
+}
 
 onMounted(() => {
-  refreshTable();
+  loadTableData();
 });
 
 </script>
 
 <template>
   <!-- 查询表单 -->
-  <el-form ref="queryFormRef" :model="queryParams" :inline="true" class="vt-search-container">
+  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
+    class="vt-search-container">
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="名称、权限字符、组件" clearable />
     </el-form-item>
@@ -81,7 +109,7 @@ onMounted(() => {
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="refreshTable">
+      <el-button type="primary" native-type="submit">
         <template #icon>
           <el-icon>
             <Icon icon="ep:search"></Icon>
@@ -92,7 +120,7 @@ onMounted(() => {
       <el-button type="warning" @click="resetQueryForm">
         <template #icon>
           <el-icon>
-            <Icon icon="ant-design:clear-outlined"></Icon>
+            <Icon icon="ep:refresh-left"></Icon>
           </el-icon>
         </template>
         重置
@@ -106,7 +134,7 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5">
-      <el-button type="primary">
+      <el-button type="primary" @click="handleAdd">
         <template #icon>
           <el-icon>
             <Icon icon="ep:plus"></Icon>
@@ -115,15 +143,20 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-if="false">
-      <el-button type="danger" v-show="selected.length">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:delete"></Icon>
-          </el-icon>
+    <el-col :span="1.5" v-show="selected.length">
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.title).join()}】吗？`"
+        confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
+        <template #reference>
+          <el-button type="danger">
+            <template #icon>
+              <el-icon>
+                <Icon icon="ep:delete"></Icon>
+              </el-icon>
+            </template>
+            批量删除
+          </el-button>
         </template>
-        批量删除
-      </el-button>
+      </el-popconfirm>
     </el-col>
     <el-col :span="1.5" v-if="false">
       <el-checkbox v-model="treeProps.checkStrictly">
@@ -131,14 +164,15 @@ onMounted(() => {
       </el-checkbox>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="changeSize">
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val">
     </VtTableBarRight>
   </el-row>
 
   <!-- 表格 -->
   <div class="vt-table-container">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :tree-props="treeProps" :size="size" row-key="id"
-      height="100%" stripe border show-overflow-tooltip highlight-current-row @selection-change="handleSelectionChange">
+      height="100%" stripe border show-overflow-tooltip highlight-current-row
+      @selection-change="(val) => selected = val">
       <el-table-column v-if="columns[0].visible" type="selection" width="55" />
       <el-table-column v-if="columns[1].visible" type="index" label="序号" width="60" fixed="left" />
       <el-table-column v-if="columns[2].visible" prop="id" label="ID" min-width="180" />
@@ -180,20 +214,11 @@ onMounted(() => {
       <el-table-column v-if="columns[13].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
       <el-table-column v-if="columns[14].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
       <el-table-column v-if="columns[15].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="180">
+      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="80">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top">
-              <el-button type="primary" text :size="size" @click="handleAdd(scope.$index, scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" text :size="size" @click="handleEdit(scope.$index, scope.row)">
+              <el-button type="primary" text :size="size" @click="handleEdit(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -202,19 +227,28 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <el-button type="danger" text :size="size" @click="handleDelete(scope.$index, scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:delete"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
+              <div style="display: inline-block;">
+                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.title}】吗？`"
+                  confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+                  <template #reference>
+                    <el-button type="danger" text :size="size">
+                      <template #icon>
+                        <el-icon :size="size">
+                          <Icon icon="ep:delete"></Icon>
+                        </el-icon>
+                      </template>
+                    </el-button>
+                  </template>
+                </el-popconfirm>
+              </div>
             </el-tooltip>
           </div>
         </template>
       </el-table-column>
     </el-table>
   </div>
+
+  <MenuEdit v-if="editDialogVisible" :data="currentRowData" @close="closeEditDialog"></MenuEdit>
 </template>
 
 <style scoped></style>

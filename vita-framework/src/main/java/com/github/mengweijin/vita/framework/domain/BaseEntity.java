@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
+import org.dromara.hutool.core.date.DateFormatPool;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -52,4 +54,17 @@ public abstract class BaseEntity implements Serializable {
     @TableField(exist = false)
     private String keywords;
 
+    /**
+     * 按创建时间查询的开始时间
+     */
+    @TableField(exist = false)
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
+    private LocalDateTime searchStartTime;
+
+    /**
+     * 按创建时间查询的结束时间
+     */
+    @TableField(exist = false)
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
+    private LocalDateTime searchEndTime;
 }

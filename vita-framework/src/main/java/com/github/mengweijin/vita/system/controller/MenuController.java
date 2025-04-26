@@ -54,7 +54,8 @@ public class MenuController {
     @SaCheckPermission("system:menu:select")
     @GetMapping("/page")
     public IPage<MenuDO> page(Page<MenuDO> page, MenuDO menu) {
-        return menuService.page(page, menu);
+        LambdaQueryWrapper<MenuDO> wrapper = menuService.getQueryWrapper(menu);
+        return menuService.page(page, wrapper);
     }
 
     /**
@@ -67,7 +68,8 @@ public class MenuController {
     @SaCheckPermission("system:menu:select")
     @GetMapping("/list")
     public List<MenuDO> list(MenuDO menu) {
-        return menuService.list(new LambdaQueryWrapper<>(menu).orderByAsc(MenuDO::getSeq));
+        LambdaQueryWrapper<MenuDO> wrapper = menuService.getQueryWrapper(menu);
+        return menuService.list(wrapper.orderByAsc(MenuDO::getSeq));
     }
 
     /**

@@ -3,10 +3,12 @@ package com.github.mengweijin.vita.system.domain.bo;
 import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
+import com.github.mengweijin.vita.framework.validator.annotation.CharsetLength;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.validator.rule.UsernameDuplicateCheckRule;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +29,7 @@ public class UserBO extends BaseEntity {
     /**
      * 部门ID
      */
+    @NotNull
     private Long deptId;
 
     /**
@@ -41,6 +44,7 @@ public class UserBO extends BaseEntity {
      * 用户昵称
      */
     @NotBlank
+    @CharsetLength(min = 3, max = 30, message = "{user.nickname.pattern}")
     private String nickname;
 
     /**
