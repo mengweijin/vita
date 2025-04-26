@@ -12,7 +12,7 @@ import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.helpers.Transform;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.monitor.domain.LogDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;

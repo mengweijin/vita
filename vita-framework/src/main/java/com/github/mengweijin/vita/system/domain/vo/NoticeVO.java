@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.NoticeDO;
+import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

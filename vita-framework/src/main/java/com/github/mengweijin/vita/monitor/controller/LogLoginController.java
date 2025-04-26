@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.monitor.domain.vo.LogLoginVO;
-import com.github.mengweijin.vita.monitor.domain.LogLoginDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

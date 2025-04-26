@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.mybatis.entity;
+package com.github.mengweijin.vita.framework.domain;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;

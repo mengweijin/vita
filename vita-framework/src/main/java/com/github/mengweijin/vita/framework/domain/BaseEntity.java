@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.mybatis.entity;
+package com.github.mengweijin.vita.framework.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -45,5 +45,11 @@ public abstract class BaseEntity implements Serializable {
     @TableField(exist = false)
     @Translation(translateType = ETranslateType.USER_ID_TO_NICKNAME, field = "updateBy")
     private String updateByName;
+
+    /**
+     * 查询关键字
+     */
+    @TableField(exist = false)
+    private String keywords;
 
 }

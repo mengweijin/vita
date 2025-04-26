@@ -1,7 +1,7 @@
-package com.github.mengweijin.vita.system.domain;
+package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,8 +15,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_USER_ROLE")
-public class UserRoleDO extends BaseEntity {
+@TableName("VT_USER_POST")
+public class UserPostDO extends BaseEntity {
 
     /**
     * 用户ID
@@ -24,7 +24,7 @@ public class UserRoleDO extends BaseEntity {
     private Long userId;
 
     /**
-    * 角色ID
+    * 岗位ID
     */
-    private Long roleId;
+    private Long postId;
 }

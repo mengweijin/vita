@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.RoleMenuDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

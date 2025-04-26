@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.mengweijin.vita.system.domain.UserPostDO;
+import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

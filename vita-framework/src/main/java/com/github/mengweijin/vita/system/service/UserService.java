@@ -10,9 +10,9 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
-import com.github.mengweijin.vita.system.domain.ConfigDO;
-import com.github.mengweijin.vita.system.domain.UserDO;
-import com.github.mengweijin.vita.system.domain.UserAvatarDO;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
@@ -90,8 +90,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         }
         LambdaQueryWrapper<UserDO> query = new LambdaQueryWrapper<>();
         query
-                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPassword, user.getPasswordLevel())
-                .eq(StrValidator.isNotBlank(user.getIdCard()), UserDO::getIdCard, user.getIdCard())
+                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel())
+                .eq(StrValidator.isNotBlank(user.getCitizenId()), UserDO::getCitizenId, user.getCitizenId())
                 .eq(StrValidator.isNotBlank(user.getGender()), UserDO::getGender, user.getGender())
                 .eq(StrValidator.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled())
                 .eq(StrValidator.isNotBlank(user.getRemark()), UserDO::getRemark, user.getRemark())

@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.FileDO;
+import com.github.mengweijin.vita.system.domain.entity.FileDO;
 import com.github.mengweijin.vita.system.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

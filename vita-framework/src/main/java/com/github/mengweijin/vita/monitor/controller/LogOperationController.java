@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.monitor.domain.LogOperationDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.service.LogOperationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

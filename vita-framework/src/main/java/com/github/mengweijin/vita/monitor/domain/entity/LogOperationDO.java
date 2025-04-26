@@ -1,8 +1,8 @@
-package com.github.mengweijin.vita.monitor.domain;
+package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
-import com.github.mengweijin.vita.system.domain.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

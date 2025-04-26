@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.mybatis.consts;
+package com.github.mengweijin.vita.framework.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings({"unused"})
-public abstract class ColumnConst {
+public abstract class ConstColumn {
 
     public static final String DEPT_ID = "DEPT_ID";
     public static final String ROLE_ID = "ROLE_ID";

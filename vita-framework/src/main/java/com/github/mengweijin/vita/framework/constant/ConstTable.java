@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.mybatis.consts;
+package com.github.mengweijin.vita.framework.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings({"unused"})
-public abstract class TableConst {
+public abstract class ConstTable {
 
     public static final String VT_USER = "VT_USER";
     public static final String VT_DEPT = "VT_DEPT";

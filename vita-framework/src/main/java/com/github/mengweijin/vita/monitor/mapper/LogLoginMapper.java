@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.mengweijin.vita.monitor.domain.LogLoginDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

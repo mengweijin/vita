@@ -1,9 +1,9 @@
-package com.github.mengweijin.vita.system.domain;
+package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -62,7 +62,7 @@ public class UserDO extends BaseEntity {
     /**
     * 身份证号
     */
-    private String idCard;
+    private String citizenId;
 
     /**
     * 性别。关联数据字典：user_gender

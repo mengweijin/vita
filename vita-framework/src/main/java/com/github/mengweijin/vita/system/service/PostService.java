@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.PostDO;
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.mapper.PostMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;

@@ -1,7 +1,7 @@
-package com.github.mengweijin.vita.system.domain;
+package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,28 +15,23 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_ROLE")
-public class RoleDO extends BaseEntity {
+@TableName("VT_CONFIG")
+public class ConfigDO extends BaseEntity {
 
     /**
-    * 角色名称
+    * 名称
     */
     private String name;
 
     /**
-    * 角色编码
+    * 编码
     */
     private String code;
 
     /**
-    * 展示顺序
+    * 值
     */
-    private Integer seq;
-
-    /**
-    * 是否禁用。[Y, N]
-    */
-    private String disabled;
+    private String val;
 
     /**
     * 备注

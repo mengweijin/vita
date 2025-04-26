@@ -269,7 +269,7 @@ create TABLE VT_USER (
   SALT                          varchar(32) NOT NULL comment '密码加盐',
   PASSWORD_LEVEL                varchar(30) DEFAULT 'MEDIUM' NOT NULL comment '密码强度。PasswdStrength.java',
   PASSWORD_CHANGE_TIME          datetime NULL DEFAULT CURRENT_TIMESTAMP comment '密码修改时间',
-  ID_CARD                       varchar(20) DEFAULT NULL comment '身份证号',
+  CITIZEN_ID                    varchar(20) DEFAULT NULL comment '身份证号',
   GENDER                        varchar(6) DEFAULT NULL comment '性别。关联数据字典：user_gender',
   EMAIL                         varchar(128) DEFAULT NULL comment '电子邮箱',
   MOBILE                        varchar(15) DEFAULT NULL comment '移动电话',

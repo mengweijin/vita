@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.monitor.domain.vo;
 
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
-import com.github.mengweijin.vita.monitor.domain.LogLoginDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

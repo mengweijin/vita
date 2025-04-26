@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.domain.RoleMenuDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMenuMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

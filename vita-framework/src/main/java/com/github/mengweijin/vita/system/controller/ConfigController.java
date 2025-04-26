@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.ConfigDO;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/page")
-    public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
+    public IPage<?> page(Page<ConfigDO> page, ConfigDO config) {
         return configService.page(page, config);
     }
 

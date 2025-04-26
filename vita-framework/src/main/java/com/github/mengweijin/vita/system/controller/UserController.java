@@ -11,8 +11,8 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.UserAvatarDO;
-import com.github.mengweijin.vita.system.domain.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
@@ -63,13 +63,13 @@ public class UserController {
      * </p>
      *
      * @param page page
-     * @param user {@link UserDO}
+     * @param userDO {@link UserDO}
      * @return Page<User>
      */
     @SaCheckPermission("system:user:select")
     @GetMapping("/page")
-    public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
-        IPage<UserDO> userPage = userService.page(page, user);
+    public IPage<UserVO> page(Page<UserDO> page, UserDO userDO) {
+        IPage<UserDO> userPage = userService.page(page, userDO);
         return BeanCopyUtils.copyPage(userPage, UserVO.class);
     }
 
@@ -78,13 +78,13 @@ public class UserController {
      * Get User list by User
      * </p>
      *
-     * @param user {@link UserDO}
+     * @param userDO {@link UserDO}
      * @return List<User>
      */
     @SaCheckPermission("system:user:select")
     @GetMapping("/list")
-    public List<UserVO> list(UserDO user) {
-        List<UserDO> userList = userService.list(new LambdaQueryWrapper<>(user));
+    public List<UserVO> list(UserDO userDO) {
+        List<UserDO> userList = userService.list(new LambdaQueryWrapper<>(userDO));
         return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 
@@ -122,13 +122,14 @@ public class UserController {
      * Add User
      * </p>
      *
-     * @param user {@link UserDO}
+     * @param userBO {@link UserDO}
      */
     @Log(operationType = EOperationType.INSERT, saveRequestData = false)
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO user) {
-        boolean bool = userService.save(BeanCopyUtils.copyBean(user, new UserDO()));
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO userBO) {
+        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
+        boolean bool = userService.save(userDO);
         return R.result(bool);
     }
 
@@ -137,13 +138,14 @@ public class UserController {
      * Update User
      * </p>
      *
-     * @param user {@link UserDO}
+     * @param userBO {@link UserDO}
      */
     @Log(operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO user) {
-        boolean bool = userService.updateById(BeanCopyUtils.copyBean(user, new UserDO()));
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO userBO) {
+        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
+        boolean bool = userService.updateById(userDO);
         return R.result(bool);
     }
 

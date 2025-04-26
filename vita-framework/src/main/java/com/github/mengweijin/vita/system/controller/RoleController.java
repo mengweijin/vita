@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
-import com.github.mengweijin.vita.system.domain.RoleDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;

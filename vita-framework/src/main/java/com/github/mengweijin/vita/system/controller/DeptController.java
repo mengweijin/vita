@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.DeptDO;
+import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

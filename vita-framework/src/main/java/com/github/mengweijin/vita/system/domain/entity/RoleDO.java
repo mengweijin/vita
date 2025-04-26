@@ -1,7 +1,7 @@
-package com.github.mengweijin.vita.system.domain;
+package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,13 +15,18 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_POST")
-public class PostDO extends BaseEntity {
+@TableName("VT_ROLE")
+public class RoleDO extends BaseEntity {
 
     /**
-    * 岗位名称
+    * 角色名称
     */
     private String name;
+
+    /**
+    * 角色编码
+    */
+    private String code;
 
     /**
     * 展示顺序

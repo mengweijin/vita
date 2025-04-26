@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
 import com.github.mengweijin.vita.framework.constant.Regex;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.validator.rule.UsernameDuplicateCheckRule;
@@ -53,8 +53,8 @@ public class UserBO extends BaseEntity {
     /**
      * 身份证号
      */
-    @Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.idCard.pattern}")
-    private String idCard;
+    @Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.citizenId.pattern}")
+    private String citizenId;
 
     /**
      * 性别。关联数据字典：user_gender

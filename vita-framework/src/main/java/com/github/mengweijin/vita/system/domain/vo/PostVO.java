@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.PostDO;
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

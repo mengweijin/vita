@@ -1,7 +1,7 @@
-package com.github.mengweijin.vita.system.domain;
+package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,23 +15,23 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_CONFIG")
-public class ConfigDO extends BaseEntity {
+@TableName("VT_POST")
+public class PostDO extends BaseEntity {
 
     /**
-    * 名称
+    * 岗位名称
     */
     private String name;
 
     /**
-    * 编码
+    * 展示顺序
     */
-    private String code;
+    private Integer seq;
 
     /**
-    * 值
+    * 是否禁用。[Y, N]
     */
-    private String val;
+    private String disabled;
 
     /**
     * 备注

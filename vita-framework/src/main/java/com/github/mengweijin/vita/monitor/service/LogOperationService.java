@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.monitor.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.mengweijin.vita.monitor.domain.LogOperationDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrValidator;

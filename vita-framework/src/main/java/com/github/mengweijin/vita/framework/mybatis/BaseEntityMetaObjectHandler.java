@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
 import org.dromara.hutool.core.func.LambdaUtil;

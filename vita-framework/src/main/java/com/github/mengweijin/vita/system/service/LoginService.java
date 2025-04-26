@@ -7,7 +7,7 @@ import com.github.mengweijin.vita.framework.exception.LoginFailedException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
-import com.github.mengweijin.vita.system.domain.UserDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.enums.ELoginType;

@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.DictTypeDO;
+import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

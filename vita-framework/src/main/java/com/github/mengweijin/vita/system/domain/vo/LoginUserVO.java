@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.MenuDO;
+import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.generator.domain.dto;
 
-import com.github.mengweijin.vita.framework.mybatis.entity.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorArgsBO;
 import com.github.mengweijin.vita.generator.util.GeneratorUtils;
 import lombok.Data;
