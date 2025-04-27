@@ -3,33 +3,26 @@ import VtIconPicker from "@/components/modules/vt-icon-picker.vue";
 import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
 
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    required: true,
-  },
-  data: {
-    type: Object,
-  }
-});
+const visible = ref(false);
+
+const data = ref(null);
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值 */
 const form = reactive({
-  id: undefined,
-  type: 'BTN',
-  title: undefined,
-  icon: undefined,
-  permission: undefined,
-  component: undefined,
-  routeName: undefined,
-  routePath: undefined,
-  seq: 1,
-  disabled: 'N',
+  // id: undefined,
+  // type: 'BTN',
+  // title: undefined,
+  // icon: undefined,
+  // permission: undefined,
+  // component: undefined,
+  // routeName: undefined,
+  // routePath: undefined,
+  // seq: 1,
+  // disabled: 'N',
 });
 
-
 const onDialogOpen = () => {
-  let row = props.data;
+  let row = data.value;
 
   form.id = row?.id ?? undefined;
   form.type = row?.type ?? 'BTN';
@@ -45,12 +38,6 @@ const onDialogOpen = () => {
 
 const formRef = ref(null);
 
-const emit = defineEmits(['close']);
-
-const closeDialog = () => {
-  emit('close');
-};
-
 const resetForm = () => {
   formRef.value.resetFields();
 };
@@ -60,8 +47,12 @@ const onSubmit = () => {
 }
 
 const title = computed(() => {
-  return props.data?.id ? '编辑' : '新增';
+  return data?.id ? '编辑' : '新增';
 });
+
+const closeDialog = () => {
+  visible.value = false;
+};
 
 const menuTypeOptions = computed(() => {
   const menuTypes = dictStore.getDicts('vt_menu_type');
@@ -74,6 +65,8 @@ const menuTypeOptions = computed(() => {
 onMounted(() => {
 });
 
+/** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
+defineExpose({ visible, data })
 </script>
 
 <template>
@@ -81,7 +74,7 @@ onMounted(() => {
       1. 父组件已经使用 v-if 来控制 dialog 组件了，所以这里面直接 model-value 固定写 true，即 el-dialog 内部逻辑一直显示 dialog。
       2. 如果使用 model 控制弹层显示/隐藏：直接绑定 v-model 会有警告，使用 model-value 绑定则没有警告
    -->
-  <el-dialog :model-value="props.visible" :title="title" @open="onDialogOpen" align-center width="60%">
+  <el-dialog :model-value="visible" :title="title" @open="onDialogOpen" align-center width="60%">
     <el-form ref="formRef" :model="form" label-width="auto" @submit.prevent="onSubmit">
       <el-form-item prop="type" label="菜单类型">
         <el-segmented v-model="form.type" :options="menuTypeOptions"

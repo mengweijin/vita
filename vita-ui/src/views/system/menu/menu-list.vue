@@ -45,24 +45,16 @@ const loadTableData = () => {
   });
 };
 
-const editDialogVisible = ref(false)
-
-const currentRowData = ref(null);
+const menuEditRef = ref(null);
 
 const handleAdd = () => {
-  editDialogVisible.value = true;
+  menuEditRef.value.visible = true;
 }
 
 const handleEdit = (row) => {
-  currentRowData.value = { ...row };
-  editDialogVisible.value = true;
+  menuEditRef.value.data = { ...row };
+  menuEditRef.value.visible = true;
 }
-
-const closeEditDialog = () => {
-  editDialogVisible.value = false;
-  // 清理残留数据
-  currentRowData.value = null;
-};
 
 /** selected rows */
 const selected = ref([]);
@@ -244,7 +236,7 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <MenuEdit :visible="editDialogVisible" :data="currentRowData" @close="closeEditDialog"></MenuEdit>
+  <MenuEdit ref="menuEditRef"></MenuEdit>
 </template>
 
 <style scoped></style>
