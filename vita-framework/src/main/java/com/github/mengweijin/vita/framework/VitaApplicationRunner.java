@@ -1,8 +1,5 @@
 package com.github.mengweijin.vita.framework;
 
-import com.github.mengweijin.vita.system.service.ConfigService;
-import com.github.mengweijin.vita.system.service.DictDataService;
-import com.github.mengweijin.vita.system.service.DictTypeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -26,24 +23,10 @@ public class VitaApplicationRunner implements ApplicationRunner {
 
     private SqlSessionFactory sqlSessionFactory;
 
-    private ConfigService configService;
-
-    private DictTypeService dictTypeService;
-
-    private DictDataService dictDataService;
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         String databaseProductName = this.getDatabaseProductName();
-        log.info("----------- Product name of the database is: {}", databaseProductName);
-
-        configService.list();
-        log.info("----------- Load config data success.");
-
-        dictTypeService.list().forEach(dictType -> {
-            dictDataService.getByCode(dictType.getCode());
-        });
-        log.info("----------- Load dict data success.");
+        log.info("Product name of the database is: {}", databaseProductName);
     }
 
     private String getDatabaseProductName() throws SQLException {

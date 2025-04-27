@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/sse")
+@RequestMapping("/monitor/sse")
 public class SseController {
 
     private SseConnector sseConnector;

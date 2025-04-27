@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework;
 
+import org.dromara.hutool.swing.captcha.generator.MathGenerator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -34,4 +35,12 @@ public class VitaAutoConfiguration {
         return restTemplateBuilder.build();
     }
 
+    /**
+     * 四则运算验证码生成器
+     * @return MathGenerator
+     */
+    @Bean
+    public MathGenerator mathGenerator() {
+        return new MathGenerator(1);
+    }
 }

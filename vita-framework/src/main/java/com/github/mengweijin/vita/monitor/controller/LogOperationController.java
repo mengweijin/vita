@@ -35,7 +35,7 @@ import java.util.List;
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/system/log-operation")
+@RequestMapping("/monitor/log-operation")
 public class LogOperationController {
 
     private LogOperationService logOperationService;

@@ -1,6 +1,6 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
-import { toArrayTree, isString } from 'xe-utils';
+import { toArrayTree } from 'xe-utils';
 import { columns } from './menu-hook.js';
 import MenuEdit from './menu-edit.vue';
 
@@ -161,8 +161,7 @@ onMounted(() => {
       </el-checkbox>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val">
-    </VtTableBarRight>
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
   </el-row>
 
   <!-- 表格 -->
@@ -211,7 +210,7 @@ onMounted(() => {
       <el-table-column v-if="columns[13].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
       <el-table-column v-if="columns[14].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
       <el-table-column v-if="columns[15].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="100">
+      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="120">
         <template #default="scope">
           <div>
             <el-tooltip content="编辑" placement="top">
@@ -245,7 +244,7 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <MenuEdit v-if="editDialogVisible" :data="currentRowData" @close="closeEditDialog"></MenuEdit>
+  <MenuEdit :visible="editDialogVisible" :data="currentRowData" @close="closeEditDialog"></MenuEdit>
 </template>
 
 <style scoped></style>

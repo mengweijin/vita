@@ -40,7 +40,34 @@ public class SseConnector implements InitializingBean {
         executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-sse-", true);
     }
 
-    public void sendMessageToUsersAsync(String content, String... usernames) {
+    /**
+     * 注册回调
+     * sseEmitter.onCompletion(onCompletion(username, token));
+     *
+     * @param token token
+     * @return SseEmitter
+     */
+    public SseEmitter connect(String token) {
+        // 设置超时时间，0表示不过期。默认30秒
+        SseEmitter sseEmitter = new SseEmitter(30_000L);
+        sseEmitter.onError(onError(token));
+        sseEmitter.onTimeout(onTimeout(token));
+        cache.put(token, sseEmitter);
+        return sseEmitter;
+    }
+
+    private Runnable onTimeout(String token) {
+        return () -> cache.remove(token);
+    }
+
+    private Consumer<Throwable> onError(String token) {
+        return throwable -> {
+            cache.remove(token);
+            log.error(throwable.getMessage(), throwable);
+        };
+    }
+
+    public void sendMessage(String message, String... usernames) {
         if (ArrayUtil.isEmpty(usernames)) {
             return;
         }
@@ -51,7 +78,7 @@ public class SseConnector implements InitializingBean {
                     for (String token : tokenList) {
                         SseEmitter sseEmitter = cache.get(token);
                         if (sseEmitter != null) {
-                            sseEmitter.send(content);
+                            sseEmitter.send(message);
                         }
                     }
                 }
@@ -60,36 +87,6 @@ public class SseConnector implements InitializingBean {
                 throw new ServerException(e);
             }
         }, executorService);
-    }
-
-    /**
-     * 注册回调
-     * sseEmitter.onCompletion(onCompletion(username, token));
-     *
-     * @param token token
-     * @return SseEmitter
-     */
-    public SseEmitter connect(String token) {
-        // 设置超时时间，0表示不过期。默认30秒
-        SseEmitter sseEmitter = new SseEmitter(0L);
-        sseEmitter.onError(onError(token));
-        sseEmitter.onTimeout(onTimeout(token));
-        cache.put(token, sseEmitter);
-        return sseEmitter;
-    }
-
-    private Runnable onTimeout(String token) {
-        return () -> {
-            cache.remove(token);
-            log.warn("SseEmitter timeout!");
-        };
-    }
-
-    private Consumer<Throwable> onError(String token) {
-        return throwable -> {
-            cache.remove(token);
-            log.error(throwable.getMessage(), throwable);
-        };
     }
 
 }

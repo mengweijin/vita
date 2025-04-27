@@ -7,8 +7,8 @@ import com.github.mengweijin.vita.framework.exception.LoginFailedException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
-import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.enums.ELoginType;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +19,7 @@ import org.dromara.hutool.http.useragent.Platform;
 import org.dromara.hutool.http.useragent.UserAgent;
 import org.dromara.hutool.swing.captcha.AbstractCaptcha;
 import org.dromara.hutool.swing.captcha.CaptchaUtil;
+import org.dromara.hutool.swing.captcha.generator.MathGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.cache.Cache;
@@ -43,6 +44,8 @@ public class LoginService {
     private LogLoginService logLoginService;
 
     private ConfigService configService;
+
+    private MathGenerator mathGenerator;
 
     public LoginUserVO login(LoginBO loginBO) {
         HttpServletRequest request = ServletUtils.getRequest();
@@ -99,6 +102,9 @@ public class LoginService {
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
         AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 100);
+        // 自定义验证码内容为四则运算方式，每个数字的长度为 1 位
+        captcha.setGenerator(mathGenerator);
+
         captcha.createCode();
         // 放入缓存
         captchaCache.put(ip, captcha);
