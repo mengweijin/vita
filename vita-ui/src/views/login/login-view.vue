@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
           </el-form-item>
           <el-form-item prop="captcha" class="vt-form-item" v-if="captchaEnabled" :rules="[
             { required: true, message: '必填', trigger: 'blur' },
-            { pattern: /^[A-Za-z0-9]{4}$/, message: '验证码应是长度为 4 且只包含字母或数字' }
+            { pattern: /^[0-9]+$/, message: '验证码应为数字' }
           ]">
             <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
               <template #prefix>
