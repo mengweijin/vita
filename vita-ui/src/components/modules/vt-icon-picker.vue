@@ -2,7 +2,9 @@
 import { debounce } from 'xe-utils';
 import { listIcons } from '@iconify/vue';
 
-const inputValue = defineModel({ type: String, default: 'ep:menu' });
+const inputValue = defineModel({ type: String, default: '' });
+
+const iconPreview = ref('ep:search');
 
 const iconCollection = ref('ep');
 
@@ -33,7 +35,6 @@ const handleIconCollectionChange = (val) => {
   handleSearch();
 };
 
-
 const handleCurrentChange = (current) => {
   currentPage.value = current;
   handleSearch();
@@ -54,13 +55,18 @@ const popoverRef = ref(null);
 
 const changeIcon = (value) => {
   inputValue.value = value;
-  // 手动关闭 popover
-  // popoverRef.value.hide();
+  iconPreview.value = value;
 };
 
 const clearInputValue = () => {
-  inputValue.value = null;
+  inputValue.value = '';
+  iconPreview.value = 'ep:search';
 }
+
+const close = () => {
+  // 手动关闭 popover
+  popoverRef.value.hide();
+};
 
 onMounted(() => {
   handleSearch();
@@ -68,13 +74,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-input v-model="inputValue" autocomplete="off" disabled>
+  <el-input v-model="inputValue" autocomplete="off" disabled style="width: 50%;">
     <template #append>
       <el-popover ref="popoverRef" placement="bottom" width="510" trigger="click">
         <div>
-          <el-input v-model="search" @input="handleSearch" clearable style="width: 100%" placeholder="请输入要查找的图标" />
+          <el-input v-model="search" @input="handleSearch" clearable style="width: 50%" placeholder="请输入要查找的图标" />
+
+          <span style="float: right; ">
+            <el-button type="danger" size="small" @click="clearInputValue" style="margin-right: 10px;">清空</el-button>
+            <el-button type="primary" size="small" @click="close">确定</el-button>
+          </span>
+
         </div>
-        <div>
+        <div style="margin-top: 8px;">
           <el-segmented v-model="iconCollection" :options="collectionOptions"
             :props="{ label: 'label', value: 'value' }" block @change="handleIconCollectionChange" />
         </div>
@@ -90,21 +102,13 @@ onMounted(() => {
           </div>
         </el-scrollbar>
 
-        <el-row>
-          <el-col :span="22">
-            <el-pagination background :current-page="currentPage" :page-size="pageSize" size="small"
-              layout="total, prev, pager, next, jumper" :total="allIconList.length"
-              @current-change="handleCurrentChange" />
-          </el-col>
-          <el-col :span="2" style="margin-left: auto;">
-            <el-button type="danger" size="small" @click="clearInputValue">清空</el-button>
-          </el-col>
-        </el-row>
+        <el-pagination background :current-page="currentPage" :page-size="pageSize" size="small"
+          layout="total, prev, pager, next, jumper" :total="allIconList.length" @current-change="handleCurrentChange" />
 
         <template #reference>
           <el-button text>
             <el-icon size="large">
-              <Icon :icon="inputValue" />
+              <Icon :icon="iconPreview" />
             </el-icon>
           </el-button>
         </template>

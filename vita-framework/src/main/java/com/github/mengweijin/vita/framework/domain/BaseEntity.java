@@ -15,6 +15,21 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
+ *     逻辑删除、乐观锁两个字段可根据需要，在子类中自行添加。这里只提供一个文档示例。
+ * </p>
+ *
+ * <p>
+ * 逻辑删除。
+ * @TableLogic
+ * protected String deleted;
+ * </p>
+ *
+ * <p>
+ * 乐观锁。
+ * @Version
+ * protected Long version;
+ * </p>
  *
  * @author Meng Wei Jin
  * @since 2019-07-28

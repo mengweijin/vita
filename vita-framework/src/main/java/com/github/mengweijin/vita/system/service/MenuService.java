@@ -2,17 +2,22 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.MenuVO;
 import com.github.mengweijin.vita.system.enums.EMenuType;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -60,6 +65,12 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         return wrapper;
     }
 
+    public List<MenuVO> listVO(MenuDO menuDO) {
+        LambdaQueryWrapper<MenuDO> wrapper = this.getQueryWrapper(menuDO);
+        List<MenuDO> menuList = this.list(wrapper.orderByAsc(MenuDO::getSeq));
+        List<MenuVO> list = BeanCopyUtils.copyList(menuList, MenuVO.class);
+        return list.stream().peek(item -> item.setTitlePath(this.buildTitlePath(list, item.getId()))).toList();
+    }
 
     public Set<String> getMenuPermissionListByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
@@ -87,5 +98,17 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
                 .filter(m -> EYesNo.N.getValue().equalsIgnoreCase(m.getDisabled()))
                 .filter(m -> !EMenuType.BTN.getValue().equalsIgnoreCase(m.getType()))
                 .toList();
+    }
+
+    public String buildTitlePath(List<MenuVO> list, Long id) {
+        List<String> titleList = new ArrayList<>();
+        MenuVO menuVO = CollUtil.getFirst(list, item -> item.getId().equals(id));
+
+        while(menuVO != null) {
+            titleList.add(0, menuVO.getTitle());
+            Long parentId = menuVO.getParentId();
+            menuVO = CollUtil.getFirst(list, item -> item.getId().equals(parentId));
+        }
+        return String.join(Const.SLASH, titleList);
     }
 }

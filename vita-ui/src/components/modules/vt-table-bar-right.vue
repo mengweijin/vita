@@ -41,8 +41,20 @@ const onPrint = () => {
           <title></title>
           <!-- 复制原页面的样式 -->
           ${document.head.innerHTML}
+          <style type="text/css">
+            .el-table {
+              height: fit-content !important;
+            }
+            .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+                background: transparent !important;
+            }
+          </style>
         </head>
-        <body>${element.outerHTML}</body>
+        <body style="display: flex; justify-content: center; ">
+          <div style="display: inline-block; ">
+            ${element.outerHTML}
+          <div>
+        </body>
       </html>
     `);
     // 停止加载，否则页签一直是 loading 状态
@@ -92,7 +104,7 @@ onMounted(async () => {
 <template>
   <el-col :span="1.5" style="margin-left: auto;">
 
-    <el-tooltip content="打印" placement="top" v-if="props.shows.includes('print')">
+    <el-tooltip content="打印，请在打印窗口手动调整缩放比例，以适应纸张页面。" placement="top" v-if="props.shows.includes('print')">
       <el-button text circle @click="onPrint">
         <template #icon>
           <Icon icon="ep:printer" width="24" height="24"></Icon>

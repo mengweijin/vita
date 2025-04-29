@@ -69,7 +69,7 @@ create unique index UIDX_VT_CONFIG_NAME on VT_CONFIG(NAME);
 drop table IF EXISTS VT_CATEGORY;
 create TABLE VT_CATEGORY (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID                     bigint NOT NULL DEFAULT 0 comment 'PARENT ID',
+  PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
   CODE                          varchar(500) NOT NULL comment '编码',
   NAME                          varchar(255) NOT NULL comment '名称',
   REMARK 	                    varchar(500) comment '备注',
@@ -193,13 +193,14 @@ create index IDX_VT_FILE_MD5 on VT_FILE(MD5);
 drop table IF EXISTS VT_MENU;
 create TABLE VT_MENU (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID              		bigint DEFAULT 0 comment '父菜单ID',
+  PARENT_ID              		bigint DEFAULT NULL comment '父菜单ID',
   TYPE 		                    varchar(10) NOT NULL DEFAULT 'BTN' comment '菜单类型。vt_menu_type: { DIR=目录；MENU=菜单; BTN=按钮; IFRAME=内嵌页面；URL=外链页面；}',
   TITLE 		                varchar(50) NOT NULL comment '标题',
   PERMISSION 	                varchar(100) comment '权限字符。[*:*:*]',
   ROUTE_NAME                    varchar(100) comment '路由名称。例如：SystemUser',
   ROUTE_PATH                    varchar(100) comment '路由路径。例如：/system/user',
-  COMPONENT                     varchar(100) comment '组件路径。例如：system/user/UserList.vue 或者一个外部 url',
+  COMPONENT                     varchar(100) comment '组件路径。例如：system/user/UserList.vue',
+  URL                           varchar(255) comment '一个 url 地址',
   SEQ 		                    int DEFAULT 1 comment '排序',
   ICON 				            varchar(100) comment '图标',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
@@ -214,7 +215,7 @@ create TABLE VT_MENU (
 drop table IF EXISTS VT_DEPT;
 create TABLE VT_DEPT (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID              		bigint DEFAULT 0 comment '父部门ID',
+  PARENT_ID              		bigint DEFAULT NULL comment '父部门ID',
   NAME 		                    varchar(50) NOT NULL comment '部门名称',
   SEQ 		                    int DEFAULT 1 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',

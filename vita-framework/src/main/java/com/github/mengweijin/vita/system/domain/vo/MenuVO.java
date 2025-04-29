@@ -16,4 +16,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class MenuVO extends MenuDO {
 
+    /**
+     * 标题完整路径
+     */
+    private String titlePath;
 }

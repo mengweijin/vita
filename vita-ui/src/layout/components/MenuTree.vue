@@ -10,7 +10,7 @@ const handleClick = (menu) => {
   if ('IFRAME' === menu.type) {
 
   } else if ('URL' === menu.type) {
-    window.open(menu.component, '_blank');
+    window.open(menu.url, '_blank');
   }
 };
 </script>

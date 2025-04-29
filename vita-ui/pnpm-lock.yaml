@@ -30,8 +30,8 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0
       element-plus:
-        specifier: ^2.9.8
-        version: 2.9.8(vue@3.5.13)
+        specifier: ^2.9.9
+        version: 2.9.9(vue@3.5.13)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -48,8 +48,8 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13
       vue-router:
-        specifier: ^4.5.0
-        version: 4.5.0(vue@3.5.13)
+        specifier: ^4.5.1
+        version: 4.5.1(vue@3.5.13)
       xe-utils:
         specifier: ^3.7.4
         version: 3.7.4
@@ -1462,8 +1462,8 @@ packages:
   electron-to-chromium@1.5.142:
     resolution: {integrity: sha512-Ah2HgkTu/9RhTDNThBtzu2Wirdy4DC9b0sMT1pUhbkZQ5U/iwmE+PHZX1MpjD5IkJCc2wSghgGG/B04szAx07w==}
 
-  element-plus@2.9.8:
-    resolution: {integrity: sha512-srViUaUdfblBKGMeuEPiXxxKlH5aUmKqEwmhb/At9Sj91DbU6od/jYN1955cTnzt3wTSA7GfnZF7UiRX9sdRHg==}
+  element-plus@2.9.9:
+    resolution: {integrity: sha512-gN553+xr7ETkhJhH26YG0fERmd2BSCcQKslbtR8fats0Mc0yCtZOXr00bmoPOt5xGzhuRN1TWc9+f1pCaiA0/Q==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -2557,8 +2557,8 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  vue-router@4.5.0:
-    resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
+  vue-router@4.5.1:
+    resolution: {integrity: sha512-ogAF3P97NPm8fJsE4by9dwSYtDwXIY1nFY9T6DyQnGHd1E2Da94w9JIolpe42LJGIl0DwOHBi8TcRPlPGwbTtw==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -4096,7 +4096,7 @@ snapshots:
 
   electron-to-chromium@1.5.142: {}
 
-  element-plus@2.9.8(vue@3.5.13):
+  element-plus@2.9.9(vue@3.5.13):
     dependencies:
       '@ctrl/tinycolor': 3.6.1
       '@element-plus/icons-vue': 2.3.1(vue@3.5.13)
@@ -5208,7 +5208,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-router@4.5.0(vue@3.5.13):
+  vue-router@4.5.1(vue@3.5.13):
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13

@@ -54,6 +54,11 @@ public class MenuDO extends BaseEntity {
     private String component;
 
     /**
+     * 一个 url 地址
+     */
+    private String url;
+
+    /**
      * 排序
      */
     private Integer seq;

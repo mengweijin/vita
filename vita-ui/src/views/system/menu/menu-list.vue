@@ -48,10 +48,12 @@ const loadTableData = () => {
 const menuEditRef = ref(null);
 
 const handleAdd = () => {
+  menuEditRef.value.data = {};
   menuEditRef.value.visible = true;
 }
 
 const handleEdit = (row) => {
+  // 使用展开运算符，避免数据污染
   menuEditRef.value.data = { ...row };
   menuEditRef.value.visible = true;
 }
@@ -198,11 +200,12 @@ onMounted(() => {
       </el-table-column>
       <el-table-column v-if="columns[10].visible" prop="routeName" label="路由名称" min-width="180" />
       <el-table-column v-if="columns[11].visible" prop="routePath" label="路由路径" min-width="200" />
-      <el-table-column v-if="columns[12].visible" prop="createByName" label="创建者" align="center" min-width="100" />
-      <el-table-column v-if="columns[13].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[14].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
-      <el-table-column v-if="columns[15].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[16].visible" label="操作" align="center" fixed="right" min-width="120">
+      <el-table-column v-if="columns[12].visible" prop="url" label="URL" min-width="200" />
+      <el-table-column v-if="columns[13].visible" prop="createByName" label="创建者" align="center" min-width="100" />
+      <el-table-column v-if="columns[14].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
+      <el-table-column v-if="columns[15].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
+      <el-table-column v-if="columns[16].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
+      <el-table-column v-if="columns[17].visible" label="操作" align="center" fixed="right" min-width="120">
         <template #default="scope">
           <div>
             <el-tooltip content="编辑" placement="top">

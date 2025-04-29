@@ -9,6 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
+import com.github.mengweijin.vita.system.domain.vo.MenuVO;
 import com.github.mengweijin.vita.system.service.MenuService;
 import com.github.mengweijin.vita.system.service.RoleMenuService;
 import lombok.AllArgsConstructor;
@@ -67,9 +68,8 @@ public class MenuController {
      */
     @SaCheckPermission("system:menu:select")
     @GetMapping("/list")
-    public List<MenuDO> list(MenuDO menu) {
-        LambdaQueryWrapper<MenuDO> wrapper = menuService.getQueryWrapper(menu);
-        return menuService.list(wrapper.orderByAsc(MenuDO::getSeq));
+    public List<MenuVO> list(MenuDO menu) {
+        return menuService.listVO(menu);
     }
 
     /**
