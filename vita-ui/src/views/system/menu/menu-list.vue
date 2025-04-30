@@ -127,7 +127,7 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5">
-      <el-button type="primary" @click="handleAdd">
+      <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
             <Icon icon="ep:plus"></Icon>
