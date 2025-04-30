@@ -51,7 +51,7 @@ public class UserBO extends BaseEntity {
      * 登录密码
      */
     @NotBlank(groups = {Group.Create.class})
-    @Pattern(groups = {Group.Create.class}, regexp = Regex.PASSWORD, message = "{user.password.pattern}")
+    @Pattern(groups = {Group.Create.class}, regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
 
     /**

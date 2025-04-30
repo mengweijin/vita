@@ -49,7 +49,7 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/page")
-    public IPage<?> page(Page<ConfigDO> page, ConfigDO config) {
+    public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
         return configService.page(page, config);
     }
 

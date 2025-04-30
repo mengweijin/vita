@@ -47,8 +47,10 @@ const loadTableData = () => {
 
 const menuEditRef = ref(null);
 
-const handleAdd = () => {
-  menuEditRef.value.data = {};
+const handleAdd = (id) => {
+  menuEditRef.value.data = {
+    parentId: id ?? undefined,
+  };
   menuEditRef.value.visible = true;
 }
 
@@ -166,7 +168,7 @@ onMounted(() => {
       <el-table-column v-if="columns[0].visible" type="selection" width="55" />
       <el-table-column v-if="columns[1].visible" type="index" label="序号" width="60" fixed="left" />
       <el-table-column v-if="columns[2].visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns[3].visible" prop="title" label="菜单标题" min-width="260" fixed="left" />
+      <el-table-column v-if="columns[3].visible" prop="title" label="菜单标题" min-width="200" fixed="left" />
       <el-table-column v-if="columns[4].visible" prop="icon" label="图标" min-width="80" align="center">
         <template #default="{ row }">
           <Icon :icon="row.icon" width="24" height="24" v-if="row.icon" />
@@ -205,11 +207,20 @@ onMounted(() => {
       <el-table-column v-if="columns[14].visible" prop="createTime" label="创建时间" align="center" min-width="180" />
       <el-table-column v-if="columns[15].visible" prop="updateByName" label="更新者" align="center" min-width="100" />
       <el-table-column v-if="columns[16].visible" prop="updateTime" label="更新时间" align="center" min-width="180" />
-      <el-table-column v-if="columns[17].visible" label="操作" align="center" fixed="right" min-width="120">
+      <el-table-column v-if="columns[17].visible" label="操作" align="center" fixed="right" min-width="180">
         <template #default="scope">
           <div>
+            <el-tooltip content="新增" placement="top">
+              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:plus"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" text :size="size" @click="handleEdit(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -239,7 +250,7 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <MenuEdit ref="menuEditRef"></MenuEdit>
+  <MenuEdit ref="menuEditRef" @refresh-table="loadTableData"></MenuEdit>
 </template>
 
 <style scoped></style>

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author mengweijin
  * @since 2023/5/20
  */
-public interface ITranslationStrategy<T extends Serializable> {
+public interface ITranslationStrategy {
 
     /**
      * 支持的翻译类型
@@ -25,6 +25,6 @@ public interface ITranslationStrategy<T extends Serializable> {
      * @param value 需要被翻译的值
      * @return 返回转换后的值
      */
-    T translation(Object value, Translation translation);
+    Serializable translation(Object value, Translation translation);
 
 }

@@ -41,9 +41,28 @@ const title = computed(() => {
   return data?.id ? '编辑' : '新增';
 });
 
-const onSubmit = () => {
-
+const onSubmit = async () => {
+  await formRef.value.validate((valid, fields) => {
+    if (!valid) {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields)
+      return;
+    }
+    if (form.id) {
+      menuApi.update(form).then((r) => {
+        emit('refresh-table');
+        closeDialog();
+      });
+    } else {
+      menuApi.create(form).then((r) => {
+        emit('refresh-table');
+        closeDialog();
+      });
+    }
+  });
 }
+
+const emit = defineEmits(['refresh-table']);
 
 const closeDialog = () => {
   formRef.value.resetFields();
@@ -80,7 +99,7 @@ defineExpose({ visible, data })
 
 <template>
   <el-dialog v-model="visible" :title="title" destroy-on-close align-center @opened="onDialogOpen" width="40%">
-    <el-form ref="formRef" :model="form" label-width="auto" @submit.prevent="onSubmit">
+    <el-form ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
         <el-segmented v-model="form.type" :options="menuTypeOptions"
           :props="{ label: 'label', value: 'val', disabled: 'disabled' }" />
@@ -146,7 +165,7 @@ defineExpose({ visible, data })
     </el-form>
     <template #footer>
       <div>
-        <el-button type="primary" native-type="submit">
+        <el-button type="primary" @click="onSubmit">
           <template #icon>
             <el-icon>
               <Icon icon="ep:check"></Icon>

@@ -18,6 +18,7 @@ import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -42,6 +43,11 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
     private UserRoleService userRoleService;
 
     private RoleMenuService roleMenuService;
+
+    @Override
+    public boolean removeByIds(Collection<?> ids) {
+        return super.removeByIds(ids);
+    }
 
     public LambdaQueryWrapper<MenuDO> getQueryWrapper(MenuDO menu) {
         LambdaQueryWrapper<MenuDO> wrapper = new LambdaQueryWrapper<>();
@@ -69,12 +75,14 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         LambdaQueryWrapper<MenuDO> wrapper = this.getQueryWrapper(menuDO);
         List<MenuDO> menuList = this.list(wrapper.orderByAsc(MenuDO::getSeq));
         List<MenuVO> list = BeanCopyUtils.copyList(menuList, MenuVO.class);
-        return list.stream().peek(item -> item.setTitlePath(this.buildTitlePath(list, item.getId()))).toList();
+
+        list.forEach(item -> item.setTitlePath(this.buildTitlePath(list, item.getId())));
+        return list;
     }
 
     public Set<String> getMenuPermissionListByUsername(String username) {
         if (UserConst.ADMIN_USERNAME.equals(username)) {
-            return this.lambdaQuery().select(MenuDO::getPermission).list()
+            return this.lambdaQuery().select(MenuDO::getPermission).isNotNull(MenuDO::getPermission).list()
                     .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
         }
 
@@ -82,7 +90,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(user.getId());
         Set<Long> menuIds = roleMenuService.getMenuIdsInRoleIds(roleIds);
 
-        return this.lambdaQuery().select(MenuDO::getPermission).in(MenuDO::getId, menuIds).list()
+        return this.lambdaQuery().select(MenuDO::getPermission).isNotNull(MenuDO::getPermission).in(MenuDO::getId, menuIds).list()
                 .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
     }
 

@@ -17,11 +17,11 @@ public class ChangePasswordBO implements Serializable {
     private String username;
 
     @NotBlank
-    @Pattern(regexp = Regex.PASSWORD, message = "{user.password.pattern}")
+    @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
 
     @NotBlank
-    @Pattern(regexp = Regex.PASSWORD, message = "{user.password.pattern}")
+    @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String newPassword;
 
 }

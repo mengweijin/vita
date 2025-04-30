@@ -19,7 +19,7 @@ public class LoginBO implements Serializable {
     private String username;
 
     @NotBlank
-    @Pattern(regexp = Regex.PASSWORD, message = "{user.password.pattern}")
+    @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
 
     @BusinessCheck(checkRule = CaptchaMandatoryCheckRule.class)

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @AllArgsConstructor
-public class UserNicknameTranslationStrategy implements ITranslationStrategy<String> {
+public class UserNicknameTranslationStrategy implements ITranslationStrategy {
 
     private UserService userService;
 

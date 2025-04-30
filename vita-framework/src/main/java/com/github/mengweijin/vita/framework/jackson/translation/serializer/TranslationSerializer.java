@@ -24,7 +24,7 @@ public class TranslationSerializer extends JsonSerializer<Object> implements Con
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        ITranslationStrategy<?> translationStrategy = TranslationStrategyFactory.getTranslationStrategy(translation.translateType());
+        ITranslationStrategy translationStrategy = TranslationStrategyFactory.getTranslationStrategy(translation.translateType());
         if(translationStrategy == null) {
             gen.writeObject(value);
         } else {

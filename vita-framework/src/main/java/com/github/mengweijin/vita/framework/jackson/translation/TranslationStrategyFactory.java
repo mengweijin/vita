@@ -5,7 +5,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,18 +16,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class TranslationStrategyFactory {
 
-    private final List<ITranslationStrategy<? extends Serializable>> translationList;
+    private final List<ITranslationStrategy> translationList;
 
-    public TranslationStrategyFactory(List<ITranslationStrategy<? extends Serializable>> translationList) {
+    public TranslationStrategyFactory(List<ITranslationStrategy> translationList) {
         this.translationList = translationList;
     }
 
-    public static final Map<ETranslateType, ITranslationStrategy<? extends Serializable>> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
+    private static final Map<ETranslateType, ITranslationStrategy> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
 
     @SuppressWarnings({"unused"})
     @PostConstruct
     public void init() {
-        for (ITranslationStrategy<? extends Serializable> strategy : translationList) {
+        for (ITranslationStrategy strategy : translationList) {
             if(strategy.translateType() == null) {
                 log.warn("{} : was not set translationType!", strategy.getClass().getName());
             }
@@ -36,7 +35,7 @@ public class TranslationStrategyFactory {
         }
     }
 
-    public static ITranslationStrategy<? extends Serializable> getTranslationStrategy(ETranslateType translateType) {
+    public static ITranslationStrategy getTranslationStrategy(ETranslateType translateType) {
         return TRANSLATION_STRATEGY_MAP.get(translateType);
     }
 }

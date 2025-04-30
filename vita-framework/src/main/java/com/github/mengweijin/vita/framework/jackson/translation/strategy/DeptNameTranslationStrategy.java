@@ -8,12 +8,13 @@ import org.springframework.stereotype.Component;
 
 /**
  * 用户名翻译
+ *
  * @author mengweijin
  * @since 2023/5/20
  */
 @Component
 @AllArgsConstructor
-public class DeptNameTranslationStrategy implements ITranslationStrategy<String> {
+public class DeptNameTranslationStrategy implements ITranslationStrategy {
 
     private DeptService deptService;
 

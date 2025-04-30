@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @AllArgsConstructor
-public class DictDataLabelTranslationStrategy implements ITranslationStrategy<String> {
+public class DictDataLabelTranslationStrategy implements ITranslationStrategy {
 
     private DictDataService dictDataService;
 

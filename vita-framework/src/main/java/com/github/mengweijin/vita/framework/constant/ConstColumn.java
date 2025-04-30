@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings({"unused"})
-public abstract class ConstColumn {
+public final class ConstColumn {
 
     public static final String DEPT_ID = "DEPT_ID";
     public static final String ROLE_ID = "ROLE_ID";

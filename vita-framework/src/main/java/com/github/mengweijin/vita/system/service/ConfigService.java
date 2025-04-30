@@ -33,7 +33,7 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
      * @param config {@link ConfigDO}
      * @return IPage
      */
-    public IPage<?> page(IPage<ConfigDO> page, ConfigDO config) {
+    public IPage<ConfigDO> page(IPage<ConfigDO> page, ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(!Objects.isNull(config.getId()), ConfigDO::getId, config.getId())

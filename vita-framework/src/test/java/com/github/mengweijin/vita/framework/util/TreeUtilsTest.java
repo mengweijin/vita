@@ -23,7 +23,10 @@ class TreeUtilsTest {
     @Test
     void build() {
         List<CategoryDO> list = categoryDataList();
-        List<Map<String, Object>> treeList = TreeUtils.build(list);
+        List<Map<String, Object>> treeList = TreeUtils.buildByBeanList(list);
+        Assertions.assertEquals(3, treeList.size());
+
+        treeList = TreeUtils.buildByBeanList(list, TreeUtils.createTreeConfig().setStrict(true).setSortKey("seq"));
         Assertions.assertEquals(3, treeList.size());
     }
 

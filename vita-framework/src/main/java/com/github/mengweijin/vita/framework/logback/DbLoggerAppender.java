@@ -54,7 +54,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
      * DbErrorLogAppender初始化
      */
     @PostConstruct
-    @SuppressWarnings({"unused"})
+    @SuppressWarnings({"unused","java:S3252"})
     public void init() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 
