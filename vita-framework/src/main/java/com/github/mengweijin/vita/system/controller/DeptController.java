@@ -2,8 +2,6 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
@@ -41,20 +39,6 @@ public class DeptController {
 
     /**
      * <p>
-     * Get Dept page by Dept
-     * </p>
-     * @param page page
-     * @param dept {@link DeptDO}
-     * @return Page<Dept>
-     */
-    @SaCheckPermission("system:dept:select")
-    @GetMapping("/page")
-    public IPage<DeptDO> page(Page<DeptDO> page, DeptDO dept) {
-        return deptService.page(page, dept);
-    }
-
-    /**
-     * <p>
      * Get Dept list by Dept
      * </p>
      * @param dept {@link DeptDO}
@@ -63,7 +47,8 @@ public class DeptController {
     @SaCheckPermission("system:dept:select")
     @GetMapping("/list")
     public List<DeptDO> list(DeptDO dept) {
-        return deptService.list(new LambdaQueryWrapper<>(dept).orderByAsc(DeptDO::getSeq));
+        LambdaQueryWrapper<DeptDO> wrapper = deptService.getQueryWrapper(dept);
+        return deptService.list(wrapper.orderByAsc(DeptDO::getSeq));
     }
 
     /**

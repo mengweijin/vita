@@ -1,4 +1,4 @@
-import { camelCase, isEmpty } from 'xe-utils'
+import { camelCase, isEmpty, find, toValueString } from 'xe-utils'
 
 /** 首字母转大写 */
 export const upperFirst = (str) => {
@@ -21,4 +21,32 @@ export const copyDefinedProperties = (target, source) => {
       }
     })
   }
+}
+
+/**
+ * 追加完整路径字段
+ * @param {Array} list
+ * @param {Object} param1 { idKey: 'id', parentKey: 'parentId', pathKey: 'name', separator: '/' }
+ * @returns
+ */
+export const addFullPath = (
+  list,
+  { idKey = 'id', parentKey = 'parentId', pathKey = 'name', separator = '/' },
+) => {
+  const buildPath = (id) => {
+    let pathList = []
+    let row = find(list, (item) => toValueString(id) === toValueString(item[idKey]))
+    while (row != null) {
+      // 往最前面增加元素（向数组最前面插入元素时，需设置起始索引为 0, 且删除数量为 0）
+      pathList.splice(0, 0, row[pathKey])
+      row = find(list, (item) => toValueString(item[idKey]) === toValueString(row[parentKey]))
+    }
+    return pathList.join(separator)
+  }
+
+  list.forEach((item) => {
+    item[`${pathKey}FullPath`] = buildPath(item[idKey])
+  })
+
+  return list
 }

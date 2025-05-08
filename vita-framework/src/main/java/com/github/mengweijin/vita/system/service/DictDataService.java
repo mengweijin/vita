@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
@@ -31,28 +30,21 @@ import java.util.Optional;
 @Service
 public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> {
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param dictData {@link DictDataDO}
-     * @return IPage
-     */
-    public IPage<DictDataDO> page(IPage<DictDataDO> page, DictDataDO dictData){
-        LambdaQueryWrapper<DictDataDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(dictData.getCode()), DictDataDO::getCode, dictData.getCode())
-                .eq(StrValidator.isNotBlank(dictData.getVal()), DictDataDO::getVal, dictData.getVal())
-                .eq(!Objects.isNull(dictData.getSeq()), DictDataDO::getSeq, dictData.getSeq())
-                .eq(StrValidator.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled())
-                .eq(StrValidator.isNotBlank(dictData.getRemark()), DictDataDO::getRemark, dictData.getRemark())
-                .eq(!Objects.isNull(dictData.getId()), DictDataDO::getId, dictData.getId())
-                .eq(!Objects.isNull(dictData.getCreateBy()), DictDataDO::getCreateBy, dictData.getCreateBy())
-                .eq(!Objects.isNull(dictData.getCreateTime()), DictDataDO::getCreateTime, dictData.getCreateTime())
-                .eq(!Objects.isNull(dictData.getUpdateBy()), DictDataDO::getUpdateBy, dictData.getUpdateBy())
-                .eq(!Objects.isNull(dictData.getUpdateTime()), DictDataDO::getUpdateTime, dictData.getUpdateTime())
-                .like(StrValidator.isNotBlank(dictData.getLabel()), DictDataDO::getLabel, dictData.getLabel());
-        query.orderByAsc(DictDataDO::getSeq);
-        return this.page(page, query);
+    public LambdaQueryWrapper<DictDataDO> getQueryWrapper(DictDataDO dictData) {
+        LambdaQueryWrapper<DictDataDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(dictData.getId()), DictDataDO::getId, dictData.getId());
+        wrapper.eq(StrValidator.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled());
+        wrapper.eq(!Objects.isNull(dictData.getCreateBy()), DictDataDO::getCreateBy, dictData.getCreateBy());
+        wrapper.eq(!Objects.isNull(dictData.getUpdateBy()), DictDataDO::getUpdateBy, dictData.getUpdateBy());
+        wrapper.gt(!Objects.isNull(dictData.getSearchStartTime()), DictDataDO::getCreateTime, dictData.getSearchStartTime());
+        wrapper.le(!Objects.isNull(dictData.getSearchEndTime()), DictDataDO::getCreateTime, dictData.getSearchEndTime());
+        if (StrValidator.isNotBlank(dictData.getKeywords())) {
+            wrapper.or(w -> w.like(DictDataDO::getLabel, dictData.getKeywords()));
+            wrapper.or(w -> w.like(DictDataDO::getCode, dictData.getKeywords()));
+            wrapper.or(w -> w.like(DictDataDO::getVal, dictData.getKeywords()));
+        }
+        wrapper.orderByAsc(DictDataDO::getSeq);
+        return wrapper;
     }
 
     @Cacheable(value = CacheNames.DICT_VAL_TO_LABEL, key = "#code + ':' + #val", unless = CacheConst.UNLESS_OBJECT_NULL)

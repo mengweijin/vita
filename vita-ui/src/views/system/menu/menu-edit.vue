@@ -1,5 +1,5 @@
 <script setup>
-import { copyDefinedProperties } from "@/utils/tool";
+import { addFullPath, copyDefinedProperties } from "@/utils/tool";
 import VtIconPicker from "@/components/modules/vt-icon-picker.vue";
 import { menuApi } from "@/api/system/menu-api";
 import { toArrayTree, find } from "xe-utils";
@@ -77,20 +77,16 @@ const menuTypeOptions = computed(() => {
   });
 });
 
-const menuTreeSelectOptions = ref([]);
+const menuList = ref([]);
 
-const initMenuTreeSelectOptions = async () => {
-  let menuList = await menuApi.list();
-  menuList = menuList.map(item => {
-    item.disabled = false;
-    return item;
-  });
-  let treeData = toArrayTree(menuList, { sortKey: 'seq' });
-  menuTreeSelectOptions.value = treeData;
-}
+const menuTreeSelectOptions = computed(() => {
+  menuList.value.forEach((item) => item.disabled = false);
+  addFullPath(menuList.value, { pathKey: 'title' })
+  return toArrayTree(menuList.value, { sortKey: 'seq' });
+});
 
 onMounted(() => {
-  initMenuTreeSelectOptions();
+  menuApi.list().then(res => menuList.value = res);
 });
 
 /** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
@@ -107,7 +103,7 @@ defineExpose({ visible, data })
 
       <el-form-item prop="parentId" label="父菜单">
         <el-tree-select v-model="form.parentId" :data="menuTreeSelectOptions"
-          :props="{ label: 'titlePath', value: 'id', children: 'children' }" check-strictly filterable clearable
+          :props="{ label: 'titleFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
           placeholder="请选择">
           <template #default="{ data: { title } }">
             {{ title }}
@@ -123,24 +119,64 @@ defineExpose({ visible, data })
         <el-input v-model="form.title" maxlength="30" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="permission" label="权限">
+      <el-form-item prop="permission">
+        <template #label>
+          <div class="vt-question-icon-container">
+            <el-tooltip placement="top" content="权限格式：以冒号分隔，比如：system:user:view">
+              <el-icon class="vt-question-icon">
+                <Icon icon="ep:question-filled" width="24" height="24" />
+              </el-icon>
+            </el-tooltip>
+            <span>权限</span>
+          </div>
+        </template>
         <el-input v-model="form.permission" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="component" label="组件路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      <el-form-item prop="component" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
         v-if="form.type === 'MENU'">
+        <template #label>
+          <div class="vt-question-icon-container">
+            <el-tooltip placement="top" content="*.vue 组件文件的路径。比如：src/views/system/menu/menu-list.vue">
+              <el-icon class="vt-question-icon">
+                <Icon icon="ep:question-filled" width="24" height="24" />
+              </el-icon>
+            </el-tooltip>
+            <span>组件路径</span>
+          </div>
+        </template>
         <el-input v-model="form.component" autocomplete="off">
           <template #prepend>src/views/</template>
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="routePath" label="路由路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      <el-form-item prop="routePath" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
         v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        <template #label>
+          <div class="vt-question-icon-container">
+            <el-tooltip placement="top" content="vue-router 路由的路径，也是浏览器地址栏访问的路径。比如：/system/menu">
+              <el-icon class="vt-question-icon">
+                <Icon icon="ep:question-filled" width="24" height="24" />
+              </el-icon>
+            </el-tooltip>
+            <span>路由路径</span>
+          </div>
+        </template>
         <el-input v-model="form.routePath" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="routeName" label="路由名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      <el-form-item prop="routeName" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
         v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        <template #label>
+          <div class="vt-question-icon-container">
+            <el-tooltip placement="top" content="vue-router 路由的名称。比如：SystemMenu">
+              <el-icon class="vt-question-icon">
+                <Icon icon="ep:question-filled" width="24" height="24" />
+              </el-icon>
+            </el-tooltip>
+            <span>路由名称</span>
+          </div>
+        </template>
         <el-input v-model="form.routeName" autocomplete="off" />
       </el-form-item>
 
@@ -194,4 +230,14 @@ defineExpose({ visible, data })
   </el-dialog>
 </template>
 
-<style scoped></style>
+<style scoped>
+.vt-question-icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.vt-question-icon:hover {
+  /* 默认显示手型 */
+  cursor: pointer;
+}
+</style>

@@ -73,12 +73,20 @@ const onPrint = () => {
   }
 };
 
+const columnList = computed(() => {
+  let list = [];
+  for (const [key, value] of Object.entries(props.columns)) {
+    list.push({ key: key, label: value.label, visible: value.visible });
+  }
+  return list;
+});
+
 const columnCheckedList = ref([]);
 
 const columnChange = () => {
-  props.columns?.forEach((item) => {
-    item.visible = columnCheckedList.value.includes(item.key);
-  });
+  for (const [key, value] of Object.entries(props.columns)) {
+    value.visible = columnCheckedList.value.includes(key);
+  }
 }
 
 const columnGroupChange = (checkedKeys) => {
@@ -87,20 +95,15 @@ const columnGroupChange = (checkedKeys) => {
 }
 
 const columnCheckAllChange = (isChecked) => {
-  if (isChecked) {
-    columnCheckedList.value = props.columns?.map(item => item.key);
-  } else {
-    columnCheckedList.value = [];
-  }
+  columnCheckedList.value = isChecked ? Object.keys(props.columns) : [];
   columnChange();
 }
 
-onMounted(async () => {
-  columnCheckedList.value = props.columns?.filter((item) => item.visible).map((item) => item.key);
+onMounted(() => {
+  columnCheckedList.value = columnList.value.filter((item) => item.visible).map((item) => item.key)
 })
-
-
 </script>
+
 <template>
   <el-col :span="1.5" style="margin-left: auto;">
 
@@ -145,7 +148,7 @@ onMounted(async () => {
             <div style="max-height: 260px; overflow-y: auto;">
               <el-checkbox label="全选" :value="-1" :key="-1" @change="columnCheckAllChange" />
               <el-checkbox-group v-model="columnCheckedList" @change="columnGroupChange">
-                <el-checkbox v-for="(item, index) in props.columns" :label="item.label" :value="item.key"
+                <el-checkbox v-for="(item, index) in columnList" :label="item.label" :value="item.key"
                   :key="item.key" />
               </el-checkbox-group>
             </div>

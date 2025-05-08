@@ -63,13 +63,14 @@ public class UserController {
      * </p>
      *
      * @param page page
-     * @param userDO {@link UserDO}
+     * @param user {@link UserDO}
      * @return Page<User>
      */
     @SaCheckPermission("system:user:select")
     @GetMapping("/page")
-    public IPage<UserVO> page(Page<UserDO> page, UserDO userDO) {
-        IPage<UserDO> userPage = userService.page(page, userDO);
+    public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
+        LambdaQueryWrapper<UserDO> wrapper = userService.getQueryWrapper(user);
+        IPage<UserDO> userPage = userService.page(page, wrapper);
         return BeanCopyUtils.copyPage(userPage, UserVO.class);
     }
 

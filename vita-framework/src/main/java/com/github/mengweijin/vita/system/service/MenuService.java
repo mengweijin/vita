@@ -2,22 +2,17 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.vo.MenuVO;
 import com.github.mengweijin.vita.system.enums.EMenuType;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -53,31 +48,19 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         LambdaQueryWrapper<MenuDO> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(!Objects.isNull(menu.getId()), MenuDO::getId, menu.getId());
-        wrapper.eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy());
-        wrapper.eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy());
-
         wrapper.eq(!Objects.isNull(menu.getParentId()), MenuDO::getParentId, menu.getParentId());
         wrapper.eq(StrValidator.isNotBlank(menu.getType()), MenuDO::getType, menu.getType());
         wrapper.eq(StrValidator.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled());
-
+        wrapper.eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy());
+        wrapper.eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy());
         wrapper.gt(!Objects.isNull(menu.getSearchStartTime()), MenuDO::getCreateTime, menu.getSearchStartTime());
         wrapper.le(!Objects.isNull(menu.getSearchEndTime()), MenuDO::getCreateTime, menu.getSearchEndTime());
-
         if (StrValidator.isNotBlank(menu.getKeywords())) {
             wrapper.or(w -> w.like(MenuDO::getTitle, menu.getKeywords()));
             wrapper.or(w -> w.like(MenuDO::getPermission, menu.getKeywords()));
             wrapper.or(w -> w.like(MenuDO::getComponent, menu.getKeywords()));
         }
         return wrapper;
-    }
-
-    public List<MenuVO> listVO(MenuDO menuDO) {
-        LambdaQueryWrapper<MenuDO> wrapper = this.getQueryWrapper(menuDO);
-        List<MenuDO> menuList = this.list(wrapper.orderByAsc(MenuDO::getSeq));
-        List<MenuVO> list = BeanCopyUtils.copyList(menuList, MenuVO.class);
-
-        list.forEach(item -> item.setTitlePath(this.buildTitlePath(list, item.getId())));
-        return list;
     }
 
     public Set<String> getMenuPermissionListByUsername(String username) {
@@ -108,15 +91,4 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
                 .toList();
     }
 
-    public String buildTitlePath(List<MenuVO> list, Long id) {
-        List<String> titleList = new ArrayList<>();
-        MenuVO menuVO = CollUtil.getFirst(list, item -> item.getId().equals(id));
-
-        while(menuVO != null) {
-            titleList.add(0, menuVO.getTitle());
-            Long parentId = menuVO.getParentId();
-            menuVO = CollUtil.getFirst(list, item -> item.getId().equals(parentId));
-        }
-        return String.join(Const.SLASH, titleList);
-    }
 }

@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
@@ -48,25 +47,19 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
 
     private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-message-", true);
 
-    /**
-     * Custom paging query
-     *
-     * @param page    page
-     * @param message {@link MessageDO}
-     * @return IPage
-     */
-    public IPage<MessageDO> page(IPage<MessageDO> page, MessageDO message) {
-        LambdaQueryWrapper<MessageDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory())
-                .eq(StrValidator.isNotBlank(message.getTitle()), MessageDO::getTitle, message.getTitle())
-                .eq(StrValidator.isNotBlank(message.getContent()), MessageDO::getContent, message.getContent())
-                .eq(!Objects.isNull(message.getId()), MessageDO::getId, message.getId())
-                .eq(!Objects.isNull(message.getCreateBy()), MessageDO::getCreateBy, message.getCreateBy())
-                .eq(!Objects.isNull(message.getCreateTime()), MessageDO::getCreateTime, message.getCreateTime())
-                .eq(!Objects.isNull(message.getUpdateBy()), MessageDO::getUpdateBy, message.getUpdateBy())
-                .eq(!Objects.isNull(message.getUpdateTime()), MessageDO::getUpdateTime, message.getUpdateTime());
-        return this.page(page, query);
+    public LambdaQueryWrapper<MessageDO> getQueryWrapper(MessageDO message) {
+        LambdaQueryWrapper<MessageDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(message.getId()), MessageDO::getId, message.getId());
+        wrapper.eq(StrValidator.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
+        wrapper.eq(!Objects.isNull(message.getCreateBy()), MessageDO::getCreateBy, message.getCreateBy());
+        wrapper.eq(!Objects.isNull(message.getUpdateBy()), MessageDO::getUpdateBy, message.getUpdateBy());
+        wrapper.gt(!Objects.isNull(message.getSearchStartTime()), MessageDO::getCreateTime, message.getSearchStartTime());
+        wrapper.le(!Objects.isNull(message.getSearchEndTime()), MessageDO::getCreateTime, message.getSearchEndTime());
+        if (StrValidator.isNotBlank(message.getKeywords())) {
+            wrapper.or(w -> w.like(MessageDO::getTitle, message.getKeywords()));
+            wrapper.or(w -> w.like(MessageDO::getContent, message.getKeywords()));
+        }
+        return wrapper;
     }
 
     public void sendMessageToRole(Long roleId, EMessageCategory category, EMessageTemplate template, Object... args) {

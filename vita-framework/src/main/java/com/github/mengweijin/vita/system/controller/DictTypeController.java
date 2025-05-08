@@ -50,7 +50,8 @@ public class DictTypeController {
     @SaCheckPermission("system:dictType:select")
     @GetMapping("/page")
     public IPage<DictTypeDO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
-        return dictTypeService.page(page, dictType);
+        LambdaQueryWrapper<DictTypeDO> wrapper = dictTypeService.getQueryWrapper(dictType);
+        return dictTypeService.page(page, wrapper);
     }
 
     /**

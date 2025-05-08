@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.VitaProperties;
@@ -66,25 +65,20 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         return removed;
     }
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param fileEntity {@link FileDO}
-     * @return IPage
-     */
-    public IPage<FileDO> page(IPage<FileDO> page, FileDO fileEntity){
-        LambdaQueryWrapper<FileDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(fileEntity.getSuffix()), FileDO::getSuffix, fileEntity.getSuffix())
-                .eq(StrValidator.isNotBlank(fileEntity.getStoragePath()), FileDO::getStoragePath, fileEntity.getStoragePath())
-                .eq(StrValidator.isNotBlank(fileEntity.getMd5()), FileDO::getMd5, fileEntity.getMd5())
-                .eq(!Objects.isNull(fileEntity.getId()), FileDO::getId, fileEntity.getId())
-                .eq(!Objects.isNull(fileEntity.getCreateBy()), FileDO::getCreateBy, fileEntity.getCreateBy())
-                .eq(!Objects.isNull(fileEntity.getCreateTime()), FileDO::getCreateTime, fileEntity.getCreateTime())
-                .eq(!Objects.isNull(fileEntity.getUpdateBy()), FileDO::getUpdateBy, fileEntity.getUpdateBy())
-                .eq(!Objects.isNull(fileEntity.getUpdateTime()), FileDO::getUpdateTime, fileEntity.getUpdateTime())
-                .like(StrValidator.isNotBlank(fileEntity.getName()), FileDO::getName, fileEntity.getName());
-        return this.page(page, query);
+    public LambdaQueryWrapper<FileDO> getQueryWrapper(FileDO fileDO) {
+        LambdaQueryWrapper<FileDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(fileDO.getId()), FileDO::getId, fileDO.getId());
+        wrapper.eq(StrValidator.isNotBlank(fileDO.getMd5()), FileDO::getMd5, fileDO.getMd5());
+        wrapper.eq(StrValidator.isNotBlank(fileDO.getSuffix()), FileDO::getSuffix, fileDO.getSuffix());
+
+        wrapper.eq(!Objects.isNull(fileDO.getCreateBy()), FileDO::getCreateBy, fileDO.getCreateBy());
+        wrapper.eq(!Objects.isNull(fileDO.getUpdateBy()), FileDO::getUpdateBy, fileDO.getUpdateBy());
+        wrapper.gt(!Objects.isNull(fileDO.getSearchStartTime()), FileDO::getCreateTime, fileDO.getSearchStartTime());
+        wrapper.le(!Objects.isNull(fileDO.getSearchEndTime()), FileDO::getCreateTime, fileDO.getSearchEndTime());
+        if (StrValidator.isNotBlank(fileDO.getKeywords())) {
+            wrapper.or(w -> w.like(FileDO::getName, fileDO.getKeywords()));
+        }
+        return wrapper;
     }
 
     public List<FileDO> getByMd5(String md5) {

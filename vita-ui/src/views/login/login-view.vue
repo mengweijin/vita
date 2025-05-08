@@ -1,14 +1,15 @@
 <script setup>
+import { debounce } from 'xe-utils';
 import LayFooter from "@/layout/lay-footer.vue";
 
 import { loginApi } from '@/api/login-api';
-import router from '@/router/index'
+import router from '@/router/index';
 
-import { useUserStore } from '@/store/user-store'
-const userStore = useUserStore()
+import { useUserStore } from '@/store/user-store';
+const userStore = useUserStore();
 
 import { useDictStore } from "@/store/dict-store";
-const dictStore = useDictStore()
+const dictStore = useDictStore();
 
 const form = reactive({
   username: 'admin',
@@ -50,7 +51,8 @@ const onForgetPassword = () => {
   })
 };
 
-const onSubmit = async () => {
+const onSubmit = debounce(async () => {
+  let loadingInstance = ElLoading.service({ fullscreen: true });
   await formRef.value.validate((valid, fields) => {
     if (valid) {
       loginApi.login(form).then((r) => {
@@ -59,13 +61,16 @@ const onSubmit = async () => {
         // 加载字典
         dictStore.initDicts();
         router.push('/');
+
+        loadingInstance?.close();
       });
     } else {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
     }
+    loadingInstance?.close();
   });
-}
+}, 2000);
 
 const onkeypress = ({ code }) => {
   if (["Enter", "NumpadEnter"].includes(code)) { onSubmit(); }
@@ -209,6 +214,7 @@ onBeforeUnmount(() => {
   align-items: center;
   align-content: center;
   padding: 3px;
+  width: 140px;
 }
 
 :deep(.el-input-group__append:has(.vt-login-captcha)) {

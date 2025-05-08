@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
@@ -26,26 +25,19 @@ import java.util.Objects;
 @Service
 public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
 
-    /**
-     * Custom paging query
-     *
-     * @param page   page
-     * @param config {@link ConfigDO}
-     * @return IPage
-     */
-    public IPage<ConfigDO> page(IPage<ConfigDO> page, ConfigDO config) {
+    public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = new LambdaQueryWrapper<>();
-
-        wrapper.eq(!Objects.isNull(config.getId()), ConfigDO::getId, config.getId())
-                .eq(!Objects.isNull(config.getCreateBy()), ConfigDO::getCreateBy, config.getCreateBy())
-                .eq(!Objects.isNull(config.getUpdateBy()), ConfigDO::getUpdateBy, config.getUpdateBy());
-
+        wrapper.eq(!Objects.isNull(config.getId()), ConfigDO::getId, config.getId());
+        wrapper.eq(!Objects.isNull(config.getCreateBy()), ConfigDO::getCreateBy, config.getCreateBy());
+        wrapper.eq(!Objects.isNull(config.getUpdateBy()), ConfigDO::getUpdateBy, config.getUpdateBy());
+        wrapper.gt(!Objects.isNull(config.getSearchStartTime()), ConfigDO::getCreateTime, config.getSearchStartTime());
+        wrapper.le(!Objects.isNull(config.getSearchEndTime()), ConfigDO::getCreateTime, config.getSearchEndTime());
         if (StrValidator.isNotBlank(config.getKeywords())) {
-            wrapper.like(ConfigDO::getName, config.getName())
-                    .like(ConfigDO::getCode, config.getCode())
-                    .like(ConfigDO::getVal, config.getVal());
+            wrapper.or(w -> w.like(ConfigDO::getName, config.getKeywords()));
+            wrapper.or(w -> w.like(ConfigDO::getCode, config.getKeywords()));
+            wrapper.or(w -> w.like(ConfigDO::getVal, config.getKeywords()));
         }
-        return this.page(page, wrapper);
+        return wrapper;
     }
 
     public ConfigDO getByCode(String code) {

@@ -26,13 +26,17 @@
         <gpg.skip>false</gpg.skip>
         <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
         <skipTests>true</skipTests>
+        <sonar.exclusions>**/*.sql</sonar.exclusions>
+        <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3252</sonar.issue.ignore.multicriteria.e1.ruleKey>
+        <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
+
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
-        <logback-classic-db.version>1.2.11.1</logback-classic-db.version>
         <hutool.version>6.0.0-M21</hutool.version>
         <sa-token.version>1.42.0</sa-token.version>
         <oshi.version>6.8.1</oshi.version>
@@ -124,11 +128,6 @@
                 <groupId>cn.dev33</groupId>  
                 <artifactId>sa-token-spring-boot3-starter</artifactId>  
                 <version>${sa-token.version}</version> 
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback.db</groupId>
-                <artifactId>logback-classic-db</artifactId>
-                <version>${logback-classic-db.version}</version>
             </dependency>
             <dependency> 
                 <groupId>org.dromara.hutool</groupId>  
@@ -241,7 +240,7 @@
                         </goals> 
                     </execution> 
                 </executions> 
-            </plugin>  
+            </plugin>
             <plugin> 
                 <groupId>org.sonatype.plugins</groupId>  
                 <artifactId>nexus-staging-maven-plugin</artifactId>  

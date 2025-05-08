@@ -50,7 +50,8 @@ public class MessageController {
     @SaCheckPermission("system:message:select")
     @GetMapping("/page")
     public IPage<MessageDO> page(Page<MessageDO> page, MessageDO message) {
-        return messageService.page(page, message);
+        LambdaQueryWrapper<MessageDO> wrapper = messageService.getQueryWrapper(message);
+        return messageService.page(page, wrapper);
     }
 
     /**

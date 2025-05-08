@@ -46,7 +46,8 @@ public class CategoryController {
     @SaCheckPermission("system:category:select")
     @GetMapping("/page")
     public IPage<CategoryDO> page(Page<CategoryDO> page, CategoryDO categoryDO) {
-        return categoryService.page(page, categoryDO);
+        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.getQueryWrapper(categoryDO);
+        return categoryService.page(page, wrapper);
     }
 
     /**

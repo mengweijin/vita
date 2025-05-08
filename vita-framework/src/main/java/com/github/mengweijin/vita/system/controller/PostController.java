@@ -50,7 +50,8 @@ public class PostController {
     @SaCheckPermission("system:post:select")
     @GetMapping("/page")
     public IPage<PostDO> page(Page<PostDO> page, PostDO post) {
-        return postService.page(page, post);
+        LambdaQueryWrapper<PostDO> wrapper = postService.getQueryWrapper(post);
+        return postService.page(page, wrapper);
     }
 
     /**

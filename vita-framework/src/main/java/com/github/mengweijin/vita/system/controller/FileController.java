@@ -115,7 +115,8 @@ public class FileController {
     @SaCheckPermission("system:file:select")
     @GetMapping("/page")
     public IPage<FileDO> page(Page<FileDO> page, FileDO fileEntity) {
-        return fileService.page(page, fileEntity);
+        LambdaQueryWrapper<FileDO> wrapper = fileService.getQueryWrapper(fileEntity);
+        return fileService.page(page, wrapper);
     }
 
     /**

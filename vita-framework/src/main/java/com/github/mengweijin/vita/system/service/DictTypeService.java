@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
@@ -45,24 +44,18 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictTypeDO> 
         return super.removeByIds(list);
     }
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param dictType {@link DictTypeDO}
-     * @return IPage
-     */
-    public IPage<DictTypeDO> page(IPage<DictTypeDO> page, DictTypeDO dictType){
-        LambdaQueryWrapper<DictTypeDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(dictType.getRemark()), DictTypeDO::getRemark, dictType.getRemark())
-                .eq(!Objects.isNull(dictType.getId()), DictTypeDO::getId, dictType.getId())
-                .eq(!Objects.isNull(dictType.getCreateBy()), DictTypeDO::getCreateBy, dictType.getCreateBy())
-                .eq(!Objects.isNull(dictType.getCreateTime()), DictTypeDO::getCreateTime, dictType.getCreateTime())
-                .eq(!Objects.isNull(dictType.getUpdateBy()), DictTypeDO::getUpdateBy, dictType.getUpdateBy())
-                .eq(!Objects.isNull(dictType.getUpdateTime()), DictTypeDO::getUpdateTime, dictType.getUpdateTime())
-                .like(StrValidator.isNotBlank(dictType.getName()), DictTypeDO::getName, dictType.getName())
-                .like(StrValidator.isNotBlank(dictType.getCode()), DictTypeDO::getCode, dictType.getCode());
-        return this.page(page, query);
+    public LambdaQueryWrapper<DictTypeDO> getQueryWrapper(DictTypeDO dictType) {
+        LambdaQueryWrapper<DictTypeDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(dictType.getId()), DictTypeDO::getId, dictType.getId());
+        wrapper.eq(!Objects.isNull(dictType.getCreateBy()), DictTypeDO::getCreateBy, dictType.getCreateBy());
+        wrapper.eq(!Objects.isNull(dictType.getUpdateBy()), DictTypeDO::getUpdateBy, dictType.getUpdateBy());
+        wrapper.gt(!Objects.isNull(dictType.getSearchStartTime()), DictTypeDO::getCreateTime, dictType.getSearchStartTime());
+        wrapper.le(!Objects.isNull(dictType.getSearchEndTime()), DictTypeDO::getCreateTime, dictType.getSearchEndTime());
+        if (StrValidator.isNotBlank(dictType.getKeywords())) {
+            wrapper.or(w -> w.like(DictTypeDO::getName, dictType.getKeywords()));
+            wrapper.or(w -> w.like(DictTypeDO::getCode, dictType.getKeywords()));
+        }
+        return wrapper;
     }
 
     public DictTypeDO getByCode(String code) {

@@ -1,10 +1,10 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
+import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,7 @@ import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,26 +29,29 @@ import java.util.Objects;
 @Service
 public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param dept {@link DeptDO}
-     * @return IPage
-     */
-    public IPage<DeptDO> page(IPage<DeptDO> page, DeptDO dept){
-        LambdaQueryWrapper<DeptDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(!Objects.isNull(dept.getParentId()), DeptDO::getParentId, dept.getParentId())
-                .eq(StrValidator.isNotBlank(dept.getName()), DeptDO::getName, dept.getName())
-                .eq(!Objects.isNull(dept.getSeq()), DeptDO::getSeq, dept.getSeq())
-                .eq(StrValidator.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled())
-                .eq(StrValidator.isNotBlank(dept.getRemark()), DeptDO::getRemark, dept.getRemark())
-                .eq(!Objects.isNull(dept.getId()), DeptDO::getId, dept.getId())
-                .eq(!Objects.isNull(dept.getCreateBy()), DeptDO::getCreateBy, dept.getCreateBy())
-                .eq(!Objects.isNull(dept.getCreateTime()), DeptDO::getCreateTime, dept.getCreateTime())
-                .eq(!Objects.isNull(dept.getUpdateBy()), DeptDO::getUpdateBy, dept.getUpdateBy())
-                .eq(!Objects.isNull(dept.getUpdateTime()), DeptDO::getUpdateTime, dept.getUpdateTime());
-        return this.page(page, query);
+    @Override
+    public boolean removeByIds(Collection<?> list) {
+        boolean anyMatch = list.stream().anyMatch(id -> this.hasChildren((Long) id));
+        if(anyMatch) {
+            throw new ClientException("Please delete the child node first!");
+        }
+        return super.removeByIds(list);
+    }
+
+    public LambdaQueryWrapper<DeptDO> getQueryWrapper(DeptDO dept) {
+        LambdaQueryWrapper<DeptDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(dept.getId()), DeptDO::getId, dept.getId());
+        wrapper.eq(!Objects.isNull(dept.getParentId()), DeptDO::getParentId, dept.getParentId());
+        wrapper.eq(StrValidator.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled());
+        wrapper.eq(!Objects.isNull(dept.getCreateBy()), DeptDO::getCreateBy, dept.getCreateBy());
+        wrapper.eq(!Objects.isNull(dept.getUpdateBy()), DeptDO::getUpdateBy, dept.getUpdateBy());
+        wrapper.gt(!Objects.isNull(dept.getSearchStartTime()), DeptDO::getCreateTime, dept.getSearchStartTime());
+        wrapper.le(!Objects.isNull(dept.getSearchEndTime()), DeptDO::getCreateTime, dept.getSearchEndTime());
+        if (StrValidator.isNotBlank(dept.getKeywords())) {
+            wrapper.or(w -> w.like(DeptDO::getName, dept.getKeywords()));
+        }
+        wrapper.orderByAsc(DeptDO::getSeq);
+        return wrapper;
     }
 
     public boolean setDisabled(Long id, String disabled) {
@@ -66,5 +70,9 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
 
     public List<Long> selectChildrenIdsWithCurrentIdById(Long id) {
         return this.getBaseMapper().selectChildrenIdsWithCurrentIdById(id);
+    }
+
+    public boolean hasChildren(Long id) {
+        return this.lambdaQuery().eq(DeptDO::getParentId, id).count() > 0;
     }
 }

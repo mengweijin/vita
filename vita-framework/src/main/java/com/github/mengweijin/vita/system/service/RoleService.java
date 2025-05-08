@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.constant.UserConst;
@@ -35,28 +34,20 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
 
     private RoleMenuService roleMenuService;
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param role {@link RoleDO}
-     * @return IPage
-     */
-    public IPage<RoleDO> page(IPage<RoleDO> page, RoleDO role){
-        LambdaQueryWrapper<RoleDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(role.getCode()), RoleDO::getCode, role.getCode())
-                .eq(!Objects.isNull(role.getSeq()), RoleDO::getSeq, role.getSeq())
-                .eq(StrValidator.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled())
-                .like(StrValidator.isNotBlank(role.getName()), RoleDO::getName, role.getName())
-                .eq(StrValidator.isNotBlank(role.getRemark()), RoleDO::getRemark, role.getRemark())
-                .eq(!Objects.isNull(role.getId()), RoleDO::getId, role.getId())
-                .eq(!Objects.isNull(role.getCreateBy()), RoleDO::getCreateBy, role.getCreateBy())
-                .eq(!Objects.isNull(role.getCreateTime()), RoleDO::getCreateTime, role.getCreateTime())
-                .eq(!Objects.isNull(role.getUpdateBy()), RoleDO::getUpdateBy, role.getUpdateBy())
-                .eq(!Objects.isNull(role.getUpdateTime()), RoleDO::getUpdateTime, role.getUpdateTime());
-
-        query.orderByAsc(RoleDO::getSeq);
-        return this.page(page, query);
+    public LambdaQueryWrapper<RoleDO> getQueryWrapper(RoleDO role) {
+        LambdaQueryWrapper<RoleDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(role.getId()), RoleDO::getId, role.getId());
+        wrapper.eq(StrValidator.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled());
+        wrapper.eq(!Objects.isNull(role.getCreateBy()), RoleDO::getCreateBy, role.getCreateBy());
+        wrapper.eq(!Objects.isNull(role.getUpdateBy()), RoleDO::getUpdateBy, role.getUpdateBy());
+        wrapper.gt(!Objects.isNull(role.getSearchStartTime()), RoleDO::getCreateTime, role.getSearchStartTime());
+        wrapper.le(!Objects.isNull(role.getSearchEndTime()), RoleDO::getCreateTime, role.getSearchEndTime());
+        if (StrValidator.isNotBlank(role.getKeywords())) {
+            wrapper.or(w -> w.like(RoleDO::getName, role.getKeywords()));
+            wrapper.or(w -> w.like(RoleDO::getCode, role.getKeywords()));
+        }
+        wrapper.orderByAsc(RoleDO::getSeq);
+        return wrapper;
     }
 
     public Set<String> getRoleCodeByUsername(String username) {

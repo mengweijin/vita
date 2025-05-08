@@ -57,7 +57,8 @@ public class RoleController {
     @SaCheckPermission("system:role:select")
     @GetMapping("/page")
     public IPage<RoleDO> page(Page<RoleDO> page, RoleDO role) {
-        return roleService.page(page, role);
+        LambdaQueryWrapper<RoleDO> wrapper = roleService.getQueryWrapper(role);
+        return roleService.page(page, wrapper);
     }
 
     /**

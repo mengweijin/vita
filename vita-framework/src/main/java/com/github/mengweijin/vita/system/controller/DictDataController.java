@@ -50,7 +50,8 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:select")
     @GetMapping("/page")
     public IPage<DictDataDO> page(Page<DictDataDO> page, DictDataDO dictData) {
-        return dictDataService.page(page, dictData);
+        LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.getQueryWrapper(dictData);
+        return dictDataService.page(page, wrapper);
     }
 
     /**

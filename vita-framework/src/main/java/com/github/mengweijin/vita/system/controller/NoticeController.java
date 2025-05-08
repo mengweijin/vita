@@ -51,7 +51,8 @@ public class NoticeController {
     @SaCheckPermission("system:notice:select")
     @GetMapping("/page")
     public IPage<NoticeDO> page(Page<NoticeDO> page, NoticeDO notice) {
-        return noticeService.page(page, notice);
+        LambdaQueryWrapper<NoticeDO> wrapper = noticeService.getQueryWrapper(notice);
+        return noticeService.page(page, wrapper);
     }
 
     /**

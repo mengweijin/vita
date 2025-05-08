@@ -50,7 +50,8 @@ public class ConfigController {
     @SaCheckPermission("system:config:select")
     @GetMapping("/page")
     public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
-        return configService.page(page, config);
+        LambdaQueryWrapper<ConfigDO> wrapper = configService.getQueryWrapper(config);
+        return configService.page(page, wrapper);
     }
 
     /**

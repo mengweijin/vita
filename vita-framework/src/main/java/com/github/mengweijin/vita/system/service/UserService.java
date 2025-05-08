@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.system.service;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
@@ -11,8 +10,8 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
-import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
@@ -68,6 +67,33 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         return super.save(user);
     }
 
+    public LambdaQueryWrapper<UserDO> getQueryWrapper(UserDO user) {
+        List<Long> deptIds = new ArrayList<>();
+        if (!Objects.isNull(user.getDeptId())) {
+            deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
+        }
+
+        LambdaQueryWrapper<UserDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(user.getId()), UserDO::getId, user.getId());
+        wrapper.eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel());
+        wrapper.eq(StrValidator.isNotBlank(user.getGender()), UserDO::getGender, user.getGender());
+        wrapper.eq(StrValidator.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled());
+        wrapper.eq(!Objects.isNull(user.getCreateBy()), UserDO::getCreateBy, user.getCreateBy());
+        wrapper.eq(!Objects.isNull(user.getUpdateBy()), UserDO::getUpdateBy, user.getUpdateBy());
+        wrapper.gt(!Objects.isNull(user.getSearchStartTime()), UserDO::getCreateTime, user.getSearchStartTime());
+        wrapper.le(!Objects.isNull(user.getSearchEndTime()), UserDO::getCreateTime, user.getSearchEndTime());
+
+        wrapper.in(!Objects.isNull(user.getDeptId()), UserDO::getDeptId, deptIds);
+        if (StrValidator.isNotBlank(user.getKeywords())) {
+            wrapper.or(w -> w.like(UserDO::getUsername, user.getKeywords()));
+            wrapper.or(w -> w.like(UserDO::getNickname, user.getKeywords()));
+            wrapper.or(w -> w.like(UserDO::getCitizenId, user.getKeywords()));
+            wrapper.or(w -> w.like(UserDO::getMobile, user.getKeywords()));
+            wrapper.or(w -> w.like(UserDO::getEmail, user.getKeywords()));
+        }
+        return wrapper;
+    }
+
     public String hashPassword(String username, String password, String salt) {
         return SaSecureUtil.sha256(String.join(username, password, salt));
     }
@@ -76,37 +102,6 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         return IdUtil.simpleUUID().toUpperCase();
     }
 
-    /**
-     * Custom paging query
-     *
-     * @param page page
-     * @param user {@link UserDO}
-     * @return IPage
-     */
-    public IPage<UserDO> page(IPage<UserDO> page, UserDO user) {
-        List<Long> deptIds = new ArrayList<>();
-        if (!Objects.isNull(user.getDeptId())) {
-            deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
-        }
-        LambdaQueryWrapper<UserDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel())
-                .eq(StrValidator.isNotBlank(user.getCitizenId()), UserDO::getCitizenId, user.getCitizenId())
-                .eq(StrValidator.isNotBlank(user.getGender()), UserDO::getGender, user.getGender())
-                .eq(StrValidator.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled())
-                .eq(StrValidator.isNotBlank(user.getRemark()), UserDO::getRemark, user.getRemark())
-                .eq(!Objects.isNull(user.getId()), UserDO::getId, user.getId())
-                .eq(!Objects.isNull(user.getCreateBy()), UserDO::getCreateBy, user.getCreateBy())
-                .eq(!Objects.isNull(user.getCreateTime()), UserDO::getCreateTime, user.getCreateTime())
-                .eq(!Objects.isNull(user.getUpdateBy()), UserDO::getUpdateBy, user.getUpdateBy())
-                .eq(!Objects.isNull(user.getUpdateTime()), UserDO::getUpdateTime, user.getUpdateTime())
-                .in(!Objects.isNull(user.getDeptId()), UserDO::getDeptId, deptIds)
-                .like(StrValidator.isNotBlank(user.getUsername()), UserDO::getUsername, user.getUsername())
-                .like(StrValidator.isNotBlank(user.getNickname()), UserDO::getNickname, user.getNickname())
-                .like(StrValidator.isNotBlank(user.getMobile()), UserDO::getMobile, user.getMobile())
-                .like(StrValidator.isNotBlank(user.getEmail()), UserDO::getEmail, user.getEmail());
-        return this.page(page, query);
-    }
 
     public UserDO getByUsername(String username) {
         return this.lambdaQuery().eq(UserDO::getUsername, username).one();

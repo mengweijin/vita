@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.mapper.CategoryMapper;
@@ -23,28 +22,21 @@ import java.util.Objects;
 @Service
 public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> {
 
-    /**
-     * Custom paging query
-     *
-     * @param page     page
-     * @param categoryDO {@link CategoryDO}
-     * @return IPage
-     */
-    public IPage<CategoryDO> page(IPage<CategoryDO> page, CategoryDO categoryDO) {
-        LambdaQueryWrapper<CategoryDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(!Objects.isNull(categoryDO.getParentId()), CategoryDO::getParentId, categoryDO.getParentId())
-                .eq(StrValidator.isNotBlank(categoryDO.getCode()), CategoryDO::getCode, categoryDO.getCode())
-                .eq(StrValidator.isNotBlank(categoryDO.getRemark()), CategoryDO::getRemark, categoryDO.getRemark())
-                .eq(!Objects.isNull(categoryDO.getSeq()), CategoryDO::getSeq, categoryDO.getSeq())
-                .eq(StrValidator.isNotBlank(categoryDO.getDisabled()), CategoryDO::getDisabled, categoryDO.getDisabled())
-                .eq(!Objects.isNull(categoryDO.getId()), CategoryDO::getId, categoryDO.getId())
-                .eq(!Objects.isNull(categoryDO.getCreateBy()), CategoryDO::getCreateBy, categoryDO.getCreateBy())
-                .eq(!Objects.isNull(categoryDO.getCreateTime()), CategoryDO::getCreateTime, categoryDO.getCreateTime())
-                .eq(!Objects.isNull(categoryDO.getUpdateBy()), CategoryDO::getUpdateBy, categoryDO.getUpdateBy())
-                .eq(!Objects.isNull(categoryDO.getUpdateTime()), CategoryDO::getUpdateTime, categoryDO.getUpdateTime())
-                .like(StrValidator.isNotBlank(categoryDO.getName()), CategoryDO::getName, categoryDO.getName());
-        return this.page(page, query);
+    public LambdaQueryWrapper<CategoryDO> getQueryWrapper(CategoryDO category) {
+        LambdaQueryWrapper<CategoryDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(!Objects.isNull(category.getId()), CategoryDO::getId, category.getId());
+        wrapper.eq(!Objects.isNull(category.getParentId()), CategoryDO::getParentId, category.getParentId());
+        wrapper.eq(StrValidator.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
+        wrapper.eq(!Objects.isNull(category.getCreateBy()), CategoryDO::getCreateBy, category.getCreateBy());
+        wrapper.eq(!Objects.isNull(category.getUpdateBy()), CategoryDO::getUpdateBy, category.getUpdateBy());
+        wrapper.gt(!Objects.isNull(category.getSearchStartTime()), CategoryDO::getCreateTime, category.getSearchStartTime());
+        wrapper.le(!Objects.isNull(category.getSearchEndTime()), CategoryDO::getCreateTime, category.getSearchEndTime());
+        if (StrValidator.isNotBlank(category.getKeywords())) {
+            wrapper.or(w -> w.like(CategoryDO::getName, category.getKeywords()));
+            wrapper.or(w -> w.like(CategoryDO::getCode, category.getKeywords()));
+        }
+        wrapper.orderByAsc(CategoryDO::getSeq);
+        return wrapper;
     }
 
     public CategoryDO getByCode(String code) {
