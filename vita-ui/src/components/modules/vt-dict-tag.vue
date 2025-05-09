@@ -1,6 +1,6 @@
 <script setup>
 import { isEmpty } from 'xe-utils';
-import { useDictStore } from '@/store/dict-store'
+import { useDictStore } from '@/store/dict-store';
 
 const dictStore = useDictStore();
 

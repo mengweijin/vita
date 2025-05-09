@@ -1,6 +1,6 @@
-import http from '@/utils/http'
+import http from '@/utils/http';
 
-const BASE_URL = '/system/menu'
+const BASE_URL = '/system/menu';
 
 export const menuApi = {
   page: (args) => http.get(`${BASE_URL}/page`, { params: args }),
@@ -12,4 +12,4 @@ export const menuApi = {
   update: (data) => http.post(`${BASE_URL}/update`, data),
 
   remove: (ids) => http.post(`${BASE_URL}/remove/${ids}`),
-}
+};

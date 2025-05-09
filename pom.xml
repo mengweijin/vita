@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
     <name>vita-parent</name>
     <description>vita-parent</description>
-    <url>https://gitee.com/mengweijin/vita</url>
+    <url>https://github.com/mengweijin/vita</url>
     <modules> 
         <module>vita-admin</module>
         <module>vita-framework</module>
@@ -26,11 +26,6 @@
         <gpg.skip>false</gpg.skip>
         <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
         <skipTests>true</skipTests>
-        <sonar.exclusions>**/*.sql</sonar.exclusions>
-        <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
-        <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3252</sonar.issue.ignore.multicriteria.e1.ruleKey>
-        <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
-
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -177,12 +172,12 @@
     </developers>  
     <!--开源地址-->  
     <scm> 
-        <url>https://gitee.com/mengweijin/vita</url>
+        <url>https://github.com/mengweijin/vita</url>
     </scm>  
     <!--  Issue地址  -->  
     <issueManagement> 
-        <system>Gitee Issue</system>  
-        <url>https://gitee.com/mengweijin/vita/issues</url>
+        <system>Github Issue</system>
+        <url>https://github.com/mengweijin/vita/issues</url>
     </issueManagement>  
     <build> 
         <plugins>
@@ -190,7 +185,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-            <!-- Source -->  
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-source-plugin</artifactId>  
@@ -212,11 +206,7 @@
                 <configuration> 
                     <doclint>none</doclint>  
                     <charset>UTF-8</charset>  
-                    <docencoding>UTF-8</docencoding>  
-                    <!--                    <additionalOptions>-->  
-                    <!--                        &lt;!&ndash;由于JDK8的java doc生成机制比之前的要严谨许多,导致项目用maven打包的时候出错 解决办法: 添加-Xdoclint:none配置&ndash;&gt;-->  
-                    <!--                        <additionalOption>-Xdoclint:none</additionalOption>-->  
-                    <!--                    </additionalOptions>--> 
+                    <docencoding>UTF-8</docencoding>
                 </configuration>  
                 <executions> 
                     <execution> 
