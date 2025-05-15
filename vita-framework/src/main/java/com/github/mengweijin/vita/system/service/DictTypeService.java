@@ -2,19 +2,18 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import com.github.mengweijin.vita.system.mapper.DictTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -46,12 +45,12 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictTypeDO> 
 
     public LambdaQueryWrapper<DictTypeDO> getQueryWrapper(DictTypeDO dictType) {
         LambdaQueryWrapper<DictTypeDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(dictType.getId()), DictTypeDO::getId, dictType.getId());
-        wrapper.eq(!Objects.isNull(dictType.getCreateBy()), DictTypeDO::getCreateBy, dictType.getCreateBy());
-        wrapper.eq(!Objects.isNull(dictType.getUpdateBy()), DictTypeDO::getUpdateBy, dictType.getUpdateBy());
-        wrapper.gt(!Objects.isNull(dictType.getSearchStartTime()), DictTypeDO::getCreateTime, dictType.getSearchStartTime());
-        wrapper.le(!Objects.isNull(dictType.getSearchEndTime()), DictTypeDO::getCreateTime, dictType.getSearchEndTime());
-        if (StrValidator.isNotBlank(dictType.getKeywords())) {
+        wrapper.eq(dictType.getId() != null, DictTypeDO::getId, dictType.getId());
+        wrapper.eq(dictType.getCreateBy() != null, DictTypeDO::getCreateBy, dictType.getCreateBy());
+        wrapper.eq(dictType.getUpdateBy() != null, DictTypeDO::getUpdateBy, dictType.getUpdateBy());
+        wrapper.gt(dictType.getSearchStartTime() != null, DictTypeDO::getCreateTime, dictType.getSearchStartTime());
+        wrapper.le(dictType.getSearchEndTime() != null, DictTypeDO::getCreateTime, dictType.getSearchEndTime());
+        if (StrUtil.isNotBlank(dictType.getKeywords())) {
             wrapper.or(w -> w.like(DictTypeDO::getName, dictType.getKeywords()));
             wrapper.or(w -> w.like(DictTypeDO::getCode, dictType.getKeywords()));
         }

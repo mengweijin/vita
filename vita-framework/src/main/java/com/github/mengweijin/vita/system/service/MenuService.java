@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -10,12 +11,11 @@ import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,21 +41,25 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
 
     @Override
     public boolean removeByIds(Collection<?> ids) {
+        Long count = this.lambdaQuery().in(MenuDO::getParentId, ids).count();
+        if(count > 0) {
+            throw new ClientException("Please delete the child node first!");
+        }
         return super.removeByIds(ids);
     }
 
     public LambdaQueryWrapper<MenuDO> getQueryWrapper(MenuDO menu) {
         LambdaQueryWrapper<MenuDO> wrapper = new LambdaQueryWrapper<>();
 
-        wrapper.eq(!Objects.isNull(menu.getId()), MenuDO::getId, menu.getId());
-        wrapper.eq(!Objects.isNull(menu.getParentId()), MenuDO::getParentId, menu.getParentId());
-        wrapper.eq(StrValidator.isNotBlank(menu.getType()), MenuDO::getType, menu.getType());
-        wrapper.eq(StrValidator.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled());
-        wrapper.eq(!Objects.isNull(menu.getCreateBy()), MenuDO::getCreateBy, menu.getCreateBy());
-        wrapper.eq(!Objects.isNull(menu.getUpdateBy()), MenuDO::getUpdateBy, menu.getUpdateBy());
-        wrapper.gt(!Objects.isNull(menu.getSearchStartTime()), MenuDO::getCreateTime, menu.getSearchStartTime());
-        wrapper.le(!Objects.isNull(menu.getSearchEndTime()), MenuDO::getCreateTime, menu.getSearchEndTime());
-        if (StrValidator.isNotBlank(menu.getKeywords())) {
+        wrapper.eq(menu.getId() != null, MenuDO::getId, menu.getId());
+        wrapper.eq(menu.getParentId() != null, MenuDO::getParentId, menu.getParentId());
+        wrapper.eq(StrUtil.isNotBlank(menu.getType()), MenuDO::getType, menu.getType());
+        wrapper.eq(StrUtil.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled());
+        wrapper.eq(menu.getCreateBy() != null, MenuDO::getCreateBy, menu.getCreateBy());
+        wrapper.eq(menu.getUpdateBy() != null, MenuDO::getUpdateBy, menu.getUpdateBy());
+        wrapper.gt(menu.getSearchStartTime() != null, MenuDO::getCreateTime, menu.getSearchStartTime());
+        wrapper.le(menu.getSearchEndTime() != null, MenuDO::getCreateTime, menu.getSearchEndTime());
+        if (StrUtil.isNotBlank(menu.getKeywords())) {
             wrapper.or(w -> w.like(MenuDO::getTitle, menu.getKeywords()));
             wrapper.or(w -> w.like(MenuDO::getPermission, menu.getKeywords()));
             wrapper.or(w -> w.like(MenuDO::getComponent, menu.getKeywords()));

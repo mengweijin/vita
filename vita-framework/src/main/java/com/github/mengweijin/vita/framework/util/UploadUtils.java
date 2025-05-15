@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

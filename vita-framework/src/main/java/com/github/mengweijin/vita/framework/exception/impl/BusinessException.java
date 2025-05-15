@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.exception;
+package com.github.mengweijin.vita.framework.exception.impl;
 
 /**
  * @author Meng Wei Jin

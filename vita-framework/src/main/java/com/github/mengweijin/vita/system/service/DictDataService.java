@@ -4,17 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
-import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -32,13 +31,13 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> 
 
     public LambdaQueryWrapper<DictDataDO> getQueryWrapper(DictDataDO dictData) {
         LambdaQueryWrapper<DictDataDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(dictData.getId()), DictDataDO::getId, dictData.getId());
-        wrapper.eq(StrValidator.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled());
-        wrapper.eq(!Objects.isNull(dictData.getCreateBy()), DictDataDO::getCreateBy, dictData.getCreateBy());
-        wrapper.eq(!Objects.isNull(dictData.getUpdateBy()), DictDataDO::getUpdateBy, dictData.getUpdateBy());
-        wrapper.gt(!Objects.isNull(dictData.getSearchStartTime()), DictDataDO::getCreateTime, dictData.getSearchStartTime());
-        wrapper.le(!Objects.isNull(dictData.getSearchEndTime()), DictDataDO::getCreateTime, dictData.getSearchEndTime());
-        if (StrValidator.isNotBlank(dictData.getKeywords())) {
+        wrapper.eq(dictData.getId() != null, DictDataDO::getId, dictData.getId());
+        wrapper.eq(StrUtil.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled());
+        wrapper.eq(dictData.getCreateBy() != null, DictDataDO::getCreateBy, dictData.getCreateBy());
+        wrapper.eq(dictData.getUpdateBy() != null, DictDataDO::getUpdateBy, dictData.getUpdateBy());
+        wrapper.gt(dictData.getSearchStartTime() != null, DictDataDO::getCreateTime, dictData.getSearchStartTime());
+        wrapper.le(dictData.getSearchEndTime() != null, DictDataDO::getCreateTime, dictData.getSearchEndTime());
+        if (StrUtil.isNotBlank(dictData.getKeywords())) {
             wrapper.or(w -> w.like(DictDataDO::getLabel, dictData.getKeywords()));
             wrapper.or(w -> w.like(DictDataDO::getCode, dictData.getKeywords()));
             wrapper.or(w -> w.like(DictDataDO::getVal, dictData.getKeywords()));

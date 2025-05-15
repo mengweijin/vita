@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.util.AESUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.io.IoUtil;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * @author mengweijin
@@ -26,13 +24,12 @@ class EncryptUtilsTest {
 
     private static final String FiLE_SIZE = FileUtil.readableFileSize(FILE);
 
-    private static final String FiLE_SIZE_STRING = "2.85 GB";
-
     private static final String MD5 = "1858bd0d281c60f4ddabd87b1c214a4f";
 
     @Test
     @SneakyThrows
     void encrypt() {
+        log.debug("File size = {}", FiLE_SIZE);
         long start = System.currentTimeMillis();
 
         byte[] encrypt = AESUtils.getAES().encrypt(IoUtil.toStream(FILE));
@@ -40,6 +37,8 @@ class EncryptUtilsTest {
         long end = System.currentTimeMillis();
         log.info("加密执行时长：{} 毫秒", (end - start));
         log.info("加密执行时长：{} 秒", (end - start) / 1000);
+
+        Assertions.assertNotNull(encrypt);
     }
 
     @Test
@@ -50,16 +49,15 @@ class EncryptUtilsTest {
 
         long start = System.currentTimeMillis();
 
-        try (FileOutputStream out = new FileOutputStream(encryptedFile)) {
-            AESUtils.getAES().encrypt(IoUtil.toStream(FILE));
-        }
+        byte[] encrypt = AESUtils.getAES().encrypt(IoUtil.toStream(FILE));
 
         long end = System.currentTimeMillis();
         log.info("加密大文件执行时长：{} 毫秒", (end - start));
         log.info("加密大文件执行时长：{} 秒", (end - start) / 1000);
 
         String md5 = SecureUtil.md5(FileUtil.file(FILE_PATH_ENCRYPTED));
-        System.out.println(md5);
+        log.info("MD5 = {}", md5);
+        Assertions.assertNotNull(encrypt);
     }
 
     @Test
@@ -68,16 +66,15 @@ class EncryptUtilsTest {
         File decryptedFile = FileUtil.file(FILE_PATH_DECRYPTED);
         FileUtil.del(decryptedFile);
 
-
         long start = System.currentTimeMillis();
 
-        try (FileOutputStream out = new FileOutputStream(decryptedFile)) {
-            AESUtils.getAES().decrypt(IoUtil.toStream(FileUtil.file(FILE_PATH_ENCRYPTED)));
-        }
+        byte[] decrypt = AESUtils.getAES().decrypt(IoUtil.toStream(FileUtil.file(FILE_PATH_ENCRYPTED)));
 
         long end = System.currentTimeMillis();
         log.info("解密执行时长：{} 毫秒", (end - start));
         log.info("解密执行时长：{} 秒", (end - start) / 1000);
+
+        Assertions.assertNotNull(decrypt);
 
         String md5 = SecureUtil.md5(FileUtil.file(FILE_PATH_DECRYPTED));
         Assertions.assertEquals(MD5, md5);

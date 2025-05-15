@@ -25,7 +25,7 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String, default: [] });
+const selectValue = defineModel({ type: String || Array });
 
 const options = ref([]);
 

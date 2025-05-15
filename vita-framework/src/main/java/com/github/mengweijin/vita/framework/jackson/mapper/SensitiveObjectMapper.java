@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import com.github.mengweijin.vita.framework.jackson.JacksonConfig;
 import com.github.mengweijin.vita.framework.jackson.mapper.modifier.SensitiveBeanSerializerModifier;
 import lombok.AccessLevel;

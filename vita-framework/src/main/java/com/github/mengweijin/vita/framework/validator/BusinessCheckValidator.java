@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.validator;
 
 
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

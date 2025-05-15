@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -8,21 +10,31 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 所以，自定义异常类，也是一种处理全局异常的方式。并非只有 @ControllerAdvice，@ExceptionHandler
  *
  * @author Meng Wei Jin
- * Login Exception
+ * Base Exception
  **/
 @SuppressWarnings({"unused"})
-@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Login failed")
-public class LoginFailedException extends RuntimeException {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal Server Error")
+public abstract class BaseException extends RuntimeException {
 
-    public LoginFailedException(String message) {
+    private Integer code;
+
+    public BaseException(String key, Object... args) {
+        // if have message key
+
+        // else { super(key); }
+    }
+
+    public BaseException(String message) {
         super(message);
     }
 
-    public LoginFailedException(Throwable cause) {
+    public BaseException(Throwable cause) {
         super(cause.getMessage(), cause);
     }
 
-    public LoginFailedException(String message, Throwable cause) {
+    public BaseException(String message, Throwable cause) {
         super(message, cause);
     }
 }

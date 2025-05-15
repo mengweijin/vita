@@ -20,7 +20,7 @@ import java.util.Map;
  */
 class ExcelUtilsBeanTest {
 
-    public static String TARGET = System.getProperty("user.dir") + "/target/export.xlsx";
+    public static final String TARGET = System.getProperty("user.dir") + "/target/export.xlsx";
 
     @Test
     void export() {
@@ -51,10 +51,7 @@ class ExcelUtilsBeanTest {
         // 一次性写出内容，使用默认样式，强制输出标题
         writer.write(testData(), true);
 
-        // 列宽自适应（官方方法中文宽度有问题）
-        // writer.autoSizeColumnAll(true, 0F);
-        // writer.autoSizeColumnAll(true, 2F);
-        // 列宽自适应
+        // 列宽自适应自定义方法（官方方法中文宽度有问题：writer.autoSizeColumnAll(true, 2F);）
         autoSizeColumn(writer);
 
         // 关闭writer，释放内存

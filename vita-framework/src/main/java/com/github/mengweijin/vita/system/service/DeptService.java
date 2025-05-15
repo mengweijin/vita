@@ -4,17 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
-import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -30,24 +31,30 @@ import java.util.Objects;
 public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
 
     @Override
-    public boolean removeByIds(Collection<?> list) {
-        boolean anyMatch = list.stream().anyMatch(id -> this.hasChildren((Long) id));
-        if(anyMatch) {
+    public boolean removeByIds(Collection<?> ids) {
+        Long subDeptCount = this.lambdaQuery().in(DeptDO::getParentId, ids).count();
+        if(subDeptCount > 0) {
             throw new ClientException("Please delete the child node first!");
         }
-        return super.removeByIds(list);
+
+        UserService userService = SpringUtil.getBean(UserService.class);
+        Long userCount = userService.lambdaQuery().in(UserDO::getDeptId, ids).count();
+        if(userCount > 0) {
+            throw new ClientException("Please remove all users under the department first!");
+        }
+        return super.removeByIds(ids);
     }
 
     public LambdaQueryWrapper<DeptDO> getQueryWrapper(DeptDO dept) {
         LambdaQueryWrapper<DeptDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(dept.getId()), DeptDO::getId, dept.getId());
-        wrapper.eq(!Objects.isNull(dept.getParentId()), DeptDO::getParentId, dept.getParentId());
-        wrapper.eq(StrValidator.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled());
-        wrapper.eq(!Objects.isNull(dept.getCreateBy()), DeptDO::getCreateBy, dept.getCreateBy());
-        wrapper.eq(!Objects.isNull(dept.getUpdateBy()), DeptDO::getUpdateBy, dept.getUpdateBy());
-        wrapper.gt(!Objects.isNull(dept.getSearchStartTime()), DeptDO::getCreateTime, dept.getSearchStartTime());
-        wrapper.le(!Objects.isNull(dept.getSearchEndTime()), DeptDO::getCreateTime, dept.getSearchEndTime());
-        if (StrValidator.isNotBlank(dept.getKeywords())) {
+        wrapper.eq(dept.getId() != null, DeptDO::getId, dept.getId());
+        wrapper.eq(dept.getParentId() != null, DeptDO::getParentId, dept.getParentId());
+        wrapper.eq(StrUtil.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled());
+        wrapper.eq(dept.getCreateBy() != null, DeptDO::getCreateBy, dept.getCreateBy());
+        wrapper.eq(dept.getUpdateBy() != null, DeptDO::getUpdateBy, dept.getUpdateBy());
+        wrapper.gt(dept.getSearchStartTime() != null, DeptDO::getCreateTime, dept.getSearchStartTime());
+        wrapper.le(dept.getSearchEndTime() != null, DeptDO::getCreateTime, dept.getSearchEndTime());
+        if (StrUtil.isNotBlank(dept.getKeywords())) {
             wrapper.or(w -> w.like(DeptDO::getName, dept.getKeywords()));
         }
         wrapper.orderByAsc(DeptDO::getSeq);
@@ -72,7 +79,4 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
         return this.getBaseMapper().selectChildrenIdsWithCurrentIdById(id);
     }
 
-    public boolean hasChildren(Long id) {
-        return this.lambdaQuery().eq(DeptDO::getParentId, id).count() > 0;
-    }
 }

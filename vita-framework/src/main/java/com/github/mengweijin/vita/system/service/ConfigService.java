@@ -6,11 +6,9 @@ import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.BooleanUtil;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -27,12 +25,12 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
 
     public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(config.getId()), ConfigDO::getId, config.getId());
-        wrapper.eq(!Objects.isNull(config.getCreateBy()), ConfigDO::getCreateBy, config.getCreateBy());
-        wrapper.eq(!Objects.isNull(config.getUpdateBy()), ConfigDO::getUpdateBy, config.getUpdateBy());
-        wrapper.gt(!Objects.isNull(config.getSearchStartTime()), ConfigDO::getCreateTime, config.getSearchStartTime());
-        wrapper.le(!Objects.isNull(config.getSearchEndTime()), ConfigDO::getCreateTime, config.getSearchEndTime());
-        if (StrValidator.isNotBlank(config.getKeywords())) {
+        wrapper.eq(config.getId() != null, ConfigDO::getId, config.getId());
+        wrapper.eq(config.getCreateBy() != null, ConfigDO::getCreateBy, config.getCreateBy());
+        wrapper.eq(config.getUpdateBy() != null, ConfigDO::getUpdateBy, config.getUpdateBy());
+        wrapper.gt(config.getSearchStartTime() != null, ConfigDO::getCreateTime, config.getSearchStartTime());
+        wrapper.le(config.getSearchEndTime() != null, ConfigDO::getCreateTime, config.getSearchEndTime());
+        if (StrUtil.isNotBlank(config.getKeywords())) {
             wrapper.or(w -> w.like(ConfigDO::getName, config.getKeywords()));
             wrapper.or(w -> w.like(ConfigDO::getCode, config.getKeywords()));
             wrapper.or(w -> w.like(ConfigDO::getVal, config.getKeywords()));

@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.exception;
+package com.github.mengweijin.vita.framework.exception.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

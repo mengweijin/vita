@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.time.Duration;
 
@@ -57,6 +59,23 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         // 将根路径 "/" 的请求转发到 "/index.html"
         registry.addViewController("/").setViewName("forward:/index.html");
+    }
+
+    /**
+     * 1. spring boot 默认从 header 的 Accept-Language 获取 Locale。如：Accept-Language：zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+     * 参考：{@link org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration} 中的 LocaleResolver。
+     * 默认 Locale 可通过 spring.web.locale=zh_CN 来设置。
+     * 2. 也可以根据 url 中的参数切换 Locale。如：/system/user?lang=zh_CN
+     * <p>
+     * 使用 {@link com.github.mengweijin.vita.framework.util.MessageUtils}
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+        // URL参数名
+        interceptor.setParamName("lang");
+
+        registry.addInterceptor(interceptor);
     }
 
 }

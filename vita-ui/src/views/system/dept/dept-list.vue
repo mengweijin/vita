@@ -1,10 +1,11 @@
 <script setup>
 import { deptApi } from "@/api/system/dept-api";
-import { toArrayTree, find } from 'xe-utils';
-import { columns } from './dept-hook.js'
+import { toArrayTree } from 'xe-utils';
+import { columns } from './dept-hook.js';
 import DeptEdit from './dept-edit.vue';
 import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import VtDictTag from "@/components/modules/vt-dict-tag.vue";
+import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 
@@ -87,8 +88,8 @@ onMounted(() => {
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="名称" clearable />
     </el-form-item>
-    <el-form-item prop="disabled" label="部门状态">
-      <VtSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelect>
+    <el-form-item prop="disabled" label="状态">
+      <VtDictSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtDictSelect>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">

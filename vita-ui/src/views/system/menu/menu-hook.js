@@ -17,4 +17,4 @@ export const columns = reactive({
   updateByName: { label: '更新者', visible: false },
   updateTime: { label: '更新时间', visible: false },
   operation: { label: '操作', visible: true },
-})
+});

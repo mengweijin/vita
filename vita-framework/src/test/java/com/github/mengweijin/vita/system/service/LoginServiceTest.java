@@ -1,10 +1,14 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.github.mengweijin.vita.framework.constant.Const;
+import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.swing.captcha.AbstractCaptcha;
 import org.dromara.hutool.swing.captcha.CaptchaUtil;
 import org.dromara.hutool.swing.captcha.generator.MathGenerator;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 /**
  * @author mengweijin
@@ -22,5 +26,8 @@ class LoginServiceTest {
 
         String path = Const.PROJECT_DIR + "target/captcha.png";
         captcha.write(path);
+
+        File file = FileUtil.file(path);
+        Assertions.assertTrue(file.exists());
     }
 }

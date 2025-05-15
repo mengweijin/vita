@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;

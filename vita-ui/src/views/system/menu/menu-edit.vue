@@ -2,9 +2,11 @@
 import { addFullPath, copyDefinedProperties } from "@/utils/tool";
 import VtIconPicker from "@/components/modules/vt-icon-picker.vue";
 import { menuApi } from "@/api/system/menu-api";
-import { toArrayTree, find } from "xe-utils";
+import { toArrayTree } from "xe-utils";
 import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
+
+const loading = ref(true);
 
 const visible = ref(false);
 
@@ -26,19 +28,15 @@ const form = reactive({
   disabled: 'N',
 });
 
-const onDialogOpen = () => {
-  copyDefinedProperties(form, data.value);
-}
-
 const formRef = ref(null);
 
 const resetForm = () => {
   formRef.value.resetFields();
-  onDialogOpen();
+  copyDefinedProperties(form, data.value);
 };
 
 const title = computed(() => {
-  return data?.id ? '编辑' : '新增';
+  return data.value?.id ? '编辑' : '新增';
 });
 
 const onSubmit = async () => {
@@ -51,23 +49,18 @@ const onSubmit = async () => {
     if (form.id) {
       menuApi.update(form).then((r) => {
         emit('refresh-table');
-        closeDialog();
+        onClose();
       });
     } else {
       menuApi.create(form).then((r) => {
         emit('refresh-table');
-        closeDialog();
+        onClose();
       });
     }
   });
 }
 
 const emit = defineEmits(['refresh-table']);
-
-const closeDialog = () => {
-  formRef.value.resetFields();
-  visible.value = false;
-};
 
 const menuTypeOptions = computed(() => {
   const menuTypes = dictStore.getDicts('vt_menu_type');
@@ -85,17 +78,26 @@ const menuTreeSelectOptions = computed(() => {
   return toArrayTree(menuList.value, { sortKey: 'seq' });
 });
 
-onMounted(() => {
-  menuApi.list().then(res => menuList.value = res);
-});
+const onOpen = () => {
+  copyDefinedProperties(form, data.value);
+  menuApi.list().then(res => {
+    menuList.value = res;
+    nextTick(() => { loading.value = false; });
+  });
+}
+
+const onClose = () => {
+  formRef.value.resetFields();
+  visible.value = false;
+}
 
 /** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
 defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="title" destroy-on-close align-center @opened="onDialogOpen" width="40%">
-    <el-form ref="formRef" :model="form" label-width="auto">
+  <el-dialog v-model="visible" :title="title" destroy-on-close align-center @open="onOpen" @close="onClose" width="40%">
+    <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
         <el-segmented v-model="form.type" :options="menuTypeOptions"
           :props="{ label: 'label', value: 'val', disabled: 'disabled' }" />
@@ -111,7 +113,7 @@ defineExpose({ visible, data })
         </el-tree-select>
       </el-form-item>
 
-      <el-form-item prop="icon" label="图标" v-if="form.type === 'DIR' || form.type === 'MENU'">
+      <el-form-item prop="icon" label="图标" v-show="form.type === 'DIR' || form.type === 'MENU'">
         <VtIconPicker v-model="form.icon"></VtIconPicker>
       </el-form-item>
 
@@ -134,7 +136,7 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="component" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'MENU'">
+        v-show="form.type === 'MENU'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="*.vue 组件文件的路径。比如：src/views/system/menu/menu-list.vue">
@@ -151,7 +153,7 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="routePath" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        v-show="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="vue-router 路由的路径，也是浏览器地址栏访问的路径。比如：/system/menu">
@@ -166,7 +168,7 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="routeName" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        v-show="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="vue-router 路由的名称。比如：SystemMenu">
@@ -181,7 +183,7 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'IFRAME' || form.type === 'URL'">
+        v-show="form.type === 'IFRAME' || form.type === 'URL'">
         <el-input v-model="form.url" autocomplete="off"></el-input>
       </el-form-item>
 
@@ -217,7 +219,7 @@ defineExpose({ visible, data })
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="closeDialog">
+        <el-button type="primary" @click="onClose">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

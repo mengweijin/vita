@@ -105,7 +105,7 @@ class TreeUtilsTest {
         List<String> list = new ArrayList<>();
         list.add("aaa");
         Type type = TypeUtil.getTypeArgument(list.getClass().getGenericSuperclass(), 0);
-        System.out.println(type);
+        Assertions.assertEquals("E", type.getTypeName());
     }
 
     private static List<TreeNode<Integer>> dataList() {

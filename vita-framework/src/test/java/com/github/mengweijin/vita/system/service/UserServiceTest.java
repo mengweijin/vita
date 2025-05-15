@@ -1,9 +1,10 @@
 package com.github.mengweijin.vita.system.service;
 
-import cn.dev33.satoken.secure.SaSecureUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.data.PasswdStrength;
-import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.crypto.digest.BCrypt;
+import org.dromara.hutool.crypto.digest.DigestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,30 +17,40 @@ class UserServiceTest {
 
     @Test
     void hashPasswordTest() {
-        String username = "guest";
         String password = "aday.fun";
-        String salt = "89D92F225B2218F589D92F225B2218F5";
+        String salt = "$2a$10$v/3HEiNTDK8ww2yAMLa3y.";
 
         String passwordLevel = PasswdStrength.getLevel(password).name();
-        String hashedPwd = this.hashPassword(username, password, salt);
+        String hashedPwd = this.hashPassword(password, salt);
 
         log.info(passwordLevel);
         log.info(hashedPwd);
         log.info(String.valueOf(hashedPwd.length()));
 
         Assertions.assertEquals("EASY", passwordLevel);
-        Assertions.assertEquals(64, hashedPwd.length());
+
+        boolean checked = this.checkPassword(password, hashedPwd, salt);
+        Assertions.assertTrue(checked);
     }
 
     @Test
     void generateSalt() {
-        String salt = IdUtil.simpleUUID().toUpperCase();
+        String salt = BCrypt.gensalt();
         log.info(salt);
-        Assertions.assertEquals(32, salt.length());
+        Assertions.assertNotNull(salt);
     }
 
-    private String hashPassword(String username, String password, String salt) {
-        return SaSecureUtil.sha256(String.join(username, password, salt));
+    private String saltedPassword(String password, String salt) {
+        return String.join(Const.COMMA, password, salt);
+    }
+
+    private String hashPassword(String password, String salt) {
+        return DigestUtil.bcrypt(this.saltedPassword(password, salt));
+    }
+
+    private boolean checkPassword(String checkingPwd, String dbPwd, String salt) {
+        String saltedPassword = this.saltedPassword(checkingPwd, salt);
+        return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
     }
 
 }

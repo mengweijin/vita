@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
 import cn.idev.excel.FastExcelFactory;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;

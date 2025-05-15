@@ -1,6 +1,6 @@
 <script setup>
-import { addFullPath, copyDefinedProperties } from "@/utils/tool";
-import { deptApi } from "@/api/system/dept-api";
+import { copyDefinedProperties } from "@/utils/tool";
+import { postApi } from "@/api/system/post-api";
 import { toArrayTree } from "xe-utils";
 
 const loading = ref(true);
@@ -12,7 +12,6 @@ const data = ref({});
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则二次打开可能就打不开了 */
 const form = reactive({
   id: undefined,
-  parentId: undefined,
   name: undefined,
   seq: 1,
   disabled: 'N',
@@ -37,12 +36,12 @@ const onSubmit = async () => {
       return;
     }
     if (form.id) {
-      deptApi.update(form).then((r) => {
+      postApi.update(form).then((r) => {
         emit('refresh-table');
         onClose();
       });
     } else {
-      deptApi.create(form).then((r) => {
+      postApi.create(form).then((r) => {
         emit('refresh-table');
         onClose();
       });
@@ -52,20 +51,9 @@ const onSubmit = async () => {
 
 const emit = defineEmits(['refresh-table']);
 
-const deptList = ref([]);
-
-const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => item.disabled = false);
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
-});
-
 const onOpen = () => {
   copyDefinedProperties(form, data.value);
-  deptApi.list().then(res => {
-    deptList.value = res;
-    nextTick(() => { loading.value = false; });
-  });
+  nextTick(() => { loading.value = false; });
 }
 
 const onClose = () => {
@@ -80,15 +68,6 @@ defineExpose({ visible, data })
 <template>
   <el-dialog v-model="visible" :title="title" destroy-on-close align-center @open="onOpen" @close="onClose" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="parentId" label="父部门">
-        <el-tree-select v-model="form.parentId" :data="deptTreeSelectOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="请选择">
-          <template #default="{ data: { name } }">
-            {{ name }}
-          </template>
-        </el-tree-select>
-      </el-form-item>
 
       <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
         <el-input v-model="form.name" maxlength="30" autocomplete="off" />

@@ -1,12 +1,11 @@
 package com.github.mengweijin.vita.system.service;
 
-import cn.dev33.satoken.secure.SaSecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.impl.ClientException;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
@@ -18,10 +17,11 @@ import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.data.PasswdStrength;
-import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.date.TimeUtil;
 import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.crypto.digest.BCrypt;
+import org.dromara.hutool.crypto.digest.DigestUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -59,12 +59,15 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     @Override
     public boolean save(UserDO user) {
-        String salt = this.generateSalt();
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
-        user.setSalt(salt);
-        user.setPassword(this.hashPassword(user.getUsername(), user.getPassword(), user.getSalt()));
+        user.setSalt(BCrypt.gensalt());
+        user.setPassword(DigestUtil.bcrypt(this.saltedPassword(user.getPassword(), user.getSalt())));
         user.setPasswordChangeTime(LocalDateTime.now());
         return super.save(user);
+    }
+
+    public String saltedPassword(String password, String salt) {
+        return String.join(Const.COMMA, password, salt);
     }
 
     public LambdaQueryWrapper<UserDO> getQueryWrapper(UserDO user) {
@@ -74,17 +77,16 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         }
 
         LambdaQueryWrapper<UserDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(user.getId()), UserDO::getId, user.getId());
-        wrapper.eq(StrValidator.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel());
-        wrapper.eq(StrValidator.isNotBlank(user.getGender()), UserDO::getGender, user.getGender());
-        wrapper.eq(StrValidator.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled());
-        wrapper.eq(!Objects.isNull(user.getCreateBy()), UserDO::getCreateBy, user.getCreateBy());
-        wrapper.eq(!Objects.isNull(user.getUpdateBy()), UserDO::getUpdateBy, user.getUpdateBy());
-        wrapper.gt(!Objects.isNull(user.getSearchStartTime()), UserDO::getCreateTime, user.getSearchStartTime());
-        wrapper.le(!Objects.isNull(user.getSearchEndTime()), UserDO::getCreateTime, user.getSearchEndTime());
-
-        wrapper.in(!Objects.isNull(user.getDeptId()), UserDO::getDeptId, deptIds);
-        if (StrValidator.isNotBlank(user.getKeywords())) {
+        wrapper.eq(user.getId() != null, UserDO::getId, user.getId());
+        wrapper.eq(StrUtil.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel());
+        wrapper.eq(StrUtil.isNotBlank(user.getGender()), UserDO::getGender, user.getGender());
+        wrapper.eq(StrUtil.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled());
+        wrapper.eq(user.getCreateBy() != null, UserDO::getCreateBy, user.getCreateBy());
+        wrapper.eq(user.getUpdateBy() != null, UserDO::getUpdateBy, user.getUpdateBy());
+        wrapper.gt(user.getSearchStartTime() != null, UserDO::getCreateTime, user.getSearchStartTime());
+        wrapper.le(user.getSearchEndTime() != null, UserDO::getCreateTime, user.getSearchEndTime());
+        wrapper.in(user.getDeptId() != null, UserDO::getDeptId, deptIds);
+        if (StrUtil.isNotBlank(user.getKeywords())) {
             wrapper.or(w -> w.like(UserDO::getUsername, user.getKeywords()));
             wrapper.or(w -> w.like(UserDO::getNickname, user.getKeywords()));
             wrapper.or(w -> w.like(UserDO::getCitizenId, user.getKeywords()));
@@ -93,15 +95,6 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         }
         return wrapper;
     }
-
-    public String hashPassword(String username, String password, String salt) {
-        return SaSecureUtil.sha256(String.join(username, password, salt));
-    }
-
-    public String generateSalt() {
-        return IdUtil.simpleUUID().toUpperCase();
-    }
-
 
     public UserDO getByUsername(String username) {
         return this.lambdaQuery().eq(UserDO::getUsername, username).one();
@@ -149,15 +142,14 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                 .map(UserAvatarDO::getAvatar).orElse(null);
     }
 
-    public boolean checkPassword(UserDO user, String password) {
-        String passwordInDb = user.getPassword();
-        String hashedPassword = this.hashPassword(user.getUsername(), password, user.getSalt());
-        return passwordInDb.equals(hashedPassword);
+    public boolean checkPassword(String checkingPwd, String dbPwd, String salt) {
+        String saltedPassword = this.saltedPassword(checkingPwd, salt);
+        return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
     }
 
     public boolean changePassword(ChangePasswordBO bo) {
         UserDO user = this.getByUsername(bo.getUsername());
-        boolean checked = this.checkPassword(user, bo.getPassword());
+        boolean checked = this.checkPassword(bo.getPassword(), user.getPassword(), user.getSalt());
         if (!checked) {
             throw new ClientException("User or password check failed!");
         }
@@ -167,9 +159,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public boolean updatePassword(String username, String newPassword) {
         String passwordLevel = PasswdStrength.getLevel(newPassword).name();
-        String salt = this.generateSalt();
-        String hashedPwd = this.hashPassword(username, newPassword, salt);
-
+        String salt = BCrypt.gensalt();
+        String hashedPwd = DigestUtil.bcrypt(this.saltedPassword(newPassword, salt));
         return this.lambdaUpdate()
                 .set(UserDO::getSalt, salt)
                 .set(UserDO::getPassword, hashedPwd)

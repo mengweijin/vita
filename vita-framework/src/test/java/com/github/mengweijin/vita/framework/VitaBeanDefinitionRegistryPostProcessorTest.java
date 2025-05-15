@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.framework;
 
-import com.github.mengweijin.vita.framework.VitaBeanDefinitionRegistryPostProcessor;
 import com.github.mengweijin.vita.framework.constant.Const;
 import org.dromara.hutool.core.reflect.ClassUtil;
 import org.dromara.hutool.core.text.StrUtil;

@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
-import com.github.mengweijin.vita.framework.exception.LoginFailedException;
+import com.github.mengweijin.vita.framework.exception.impl.LoginFailedException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -68,7 +68,7 @@ public class LoginService {
                 throw new LoginFailedException("The username or password incorrect!");
             }
 
-            if (!userService.checkPassword(user, loginBO.getPassword())) {
+            if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
                 throw new LoginFailedException("The username or password incorrect!");
             }
 

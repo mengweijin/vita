@@ -10,11 +10,10 @@ import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,13 +35,13 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
 
     public LambdaQueryWrapper<RoleDO> getQueryWrapper(RoleDO role) {
         LambdaQueryWrapper<RoleDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(role.getId()), RoleDO::getId, role.getId());
-        wrapper.eq(StrValidator.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled());
-        wrapper.eq(!Objects.isNull(role.getCreateBy()), RoleDO::getCreateBy, role.getCreateBy());
-        wrapper.eq(!Objects.isNull(role.getUpdateBy()), RoleDO::getUpdateBy, role.getUpdateBy());
-        wrapper.gt(!Objects.isNull(role.getSearchStartTime()), RoleDO::getCreateTime, role.getSearchStartTime());
-        wrapper.le(!Objects.isNull(role.getSearchEndTime()), RoleDO::getCreateTime, role.getSearchEndTime());
-        if (StrValidator.isNotBlank(role.getKeywords())) {
+        wrapper.eq(role.getId() != null, RoleDO::getId, role.getId());
+        wrapper.eq(StrUtil.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled());
+        wrapper.eq(role.getCreateBy() != null, RoleDO::getCreateBy, role.getCreateBy());
+        wrapper.eq(role.getUpdateBy() != null, RoleDO::getUpdateBy, role.getUpdateBy());
+        wrapper.gt(role.getSearchStartTime() != null, RoleDO::getCreateTime, role.getSearchStartTime());
+        wrapper.le(role.getSearchEndTime() != null, RoleDO::getCreateTime, role.getSearchEndTime());
+        if (StrUtil.isNotBlank(role.getKeywords())) {
             wrapper.or(w -> w.like(RoleDO::getName, role.getKeywords()));
             wrapper.or(w -> w.like(RoleDO::getCode, role.getKeywords()));
         }

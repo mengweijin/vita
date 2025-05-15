@@ -11,7 +11,7 @@ const props = defineProps({
     default: ['print', 'size', 'fullscreen', 'columns'],
   },
   columns: {
-    type: Array,
+    type: Object,
     default: null,
   },
 });

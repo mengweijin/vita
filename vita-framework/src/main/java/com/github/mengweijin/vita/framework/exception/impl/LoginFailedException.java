@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.exception;
+package com.github.mengweijin.vita.framework.exception.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 所以，自定义异常类，也是一种处理全局异常的方式。并非只有 @ControllerAdvice，@ExceptionHandler
  *
  * @author Meng Wei Jin
- * Client Exception
+ * Login Exception
  **/
 @SuppressWarnings({"unused"})
-@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Bad Request")
-public class ClientException extends RuntimeException {
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Login failed")
+public class LoginFailedException extends RuntimeException {
 
-    public ClientException(String message) {
+    public LoginFailedException(String message) {
         super(message);
     }
 
-    public ClientException(Throwable cause) {
+    public LoginFailedException(Throwable cause) {
         super(cause.getMessage(), cause);
     }
 
-    public ClientException(String message, Throwable cause) {
+    public LoginFailedException(String message, Throwable cause) {
         super(message, cause);
     }
 }

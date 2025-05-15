@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.mapper.CategoryMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Category Service
@@ -24,14 +23,14 @@ public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> 
 
     public LambdaQueryWrapper<CategoryDO> getQueryWrapper(CategoryDO category) {
         LambdaQueryWrapper<CategoryDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(category.getId()), CategoryDO::getId, category.getId());
-        wrapper.eq(!Objects.isNull(category.getParentId()), CategoryDO::getParentId, category.getParentId());
-        wrapper.eq(StrValidator.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
-        wrapper.eq(!Objects.isNull(category.getCreateBy()), CategoryDO::getCreateBy, category.getCreateBy());
-        wrapper.eq(!Objects.isNull(category.getUpdateBy()), CategoryDO::getUpdateBy, category.getUpdateBy());
-        wrapper.gt(!Objects.isNull(category.getSearchStartTime()), CategoryDO::getCreateTime, category.getSearchStartTime());
-        wrapper.le(!Objects.isNull(category.getSearchEndTime()), CategoryDO::getCreateTime, category.getSearchEndTime());
-        if (StrValidator.isNotBlank(category.getKeywords())) {
+        wrapper.eq(category.getId() != null, CategoryDO::getId, category.getId());
+        wrapper.eq(category.getParentId() != null, CategoryDO::getParentId, category.getParentId());
+        wrapper.eq(StrUtil.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
+        wrapper.eq(category.getCreateBy() != null, CategoryDO::getCreateBy, category.getCreateBy());
+        wrapper.eq(category.getUpdateBy() != null, CategoryDO::getUpdateBy, category.getUpdateBy());
+        wrapper.gt(category.getSearchStartTime() != null, CategoryDO::getCreateTime, category.getSearchStartTime());
+        wrapper.le(category.getSearchEndTime() != null, CategoryDO::getCreateTime, category.getSearchEndTime());
+        if (StrUtil.isNotBlank(category.getKeywords())) {
             wrapper.or(w -> w.like(CategoryDO::getName, category.getKeywords()));
             wrapper.or(w -> w.like(CategoryDO::getCode, category.getKeywords()));
         }

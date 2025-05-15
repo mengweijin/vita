@@ -23,7 +23,13 @@ spring:
     active: @profiles.active@
   banner:
     location: classpath:banner.txt
+  # MessageSourceProperties.java
+  messages:
+    # 指向 classpath 目录下的 /i18n/messages.properties
+    basename: i18n/messages
   mvc:
+    # 默认 Locale
+    locale: zh_CN
     throw-exception-if-no-handler-found: false
   web:
     resources:

@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.thread.ThreadUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -49,13 +48,13 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
 
     public LambdaQueryWrapper<MessageDO> getQueryWrapper(MessageDO message) {
         LambdaQueryWrapper<MessageDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(message.getId()), MessageDO::getId, message.getId());
-        wrapper.eq(StrValidator.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
-        wrapper.eq(!Objects.isNull(message.getCreateBy()), MessageDO::getCreateBy, message.getCreateBy());
-        wrapper.eq(!Objects.isNull(message.getUpdateBy()), MessageDO::getUpdateBy, message.getUpdateBy());
-        wrapper.gt(!Objects.isNull(message.getSearchStartTime()), MessageDO::getCreateTime, message.getSearchStartTime());
-        wrapper.le(!Objects.isNull(message.getSearchEndTime()), MessageDO::getCreateTime, message.getSearchEndTime());
-        if (StrValidator.isNotBlank(message.getKeywords())) {
+        wrapper.eq(message.getId() != null, MessageDO::getId, message.getId());
+        wrapper.eq(StrUtil.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
+        wrapper.eq(message.getCreateBy() != null, MessageDO::getCreateBy, message.getCreateBy());
+        wrapper.eq(message.getUpdateBy() != null, MessageDO::getUpdateBy, message.getUpdateBy());
+        wrapper.gt(message.getSearchStartTime() != null, MessageDO::getCreateTime, message.getSearchStartTime());
+        wrapper.le(message.getSearchEndTime() != null, MessageDO::getCreateTime, message.getSearchEndTime());
+        if (StrUtil.isNotBlank(message.getKeywords())) {
             wrapper.or(w -> w.like(MessageDO::getTitle, message.getKeywords()));
             wrapper.or(w -> w.like(MessageDO::getContent, message.getKeywords()));
         }

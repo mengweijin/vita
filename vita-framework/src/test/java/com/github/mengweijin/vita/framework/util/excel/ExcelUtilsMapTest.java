@@ -18,7 +18,7 @@ import java.util.Map;
  */
 class ExcelUtilsMapTest {
 
-    public static String TARGET = System.getProperty("user.dir") + "/target/export.xlsx";
+    public static final String TARGET = System.getProperty("user.dir") + "/target/export.xlsx";
 
     @Test
     void export() {

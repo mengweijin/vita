@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.VitaProperties;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.exception.impl.ServerException;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
@@ -18,6 +18,7 @@ import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.io.file.FileNameUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.core.text.CharSequenceUtil;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -67,14 +67,14 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
 
     public LambdaQueryWrapper<FileDO> getQueryWrapper(FileDO fileDO) {
         LambdaQueryWrapper<FileDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(!Objects.isNull(fileDO.getId()), FileDO::getId, fileDO.getId());
-        wrapper.eq(StrValidator.isNotBlank(fileDO.getMd5()), FileDO::getMd5, fileDO.getMd5());
-        wrapper.eq(StrValidator.isNotBlank(fileDO.getSuffix()), FileDO::getSuffix, fileDO.getSuffix());
+        wrapper.eq(fileDO.getId() != null, FileDO::getId, fileDO.getId());
+        wrapper.eq(StrUtil.isNotBlank(fileDO.getMd5()), FileDO::getMd5, fileDO.getMd5());
+        wrapper.eq(StrUtil.isNotBlank(fileDO.getSuffix()), FileDO::getSuffix, fileDO.getSuffix());
 
-        wrapper.eq(!Objects.isNull(fileDO.getCreateBy()), FileDO::getCreateBy, fileDO.getCreateBy());
-        wrapper.eq(!Objects.isNull(fileDO.getUpdateBy()), FileDO::getUpdateBy, fileDO.getUpdateBy());
-        wrapper.gt(!Objects.isNull(fileDO.getSearchStartTime()), FileDO::getCreateTime, fileDO.getSearchStartTime());
-        wrapper.le(!Objects.isNull(fileDO.getSearchEndTime()), FileDO::getCreateTime, fileDO.getSearchEndTime());
+        wrapper.eq(fileDO.getCreateBy() != null, FileDO::getCreateBy, fileDO.getCreateBy());
+        wrapper.eq(fileDO.getUpdateBy() != null, FileDO::getUpdateBy, fileDO.getUpdateBy());
+        wrapper.gt(fileDO.getSearchStartTime() != null, FileDO::getCreateTime, fileDO.getSearchStartTime());
+        wrapper.le(fileDO.getSearchEndTime() != null, FileDO::getCreateTime, fileDO.getSearchEndTime());
         if (StrValidator.isNotBlank(fileDO.getKeywords())) {
             wrapper.or(w -> w.like(FileDO::getName, fileDO.getKeywords()));
         }
