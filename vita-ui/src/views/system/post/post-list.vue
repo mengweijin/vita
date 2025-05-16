@@ -39,10 +39,8 @@ const loadTableData = () => {
 
 const postEditRef = ref(null);
 
-const handleAdd = (id) => {
-  postEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
+const handleAdd = () => {
+  postEditRef.value.data = {};
   postEditRef.value.visible = true;
 }
 
