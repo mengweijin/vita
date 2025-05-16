@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
   <el-container>
     <el-main>
       <div class="vt-login-container">
-        <el-form :model="form" :rules="rules" ref="formRef" size="large" @submit.prevent="onSubmit">
+        <el-form :model="form" :rules="rules" ref="formRef" size="large">
           <el-form-item>
             <div style="width: 100%;text-align: center;"><img src="/logo.svg" /></div>
           </el-form-item>
@@ -160,7 +160,7 @@ onBeforeUnmount(() => {
             </el-radio-group>
           </el-form-item>
           <el-form-item style="margin-top: 8px;">
-            <el-button type="primary" native-type="submit" style="width: 100%;">登录</el-button>
+            <el-button type="primary" style="width: 100%;" @click="onSubmit">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
