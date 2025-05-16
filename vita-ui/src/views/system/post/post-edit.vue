@@ -69,7 +69,7 @@ defineExpose({ visible, data })
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
 
       <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.name" maxlength="30" autocomplete="off" />
+        <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
       <el-row :gutter="20">
