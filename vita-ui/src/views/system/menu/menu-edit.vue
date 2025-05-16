@@ -102,7 +102,7 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="form?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
+  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
