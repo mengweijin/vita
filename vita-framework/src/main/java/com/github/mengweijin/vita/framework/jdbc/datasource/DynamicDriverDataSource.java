@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.jdbc.datasource;
 
-import com.github.mengweijin.vita.framework.exception.impl.ServerException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.Getter;
 import org.dromara.hutool.core.classloader.JarClassLoader;
 import org.dromara.hutool.core.io.file.FileUtil;

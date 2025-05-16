@@ -27,6 +27,8 @@ spring:
   messages:
     # 指向 classpath 目录下的 /i18n/messages.properties
     basename: i18n/messages
+    # 消息未找到时，是否返回原始键。默认为 false，这里改为 true 以避免抛出 NoSuchMessageException 异常
+    use-code-as-default-message: true
   mvc:
     # 默认 Locale
     locale: zh_CN

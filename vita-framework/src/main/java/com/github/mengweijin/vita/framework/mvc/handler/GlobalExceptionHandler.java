@@ -4,9 +4,7 @@ import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.exception.impl.BusinessException;
-import com.github.mengweijin.vita.framework.exception.impl.ClientException;
-import com.github.mengweijin.vita.framework.exception.impl.LoginFailedException;
+import com.github.mengweijin.vita.framework.exception.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.CharSequenceUtil;
@@ -35,13 +33,6 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     @ResponseBody
     ResponseEntity<R<Void>> handleClientException(Exception e, HttpServletRequest request) {
         log.warn(e.getMessage());
-        R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
-    }
-
-    @ExceptionHandler({ LoginFailedException.class })
-    @ResponseBody
-    ResponseEntity<R<Void>> handleLoginFailedException(LoginFailedException e, HttpServletRequest request) {
         R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
@@ -78,7 +69,7 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 
-    @ExceptionHandler({BusinessException.class, RuntimeException.class, Exception.class})
+    @ExceptionHandler({RuntimeException.class, Exception.class})
     @ResponseBody
     ResponseEntity<R<Void>> handleException(Exception e, HttpServletRequest request) {
         log.error(e.getMessage(), e);

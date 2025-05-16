@@ -1,9 +1,13 @@
 package com.github.mengweijin.vita.framework.mybatis.data.permission;
 
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.system.service.DeptService;
+import com.github.mengweijin.vita.system.service.UserRoleService;
+import org.dromara.hutool.extra.spring.SpringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author mengweijin
@@ -11,8 +15,8 @@ import java.util.List;
  */
 public class DefaultDataPermissionHandler extends BaseDataPermissionHandler {
     @Override
-    protected String getLoginUserId() {
-        return String.valueOf(LoginHelper.getLoginUser().getUserId());
+    protected Long getLoginUserId() {
+        return LoginHelper.getLoginUser().getUserId();
     }
 
     @Override
@@ -21,12 +25,15 @@ public class DefaultDataPermissionHandler extends BaseDataPermissionHandler {
     }
 
     @Override
-    protected List<String> getLoginUserDeptIdList() {
-        return new ArrayList<>();
+    protected List<Long> getLoginUserDeptIdList() {
+        DeptService deptService = SpringUtil.getBean(DeptService.class);
+        return deptService.selectChildrenIdsWithCurrentIdById(LoginHelper.getLoginUser().getDeptId());
     }
 
     @Override
-    protected List<String> getLoginUserRoleIdList() {
-        return new ArrayList<>();
+    protected List<Long> getLoginUserRoleIdList() {
+        UserRoleService userRoleService = SpringUtil.getBean(UserRoleService.class);
+        Set<Long> set = userRoleService.getRoleIdsByUserId(getLoginUserId());
+        return new ArrayList<>(set);
     }
 }

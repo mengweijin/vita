@@ -36,6 +36,11 @@ public class LoginUserVO implements Serializable {
     private String avatar;
 
     /**
+     * 部门 ID
+     */
+    private Long deptId;
+
+    /**
      * 用户角色
      */
     private Set<String> roles;

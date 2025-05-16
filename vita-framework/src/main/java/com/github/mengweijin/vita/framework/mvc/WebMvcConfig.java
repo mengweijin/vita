@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.framework.mvc;
 
 import com.github.mengweijin.vita.framework.VitaProperties;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,7 +68,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * 默认 Locale 可通过 spring.web.locale=zh_CN 来设置。
      * 2. 也可以根据 url 中的参数切换 Locale。如：/system/user?lang=zh_CN
      * <p>
-     * 使用 {@link com.github.mengweijin.vita.framework.util.MessageUtils}
+     * 使用 {@link I18nUtils}
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -1,5 +1,5 @@
 <script setup>
-import { addFullPath, copyDefinedProperties } from "@/utils/tool";
+import { addFullPath } from "@/utils/tool";
 import VtIconPicker from "@/components/modules/vt-icon-picker.vue";
 import { menuApi } from "@/api/system/menu-api";
 import { toArrayTree } from "xe-utils";
@@ -12,11 +12,11 @@ const visible = ref(false);
 
 const data = ref({});
 
-/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则二次打开可能就打不开了 */
+/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
   id: undefined,
   parentId: undefined,
-  type: 'BTN',
+  type: undefined,
   title: undefined,
   icon: undefined,
   permission: undefined,
@@ -24,23 +24,29 @@ const form = reactive({
   routeName: undefined,
   routePath: undefined,
   url: undefined,
-  seq: 1,
-  disabled: 'N',
+  seq: undefined,
+  disabled: undefined,
 });
+
+const init = () => {
+  form.id = data.value.id ?? undefined;
+  form.parentId = data.value.parentId ?? undefined;
+  form.type = data.value.type ?? 'BTN';
+  form.title = data.value.title ?? undefined;
+  form.icon = data.value.icon ?? undefined;
+  form.permission = data.value.permission ?? undefined;
+  form.component = data.value.component ?? undefined;
+  form.routeName = data.value.routeName ?? undefined;
+  form.routePath = data.value.routePath ?? undefined;
+  form.url = data.value.url ?? undefined;
+  form.seq = data.value.seq ?? 1;
+  form.disabled = data.value.disabled ?? 'N';
+};
 
 const formRef = ref(null);
 
-const resetForm = () => {
-  formRef.value.resetFields();
-  copyDefinedProperties(form, data.value);
-};
-
-const title = computed(() => {
-  return data.value?.id ? '编辑' : '新增';
-});
-
-const onSubmit = async () => {
-  await formRef.value.validate((valid, fields) => {
+const onSubmit = () => {
+  formRef.value.validate((valid, fields) => {
     if (!valid) {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
@@ -49,12 +55,12 @@ const onSubmit = async () => {
     if (form.id) {
       menuApi.update(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     } else {
       menuApi.create(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     }
   });
@@ -78,17 +84,17 @@ const menuTreeSelectOptions = computed(() => {
   return toArrayTree(menuList.value, { sortKey: 'seq' });
 });
 
-const onOpen = () => {
-  copyDefinedProperties(form, data.value);
-  menuApi.list().then(res => {
-    menuList.value = res;
-    nextTick(() => { loading.value = false; });
-  });
+const onOpened = async () => {
+  menuList.value = await menuApi.list();
+  init();
+  await nextTick();
+  loading.value = false;
 }
 
-const onClose = () => {
-  formRef.value.resetFields();
+const onClosed = () => {
   visible.value = false;
+  data.value = {};
+  init();
 }
 
 /** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
@@ -96,7 +102,8 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="title" destroy-on-close align-center @open="onOpen" @close="onClose" width="40%">
+  <el-dialog v-model="visible" :title="data.value?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
+    @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
         <el-segmented v-model="form.type" :options="menuTypeOptions"
@@ -113,12 +120,12 @@ defineExpose({ visible, data })
         </el-tree-select>
       </el-form-item>
 
-      <el-form-item prop="icon" label="图标" v-show="form.type === 'DIR' || form.type === 'MENU'">
+      <el-form-item prop="icon" label="图标" v-if="form.type === 'DIR' || form.type === 'MENU'">
         <VtIconPicker v-model="form.icon"></VtIconPicker>
       </el-form-item>
 
       <el-form-item prop="title" label="标题" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.title" maxlength="30" autocomplete="off" />
+        <el-input v-model="form.title" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="permission">
@@ -132,11 +139,11 @@ defineExpose({ visible, data })
             <span>权限</span>
           </div>
         </template>
-        <el-input v-model="form.permission" autocomplete="off" />
+        <el-input v-model="form.permission" clearable autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="component" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-show="form.type === 'MENU'">
+        v-if="form.type === 'MENU'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="*.vue 组件文件的路径。比如：src/views/system/menu/menu-list.vue">
@@ -147,13 +154,13 @@ defineExpose({ visible, data })
             <span>组件路径</span>
           </div>
         </template>
-        <el-input v-model="form.component" autocomplete="off">
+        <el-input v-model="form.component" clearable autocomplete="off">
           <template #prepend>src/views/</template>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="routePath" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-show="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="vue-router 路由的路径，也是浏览器地址栏访问的路径。比如：/system/menu">
@@ -164,11 +171,11 @@ defineExpose({ visible, data })
             <span>路由路径</span>
           </div>
         </template>
-        <el-input v-model="form.routePath" autocomplete="off" />
+        <el-input v-model="form.routePath" clearable autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="routeName" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-show="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="vue-router 路由的名称。比如：SystemMenu">
@@ -179,12 +186,12 @@ defineExpose({ visible, data })
             <span>路由名称</span>
           </div>
         </template>
-        <el-input v-model="form.routeName" autocomplete="off" />
+        <el-input v-model="form.routeName" clearable autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-show="form.type === 'IFRAME' || form.type === 'URL'">
-        <el-input v-model="form.url" autocomplete="off"></el-input>
+        v-if="form.type === 'IFRAME' || form.type === 'URL'">
+        <el-input v-model="form.url" clearable autocomplete="off"></el-input>
       </el-form-item>
 
       <el-row :gutter="20">
@@ -211,7 +218,7 @@ defineExpose({ visible, data })
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="resetForm">
+        <el-button type="warning" @click="init">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -219,7 +226,7 @@ defineExpose({ visible, data })
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClose">
+        <el-button type="primary" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

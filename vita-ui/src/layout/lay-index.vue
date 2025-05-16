@@ -48,5 +48,7 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
   justify-content: center;
   align-items: center;
   align-content: center;
+  background-color: transparent;
+  height: var(--vt-footer-height);
 }
 </style>

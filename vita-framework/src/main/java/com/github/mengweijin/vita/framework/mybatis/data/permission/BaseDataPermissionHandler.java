@@ -5,9 +5,10 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.mybatis.data.MapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.StringValue;
+import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
+import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.schema.Column;
 import org.dromara.hutool.core.collection.CollUtil;
@@ -50,31 +51,31 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
         Expression expression = null;
         switch (dataScope.scope()) {
             case USER -> {
-                String loginUserId = this.getLoginUserId();
-                if (StrValidator.isNotBlank(loginUserId)) {
+                Long loginUserId = this.getLoginUserId();
+                if (loginUserId != null) {
                     EqualsTo userEqualsTo = new EqualsTo();
                     userEqualsTo.setLeftExpression(buildColumn(dataScope));
-                    userEqualsTo.setRightExpression(new StringValue(loginUserId));
+                    userEqualsTo.setRightExpression(new LongValue(loginUserId));
                     expression = userEqualsTo;
                 }
             }
             case DEPT -> {
-                List<String> loginUserDeptIdList = this.getLoginUserDeptIdList();
+                List<Long> loginUserDeptIdList = this.getLoginUserDeptIdList();
                 if (CollUtil.isNotEmpty(loginUserDeptIdList)) {
                     InExpression deptInExpression = new InExpression();
                     deptInExpression.setLeftExpression(buildColumn(dataScope));
-                    List<Expression> deptExpressionList = loginUserDeptIdList.stream().map(StringValue::new).collect(Collectors.toList());
-                    // deptInExpression.setRightItemsList(new ExpressionList(deptExpressionList));
+                    List<Expression> deptExpressionList = loginUserDeptIdList.stream().map(LongValue::new).collect(Collectors.toList());
+                    deptInExpression.setRightExpression(new ExpressionList<>(deptExpressionList));
                     expression = deptInExpression;
                 }
             }
             case ROLE -> {
-                List<String> loginUserRoleIdList = this.getLoginUserRoleIdList();
+                List<Long> loginUserRoleIdList = this.getLoginUserRoleIdList();
                 if (CollUtil.isNotEmpty(loginUserRoleIdList)) {
                     InExpression roleInExpression = new InExpression();
                     roleInExpression.setLeftExpression(buildColumn(dataScope));
-                    List<Expression> roleExpressionList = loginUserRoleIdList.stream().map(StringValue::new).collect(Collectors.toList());
-                    // roleInExpression.setRightItemsList(new ExpressionList(roleExpressionList));
+                    List<Expression> roleExpressionList = loginUserRoleIdList.stream().map(LongValue::new).collect(Collectors.toList());
+                    roleInExpression.setRightExpression(new ExpressionList<>(roleExpressionList));
                     expression = roleInExpression;
                 }
             }
@@ -84,13 +85,13 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
         return where == null ? expression : new AndExpression(where, expression);
     }
 
-    protected abstract String getLoginUserId();
+    protected abstract Long getLoginUserId();
 
     protected abstract boolean isAdmin();
 
-    protected abstract List<String> getLoginUserDeptIdList();
+    protected abstract List<Long> getLoginUserDeptIdList();
 
-    protected abstract List<String> getLoginUserRoleIdList();
+    protected abstract List<Long> getLoginUserRoleIdList();
 
     /**
      * 构建Column

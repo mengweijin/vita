@@ -220,4 +220,10 @@ onMounted(() => {
   <DeptEdit ref="deptEditRef" @refresh-table="loadTableData"></DeptEdit>
 </template>
 
-<style scoped></style>
+<style scoped>
+.vt-table-container {
+  flex: 1;
+  /* 查询表单：70px; 表格头：63px； */
+  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px);
+}
+</style>

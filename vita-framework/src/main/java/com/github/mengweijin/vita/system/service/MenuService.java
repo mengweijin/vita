@@ -2,7 +2,8 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.exception.impl.ClientException;
+import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -43,7 +44,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
     public boolean removeByIds(Collection<?> ids) {
         Long count = this.lambdaQuery().in(MenuDO::getParentId, ids).count();
         if(count > 0) {
-            throw new ClientException("Please delete the child node first!");
+            throw new ClientException(I18nUtils.msg("system.menu.delete.hasChildren"));
         }
         return super.removeByIds(ids);
     }

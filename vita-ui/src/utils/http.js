@@ -62,9 +62,10 @@ axiosInstance.interceptors.response.use(
 
   (error) => {
     if (error.response.status) {
+      console.error(error.response.data);
       switch (error.response.status) {
         case 400:
-          ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true });
+          ElMessage.error({ message: error.response.data?.msg, showClose: true });
           break;
         case 401:
           // 清理前端登录信息残留
@@ -92,7 +93,7 @@ axiosInstance.interceptors.response.use(
           ElMessage.error({ message: error.response.status + ' Server Error', showClose: true });
           break;
         default:
-          ElMessage.error({ message: JSON.stringify(error.response.data), showClose: true });
+          ElMessage.error({ message: error.response.data?.msg, showClose: true });
           break;
       }
     }

@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.generator.util;
 
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.github.mengweijin.vita.framework.exception.impl.ServerException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

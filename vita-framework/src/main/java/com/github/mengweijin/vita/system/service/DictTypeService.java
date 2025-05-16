@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.exception.impl.ClientException;
+import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import com.github.mengweijin.vita.system.mapper.DictTypeMapper;

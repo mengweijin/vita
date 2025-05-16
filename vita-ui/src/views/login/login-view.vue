@@ -1,5 +1,4 @@
 <script setup>
-import { debounce } from 'xe-utils';
 import LayFooter from "@/layout/lay-footer.vue";
 
 import { loginApi } from '@/api/login-api';
@@ -32,11 +31,13 @@ const rules = reactive({
 const captchaEnabled = ref(false);
 const captchaImg = ref(null);
 
-const initCaptcha = async () => {
-  captchaEnabled.value = await loginApi.getCaptchaEnabled();
-  if (captchaEnabled.value) {
-    onRefreshCaptcha();
-  }
+const initCaptcha = () => {
+  loginApi.getCaptchaEnabled().then(res => {
+    captchaEnabled.value = res;
+    if (captchaEnabled.value) {
+      onRefreshCaptcha();
+    }
+  });
 }
 
 const onRefreshCaptcha = () => {
@@ -51,9 +52,8 @@ const onForgetPassword = () => {
   })
 };
 
-const onSubmit = debounce(async () => {
-  let loadingInstance = ElLoading.service({ fullscreen: true });
-  await formRef.value.validate((valid, fields) => {
+const onSubmit = () => {
+  formRef.value.validate((valid, fields) => {
     if (valid) {
       loginApi.login(form).then((r) => {
         // 保存用户和token 到 userStore
@@ -61,16 +61,13 @@ const onSubmit = debounce(async () => {
         // 加载字典
         dictStore.initDicts();
         router.push('/');
-
-        loadingInstance?.close();
       });
     } else {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
     }
-    loadingInstance?.close();
   });
-}, 2000);
+};
 
 const onkeypress = ({ code }) => {
   if (["Enter", "NumpadEnter"].includes(code)) { onSubmit(); }

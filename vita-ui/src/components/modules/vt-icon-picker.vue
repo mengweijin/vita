@@ -1,5 +1,5 @@
 <script setup>
-import { debounce } from 'xe-utils';
+import { debounce, isEmpty } from 'xe-utils';
 import { listIcons } from '@iconify/vue';
 
 const inputValue = defineModel({ type: String, default: '' });
@@ -55,18 +55,24 @@ const popoverRef = ref(null);
 
 const changeIcon = (value) => {
   inputValue.value = value;
-  iconPreview.value = value;
 };
 
 const clearInputValue = () => {
   inputValue.value = '';
-  iconPreview.value = 'ep:search';
 }
 
 const close = () => {
   // 手动关闭 popover
   popoverRef.value.hide();
 };
+
+watch(inputValue, (newIcon) => {
+  if (isEmpty(inputValue.value)) {
+    iconPreview.value = 'ep:search';
+  } else {
+    iconPreview.value = newIcon;
+  }
+});
 
 onMounted(() => {
   handleSearch();

@@ -20,6 +20,9 @@ const tableData = ref([]);
 const queryParams = reactive({
   keywords: undefined,
   disabled: undefined,
+  current: 1,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = ref(null);
@@ -33,6 +36,7 @@ const loadTableData = () => {
   loading.value = true;
   postApi.page(queryParams).then((res) => {
     tableData.value = res.records;
+    queryParams.total = res.total;
     loading.value = false;
   });
 };
@@ -64,6 +68,12 @@ const handleDelete = (ids) => {
 const handleBatchDelete = () => {
   let ids = selected.value.map(item => item.id).join();
   handleDelete(ids);
+}
+
+const handlePageChange = (currentPage, pageSize) => {
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 }
 
 onMounted(() => {
@@ -200,6 +210,10 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination background layout="total, sizes, prev, pager, next, jumper"
+      v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
+      @change="handlePageChange" />
   </div>
 
   <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>

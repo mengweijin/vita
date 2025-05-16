@@ -22,14 +22,13 @@ class EncryptUtilsTest {
 
     private static final File FILE = FileUtil.file(FILE_PATH);
 
-    private static final String FiLE_SIZE = FileUtil.readableFileSize(FILE);
-
     private static final String MD5 = "1858bd0d281c60f4ddabd87b1c214a4f";
 
     @Test
     @SneakyThrows
     void encrypt() {
-        log.debug("File size = {}", FiLE_SIZE);
+        String readableFileSize = FileUtil.readableFileSize(FILE);
+        log.debug("Readable file size = {}", readableFileSize);
         long start = System.currentTimeMillis();
 
         byte[] encrypt = AESUtils.getAES().encrypt(IoUtil.toStream(FILE));

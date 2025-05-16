@@ -5,7 +5,7 @@ import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaFirewallStrategy;
-import com.github.mengweijin.vita.framework.exception.impl.ServerException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;

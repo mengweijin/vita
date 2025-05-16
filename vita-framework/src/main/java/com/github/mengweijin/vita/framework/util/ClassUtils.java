@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.exception.impl.ServerException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import org.dromara.hutool.core.reflect.ClassUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

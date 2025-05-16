@@ -1,7 +1,5 @@
 <script setup>
-import { copyDefinedProperties } from "@/utils/tool";
 import { postApi } from "@/api/system/post-api";
-import { toArrayTree } from "xe-utils";
 
 const loading = ref(true);
 
@@ -9,7 +7,7 @@ const visible = ref(false);
 
 const data = ref({});
 
-/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则二次打开可能就打不开了 */
+/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
   id: undefined,
   name: undefined,
@@ -17,19 +15,17 @@ const form = reactive({
   disabled: 'N',
 });
 
-const formRef = ref(null);
-
-const resetForm = () => {
-  formRef.value.resetFields();
-  copyDefinedProperties(form, data.value);
+const init = () => {
+  form.id = data.value.id ?? undefined;
+  form.name = data.value.name ?? undefined;
+  form.seq = data.value.seq ?? 1;
+  form.disabled = data.value.disabled ?? 'N';
 };
 
-const title = computed(() => {
-  return data.value?.id ? '编辑' : '新增';
-});
+const formRef = ref(null);
 
-const onSubmit = async () => {
-  await formRef.value.validate((valid, fields) => {
+const onSubmit = () => {
+  formRef.value.validate((valid, fields) => {
     if (!valid) {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
@@ -38,12 +34,12 @@ const onSubmit = async () => {
     if (form.id) {
       postApi.update(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     } else {
       postApi.create(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     }
   });
@@ -51,14 +47,16 @@ const onSubmit = async () => {
 
 const emit = defineEmits(['refresh-table']);
 
-const onOpen = () => {
-  copyDefinedProperties(form, data.value);
-  nextTick(() => { loading.value = false; });
+const onOpened = async () => {
+  init();
+  await nextTick();
+  loading.value = false;
 }
 
-const onClose = () => {
-  formRef.value.resetFields();
+const onClosed = () => {
   visible.value = false;
+  data.value = {};
+  init();
 }
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -66,7 +64,8 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="title" destroy-on-close align-center @open="onOpen" @close="onClose" width="40%">
+  <el-dialog v-model="visible" :title="data.value?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
+    @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
 
       <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
@@ -97,7 +96,7 @@ defineExpose({ visible, data })
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="resetForm">
+        <el-button type="warning" @click="init">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -105,7 +104,7 @@ defineExpose({ visible, data })
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClose">
+        <el-button type="primary" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

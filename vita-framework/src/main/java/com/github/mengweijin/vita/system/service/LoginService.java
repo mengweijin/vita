@@ -3,7 +3,8 @@ package com.github.mengweijin.vita.system.service;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
-import com.github.mengweijin.vita.framework.exception.impl.LoginFailedException;
+import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -53,7 +54,7 @@ public class LoginService {
             if(configService.getCaptchaEnabled()) {
                 boolean validate = this.checkCaptcha(request, loginBO.getCaptcha());
                 if(!validate) {
-                    throw new LoginFailedException("The captcha code was invalid!");
+                    throw new ClientException("The captcha code was invalid!");
                 }
             }
 
@@ -65,11 +66,11 @@ public class LoginService {
 
             UserDO user = userService.getByUsername(loginBO.getUsername());
             if (user == null) {
-                throw new LoginFailedException("The username or password incorrect!");
+                throw new ClientException("The username or password incorrect!");
             }
 
             if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
-                throw new LoginFailedException("The username or password incorrect!");
+                throw new ClientException("The username or password incorrect!");
             }
 
             StpUtil.login(loginBO.getUsername(), new SaLoginParameter().setIsLastingCookie(loginBO.isRememberMe()).setDeviceType(platformName));
@@ -79,7 +80,7 @@ public class LoginService {
             return loginUser;
         } catch (RuntimeException e) {
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, e.getMessage(), request);
-            throw new LoginFailedException(e);
+            throw new ServerException(e);
         }
     }
 
@@ -89,6 +90,7 @@ public class LoginService {
         loginUser.setUsername(user.getUsername());
         loginUser.setNickname(user.getNickname());
         loginUser.setAvatar(userService.getAvatarById(user.getId()));
+        loginUser.setDeptId(user.getDeptId());
         loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
         loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
         loginUser.setMenus(menuService.getSideMenuByUserId(user.getId()));

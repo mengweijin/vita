@@ -1,5 +1,5 @@
 <script setup>
-import { addFullPath, copyDefinedProperties } from "@/utils/tool";
+import { addFullPath } from "@/utils/tool";
 import { deptApi } from "@/api/system/dept-api";
 import { toArrayTree } from "xe-utils";
 
@@ -9,28 +9,27 @@ const visible = ref(false);
 
 const data = ref({});
 
-/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则二次打开可能就打不开了 */
+/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
   id: undefined,
   parentId: undefined,
   name: undefined,
-  seq: 1,
-  disabled: 'N',
+  seq: undefined,
+  disabled: undefined,
 });
+
+const init = () => {
+  form.id = data.value.id ?? undefined;
+  form.parentId = data.value.parentId ?? undefined;
+  form.name = data.value.name ?? undefined;
+  form.seq = data.value.seq ?? 1;
+  form.disabled = data.value.disabled ?? 'N';
+};
 
 const formRef = ref(null);
 
-const resetForm = () => {
-  formRef.value.resetFields();
-  copyDefinedProperties(form, data.value);
-};
-
-const title = computed(() => {
-  return data.value?.id ? '编辑' : '新增';
-});
-
-const onSubmit = async () => {
-  await formRef.value.validate((valid, fields) => {
+const onSubmit = () => {
+  formRef.value.validate((valid, fields) => {
     if (!valid) {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
@@ -39,12 +38,12 @@ const onSubmit = async () => {
     if (form.id) {
       deptApi.update(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     } else {
       deptApi.create(form).then((r) => {
         emit('refresh-table');
-        onClose();
+        onClosed();
       });
     }
   });
@@ -60,17 +59,17 @@ const deptTreeSelectOptions = computed(() => {
   return toArrayTree(deptList.value, { sortKey: 'seq' });
 });
 
-const onOpen = () => {
-  copyDefinedProperties(form, data.value);
-  deptApi.list().then(res => {
-    deptList.value = res;
-    nextTick(() => { loading.value = false; });
-  });
+const onOpened = async () => {
+  deptList.value = await deptApi.list();
+  init();
+  await nextTick();
+  loading.value = false;
 }
 
-const onClose = () => {
-  formRef.value.resetFields();
+const onClosed = () => {
   visible.value = false;
+  data.value = {};
+  init();
 }
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -78,7 +77,8 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="title" destroy-on-close align-center @open="onOpen" @close="onClose" width="40%">
+  <el-dialog v-model="visible" :title="data.value?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
+    @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="parentId" label="父部门">
         <el-tree-select v-model="form.parentId" :data="deptTreeSelectOptions"
@@ -118,7 +118,7 @@ defineExpose({ visible, data })
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="resetForm">
+        <el-button type="warning" @click="init">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -126,7 +126,7 @@ defineExpose({ visible, data })
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClose">
+        <el-button type="primary" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

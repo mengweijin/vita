@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.mybatis.data;
 
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.exception.impl.ServerException;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
