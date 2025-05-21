@@ -216,6 +216,7 @@ drop table IF EXISTS VT_DEPT;
 create TABLE VT_DEPT (
   ID                            bigint NOT NULL comment '主键ID',
   PARENT_ID              		bigint DEFAULT NULL comment '父部门ID',
+  CODE 		                    varchar(50) NOT NULL comment '部门编码',
   NAME 		                    varchar(50) NOT NULL comment '部门名称',
   SEQ 		                    int DEFAULT 1 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
@@ -226,6 +227,7 @@ create TABLE VT_DEPT (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+create unique index UIDX_VT_DEPT_CODE on VT_DEPT(CODE);
 
 
 drop table IF EXISTS VT_ROLE;
@@ -248,6 +250,7 @@ create unique index UIDX_VT_ROLE_CODE on VT_ROLE(CODE);
 drop table IF EXISTS VT_POST;
 create TABLE VT_POST (
   ID                            bigint NOT NULL comment '主键ID',
+  CODE 		                    varchar(50) NOT NULL comment '岗位编码',
   NAME 		                    varchar(50) NOT NULL comment '岗位名称',
   SEQ 		                    int DEFAULT 0 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
@@ -258,7 +261,7 @@ create TABLE VT_POST (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-
+create unique index UIDX_VT_POST_CODE on VT_POST(CODE);
 
 drop table IF EXISTS VT_USER;
 create TABLE VT_USER (

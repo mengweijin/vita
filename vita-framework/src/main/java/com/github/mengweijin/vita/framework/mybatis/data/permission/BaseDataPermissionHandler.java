@@ -80,6 +80,7 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
                 }
             }
             default -> {
+                // ignore
             }
         }
         return where == null ? expression : new AndExpression(where, expression);

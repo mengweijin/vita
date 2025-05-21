@@ -30,6 +30,7 @@ public class PostService extends CrudRepository<PostMapper, PostDO> {
         wrapper.gt(post.getSearchStartTime() != null, PostDO::getCreateTime, post.getSearchStartTime());
         wrapper.le(post.getSearchEndTime() != null, PostDO::getCreateTime, post.getSearchEndTime());
         if (StrUtil.isNotBlank(post.getKeywords())) {
+            wrapper.or(w -> w.like(PostDO::getCode, post.getKeywords()));
             wrapper.or(w -> w.like(PostDO::getName, post.getKeywords()));
         }
         wrapper.orderByAsc(PostDO::getSeq);

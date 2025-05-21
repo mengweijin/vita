@@ -87,7 +87,7 @@ onMounted(() => {
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
     class="vt-search-container">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
       <VtDictSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtDictSelect>
@@ -154,6 +154,7 @@ onMounted(() => {
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
       <el-table-column v-if="columns.name.visible" prop="name" label="岗位名称" min-width="260" fixed="left" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="200" />
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
           <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>

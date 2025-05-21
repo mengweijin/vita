@@ -24,6 +24,11 @@ public class DeptDO extends BaseEntity {
     private Long parentId;
 
     /**
+     * 部门编码
+     */
+    private String code;
+
+    /**
     * 部门名称
     */
     private String name;

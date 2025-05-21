@@ -33,7 +33,6 @@ public class LoginController {
 
     @SaIgnore
     @RepeatSubmit(interval = 3000)
-    @RateLimit(duration = 5, max = 1, strategy = ERateLimitStrategy.IP)
     @PostMapping("/login")
     public R<LoginUserVO> login(@Valid @RequestBody LoginBO loginBO) {
         LoginUserVO loginUser = loginService.login(loginBO);

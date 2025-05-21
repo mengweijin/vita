@@ -33,7 +33,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <hutool.version>6.0.0-M21</hutool.version>
-        <sa-token.version>1.42.0</sa-token.version>
+        <sa-token.version>1.43.0</sa-token.version>
         <oshi.version>6.8.1</oshi.version>
         <zxing.version>3.5.3</zxing.version>
         <fastexcel.version>1.2.0</fastexcel.version>

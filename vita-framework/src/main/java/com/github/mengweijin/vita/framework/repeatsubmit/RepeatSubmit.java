@@ -25,5 +25,5 @@ public @interface RepeatSubmit {
     /**
      * 提示消息
      */
-    String message() default "Repeat submission, please try again later!";
+    String message() default "Do not submit repeatedly!";
 }

@@ -130,12 +130,17 @@ sa-token:
   is-log: false
   # 是否打印控制台 banner
   is-print: off
-
 # Spring Boot的 actuator（健康监控）功能，访问：http://localhost:8080/actuator
 # management.server: ManagementServerProperties.java
-# management.endpoints.web: WebEndpointProperties.java  默认：http://localhost:8080/actuator/health
+# WebEndpointProperties 默认：http://localhost:8080/actuator/health，返回：{"status":"UP"}
+# management.endpoints.web: WebEndpointProperties.java
 # management.endpoint.health: HealthEndpointProperties.java
-
+# management.health.diskspace: DiskSpaceHealthIndicatorProperties.java
+management:
+  endpoint:
+    health:
+      # 显示详细信息
+      show-details: always
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:

@@ -3,6 +3,7 @@ export const columns = reactive({
   index: { label: '序号列', visible: false },
   id: { label: 'ID', visible: false },
   name: { label: '岗位名称', visible: true },
+  code: { label: '岗位编码', visible: true },
   disabled: { label: '状态', visible: true },
   seq: { label: '排序', visible: true },
   remark: { label: '备注', visible: false },

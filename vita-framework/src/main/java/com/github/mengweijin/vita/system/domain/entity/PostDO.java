@@ -19,6 +19,11 @@ import lombok.EqualsAndHashCode;
 public class PostDO extends BaseEntity {
 
     /**
+     * 岗位编码
+     */
+    private String code;
+
+    /**
     * 岗位名称
     */
     private String name;
