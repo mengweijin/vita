@@ -1,10 +1,8 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,11 +47,6 @@ public class LoginUserVO implements Serializable {
      * 用户权限
      */
     private Set<String> permissions;
-
-    /**
-     * 用户菜单
-     */
-    private List<MenuDO> menus;
 
     /**
      * 用户 token

@@ -58,10 +58,8 @@ public class CacheConfig {
                 // 缓存监听器
                 .withService(cacheEventListener());
 
-        if (options.getExpiry() != null) {
-            // 数据最大存活时间 TTL
-            builder.withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(options.getExpiry()));
-        }
+        // 数据最大存活时间 TTL
+        builder.withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(options.getExpiry()));
         return Eh107Configuration.fromEhcacheCacheConfiguration(builder.build());
     }
 

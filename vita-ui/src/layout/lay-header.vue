@@ -6,6 +6,9 @@ import { loginApi } from '@/api/login-api';
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 
+import { useMenuStore } from '@/store/menu-store';
+const menuStore = useMenuStore();
+
 import { useDictStore } from '@/store/dict-store';
 const dictStore = useDictStore();
 
@@ -19,8 +22,9 @@ const refresh = () => { top.location.reload(true); };
 const onLogout = () => {
   loginApi.logout().finally(() => {
     // 清理前端登录信息残留
-    dictStore.clear()
-    userStore.clear()
+    dictStore.clear();
+    userStore.clear();
+    menuStore.clear();
     // 跳转登录页
     router.push('/login');
   });

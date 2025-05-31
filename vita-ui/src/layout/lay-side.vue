@@ -6,12 +6,14 @@ const route = useRoute()
 
 import MenuTree from "./components/MenuTree.vue";
 
+import { menuApi } from '@/api/system/menu-api.js';
+
+import { useMenuStore } from '@/store/menu-store.js';
+const menuStore = useMenuStore();
+
 import { useAppStore } from '@/store/app-store.js';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
-
-import { useUserStore } from '@/store/user-store.js'
-const userStore = useUserStore();
 
 const activeMenu = computed(() => {
   const { meta, path } = route
@@ -20,9 +22,12 @@ const activeMenu = computed(() => {
 
 const menuTreeList = ref([]);
 
-onMounted(() => {
+onMounted(async () => {
+  let menuList = await menuApi.listSideMenus();
+  // 保存到 menu-store
+  menuStore.initMenus(menuList);
   // 转为树状
-  menuTreeList.value = toArrayTree(userStore.getMenus(), { sortKey: 'seq' });
+  menuTreeList.value = toArrayTree(menuList, { sortKey: 'seq' });
 });
 
 </script>

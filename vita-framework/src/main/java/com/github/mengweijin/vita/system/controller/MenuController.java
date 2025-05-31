@@ -2,11 +2,10 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.service.MenuService;
@@ -43,19 +42,9 @@ public class MenuController {
 
     private RoleMenuService roleMenuService;
 
-    /**
-     * <p>
-     * Get Menu page by Menu
-     * </p>
-     * @param page page
-     * @param menu {@link MenuDO}
-     * @return Page<Menu>
-     */
-    @SaCheckPermission("system:menu:select")
-    @GetMapping("/page")
-    public IPage<MenuDO> page(Page<MenuDO> page, MenuDO menu) {
-        LambdaQueryWrapper<MenuDO> wrapper = menuService.getQueryWrapper(menu);
-        return menuService.page(page, wrapper);
+    @GetMapping("/listSideMenus")
+    public List<MenuDO> listSideMenus() {
+        return menuService.getSideMenuByUserId(LoginHelper.getLoginUser().getUserId());
     }
 
     /**

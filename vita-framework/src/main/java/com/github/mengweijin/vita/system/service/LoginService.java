@@ -93,7 +93,6 @@ public class LoginService {
         loginUser.setDeptId(user.getDeptId());
         loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
         loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
-        loginUser.setMenus(menuService.getSideMenuByUserId(user.getId()));
         loginUser.setToken(StpUtil.getTokenValue());
         return loginUser;
     }

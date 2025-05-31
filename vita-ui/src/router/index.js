@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { useUserStore } from '@/store/user-store';
+import { useMenuStore } from '@/store/menu-store';
 import NProgress from '@/utils/nprogress';
 
 const { VITE_APP_TITLE } = import.meta.env;
@@ -53,8 +54,8 @@ const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
 };
 
 export const initDynamicRoutes = () => {
-  const userStore = useUserStore();
-  addDynamicRoutes(userStore.getMenus());
+  const menuStore = useMenuStore();
+  addDynamicRoutes(menuStore.getMenus());
 };
 
 /** 路由实例 */

@@ -100,7 +100,7 @@ const columnCheckAllChange = (isChecked) => {
 }
 
 onMounted(() => {
-  columnCheckedList.value = columnList.value.filter((item) => item.visible).map((item) => item.key)
+  columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key)
 })
 </script>
 
