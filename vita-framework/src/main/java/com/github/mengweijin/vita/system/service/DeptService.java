@@ -55,10 +55,11 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
         wrapper.gt(dept.getSearchStartTime() != null, DeptDO::getCreateTime, dept.getSearchStartTime());
         wrapper.le(dept.getSearchEndTime() != null, DeptDO::getCreateTime, dept.getSearchEndTime());
         if (StrUtil.isNotBlank(dept.getKeywords())) {
-            wrapper.or(w -> w.like(DeptDO::getCode, dept.getKeywords()));
-            wrapper.or(w -> w.like(DeptDO::getName, dept.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(DeptDO::getCode, dept.getKeywords()));
+                w.or(w1 -> w1.like(DeptDO::getName, dept.getKeywords()));
+            });
         }
-        wrapper.orderByAsc(DeptDO::getSeq);
         return wrapper;
     }
 

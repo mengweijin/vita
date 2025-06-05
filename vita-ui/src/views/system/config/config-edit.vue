@@ -1,5 +1,5 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
+import { configApi } from "@/api/system/config-api";
 
 const loading = ref(true);
 
@@ -12,8 +12,7 @@ const form = reactive({
   id: undefined,
   name: undefined,
   code: undefined,
-  seq: 1,
-  disabled: 'N',
+  val: undefined,
   remark: undefined,
 });
 
@@ -21,8 +20,7 @@ const init = () => {
   form.id = data.value.id ?? undefined;
   form.name = data.value.name ?? undefined;
   form.code = data.value.code ?? undefined;
-  form.seq = data.value.seq ?? 1;
-  form.disabled = data.value.disabled ?? 'N';
+  form.val = data.value.val ?? undefined;
   form.remark = data.value.remark ?? undefined;
 };
 
@@ -36,12 +34,12 @@ const onSubmit = () => {
       return;
     }
     if (form.id) {
-      postApi.update(form).then((r) => {
+      configApi.update(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });
     } else {
-      postApi.create(form).then((r) => {
+      configApi.create(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });
@@ -80,22 +78,12 @@ defineExpose({ visible, data })
         <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
       </el-form-item>
 
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="seq" label="排序">
-            <el-input-number v-model="form.seq" :min="1" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item prop="val" label="值" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.val" type="textarea" clearable maxlength="255" :autosize="{ minRows: 1, maxRows: 8 }" />
+      </el-form-item>
 
       <el-form-item prop="remark" label="备注">
-        <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />
+        <el-input v-model="form.remark" type="textarea" maxlength="500" :autosize="{ minRows: 3, maxRows: 8 }" />
       </el-form-item>
     </el-form>
     <template #footer>

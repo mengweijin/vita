@@ -84,11 +84,16 @@ const menuTreeSelectOptions = computed(() => {
   return toArrayTree(menuList.value, { sortKey: 'seq' });
 });
 
-const onOpened = async () => {
-  menuList.value = await menuApi.list();
-  init();
-  await nextTick();
-  loading.value = false;
+const onOpened = () => {
+  loading.value = true;
+  menuApi.list().then((res) => {
+    menuList.value = res;
+    init();
+    nextTick(() => {
+      loading.value = false;
+    });
+
+  });
 }
 
 const onClosed = () => {

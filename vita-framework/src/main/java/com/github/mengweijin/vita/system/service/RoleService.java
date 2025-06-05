@@ -42,10 +42,11 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
         wrapper.gt(role.getSearchStartTime() != null, RoleDO::getCreateTime, role.getSearchStartTime());
         wrapper.le(role.getSearchEndTime() != null, RoleDO::getCreateTime, role.getSearchEndTime());
         if (StrUtil.isNotBlank(role.getKeywords())) {
-            wrapper.or(w -> w.like(RoleDO::getName, role.getKeywords()));
-            wrapper.or(w -> w.like(RoleDO::getCode, role.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(RoleDO::getName, role.getKeywords()));
+                w.or(w1 -> w1.like(RoleDO::getCode, role.getKeywords()));
+            });
         }
-        wrapper.orderByAsc(RoleDO::getSeq);
         return wrapper;
     }
 

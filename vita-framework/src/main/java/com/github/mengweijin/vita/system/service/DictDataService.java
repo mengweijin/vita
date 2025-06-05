@@ -38,11 +38,12 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> 
         wrapper.gt(dictData.getSearchStartTime() != null, DictDataDO::getCreateTime, dictData.getSearchStartTime());
         wrapper.le(dictData.getSearchEndTime() != null, DictDataDO::getCreateTime, dictData.getSearchEndTime());
         if (StrUtil.isNotBlank(dictData.getKeywords())) {
-            wrapper.or(w -> w.like(DictDataDO::getLabel, dictData.getKeywords()));
-            wrapper.or(w -> w.like(DictDataDO::getCode, dictData.getKeywords()));
-            wrapper.or(w -> w.like(DictDataDO::getVal, dictData.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(DictDataDO::getLabel, dictData.getKeywords()));
+                w.or(w1 -> w1.like(DictDataDO::getCode, dictData.getKeywords()));
+                w.or(w1 -> w1.like(DictDataDO::getVal, dictData.getKeywords()));
+            });
         }
-        wrapper.orderByAsc(DictDataDO::getSeq);
         return wrapper;
     }
 

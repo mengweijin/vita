@@ -216,8 +216,8 @@ drop table IF EXISTS VT_DEPT;
 create TABLE VT_DEPT (
   ID                            bigint NOT NULL comment '主键ID',
   PARENT_ID              		bigint DEFAULT NULL comment '父部门ID',
-  CODE 		                    varchar(50) NOT NULL comment '部门编码',
-  NAME 		                    varchar(50) NOT NULL comment '部门名称',
+  CODE 		                    varchar(64) NOT NULL comment '部门编码',
+  NAME 		                    varchar(64) NOT NULL comment '部门名称',
   SEQ 		                    int DEFAULT 1 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
@@ -250,8 +250,8 @@ create unique index UIDX_VT_ROLE_CODE on VT_ROLE(CODE);
 drop table IF EXISTS VT_POST;
 create TABLE VT_POST (
   ID                            bigint NOT NULL comment '主键ID',
-  CODE 		                    varchar(50) NOT NULL comment '岗位编码',
-  NAME 		                    varchar(50) NOT NULL comment '岗位名称',
+  CODE 		                    varchar(64) NOT NULL comment '岗位编码',
+  NAME 		                    varchar(64) NOT NULL comment '岗位名称',
   SEQ 		                    int DEFAULT 0 comment '展示顺序',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',

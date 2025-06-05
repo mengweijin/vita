@@ -162,7 +162,7 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" fixed="left" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.title.visible" prop="title" label="菜单标题" min-width="200" />
+      <el-table-column v-if="columns.title.visible" prop="title" label="菜单标题" fixed="left" min-width="200" />
       <el-table-column v-if="columns.icon.visible" prop="icon" label="图标" min-width="80" align="center">
         <template #default="{ row }">
           <Icon :icon="row.icon" width="24" height="24" v-if="row.icon" />

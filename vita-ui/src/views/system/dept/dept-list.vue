@@ -166,7 +166,7 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="300" sortable />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="300" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
         min-width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center"
@@ -175,7 +175,7 @@ onMounted(() => {
         min-width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
         min-width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" min-width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">

@@ -89,6 +89,16 @@ router.beforeEach((to, from) => {
   const userStore = useUserStore();
   const { isLogin } = userStore;
 
+  // 未登录且访问受保护路由，强制跳转登录页，并携带访问路径。（ to.fullPath = '/login?redirect=/home' ）
+  if (!isLogin() && !to.fullPath.startsWith('/login')) {
+    return { path: '/login', query: { redirect: to.fullPath } };
+  }
+
+  // 已登录但访问登录页。强制跳转到参数页或首页
+  if (isLogin() && to.fullPath.startsWith('/login')) {
+    return { path: from.query.redirect || '/' };
+  }
+
   // 增加动态路由
   if (!isDynamicRoutesAdded && isLogin()) {
     // 还需要在 main.js 中调用一下，以免刷新页面时，页面空白或404
@@ -96,14 +106,6 @@ router.beforeEach((to, from) => {
     isDynamicRoutesAdded = true;
   }
 
-  if (!isLogin() && to.fullPath !== '/login') {
-    // 未登录且访问受保护路由，强制跳转登录页
-    return { path: '/login' };
-  }
-  if (isLogin() && to.fullPath === '/login') {
-    // 已登录但访问登录页。强制跳转首页
-    return '/';
-  }
   // 其它情况默认放行路由
 });
 

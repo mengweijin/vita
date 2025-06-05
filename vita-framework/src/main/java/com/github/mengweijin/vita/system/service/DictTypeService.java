@@ -51,8 +51,10 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictTypeDO> 
         wrapper.gt(dictType.getSearchStartTime() != null, DictTypeDO::getCreateTime, dictType.getSearchStartTime());
         wrapper.le(dictType.getSearchEndTime() != null, DictTypeDO::getCreateTime, dictType.getSearchEndTime());
         if (StrUtil.isNotBlank(dictType.getKeywords())) {
-            wrapper.or(w -> w.like(DictTypeDO::getName, dictType.getKeywords()));
-            wrapper.or(w -> w.like(DictTypeDO::getCode, dictType.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(DictTypeDO::getName, dictType.getKeywords()));
+                w.or(w1 -> w1.like(DictTypeDO::getCode, dictType.getKeywords()));
+            });
         }
         return wrapper;
     }

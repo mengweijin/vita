@@ -3,12 +3,18 @@ import LayFooter from "@/layout/lay-footer.vue";
 
 import { loginApi } from '@/api/login-api';
 import router from '@/router/index';
+import { useRoute } from 'vue-router';
+const route = useRoute();
+const redirect = ref('/');
 
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 
 import { useDictStore } from "@/store/dict-store";
 const dictStore = useDictStore();
+
+import { useMenuStore } from '@/store/menu-store';
+const menuStore = useMenuStore();
 
 const visible = ref(false);
 
@@ -54,12 +60,15 @@ const onForgetPassword = () => {
 const onSubmit = () => {
   formRef.value.validate((valid, fields) => {
     if (valid) {
-      loginApi.login(form).then((r) => {
+      loginApi.login(form).then(async (r) => {
         // 保存用户和token 到 userStore
         userStore.initUser(r.data);
         // 加载字典
-        dictStore.initDicts();
-        router.push('/');
+        await dictStore.initDicts();
+        // 加载菜单
+        await menuStore.initMenus();
+        // 跳转到访问页或首页
+        router.push(route.query.redirect || '/');
       });
     } else {
       // fields 只有在验证失败的情况下才有值

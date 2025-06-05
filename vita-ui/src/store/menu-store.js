@@ -1,12 +1,13 @@
 const { VITE_APP_PREFIX } = import.meta.env;
+import { menuApi } from '@/api/system/menu-api';
 
 export const useMenuStore = defineStore(
   `${VITE_APP_PREFIX}-menu`,
   () => {
     const menus = ref([]);
 
-    const initMenus = (data) => {
-      menus.value = data;
+    const initMenus = async () => {
+      menus.value = await menuApi.listSideMenus();
     };
 
     const getMenus = () => menus.value;

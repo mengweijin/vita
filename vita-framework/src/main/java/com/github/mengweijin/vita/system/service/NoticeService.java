@@ -30,8 +30,10 @@ public class NoticeService extends CrudRepository<NoticeMapper, NoticeDO> {
         wrapper.gt(notice.getSearchStartTime() != null, NoticeDO::getCreateTime, notice.getSearchStartTime());
         wrapper.le(notice.getSearchEndTime() != null, NoticeDO::getCreateTime, notice.getSearchEndTime());
         if (StrUtil.isNotBlank(notice.getKeywords())) {
-            wrapper.or(w -> w.like(NoticeDO::getName, notice.getKeywords()));
-            wrapper.or(w -> w.like(NoticeDO::getDescription, notice.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(NoticeDO::getName, notice.getKeywords()));
+                w.or(w1 -> w1.like(NoticeDO::getDescription, notice.getKeywords()));
+            });
         }
         return wrapper;
     }

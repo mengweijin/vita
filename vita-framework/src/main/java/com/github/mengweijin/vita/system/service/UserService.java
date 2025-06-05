@@ -87,11 +87,13 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         wrapper.le(user.getSearchEndTime() != null, UserDO::getCreateTime, user.getSearchEndTime());
         wrapper.in(user.getDeptId() != null, UserDO::getDeptId, deptIds);
         if (StrUtil.isNotBlank(user.getKeywords())) {
-            wrapper.or(w -> w.like(UserDO::getUsername, user.getKeywords()));
-            wrapper.or(w -> w.like(UserDO::getNickname, user.getKeywords()));
-            wrapper.or(w -> w.like(UserDO::getCitizenId, user.getKeywords()));
-            wrapper.or(w -> w.like(UserDO::getMobile, user.getKeywords()));
-            wrapper.or(w -> w.like(UserDO::getEmail, user.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(UserDO::getUsername, user.getKeywords()));
+                w.or(w1 -> w1.like(UserDO::getNickname, user.getKeywords()));
+                w.or(w1 -> w1.like(UserDO::getCitizenId, user.getKeywords()));
+                w.or(w1 -> w1.like(UserDO::getMobile, user.getKeywords()));
+                w.or(w1 -> w1.like(UserDO::getEmail, user.getKeywords()));
+            });
         }
         return wrapper;
     }

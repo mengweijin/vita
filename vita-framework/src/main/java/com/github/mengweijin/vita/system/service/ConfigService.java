@@ -31,9 +31,11 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         wrapper.gt(config.getSearchStartTime() != null, ConfigDO::getCreateTime, config.getSearchStartTime());
         wrapper.le(config.getSearchEndTime() != null, ConfigDO::getCreateTime, config.getSearchEndTime());
         if (StrUtil.isNotBlank(config.getKeywords())) {
-            wrapper.or(w -> w.like(ConfigDO::getName, config.getKeywords()));
-            wrapper.or(w -> w.like(ConfigDO::getCode, config.getKeywords()));
-            wrapper.or(w -> w.like(ConfigDO::getVal, config.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(ConfigDO::getName, config.getKeywords()));
+                w.or(w1 -> w1.like(ConfigDO::getCode, config.getKeywords()));
+                w.or(w1 -> w1.like(ConfigDO::getVal, config.getKeywords()));
+            });
         }
         return wrapper;
     }

@@ -51,7 +51,7 @@ public class PostController {
     @GetMapping("/page")
     public IPage<PostDO> page(Page<PostDO> page, PostDO post) {
         LambdaQueryWrapper<PostDO> wrapper = postService.getQueryWrapper(post);
-        return postService.page(page, wrapper);
+        return postService.page(page, wrapper.orderByAsc(PostDO::getSeq));
     }
 
     /**

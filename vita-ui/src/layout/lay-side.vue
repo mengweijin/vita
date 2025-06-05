@@ -1,17 +1,15 @@
 <script setup>
 import { toArrayTree } from 'xe-utils';
 
-import { useRoute } from 'vue-router'
-const route = useRoute()
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 import MenuTree from "./components/MenuTree.vue";
 
-import { menuApi } from '@/api/system/menu-api.js';
-
-import { useMenuStore } from '@/store/menu-store.js';
+import { useMenuStore } from '@/store/menu-store';
 const menuStore = useMenuStore();
 
-import { useAppStore } from '@/store/app-store.js';
+import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
@@ -22,10 +20,8 @@ const activeMenu = computed(() => {
 
 const menuTreeList = ref([]);
 
-onMounted(async () => {
-  let menuList = await menuApi.listSideMenus();
-  // 保存到 menu-store
-  menuStore.initMenus(menuList);
+onMounted(() => {
+  let menuList = menuStore.getMenus();
   // 转为树状
   menuTreeList.value = toArrayTree(menuList, { sortKey: 'seq' });
 });

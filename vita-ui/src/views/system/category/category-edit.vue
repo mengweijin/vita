@@ -1,5 +1,7 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
+import { addFullPath } from "@/utils/tool";
+import { categoryApi } from "@/api/system/category-api";
+import { toArrayTree } from "xe-utils";
 
 const loading = ref(true);
 
@@ -10,15 +12,17 @@ const data = ref({});
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
   id: undefined,
+  parentId: undefined,
   name: undefined,
   code: undefined,
-  seq: 1,
-  disabled: 'N',
+  seq: undefined,
+  disabled: undefined,
   remark: undefined,
 });
 
 const init = () => {
   form.id = data.value.id ?? undefined;
+  form.parentId = data.value.parentId ?? undefined;
   form.name = data.value.name ?? undefined;
   form.code = data.value.code ?? undefined;
   form.seq = data.value.seq ?? 1;
@@ -36,12 +40,12 @@ const onSubmit = () => {
       return;
     }
     if (form.id) {
-      postApi.update(form).then((r) => {
+      categoryApi.update(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });
     } else {
-      postApi.create(form).then((r) => {
+      categoryApi.create(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });
@@ -51,10 +55,21 @@ const onSubmit = () => {
 
 const emit = defineEmits(['refresh-table']);
 
+const categoryList = ref([]);
+
+const categoryTreeSelectOptions = computed(() => {
+  categoryList.value.forEach((item) => item.disabled = false);
+  addFullPath(categoryList.value, { pathKey: 'name' })
+  return toArrayTree(categoryList.value, { sortKey: 'seq' });
+});
+
 const onOpened = () => {
   loading.value = true;
-  init();
-  loading.value = false;
+  categoryApi.list().then((res) => {
+    categoryList.value = res;
+    init();
+    loading.value = false;
+  });
 }
 
 const onClosed = () => {
@@ -63,7 +78,7 @@ const onClosed = () => {
   init();
 }
 
-/** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
+/** 暴露给父组件，父组件可通过 categoryEditRef.value.visible = true; 来赋值 */
 defineExpose({ visible, data })
 </script>
 
@@ -71,6 +86,15 @@ defineExpose({ visible, data })
   <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
+      <el-form-item prop="parentId" label="父节点">
+        <el-tree-select v-model="form.parentId" :data="categoryTreeSelectOptions"
+          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
+          default-expand-all placeholder="请选择">
+          <template #default="{ data: { name } }">
+            {{ name }}
+          </template>
+        </el-tree-select>
+      </el-form-item>
 
       <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />

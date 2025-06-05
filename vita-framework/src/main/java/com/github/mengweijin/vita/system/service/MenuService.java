@@ -61,9 +61,11 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         wrapper.gt(menu.getSearchStartTime() != null, MenuDO::getCreateTime, menu.getSearchStartTime());
         wrapper.le(menu.getSearchEndTime() != null, MenuDO::getCreateTime, menu.getSearchEndTime());
         if (StrUtil.isNotBlank(menu.getKeywords())) {
-            wrapper.or(w -> w.like(MenuDO::getTitle, menu.getKeywords()));
-            wrapper.or(w -> w.like(MenuDO::getPermission, menu.getKeywords()));
-            wrapper.or(w -> w.like(MenuDO::getComponent, menu.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(MenuDO::getTitle, menu.getKeywords()));
+                w.or(w1 -> w1.like(MenuDO::getPermission, menu.getKeywords()));
+                w.or(w1 -> w1.like(MenuDO::getComponent, menu.getKeywords()));
+            });
         }
         return wrapper;
     }

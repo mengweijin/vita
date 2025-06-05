@@ -30,28 +30,37 @@ insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CR
 insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002001,1002,'vt_address_sichuan_chengdou','成都市',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
 
 -- 岗位
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, 'president',                   '董事长', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, 'CEO',                         '总经理', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'department_manager',          '部门主管', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, 'HRD',                         '人力资源总监', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, 'admin_specialist',            '行政专员', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, 'recruiting_specialist',       '招聘专员', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, 'training_specialist',         '培训专员', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8, 'CFO',                         '财务总监', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9, 'accounting',                  '会计', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, 'cashier',                    '出纳', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, 'payroll_specialist',         '薪酬专员', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, 'CSO',                        '销售总监', 12, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, 'marketing_specialist',       '市场专员', 13, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14, 'salesman',                   '业务员', 14, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, 'develop_director',           '研发总监', 15, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, 'architect',                  '架构师', 16, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, 'develop_engineer',           '研发工程师', 17, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, 'testing_engineer',           '测试工程师', 18, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, 'maintenance_engineer',        '运维工程师', 19, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, 'customer_service_specialist', '客服专员', 20, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (21, 'legal_specialist',            '法务专员', 21, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (22, 'purchasing_specialist',       '采购专员', 22, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, 'CEO',           '执行总裁', 1, 'N', 'Chief Executive Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, 'GM',            '总经理', 2, 'N', 'General Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'VP',            '副总裁', 3, 'N', 'Vice President', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, 'CFO',           '财务总监', 4, 'N', 'Chief Financial Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, 'HRD',           '人力资源总监', 5, 'N', 'Human Resource Director', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, 'CTO',           '技术总监', 6, 'N', 'Chief Technology Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, 'CCO',           '首席文化官', 7, 'N', 'Chief Cultural Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8, 'CPO',           '公关总监', 8, 'N', 'Chief Public relation Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9, 'CQO',           '质量总监', 9, 'N', 'Chief Quality Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, 'CSO',           '销售总监', 10, 'N', 'Chief Sales Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, 'MD',            '市场总监', 11, 'N', 'Marketing Director', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, 'OD',            '运营总监', 12, 'N', 'Operations Director', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, 'OM',            '运营经理', 13, 'N', 'Operations Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14, 'Production Manager', '生产经理', 14, 'Y', 'Production Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, 'Product Manager', '产品经理', 15, 'N', 'Product Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, 'Project Manager', '项目经理', 16, 'N', 'Project Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, 'RM',            '大区经理', 17, 'N', 'Regional Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, 'DM',            '地区经理', 18, 'N', 'District Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, 'BM',            '部门经理', 19, 'N', 'Branch Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, 'CM',            '客户经理', 20, 'N', 'Costomer Manager', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (21, 'SA',            '销售助理', 21, 'N', 'Sales Assistant', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (22, 'AVP',           '副总裁助理', 22, 'N', 'Assistant Vice President', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (23, 'Accountant',    '会计', 23, 'N', 'Accountant', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (24, 'Cashier',       '出纳', 24, 'N', 'Cashier', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (25, 'Recruitment Officer',      '招聘专员', 25, 'N', 'Recruitment Officer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (26, 'Training Coordinator',     '培训专员', 26, 'N', 'Training Coordinator', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (27, 'Administrative Assistant', '行政助理', 27, 'N', 'Administrative Assistant', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (28, 'DE',            '开发工程师', 28, 'N', 'Developmental Engineer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (29, 'TE',            '测试工程师', 29, 'N', 'Test Engineer', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30, 'Production Engineer', '生产工程师', 30, 'Y', 'Production Engineer', 1, current_timestamp(), 1, current_timestamp());
+
 
 -- 字典类型
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '停用/启用', 'vt_disabled', null, 1, current_timestamp(), 1, current_timestamp());
@@ -128,7 +137,7 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 -- 配置
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_captcha_enabled', 'true', '用户登录-验证码启用/停用', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户初始密码', 'vt_user_init_password', 'aday.fun', '用户管理-初始密码', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '提醒用户长时间未修改密码的时间间隔。单位：天。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。提醒用户长时间未修改密码的时间间隔。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '系统管理员角色的角色编码。用以接收系统维护相关消息，告警等', 1, current_timestamp(), 1, current_timestamp());
 
 

@@ -76,7 +76,9 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         wrapper.gt(fileDO.getSearchStartTime() != null, FileDO::getCreateTime, fileDO.getSearchStartTime());
         wrapper.le(fileDO.getSearchEndTime() != null, FileDO::getCreateTime, fileDO.getSearchEndTime());
         if (StrValidator.isNotBlank(fileDO.getKeywords())) {
-            wrapper.or(w -> w.like(FileDO::getName, fileDO.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(FileDO::getName, fileDO.getKeywords()));
+            });
         }
         return wrapper;
     }

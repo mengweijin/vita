@@ -55,8 +55,10 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
         wrapper.gt(message.getSearchStartTime() != null, MessageDO::getCreateTime, message.getSearchStartTime());
         wrapper.le(message.getSearchEndTime() != null, MessageDO::getCreateTime, message.getSearchEndTime());
         if (StrUtil.isNotBlank(message.getKeywords())) {
-            wrapper.or(w -> w.like(MessageDO::getTitle, message.getKeywords()));
-            wrapper.or(w -> w.like(MessageDO::getContent, message.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(MessageDO::getTitle, message.getKeywords()));
+                w.or(w1 -> w1.like(MessageDO::getContent, message.getKeywords()));
+            });
         }
         return wrapper;
     }

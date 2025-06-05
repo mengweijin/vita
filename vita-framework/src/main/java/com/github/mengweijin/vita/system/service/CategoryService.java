@@ -31,10 +31,11 @@ public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> 
         wrapper.gt(category.getSearchStartTime() != null, CategoryDO::getCreateTime, category.getSearchStartTime());
         wrapper.le(category.getSearchEndTime() != null, CategoryDO::getCreateTime, category.getSearchEndTime());
         if (StrUtil.isNotBlank(category.getKeywords())) {
-            wrapper.or(w -> w.like(CategoryDO::getName, category.getKeywords()));
-            wrapper.or(w -> w.like(CategoryDO::getCode, category.getKeywords()));
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(CategoryDO::getName, category.getKeywords()));
+                w.or(w1 -> w1.like(CategoryDO::getCode, category.getKeywords()));
+            });
         }
-        wrapper.orderByAsc(CategoryDO::getSeq);
         return wrapper;
     }
 

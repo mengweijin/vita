@@ -58,7 +58,7 @@ public class RoleController {
     @GetMapping("/page")
     public IPage<RoleDO> page(Page<RoleDO> page, RoleDO role) {
         LambdaQueryWrapper<RoleDO> wrapper = roleService.getQueryWrapper(role);
-        return roleService.page(page, wrapper);
+        return roleService.page(page, wrapper.orderByAsc(RoleDO::getSeq));
     }
 
     /**

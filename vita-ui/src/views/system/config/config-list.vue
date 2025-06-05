@@ -1,10 +1,8 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
-import { columns } from './post-hook.js';
-import PostEdit from './post-edit.vue';
+import { configApi } from "@/api/system/config-api";
+import { columns } from './config-hook.js';
+import ConfigEdit from './config-edit.vue';
 import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 
@@ -19,7 +17,6 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   keywords: undefined,
-  disabled: undefined,
   current: 1,
   size: 10,
   total: 0,
@@ -34,31 +31,31 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  postApi.page(queryParams).then((res) => {
+  configApi.page(queryParams).then((res) => {
     tableData.value = res.records;
     queryParams.total = res.total;
     loading.value = false;
   });
 };
 
-const postEditRef = ref(null);
+const configEditRef = ref(null);
 
 const handleAdd = () => {
-  postEditRef.value.data = {};
-  postEditRef.value.visible = true;
+  configEditRef.value.data = {};
+  configEditRef.value.visible = true;
 }
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  postEditRef.value.data = { ...row };
-  postEditRef.value.visible = true;
+  configEditRef.value.data = { ...row };
+  configEditRef.value.visible = true;
 }
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
+  configApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -87,10 +84,7 @@ onMounted(() => {
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
     class="vt-search-container">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
-    </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtDictSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtDictSelect>
+      <el-input v-model="queryParams.keywords" placeholder="名称、编码、值" clearable />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -153,14 +147,9 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="岗位名称" min-width="200" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="200" />
-      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
-        <template #default="{ row }">
-          <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="配置名称" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="配置编码" min-width="260" />
+      <el-table-column v-if="columns.val.visible" prop="val" label="值" min-width="160" />
       <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
         min-width="100" />
@@ -217,7 +206,7 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>
+  <ConfigEdit ref="configEditRef" @refresh-table="loadTableData"></ConfigEdit>
 </template>
 
 <style scoped></style>

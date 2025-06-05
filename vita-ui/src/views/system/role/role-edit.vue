@@ -1,5 +1,5 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
+import { roleApi } from "@/api/system/role-api";
 
 const loading = ref(true);
 
@@ -36,12 +36,12 @@ const onSubmit = () => {
       return;
     }
     if (form.id) {
-      postApi.update(form).then((r) => {
+      roleApi.update(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });
     } else {
-      postApi.create(form).then((r) => {
+      roleApi.create(form).then((r) => {
         emit('refresh-table');
         onClosed();
       });

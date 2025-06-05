@@ -59,7 +59,8 @@ public class CategoryController {
     @SaCheckPermission("system:category:select")
     @GetMapping("/list")
     public List<CategoryDO> list(CategoryDO categoryDO) {
-        return categoryService.list(new LambdaQueryWrapper<>(categoryDO));
+        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.getQueryWrapper(categoryDO);
+        return categoryService.list(wrapper.orderByAsc(CategoryDO::getSeq));
     }
 
     /**

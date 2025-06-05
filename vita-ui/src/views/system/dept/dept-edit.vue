@@ -14,16 +14,20 @@ const form = reactive({
   id: undefined,
   parentId: undefined,
   name: undefined,
+  code: undefined,
   seq: undefined,
   disabled: undefined,
+  remark: undefined,
 });
 
 const init = () => {
   form.id = data.value.id ?? undefined;
   form.parentId = data.value.parentId ?? undefined;
   form.name = data.value.name ?? undefined;
+  form.code = data.value.code ?? undefined;
   form.seq = data.value.seq ?? 1;
   form.disabled = data.value.disabled ?? 'N';
+  form.remark = data.value.remark ?? undefined;
 };
 
 const formRef = ref(null);
@@ -59,11 +63,13 @@ const deptTreeSelectOptions = computed(() => {
   return toArrayTree(deptList.value, { sortKey: 'seq' });
 });
 
-const onOpened = async () => {
-  deptList.value = await deptApi.list();
-  init();
-  await nextTick();
-  loading.value = false;
+const onOpened = () => {
+  loading.value = true;
+  deptApi.list().then((res) => {
+    deptList.value = res;
+    init();
+    loading.value = false;
+  });
 }
 
 const onClosed = () => {
@@ -94,6 +100,10 @@ defineExpose({ visible, data })
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
+      <el-form-item prop="code" label="编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
+      </el-form-item>
+
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
@@ -107,6 +117,10 @@ defineExpose({ visible, data })
           </el-form-item>
         </el-col>
       </el-row>
+
+      <el-form-item prop="remark" label="备注">
+        <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <div>

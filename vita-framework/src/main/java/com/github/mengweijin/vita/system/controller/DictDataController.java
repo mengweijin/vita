@@ -51,7 +51,7 @@ public class DictDataController {
     @GetMapping("/page")
     public IPage<DictDataDO> page(Page<DictDataDO> page, DictDataDO dictData) {
         LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.getQueryWrapper(dictData);
-        return dictDataService.page(page, wrapper);
+        return dictDataService.page(page, wrapper.orderByAsc(DictDataDO::getSeq));
     }
 
     /**

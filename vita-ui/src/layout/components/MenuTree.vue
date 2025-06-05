@@ -8,7 +8,7 @@ const { menuList } = defineProps({
 
 const handleClick = (menu) => {
   if ('IFRAME' === menu.type) {
-
+    console.log(menu);
   } else if ('URL' === menu.type) {
     window.open(menu.url, '_blank');
   }

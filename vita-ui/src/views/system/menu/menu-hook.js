@@ -11,7 +11,7 @@ export const columns = reactive({
   component: { label: '组件', visible: true },
   routeName: { label: '路由名称', visible: false },
   routePath: { label: '路由路径', visible: false },
-  url: { label: 'URL', visible: false },
+  url: { label: 'URL', visible: true },
   createByName: { label: '创建者', visible: false },
   createTime: { label: '创建时间', visible: false },
   updateByName: { label: '更新者', visible: false },

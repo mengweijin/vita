@@ -1,7 +1,7 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
-import { columns } from './post-hook.js';
-import PostEdit from './post-edit.vue';
+import { roleApi } from "@/api/system/role-api";
+import { columns } from './role-hook.js';
+import RoleEdit from './role-edit.vue';
 import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import VtDictTag from "@/components/modules/vt-dict-tag.vue";
 import VtDictSelect from "@/components/modules/vt-dict-select.vue";
@@ -34,31 +34,31 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  postApi.page(queryParams).then((res) => {
+  roleApi.page(queryParams).then((res) => {
     tableData.value = res.records;
     queryParams.total = res.total;
     loading.value = false;
   });
 };
 
-const postEditRef = ref(null);
+const roleEditRef = ref(null);
 
 const handleAdd = () => {
-  postEditRef.value.data = {};
-  postEditRef.value.visible = true;
+  roleEditRef.value.data = {};
+  roleEditRef.value.visible = true;
 }
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  postEditRef.value.data = { ...row };
-  postEditRef.value.visible = true;
+  roleEditRef.value.data = { ...row };
+  roleEditRef.value.visible = true;
 }
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
+  roleApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -153,8 +153,8 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="岗位名称" min-width="200" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="200" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="角色名称" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="200" />
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
           <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
@@ -217,7 +217,7 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>
+  <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
 </template>
 
 <style scoped></style>
