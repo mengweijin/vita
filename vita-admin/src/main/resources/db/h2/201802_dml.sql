@@ -135,9 +135,9 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 
 
 -- 配置
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_captcha_enabled', 'true', '用户登录-验证码启用/停用', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户初始密码', 'vt_user_init_password', 'aday.fun', '用户管理-初始密码', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。提醒用户长时间未修改密码的时间间隔。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_captcha_enabled', 'true', '[ true, false ]。用户登录时是否启用验证码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户初始密码', 'vt_user_init_password', 'aday.fun', '用户初始密码。密码长度应该在8-18位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。系统消息中提醒用户长时间未修改密码的时间间隔。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '系统管理员角色的角色编码。用以接收系统维护相关消息，告警等', 1, current_timestamp(), 1, current_timestamp());
 
 
@@ -218,7 +218,7 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,CO
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021,null,'DIR','系统监控','monitor:system:view','Monitor','/monitor',null,null,21,'ep:monitor','N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021001,10021,'MENU','应用监控','monitor:application:view','MonitorApplication','/monitor/application','monitor/application/monitor-application.vue',null,1,'ep:data-line','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021001,10021,'MENU','应用监控','monitor:server:view','MonitorServer','/monitor/server','monitor/server-view.vue',null,1,'ep:data-line','N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021002,10021,'MENU','缓存监控','monitor:cache:view','MonitorCache','/monitor/cache','monitor/cache/monitor-cache.vue',null,2,'ep:data-analysis','N',1,current_timestamp(),1,current_timestamp());
 

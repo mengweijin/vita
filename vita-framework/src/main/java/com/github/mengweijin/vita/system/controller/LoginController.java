@@ -6,17 +6,21 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.ratelimit.ERateLimitStrategy;
 import com.github.mengweijin.vita.framework.ratelimit.RateLimit;
 import com.github.mengweijin.vita.framework.repeatsubmit.RepeatSubmit;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.dromara.hutool.core.map.MapUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @author mengweijin
@@ -34,9 +38,9 @@ public class LoginController {
     @SaIgnore
     @RepeatSubmit(interval = 3000)
     @PostMapping("/login")
-    public R<LoginUserVO> login(@Valid @RequestBody LoginBO loginBO) {
-        LoginUserVO loginUser = loginService.login(loginBO);
-        return R.ok(loginUser);
+    public R<Map<String, Object>> login(@Valid @RequestBody LoginBO loginBO) {
+        String token = loginService.login(loginBO);
+        return R.ok(MapUtil.of("token", token));
     }
 
     @PostMapping("/logout")
@@ -58,4 +62,8 @@ public class LoginController {
         return loginService.getCaptcha();
     }
 
+    @GetMapping("/get/login-user")
+    public LoginUserVO getLoginUser() {
+        return LoginHelper.getLoginUser();
+    }
 }

@@ -5,7 +5,6 @@ import { loginApi } from '@/api/login-api';
 import router from '@/router/index';
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const redirect = ref('/');
 
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
@@ -58,17 +57,24 @@ const onForgetPassword = () => {
 };
 
 const onSubmit = () => {
+
   formRef.value.validate((valid, fields) => {
     if (valid) {
+      // loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
       loginApi.login(form).then(async (r) => {
-        // 保存用户和token 到 userStore
-        userStore.initUser(r.data);
-        // 加载字典
-        await dictStore.initDicts();
+        // 这里手动 loading
+        let loading = ElLoading.service({ fullscreen: true });
+
+        // 先保存 token 到 userStore，并初始化用户基本信息、角色、权限等
+        await userStore.initUser(r.data.token);
         // 加载菜单
         await menuStore.initMenus();
+        // 加载字典
+        await dictStore.initDicts();
         // 跳转到访问页或首页
         router.push(route.query.redirect || '/');
+
+        loading?.close();
       });
     } else {
       // fields 只有在验证失败的情况下才有值

@@ -29,8 +29,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :router="true" :default-active="activeMenu"
-    class="vt-menu">
+  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :unique-opened="true" :router="true"
+    :default-active="activeMenu" class="vt-menu">
     <el-menu-item index="/home">
       <Icon icon="ant-design:home-filled" width="24" height="24" />
       <span>首页</span>

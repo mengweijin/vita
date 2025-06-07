@@ -4,7 +4,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -48,40 +47,44 @@ public class LoginService {
 
     private MathGenerator mathGenerator;
 
-    public LoginUserVO login(LoginBO loginBO) {
+    public String login(LoginBO loginBO) {
         HttpServletRequest request = ServletUtils.getRequest();
-        try {
-            if(configService.getCaptchaEnabled()) {
-                boolean validate = this.checkCaptcha(request, loginBO.getCaptcha());
-                if(!validate) {
-                    throw new ClientException("The captcha code was invalid!");
-                }
+        if (configService.getCaptchaEnabled()) {
+            boolean validate = this.checkCaptcha(request, loginBO.getCaptcha());
+            if (!validate) {
+                throw new ClientException("The captcha code was invalid!");
             }
-
-            UserAgent userAgent = ServletUtils.getUserAgent(request);
-            String platformName = Optional.ofNullable(userAgent).map(UserAgent::getPlatform).map(Platform::getName).orElse(null);
-
-            // 校验指定账号是否已被封禁，如果被封禁则抛出异常 `DisableServiceException`
-            StpUtil.checkDisable(loginBO.getUsername());
-
-            UserDO user = userService.getByUsername(loginBO.getUsername());
-            if (user == null) {
-                throw new ClientException("The username or password incorrect!");
-            }
-
-            if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
-                throw new ClientException("The username or password incorrect!");
-            }
-
-            StpUtil.login(loginBO.getUsername(), new SaLoginParameter().setIsLastingCookie(loginBO.isRememberMe()).setDeviceType(platformName));
-
-            LoginUserVO loginUser = this.buildLoginUser(user);
-            LoginHelper.setLoginUser(loginUser);
-            return loginUser;
-        } catch (RuntimeException e) {
-            logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, e.getMessage(), request);
-            throw new ServerException(e);
         }
+
+        UserAgent userAgent = ServletUtils.getUserAgent(request);
+        String platformName = Optional.ofNullable(userAgent).map(UserAgent::getPlatform).map(Platform::getName).orElse(null);
+
+        // 校验指定账号是否已被封禁，如果被封禁则抛出异常 `DisableServiceException`
+        StpUtil.checkDisable(loginBO.getUsername());
+
+        UserDO user = userService.getByUsername(loginBO.getUsername());
+
+        String msg = "The username or password incorrect!";
+        if (user == null) {
+            logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
+            throw new ClientException(msg);
+        }
+
+        if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
+            logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
+            throw new ClientException("The username or password incorrect!");
+        }
+
+        SaLoginParameter saLoginParameter = new SaLoginParameter()
+                .setIsLastingCookie(loginBO.isRememberMe())
+                .setDeviceType(platformName);
+
+        StpUtil.login(loginBO.getUsername(), saLoginParameter);
+
+        LoginUserVO loginUser = this.buildLoginUser(user);
+        LoginHelper.setLoginUser(loginUser);
+
+        return loginUser.getToken();
     }
 
     private LoginUserVO buildLoginUser(UserDO user) {
@@ -102,7 +105,7 @@ public class LoginService {
         Cache<String, AbstractCaptcha> captchaCache = CacheFactory.getCaptchaCache();
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 100);
+        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 60);
         // 自定义验证码内容为四则运算方式，每个数字的长度为 1 位
         captcha.setGenerator(mathGenerator);
 

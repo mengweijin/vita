@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022/10/30
  */
 @RestController
-@RequestMapping("/monitor/application")
-public class ApplicationController {
+@RequestMapping("/monitor/server")
+public class ServerController {
 
-    @SaCheckPermission("monitor:application:view")
-    @GetMapping
+    @SaCheckPermission("monitor:server:view")
+    @GetMapping("/info")
     public MonitorVO serverInfo() {
         return new MonitorVO();
     }

@@ -47,3 +47,27 @@ export const addFullPath = (list, { idKey = 'id', parentKey = 'parentId', pathKe
 
   return list;
 };
+
+/**
+ * 秒数转 time ago 格式
+ * @param {LongLong} seconds
+ * @returns
+ */
+export const timeAgo = (seconds) => {
+  let daySec = 24 * 60 * 60;
+  let hourSec = 60 * 60;
+  let minuteSec = 60;
+  let dd = Math.floor(seconds / daySec);
+  let hh = Math.floor((seconds % daySec) / hourSec);
+  let mm = Math.floor((seconds % hourSec) / minuteSec);
+  let ss = seconds % minuteSec;
+  if (dd > 0) {
+    return dd + '天' + hh + '小时' + mm + '分钟' + ss + '秒';
+  } else if (hh > 0) {
+    return hh + '小时' + mm + '分钟' + ss + '秒';
+  } else if (mm > 0) {
+    return mm + '分钟' + ss + '秒';
+  } else {
+    return ss + '秒';
+  }
+};

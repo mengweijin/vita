@@ -1,3 +1,5 @@
+import { loginApi } from '@/api/login-api';
+
 const { VITE_APP_PREFIX } = import.meta.env;
 
 export const useUserStore = defineStore(
@@ -5,8 +7,13 @@ export const useUserStore = defineStore(
   () => {
     const user = ref(null);
 
-    const initUser = (data) => {
-      user.value = data;
+    const initUser = async (token) => {
+      // 先保存 token
+      user.value = { token: token };
+      // 这个请求就需要 token
+      let loginUser = await loginApi.getLoginUser();
+      // 重新赋值 user
+      user.value = loginUser;
     };
 
     const getToken = () => user.value?.token;
@@ -23,7 +30,7 @@ export const useUserStore = defineStore(
   },
   {
     persist: {
-      storage: sessionStorage,
+      storage: localStorage,
     },
   },
 );

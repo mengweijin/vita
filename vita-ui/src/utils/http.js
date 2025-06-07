@@ -11,6 +11,8 @@ let loadingInstance;
 
 // 创建axios实例
 let axiosInstance = axios.create({
+  // 自定义属性，是否启用全屏 loading
+  loading: true,
   // axios中请求配置有baseURL选项，表示请求URL公共部分。参考文档 https://cn.vitejs.dev/guide/env-and-mode.html
   baseURL: VITE_API_BASE,
   // 超时，单位：毫秒
@@ -32,7 +34,7 @@ let axiosInstance = axios.create({
 // 添加请求拦截器。在发送请求之前做些什么，比如设置 token，权限认证等
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.method?.toUpperCase() === 'POST') {
+    if (config.loading && config.method?.toUpperCase() === 'POST') {
       loadingInstance = ElLoading.service({ fullscreen: true });
     }
 
@@ -54,7 +56,9 @@ axiosInstance.interceptors.response.use(
     // 获取请求方式
     const method = response.config.method;
     if (method.toUpperCase() === 'POST') {
-      loadingInstance?.close();
+      if (response.config.loading) {
+        loadingInstance?.close();
+      }
       ElMessage.success({ message: '操作成功!', duration: 3000, showClose: true });
     }
     return response.data;
