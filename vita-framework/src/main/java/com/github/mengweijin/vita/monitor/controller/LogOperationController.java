@@ -38,6 +38,8 @@ import java.util.List;
 @RequestMapping("/monitor/log-operation")
 public class LogOperationController {
 
+    private static final String LOG_TITLE = "操作日志";
+
     private LogOperationService logOperationService;
 
     /**
@@ -86,7 +88,7 @@ public class LogOperationController {
      * </p>
      * @param logOperation {@link LogOperationDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("monitor:logOperation:create")
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody LogOperationDO logOperation) {
@@ -100,7 +102,7 @@ public class LogOperationController {
      * </p>
      * @param logOperation {@link LogOperationDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("monitor:logOperation:update")
     @PostMapping("update")
     public R<Void> update(@Valid @RequestBody LogOperationDO logOperation) {
@@ -114,7 +116,7 @@ public class LogOperationController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:logOperation:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

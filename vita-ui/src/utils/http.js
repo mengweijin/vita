@@ -76,7 +76,7 @@ axiosInstance.interceptors.response.use(
           useDictStore().clear();
           useUserStore().clear();
           // 跳转时携带当前页面路径，登录后可返回
-          router.push({ path: '/login', query: { redirect: router.currentRoute.fullPath } });
+          router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } });
           break;
         case 403:
           ElMessage.error({ message: error.response.status + ' Forbidden', showClose: true });

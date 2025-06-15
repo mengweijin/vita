@@ -67,7 +67,7 @@ const onSubmit = () => {
 
         // 先保存 token 到 userStore，并初始化用户基本信息、角色、权限等
         await userStore.initUser(r.data.token);
-        // 加载菜单
+        // 加载菜单动态路由
         await menuStore.initMenus();
         // 加载字典
         await dictStore.initDicts();

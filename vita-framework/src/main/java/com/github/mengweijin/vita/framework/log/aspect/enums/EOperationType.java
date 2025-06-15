@@ -44,6 +44,12 @@ public enum EOperationType {
      * 下载
      */
     DOWNLOAD,
+
+    /**
+     * 强制下线
+     */
+    OFFLINE,
+
     /**
      * 其他
      */

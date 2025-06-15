@@ -1,17 +1,53 @@
-import { camelCase, isEmpty, find, toValueString } from 'xe-utils';
+import { camelCase, isEmpty, find, toValueString, isPlainObject, isString } from 'xe-utils';
 
-/** 首字母转大写 */
+/**
+ * 首字母转大写
+ */
 export const upperFirst = (str) => {
   return str && str.length > 0 ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 };
 
-/** kebab-case 转 camelCase 再转 PascalCase 格式 */
+/**
+ * kebab-case 转 camelCase 再转 PascalCase 格式
+ */
 export const pascalCase = (str) => upperFirst(camelCase(str));
 
 /**
+ * 判断一个字符串是否为 json
+ * @param {any} val
+ */
+export const isJSON = (val) => {
+  if (isEmpty(val)) {
+    return false;
+  }
+
+  if (isPlainObject(val)) {
+    return true;
+  }
+
+  if (!isString(val)) {
+    return false;
+  }
+
+  let str = val.trim();
+  // 检查首尾字符：合法JSON以 { } 或 [ ] 包裹
+  const isLikeJSON = (str.startsWith('{') && str.endsWith('}')) || (str.startsWith('[') && str.endsWith(']'));
+  if (!isLikeJSON) {
+    return false;
+  }
+
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
  * 仅复制 target 已定义的属性值，且 source 不为空对象才进行复制。
- * @param {*} target 目标对象，要复制到的对象
- * @param {*} source 原始对象，要被复制的对象
+ * @param {Object} target 目标对象，要复制到的对象
+ * @param {Object} source 原始对象，要被复制的对象
  */
 export const copyDefinedProperties = (target, source) => {
   if (!isEmpty(source)) {
@@ -50,7 +86,7 @@ export const addFullPath = (list, { idKey = 'id', parentKey = 'parentId', pathKe
 
 /**
  * 秒数转 time ago 格式
- * @param {LongLong} seconds
+ * @param {Long} seconds
  * @returns
  */
 export const timeAgo = (seconds) => {

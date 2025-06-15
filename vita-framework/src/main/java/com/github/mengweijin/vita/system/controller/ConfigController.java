@@ -37,6 +37,8 @@ import java.util.List;
 @RequestMapping("/system/config")
 public class ConfigController {
 
+    private static final String LOG_TITLE = "配置管理";
+
     private ConfigService configService;
 
     /**
@@ -98,7 +100,7 @@ public class ConfigController {
      * </p>
      * @param config {@link ConfigDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:config:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigDO config) {
@@ -112,7 +114,7 @@ public class ConfigController {
      * </p>
      * @param config {@link ConfigDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigDO config) {
@@ -126,7 +128,7 @@ public class ConfigController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:config:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

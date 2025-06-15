@@ -51,6 +51,8 @@ import java.util.List;
 @RequestMapping("/system/user")
 public class UserController {
 
+    private static final String LOG_TITLE = "用户管理";
+
     private UserService userService;
 
     private UserAvatarService userAvatarService;
@@ -125,7 +127,7 @@ public class UserController {
      *
      * @param userBO {@link UserDO}
      */
-    @Log(operationType = EOperationType.INSERT, saveRequestData = false)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT, saveRequestData = false)
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO userBO) {
@@ -141,7 +143,7 @@ public class UserController {
      *
      * @param userBO {@link UserDO}
      */
-    @Log(operationType = EOperationType.UPDATE, saveRequestData = false)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO userBO) {
@@ -150,7 +152,7 @@ public class UserController {
         return R.result(bool);
     }
 
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:user:update")
     @PostMapping("/set-disabled")
     public R<Void> setDisabled(@NotNull Long id, @NotBlank String disabled) {
@@ -165,7 +167,7 @@ public class UserController {
      *
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:user:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
@@ -184,7 +186,7 @@ public class UserController {
      *
      * @param bo {@link ChangePasswordBO}
      */
-    @Log(operationType = EOperationType.UPDATE, saveRequestData = false)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:changePassword")
     @PostMapping("/change-password")
     public R<Void> changePassword(@Validated @RequestBody ChangePasswordBO bo) {
@@ -199,7 +201,7 @@ public class UserController {
      *
      * @param bo {@link ChangePasswordBO}
      */
-    @Log(operationType = EOperationType.UPDATE, saveRequestData = false)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:resetPassword")
     @PostMapping("/reset-password")
     public R<Void> resetPassword(@Validated @RequestBody ChangePasswordBO bo) {
@@ -228,7 +230,7 @@ public class UserController {
      *
      * @param bo {@link UserRolesBO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:user:setRoles")
     @PostMapping("/set-roles")
     public R<Void> setRoles(@Validated @RequestBody UserRolesBO bo) {

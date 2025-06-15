@@ -2,7 +2,7 @@
 import { monitorServerApi } from "@/api/monitor/server-api";
 import { timeAgo } from "@/utils/tool";
 
-const loading = ref(false);
+const loading = ref(true);
 
 const size = ref('default');
 
@@ -26,13 +26,15 @@ onMounted(() => {
     memoryInfo.value = res.memory;
     jvmInfo.value = res.jvm;
     diskInfo.value = res.disk;
+
+    loading.value = false;
   });
 });
 
 </script>
 
 <template>
-  <el-scrollbar style="height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));">
+  <el-scrollbar v-loading="loading" style="height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));">
     <el-descriptions title="服务器信息" :column="2" :size="size" border style="margin-top: 15px;">
       <el-descriptions-item label="厂商" label-align="right" min-width="200">
         {{ serverInfo?.manufacturer }}
@@ -133,11 +135,16 @@ onMounted(() => {
       </el-descriptions-item>
     </el-descriptions>
 
-    <h4>磁盘信息</h4>
+    <div class="el-descriptions__title" style="margin: 30px 0px 15px 0px;">磁盘信息</div>
     <el-table v-loading="loading" :data="diskInfo" :size="size" stripe border show-overflow-tooltip
       highlight-current-row>
-      <el-table-column prop="name" label="配置名称" min-width="200" fixed="left" />
-      <el-table-column prop="code" label="配置编码" min-width="260" />
+      <el-table-column prop="mountName" label="卷名称" min-width="120" />
+      <el-table-column prop="diskFormat" label="磁盘格式" min-width="100" />
+      <el-table-column prop="diskName" label="磁盘名称" min-width="180" />
+      <el-table-column prop="total" label="磁盘总容量" min-width="100" />
+      <el-table-column prop="free" label="磁盘剩余容量" min-width="100" />
+      <el-table-column prop="used" label="磁盘已使用容量" min-width="100" />
+      <el-table-column prop="usageRate" label="磁盘使用率" min-width="100" />
     </el-table>
 
   </el-scrollbar>

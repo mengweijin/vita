@@ -38,6 +38,8 @@ import java.util.Set;
 @RequestMapping("/system/menu")
 public class MenuController {
 
+    private static final String LOG_TITLE = "菜单管理";
+
     private MenuService menuService;
 
     private RoleMenuService roleMenuService;
@@ -86,7 +88,7 @@ public class MenuController {
      * </p>
      * @param menu {@link MenuDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:menu:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MenuDO menu) {
@@ -100,7 +102,7 @@ public class MenuController {
      * </p>
      * @param menu {@link MenuDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:menu:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MenuDO menu) {
@@ -114,7 +116,7 @@ public class MenuController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:menu:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

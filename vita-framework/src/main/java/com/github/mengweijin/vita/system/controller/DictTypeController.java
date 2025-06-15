@@ -37,6 +37,8 @@ import java.util.List;
 @RequestMapping("/system/dict-type")
 public class DictTypeController {
 
+    private static final String LOG_TITLE = "字典类型";
+
     private DictTypeService dictTypeService;
 
     /**
@@ -86,7 +88,7 @@ public class DictTypeController {
      * </p>
      * @param dictType {@link DictTypeDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictType:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictTypeDO dictType) {
@@ -100,7 +102,7 @@ public class DictTypeController {
      * </p>
      * @param dictType {@link DictTypeDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictType:update")
     @PostMapping("update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictTypeDO dictType) {
@@ -114,7 +116,7 @@ public class DictTypeController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:dictType:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

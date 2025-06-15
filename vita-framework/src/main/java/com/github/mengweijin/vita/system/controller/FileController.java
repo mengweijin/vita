@@ -45,6 +45,8 @@ import java.util.Map;
 @RequestMapping("/system/file")
 public class FileController {
 
+    private static final String LOG_TITLE = "文件管理";
+
     private FileService fileService;
 
     @Log(operationType = EOperationType.UPLOAD)
@@ -151,7 +153,7 @@ public class FileController {
      * </p>
      * @param fileEntity {@link FileDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:file:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FileDO fileEntity) {
@@ -165,7 +167,7 @@ public class FileController {
      * </p>
      * @param fileEntity {@link FileDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:file:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileDO fileEntity) {
@@ -180,7 +182,7 @@ public class FileController {
      * @param ids id
      */
 
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:file:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

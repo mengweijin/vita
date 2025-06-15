@@ -7,6 +7,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
+import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
+import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.system.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.system.domain.vo.SaTerminalInfoVO;
@@ -28,6 +30,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/monitor/user-online")
 public class UserOnlineController {
+
+    private static final String LOG_TITLE = "在线用户";
 
     @SaCheckPermission("monitor:userOnline:select")
     @GetMapping("/page")
@@ -60,6 +64,7 @@ public class UserOnlineController {
         return session.getTerminalList();
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
     @PostMapping("/kick-out-by-username/{username}")
     public R<Void> kickoffByLoginId(@PathVariable("username") String loginId) {
@@ -68,6 +73,7 @@ public class UserOnlineController {
         return R.ok();
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
     @PostMapping("/kick-out-by-token")
     public R<Void> kickoffByToken(@RequestBody SaTerminalInfoVO vo) {

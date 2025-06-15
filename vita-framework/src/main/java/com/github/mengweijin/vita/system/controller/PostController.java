@@ -37,6 +37,8 @@ import java.util.List;
 @RequestMapping("/system/post")
 public class PostController {
 
+    private static final String LOG_TITLE = "岗位管理";
+
     private PostService postService;
 
     /**
@@ -86,7 +88,7 @@ public class PostController {
      * </p>
      * @param post {@link PostDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:post:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody PostDO post) {
@@ -100,7 +102,7 @@ public class PostController {
      * </p>
      * @param post {@link PostDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:post:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody PostDO post) {
@@ -114,7 +116,7 @@ public class PostController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:post:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

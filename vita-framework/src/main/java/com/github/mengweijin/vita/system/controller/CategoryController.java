@@ -34,6 +34,8 @@ import java.util.List;
 @RequestMapping("/system/category")
 public class CategoryController {
 
+    private static final String LOG_TITLE = "分类管理";
+
     private CategoryService categoryService;
 
     /**
@@ -80,7 +82,7 @@ public class CategoryController {
      *
      * @param categoryDO {@link CategoryDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:category:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody CategoryDO categoryDO) {
@@ -93,7 +95,7 @@ public class CategoryController {
      *
      * @param categoryDO {@link CategoryDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:category:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody CategoryDO categoryDO) {
@@ -106,7 +108,7 @@ public class CategoryController {
      *
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:category:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

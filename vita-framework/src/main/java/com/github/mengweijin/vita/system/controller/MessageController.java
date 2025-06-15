@@ -37,6 +37,8 @@ import java.util.List;
 @RequestMapping("/system/message")
 public class MessageController {
 
+    private static final String LOG_TITLE = "消息管理";
+
     private MessageService messageService;
 
     /**
@@ -86,7 +88,7 @@ public class MessageController {
      * </p>
      * @param message {@link MessageDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:message:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MessageDO message) {
@@ -100,7 +102,7 @@ public class MessageController {
      * </p>
      * @param message {@link MessageDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:message:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MessageDO message) {
@@ -114,7 +116,7 @@ public class MessageController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:message:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

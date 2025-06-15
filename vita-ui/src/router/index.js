@@ -55,7 +55,8 @@ const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
 
 export const initDynamicRoutes = () => {
   const menuStore = useMenuStore();
-  addDynamicRoutes(menuStore.getMenus());
+  let menus = menuStore.getMenus();
+  addDynamicRoutes(menus);
 };
 
 /** 路由实例 */
@@ -76,7 +77,7 @@ const router = createRouter({
 let isDynamicRoutesAdded = false;
 
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   NProgress.start();
   // 设置标题
   let title = to?.meta?.title;
@@ -96,7 +97,7 @@ router.beforeEach((to, from) => {
 
   // 已登录但访问登录页。强制跳转到参数页或首页
   if (isLogin() && to.fullPath.startsWith('/login')) {
-    return { path: from.query.redirect || '/' };
+    return { path: to.query.redirect || '/' };
   }
 
   // 增加动态路由

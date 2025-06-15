@@ -3,6 +3,8 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.domain.R;
+import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
+import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.vo.CacheVO;
 import lombok.AllArgsConstructor;
 import org.dromara.hutool.core.text.CharSequenceUtil;
@@ -29,6 +31,8 @@ import java.util.List;
 @RequestMapping("/monitor/cache")
 public class CacheController {
 
+    private static final String LOG_TITLE = "缓存监控";
+
     private CacheManager cacheManager;
 
     @SaCheckPermission("monitor:cache:view")
@@ -53,6 +57,17 @@ public class CacheController {
         return list;
     }
 
+    @SaCheckPermission("monitor:cache:view")
+    @GetMapping("/queryCacheByNameAndKey")
+    public CacheVO getCacheByNameAndKey(@RequestParam("cacheName") String cacheName, @RequestParam("cacheKey") String cacheKey) {
+        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+        if (cache != null) {
+            Object value = cache.get(cacheKey);
+            return new CacheVO(cacheKey, cacheKey, value);
+        }
+        return null;
+    }
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:cache:remove")
     @PostMapping("/remove")
     public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey", required = false) Serializable cacheKey) {
@@ -66,6 +81,7 @@ public class CacheController {
         }
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:cache:remove")
     @PostMapping("/clear")
     public R<Void> clear() {

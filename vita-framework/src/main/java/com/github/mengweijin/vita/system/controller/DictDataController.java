@@ -37,6 +37,8 @@ import java.util.List;
 @RequestMapping("/system/dict-data")
 public class DictDataController {
 
+    private static final String LOG_TITLE = "字典数据";
+
     private DictDataService dictDataService;
 
     /**
@@ -92,7 +94,7 @@ public class DictDataController {
      * </p>
      * @param dictData {@link DictDataDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictData:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataDO dictData) {
@@ -107,7 +109,7 @@ public class DictDataController {
      * </p>
      * @param dictData {@link DictDataDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictData:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataDO dictData) {
@@ -122,7 +124,7 @@ public class DictDataController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:dictData:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {

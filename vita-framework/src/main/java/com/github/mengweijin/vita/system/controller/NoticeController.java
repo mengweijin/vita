@@ -38,6 +38,8 @@ import java.util.List;
 @RequestMapping("/system/notice")
 public class NoticeController {
 
+    private static final String LOG_TITLE = "通知公告";
+
     private NoticeService noticeService;
 
     /**
@@ -101,7 +103,7 @@ public class NoticeController {
      * </p>
      * @param notice {@link NoticeDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:notice:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody NoticeDO notice) {
@@ -115,14 +117,14 @@ public class NoticeController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:notice:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(noticeService.removeByIds(Arrays.asList(ids)));
     }
 
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:notice:release")
     @PostMapping("/release/{id}")
     public R<Void> release(@PathVariable("id") Long id) {
@@ -130,7 +132,7 @@ public class NoticeController {
         return R.result(bool);
     }
 
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:notice:revocation")
     @PostMapping("/revoke/{id}")
     public R<Void> revoke(@PathVariable("id") Long id) {

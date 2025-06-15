@@ -42,6 +42,8 @@ import java.util.Set;
 @RequestMapping("/system/role")
 public class RoleController {
 
+    private static final String LOG_TITLE = "角色管理";
+
     private RoleService roleService;
 
     private UserRoleService userRoleService;
@@ -107,7 +109,7 @@ public class RoleController {
      * </p>
      * @param role {@link RoleDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:role:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody RoleDO role) {
@@ -121,7 +123,7 @@ public class RoleController {
      * </p>
      * @param role {@link RoleDO}
      */
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:role:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody RoleDO role) {
@@ -129,7 +131,7 @@ public class RoleController {
         return R.result(bool);
     }
 
-    @Log(operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:role:update")
     @PostMapping("/set-permission")
     public R<Void> setPermission(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
@@ -143,7 +145,7 @@ public class RoleController {
      * </p>
      * @param ids id
      */
-    @Log(operationType = EOperationType.REMOVE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:role:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
