@@ -1,19 +1,19 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
+import com.github.mengweijin.vita.monitor.mapper.LogLoginMapper;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.enums.ELoginType;
 import com.github.mengweijin.vita.system.enums.EYesNo;
-import com.github.mengweijin.vita.monitor.mapper.LogLoginMapper;
 import com.github.mengweijin.vita.system.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.dromara.hutool.http.server.servlet.ServletUtil;
@@ -21,7 +21,6 @@ import org.dromara.hutool.http.useragent.UserAgent;
 import org.dromara.hutool.http.useragent.UserAgentInfo;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,31 +40,29 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLoginDO> {
 
     private UserService userService;
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param logLogin {@link LogLoginDO}
-     * @return IPage
-     */
-    public IPage<LogLoginDO> page(IPage<LogLoginDO> page, LogLoginDO logLogin){
-        LambdaQueryWrapper<LogLoginDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(logLogin.getLoginType()), LogLoginDO::getLoginType, logLogin.getLoginType())
-                .eq(StrValidator.isNotBlank(logLogin.getIp()), LogLoginDO::getIp, logLogin.getIp())
-                .eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLoginDO::getIpLocation, logLogin.getIpLocation())
-                .eq(StrValidator.isNotBlank(logLogin.getBrowser()), LogLoginDO::getBrowser, logLogin.getBrowser())
-                .eq(StrValidator.isNotBlank(logLogin.getPlatform()), LogLoginDO::getPlatform, logLogin.getPlatform())
-                .eq(StrValidator.isNotBlank(logLogin.getOs()), LogLoginDO::getOs, logLogin.getOs())
-                .eq(StrValidator.isNotBlank(logLogin.getSuccess()), LogLoginDO::getSuccess, logLogin.getSuccess())
-                .eq(StrValidator.isNotBlank(logLogin.getErrorMsg()), LogLoginDO::getErrorMsg, logLogin.getErrorMsg())
-                .eq(!Objects.isNull(logLogin.getId()), LogLoginDO::getId, logLogin.getId())
-                .eq(!Objects.isNull(logLogin.getCreateBy()), LogLoginDO::getCreateBy, logLogin.getCreateBy())
-                .eq(!Objects.isNull(logLogin.getCreateTime()), LogLoginDO::getCreateTime, logLogin.getCreateTime())
-                .eq(!Objects.isNull(logLogin.getUpdateBy()), LogLoginDO::getUpdateBy, logLogin.getUpdateBy())
-                .eq(!Objects.isNull(logLogin.getUpdateTime()), LogLoginDO::getUpdateTime, logLogin.getUpdateTime())
-                .like(StrValidator.isNotBlank(logLogin.getUsername()), LogLoginDO::getUsername, logLogin.getUsername());
-        query.orderByDesc(LogLoginDO::getCreateTime);
-        return this.page(page, query);
+    public LambdaQueryWrapper<LogLoginDO> getQueryWrapper(LogLoginDO logLogin) {
+        LambdaQueryWrapper<LogLoginDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(logLogin.getId() != null, LogLoginDO::getId, logLogin.getId());
+
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLoginDO::getIpLocation, logLogin.getIpLocation());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getLoginType()), LogLoginDO::getLoginType, logLogin.getLoginType());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getBrowser()), LogLoginDO::getBrowser, logLogin.getBrowser());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getPlatform()), LogLoginDO::getPlatform, logLogin.getPlatform());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getOs()), LogLoginDO::getOs, logLogin.getOs());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getSuccess()), LogLoginDO::getSuccess, logLogin.getSuccess());
+        wrapper.eq(StrValidator.isNotBlank(logLogin.getErrorMsg()), LogLoginDO::getErrorMsg, logLogin.getErrorMsg());
+
+        wrapper.eq(logLogin.getCreateBy() != null, LogLoginDO::getCreateBy, logLogin.getCreateBy());
+        wrapper.eq(logLogin.getUpdateBy() != null, LogLoginDO::getUpdateBy, logLogin.getUpdateBy());
+        wrapper.gt(logLogin.getSearchStartTime() != null, LogLoginDO::getCreateTime, logLogin.getSearchStartTime());
+        wrapper.le(logLogin.getSearchEndTime() != null, LogLoginDO::getCreateTime, logLogin.getSearchEndTime());
+        if (StrUtil.isNotBlank(logLogin.getKeywords())) {
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(LogLoginDO::getUsername, logLogin.getKeywords()));
+                w.or(w1 -> w1.like(LogLoginDO::getIp, logLogin.getKeywords()));
+            });
+        }
+        return wrapper;
     }
 
     public void addLoginLogAsync(String username, ELoginType loginType, String errorMsg, HttpServletRequest request) {

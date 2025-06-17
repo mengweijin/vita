@@ -1,17 +1,15 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -32,27 +30,26 @@ public class LogOperationService extends ServiceImpl<LogOperationMapper, LogOper
         this.save(entity);
     }
 
-    /**
-     * Custom paging query
-     * @param page page
-     * @param logOperation {@link LogOperationDO}
-     * @return IPage
-     */
-    public IPage<LogOperationDO> page(IPage<LogOperationDO> page, LogOperationDO logOperation){
-        LambdaQueryWrapper<LogOperationDO> query = new LambdaQueryWrapper<>();
-        query
-                .eq(StrValidator.isNotBlank(logOperation.getOperationType()), LogOperationDO::getOperationType, logOperation.getOperationType())
-                .eq(StrValidator.isNotBlank(logOperation.getHttpMethod()), LogOperationDO::getHttpMethod, logOperation.getHttpMethod())
-                .eq(StrValidator.isNotBlank(logOperation.getSuccess()), LogOperationDO::getSuccess, logOperation.getSuccess())
-                .eq(StrValidator.isNotBlank(logOperation.getErrorMsg()), LogOperationDO::getErrorMsg, logOperation.getErrorMsg())
-                .eq(!Objects.isNull(logOperation.getId()), LogOperationDO::getId, logOperation.getId())
-                .eq(!Objects.isNull(logOperation.getCreateBy()), LogOperationDO::getCreateBy, logOperation.getCreateBy())
-                .eq(!Objects.isNull(logOperation.getCreateTime()), LogOperationDO::getCreateTime, logOperation.getCreateTime())
-                .eq(!Objects.isNull(logOperation.getUpdateBy()), LogOperationDO::getUpdateBy, logOperation.getUpdateBy())
-                .eq(!Objects.isNull(logOperation.getUpdateTime()), LogOperationDO::getUpdateTime, logOperation.getUpdateTime())
-                .like(StrValidator.isNotBlank(logOperation.getTitle()), LogOperationDO::getTitle, logOperation.getTitle())
-                .like(StrValidator.isNotBlank(logOperation.getUrl()), LogOperationDO::getUrl, logOperation.getUrl())
-                .like(StrValidator.isNotBlank(logOperation.getMethodName()), LogOperationDO::getMethodName, logOperation.getMethodName());
-        return this.page(page, query);
+    public LambdaQueryWrapper<LogOperationDO> getQueryWrapper(LogOperationDO logOperation) {
+        LambdaQueryWrapper<LogOperationDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(logOperation.getId() != null, LogOperationDO::getId, logOperation.getId());
+
+        wrapper.eq(StrValidator.isNotBlank(logOperation.getOperationType()), LogOperationDO::getOperationType, logOperation.getOperationType());
+        wrapper.eq(StrValidator.isNotBlank(logOperation.getHttpMethod()), LogOperationDO::getHttpMethod, logOperation.getHttpMethod());
+        wrapper.eq(StrValidator.isNotBlank(logOperation.getSuccess()), LogOperationDO::getSuccess, logOperation.getSuccess());
+        wrapper.eq(StrValidator.isNotBlank(logOperation.getErrorMsg()), LogOperationDO::getErrorMsg, logOperation.getErrorMsg());
+
+        wrapper.eq(logOperation.getCreateBy() != null, LogOperationDO::getCreateBy, logOperation.getCreateBy());
+        wrapper.eq(logOperation.getUpdateBy() != null, LogOperationDO::getUpdateBy, logOperation.getUpdateBy());
+        wrapper.gt(logOperation.getSearchStartTime() != null, LogOperationDO::getCreateTime, logOperation.getSearchStartTime());
+        wrapper.le(logOperation.getSearchEndTime() != null, LogOperationDO::getCreateTime, logOperation.getSearchEndTime());
+        if (StrUtil.isNotBlank(logOperation.getKeywords())) {
+            wrapper.and(w -> {
+                w.or(w1 -> w1.like(LogOperationDO::getTitle, logOperation.getKeywords()));
+                w.or(w1 -> w1.like(LogOperationDO::getUrl, logOperation.getKeywords()));
+                w.or(w1 -> w1.like(LogOperationDO::getMethodName, logOperation.getKeywords()));
+            });
+        }
+        return wrapper;
     }
 }

@@ -35,14 +35,14 @@ public class UserOnlineController {
 
     @SaCheckPermission("monitor:userOnline:select")
     @GetMapping("/page")
-    public IPage<SaSessionVO> page(Page<SaSessionVO> page, @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+    public IPage<SaSessionVO> page(Page<SaSessionVO> page, @RequestParam(value = "keywords", defaultValue = "") String keywords) {
         long size = page.getSize();
         long start = (page.getCurrent() - 1) * size;
 
         List<SaSessionVO> dtoList = new ArrayList<>();
 
         // 分页获取所有已登录的会话id。size = -1 时，为获取所有。
-        List<String> sessionIdList = StpUtil.searchSessionId(keyword, (int) start, (int) size, false);
+        List<String> sessionIdList = StpUtil.searchSessionId(keywords, (int) start, (int) size, false);
         for (String sessionId : sessionIdList) {
             // 根据会话id，查询对应的 SaSession 对象，此处一个 SaSession 对象即代表一个登录的账号
             SaSession session = StpUtil.getSessionBySessionId(sessionId);
@@ -67,7 +67,7 @@ public class UserOnlineController {
     @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
     @PostMapping("/kick-out-by-username/{username}")
-    public R<Void> kickoffByLoginId(@PathVariable("username") String loginId) {
+    public R<Void> kickOutByLoginId(@PathVariable("username") String loginId) {
         // 强制指定账号注销下线
         StpUtil.kickout(loginId);
         return R.ok();
@@ -76,7 +76,7 @@ public class UserOnlineController {
     @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
     @PostMapping("/kick-out-by-token")
-    public R<Void> kickoffByToken(@RequestBody SaTerminalInfoVO vo) {
+    public R<Void> kickOutByToken(@RequestBody SaTerminalInfoVO vo) {
         // 强制指定 Token 注销下线
         StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getEncryptTokenValue()));
         return R.ok();

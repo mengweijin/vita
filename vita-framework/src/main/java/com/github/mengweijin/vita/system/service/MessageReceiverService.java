@@ -2,7 +2,9 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
@@ -33,5 +35,13 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
         wrapper.gt(messageReceiver.getSearchStartTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getSearchStartTime());
         wrapper.le(messageReceiver.getSearchEndTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getSearchEndTime());
         return wrapper;
+    }
+
+    public Long selectUnviewedCount() {
+        Long userId = LoginHelper.getLoginUser().getUserId();
+        return this.lambdaQuery()
+                .eq(MessageReceiverDO::getUserId, userId)
+                .eq(MessageReceiverDO::getViewed, EYesNo.N.getValue())
+                .count();
     }
 }

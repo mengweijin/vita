@@ -9,6 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
+import com.github.mengweijin.vita.system.service.MessageReceiverService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,14 @@ public class MessageController {
     private static final String LOG_TITLE = "消息管理";
 
     private MessageService messageService;
+
+    private MessageReceiverService messageReceiverService;
+
+    @GetMapping("/query/unviewed-count")
+    public Long selectUnviewedCount() {
+        return messageReceiverService.selectUnviewedCount();
+    }
+
 
     /**
      * <p>

@@ -5,9 +5,8 @@ import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.date.DateUtil;
+import org.dromara.hutool.core.date.TimeUtil;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -52,8 +51,9 @@ public class SaTerminalInfoVO {
     public SaTerminalInfoVO(SaTerminalInfo terminalInfo) {
         this.index = terminalInfo.getIndex();
         this.tokenValue = terminalInfo.getTokenValue();
+        this.encryptTokenValue = terminalInfo.getTokenValue();
         this.deviceType = terminalInfo.getDeviceType();
         this.deviceId = terminalInfo.getDeviceId();
-        this.createTime = DateUtil.toLocalDateTime(Instant.ofEpochMilli(terminalInfo.getCreateTime()));
+        this.createTime = TimeUtil.of(terminalInfo.getCreateTime());
     }
 }

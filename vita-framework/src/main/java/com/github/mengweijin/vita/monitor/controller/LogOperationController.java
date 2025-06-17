@@ -53,7 +53,9 @@ public class LogOperationController {
     @SaCheckPermission("monitor:logOperation:select")
     @GetMapping("/page")
     public IPage<LogOperationDO> page(Page<LogOperationDO> page, LogOperationDO logOperation) {
-        return logOperationService.page(page, logOperation);
+        LambdaQueryWrapper<LogOperationDO> wrapper = logOperationService.getQueryWrapper(logOperation);
+        wrapper.orderByDesc(LogOperationDO::getCreateTime);
+        return logOperationService.page(page, wrapper);
     }
 
     /**

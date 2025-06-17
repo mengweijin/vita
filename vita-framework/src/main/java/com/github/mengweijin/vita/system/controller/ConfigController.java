@@ -53,6 +53,7 @@ public class ConfigController {
     @GetMapping("/page")
     public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = configService.getQueryWrapper(config);
+        wrapper.orderByAsc(ConfigDO::getCode);
         return configService.page(page, wrapper);
     }
 

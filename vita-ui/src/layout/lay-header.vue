@@ -10,6 +10,8 @@ import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
+import { messageApi } from '@/api/system/message-api';
+
 // 强制刷新（适合更新静态资源）
 const refresh = () => { top.location.reload(true); };
 
@@ -25,6 +27,13 @@ const onLogout = () => {
 // 绑定目标元素（不传则默认全屏整个页面）
 const target = ref(null);
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
+
+const unviewedMessageCount = ref('');
+
+onMounted(async () => {
+  let messageCount = await messageApi.selectUnviewedCount();
+  unviewedMessageCount.value = messageCount === 0 ? '' : messageCount;
+});
 
 </script>
 
@@ -47,7 +56,7 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
     </el-menu-item>
     <el-menu-item index="6">
       <el-icon>
-        <el-badge :value="100" :max="99">
+        <el-badge :value="unviewedMessageCount" :max="99">
           <el-icon :size="24">
             <Icon icon="ep:bell-filled" width="24" height="24" />
           </el-icon>

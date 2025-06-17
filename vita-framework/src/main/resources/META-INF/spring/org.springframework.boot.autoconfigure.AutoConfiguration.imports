@@ -1,7 +1,6 @@
 com.github.mengweijin.vita.framework.cache.CacheConfig
 com.github.mengweijin.vita.framework.jackson.JacksonConfig
 com.github.mengweijin.vita.framework.log.LogConfig
-com.github.mengweijin.vita.framework.mvc.AsyncConfig
 com.github.mengweijin.vita.framework.mvc.WebMvcConfig
 com.github.mengweijin.vita.framework.repeatable.RepeatableConfig
 com.github.mengweijin.vita.framework.mybatis.MybatisPlusConfig

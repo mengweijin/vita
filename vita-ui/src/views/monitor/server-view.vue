@@ -1,5 +1,5 @@
 <script setup>
-import { monitorServerApi } from "@/api/monitor/server-api";
+import { serverApi } from "@/api/monitor/server-api";
 import { timeAgo } from "@/utils/tool";
 
 const loading = ref(true);
@@ -19,7 +19,7 @@ const jvmInfo = ref(null);
 const diskInfo = ref([]);
 
 onMounted(() => {
-  monitorServerApi.serverInfo().then((res) => {
+  serverApi.serverInfo().then((res) => {
     data.value = res;
     serverInfo.value = res.server;
     cpuInfo.value = res.cpu;

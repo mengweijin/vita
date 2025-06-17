@@ -47,6 +47,8 @@ public class LogOperationAspect {
 
     private static final ThreadLocal<StopWatch> STOP_WATCH = new ThreadLocal<>();
 
+    private static final ThreadLocal<Long> LOGIN_USER_ID = new ThreadLocal<>();
+
     @Pointcut("@annotation(com.github.mengweijin.vita.framework.log.aspect.annotation.Log)")
     public void pointCut() {}
 
@@ -62,6 +64,8 @@ public class LogOperationAspect {
         StopWatch stopWatch = new StopWatch();
         STOP_WATCH.set(stopWatch);
         stopWatch.start();
+
+        LOGIN_USER_ID.set(LoginHelper.getLoginUserIdQuietly());
     }
 
     /**
@@ -113,7 +117,7 @@ public class LogOperationAspect {
             stopWatch.stop();
             logOperation.setCostTime(stopWatch.getDuration().toMillis());
 
-            Long loginUserId = LoginHelper.getLoginUserIdQuietly();
+            Long loginUserId = LOGIN_USER_ID.get();
             LocalDateTime now = LocalDateTime.now();
             logOperation.setCreateBy(loginUserId);
             logOperation.setUpdateBy(loginUserId);
@@ -125,6 +129,7 @@ public class LogOperationAspect {
             log.error("An exception has occurred to record the logs in the LogOperationAspect!", ex);
         } finally {
             STOP_WATCH.remove();
+            LOGIN_USER_ID.remove();
         }
     }
 

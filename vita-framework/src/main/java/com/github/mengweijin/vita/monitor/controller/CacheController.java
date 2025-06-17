@@ -8,8 +8,8 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.vo.CacheVO;
 import lombok.AllArgsConstructor;
 import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,15 +70,19 @@ public class CacheController {
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:cache:remove")
     @PostMapping("/remove")
-    public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey", required = false) Serializable cacheKey) {
+    public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey") Serializable cacheKey) {
         Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-        if (cacheKey == null || StrValidator.isBlank(cacheKey.toString())) {
-            cache.clear();
-            return R.ok();
-        } else {
-            boolean removed = cache.remove(cacheKey);
-            return R.result(removed);
-        }
+        boolean removed = cache.remove(cacheKey);
+        return R.result(removed);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
+    @SaCheckPermission("monitor:cache:remove")
+    @PostMapping("/clear-by-name/{cacheName}")
+    public R<Void> clearByName(@PathVariable("cacheName") String cacheName) {
+        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+        cache.clear();
+        return R.ok();
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

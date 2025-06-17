@@ -2,7 +2,7 @@ import http from '@/utils/http';
 
 const BASE_URL = '/monitor/cache';
 
-export const monitorCacheApi = {
+export const cacheApi = {
   names: () => http.get(`${BASE_URL}/names`),
 
   query: (cacheName) => http.get(`${BASE_URL}/query?cacheName=${cacheName}`),
@@ -11,6 +11,8 @@ export const monitorCacheApi = {
     http.get(`${BASE_URL}/queryCacheByNameAndKey?cacheName=${cacheName}&cacheKey=${cacheKey}`),
 
   remove: (cacheName, cacheKey) => http.post(`${BASE_URL}/remove?cacheName=${cacheName}&cacheKey=${cacheKey}`),
+
+  clearByName: (cacheName) => http.post(`${BASE_URL}/clear-by-name/${cacheName}`),
 
   clear: () => http.post(`${BASE_URL}/clear`),
 };

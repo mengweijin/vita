@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
-import com.github.mengweijin.vita.monitor.service.LogLoginService;
+import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
+import com.github.mengweijin.vita.monitor.service.LogSystemService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>
- *  LogLogin Controller
+ *  Log-System Controller
  * </p>
  *
  * @author mengweijin
@@ -35,94 +35,94 @@ import java.util.List;
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/monitor/log-login")
-public class LogLoginController {
+@RequestMapping("/monitor/log-system")
+public class LogSystemController {
 
-    private static final String LOG_TITLE = "登录日志";
+    private static final String LOG_TITLE = "系统日志";
 
-    private LogLoginService logLoginService;
+    private LogSystemService logSystemService;
 
     /**
      * <p>
-     * Get LogLogin page by LogLogin
+     * Get Log-System page by LogDO
      * </p>
      * @param page page
-     * @param logLogin {@link LogLoginDO}
-     * @return Page<LogLogin>
+     * @param logDO {@link LogDO}
+     * @return Page<LogDO>
      */
-    @SaCheckPermission("monitor:logLogin:select")
+    @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/page")
-    public IPage<LogLoginDO> page(Page<LogLoginDO> page, LogLoginDO logLogin) {
-        LambdaQueryWrapper<LogLoginDO> wrapper = logLoginService.getQueryWrapper(logLogin);
-        wrapper.orderByDesc(LogLoginDO::getCreateTime);
-        return logLoginService.page(page, wrapper);
+    public IPage<LogDO> page(Page<LogDO> page, LogDO logDO) {
+        LambdaQueryWrapper<LogDO> wrapper = logSystemService.getQueryWrapper(logDO);
+        wrapper.orderByAsc(LogDO::getCreateTime);
+        return logSystemService.page(page, wrapper);
     }
 
     /**
      * <p>
-     * Get LogLogin list by LogLogin
+     * Get Log-System list by LogDO
      * </p>
-     * @param logLogin {@link LogLoginDO}
-     * @return List<LogLogin>
+     * @param logDO {@link LogDO}
+     * @return List<LogDO>
      */
-    @SaCheckPermission("monitor:logLogin:select")
+    @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/list")
-    public List<LogLoginDO> list(LogLoginDO logLogin) {
-        return logLoginService.list(new LambdaQueryWrapper<>(logLogin));
+    public List<LogDO> list(LogDO logDO) {
+        return logSystemService.list(new LambdaQueryWrapper<>(logDO));
     }
 
     /**
      * <p>
-     * Get LogLogin by id
+     * Get Log-System by id
      * </p>
      * @param id id
-     * @return LogLogin
+     * @return LogDO
      */
-    @SaCheckPermission("monitor:logLogin:select")
+    @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/{id}")
-    public LogLoginDO getById(@PathVariable("id") Long id) {
-        return logLoginService.getById(id);
+    public LogDO getById(@PathVariable("id") Long id) {
+        return logSystemService.getById(id);
     }
 
     /**
      * <p>
-     * Add LogLogin
+     * Add Log-System
      * </p>
-     * @param logLogin {@link LogLoginDO}
+     * @param logDO {@link LogDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
-    @SaCheckPermission("monitor:logLogin:create")
+    @SaCheckPermission("monitor:logSystem:create")
     @PostMapping("/create")
-    public R<Void> create(@Valid @RequestBody LogLoginDO logLogin) {
-        boolean bool = logLoginService.save(logLogin);
+    public R<Void> create(@Valid @RequestBody LogDO logDO) {
+        boolean bool = logSystemService.save(logDO);
         return R.result(bool);
     }
 
     /**
      * <p>
-     * Update LogLogin
+     * Update Log-System
      * </p>
-     * @param logLogin {@link LogLoginDO}
+     * @param logDO {@link LogDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("monitor:logLogin:update")
-    @PostMapping("/update")
-    public R<Void> update(@Valid @RequestBody LogLoginDO logLogin) {
-        boolean bool = logLoginService.updateById(logLogin);
+    @SaCheckPermission("monitor:logSystem:update")
+    @PostMapping("update")
+    public R<Void> update(@Valid @RequestBody LogDO logDO) {
+        boolean bool = logSystemService.updateById(logDO);
         return R.result(bool);
     }
 
     /**
      * <p>
-     * Delete LogLogin by id(s), Multiple ids can be separated by commas ",".
+     * Delete Log-System by id(s), Multiple ids can be separated by commas ",".
      * </p>
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("monitor:logLogin:remove")
+    @SaCheckPermission("monitor:logSystem:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
-        int i = logLoginService.getBaseMapper().deleteByIds(Arrays.asList(ids));
+        int i = logSystemService.getBaseMapper().deleteByIds(Arrays.asList(ids));
         return R.result(i);
     }
 
