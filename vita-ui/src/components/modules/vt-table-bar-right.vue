@@ -147,6 +147,7 @@ onMounted(() => {
             <el-divider style="margin: 0px;" />
             <div style="max-height: 260px; overflow-y: auto;">
               <el-checkbox label="全选" :value="-1" :key="-1" @change="columnCheckAllChange" />
+              <el-divider style="margin: 0px;" />
               <el-checkbox-group v-model="columnCheckedList" @change="columnGroupChange">
                 <el-checkbox v-for="(item, index) in columnList" :label="item.label" :value="item.key"
                   :key="item.key" />

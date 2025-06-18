@@ -53,6 +53,7 @@ public class DictTypeController {
     @GetMapping("/page")
     public IPage<DictTypeDO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
         LambdaQueryWrapper<DictTypeDO> wrapper = dictTypeService.getQueryWrapper(dictType);
+        wrapper.orderByAsc(DictTypeDO::getCode);
         return dictTypeService.page(page, wrapper);
     }
 
