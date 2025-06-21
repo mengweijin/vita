@@ -1,14 +1,12 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
@@ -27,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -49,7 +45,7 @@ public class FileController {
 
     private FileService fileService;
 
-    @Log(operationType = EOperationType.UPLOAD)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPLOAD)
     @PostMapping("/upload")
     public List<FileDO> upload(HttpServletRequest request) {
         return fileService.upload(request);
@@ -58,52 +54,15 @@ public class FileController {
     /**
      * @param id id in table VT_FILE
      */
-    @Log(operationType = EOperationType.DOWNLOAD)
+    @Log(title = LOG_TITLE, operationType = EOperationType.DOWNLOAD)
     @GetMapping("/download/{id}")
     public void download(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-        FileDO fileEntity = fileService.getById(id);
-        if(fileEntity == null) {
+        FileDO fileDO = fileService.getById(id);
+        if(fileDO == null) {
             log.warn("No file was found!");
             return;
         }
-        DownLoadUtils.simpleDownload(FileUtil.getInputStream(fileEntity.getStoragePath()), fileEntity.getName(), request, response);
-    }
-
-    /**
-     * 【特别注意】服务端 response body 格式要求如下：
-     * 上传成功的返回格式：
-     * {
-     *     "errno": 0, // 注意：值是数字，不能是字符串
-     *     "data": {
-     *         "url": "xxx", // 图片 src ，必须
-     *         "alt": "yyy", // 图片描述文字，非必须
-     *         "href": "zzz" // 图片的链接，非必须
-     *     }
-     * }
-     * 上传失败的返回格式：
-     * {
-     *     "errno": 1, // 只要不等于 0 就行
-     *     "message": "失败信息"
-     * }
-     */
-    @PostMapping("/upload/wang-editor")
-    public Map<String, Object> uploadForWangEditor(HttpServletRequest request) {
-        FileDO fileEntity = fileService.upload(request).get(0);
-        String encrypt = AESUtils.getAES().encryptHex(String.valueOf(fileEntity.getId()));
-        String url = "/system/file/download/wang-editor/" + encrypt;
-        Map<String, Object> data = new HashMap<>();
-        data.put("url", url);
-        Map<String, Object> result = new HashMap<>();
-        result.put("errno", 0);
-        result.put("data", data);
-        return result;
-    }
-
-    @SaIgnore
-    @GetMapping("/download/wang-editor/{id}")
-    public void downloadForWangEditor(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
-        String decrypted = AESUtils.getAES().decryptStr(id);
-        this.download(Long.valueOf(decrypted), request, response);
+        DownLoadUtils.simpleDownload(FileUtil.getInputStream(fileDO.getStoragePath()), fileDO.getName(), request, response);
     }
 
     /**
@@ -118,6 +77,7 @@ public class FileController {
     @GetMapping("/page")
     public IPage<FileDO> page(Page<FileDO> page, FileDO fileEntity) {
         LambdaQueryWrapper<FileDO> wrapper = fileService.getQueryWrapper(fileEntity);
+        wrapper.orderByDesc(FileDO::getCreateTime);
         return fileService.page(page, wrapper);
     }
 

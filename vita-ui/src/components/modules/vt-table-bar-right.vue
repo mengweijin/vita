@@ -99,8 +99,16 @@ const columnCheckAllChange = (isChecked) => {
   columnChange();
 }
 
+const defaultColumnCheckedList = ref([]);
+
+const columnReset = () => {
+  columnGroupChange(defaultColumnCheckedList.value);
+}
+
 onMounted(() => {
-  columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key)
+  columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key);
+
+  defaultColumnCheckedList.value = [...columnCheckedList.value];
 })
 </script>
 
@@ -141,12 +149,14 @@ onMounted(() => {
 
     <el-tooltip content="列设置" placement="top" v-if="props.shows.includes('columns')">
       <div style="display: inline-block;">
-        <el-popover placement="bottom" trigger="click">
+        <el-popover placement="bottom" trigger="click" :popper-style="{ minWidth: '180px' }">
           <div>
             <div style="padding: 5px 0;"><span>显示/隐藏列</span></div>
             <el-divider style="margin: 0px;" />
             <div style="max-height: 260px; overflow-y: auto;">
               <el-checkbox label="全选" :value="-1" :key="-1" @change="columnCheckAllChange" />
+              <el-button type="primary" size="small" @click="columnReset"
+                style="font-size: 14px; height: 20px; margin-top: 6px; float: right;">重置</el-button>
               <el-divider style="margin: 0px;" />
               <el-checkbox-group v-model="columnCheckedList" @change="columnGroupChange">
                 <el-checkbox v-for="(item, index) in columnList" :label="item.label" :value="item.key"

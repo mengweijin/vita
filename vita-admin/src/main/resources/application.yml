@@ -43,7 +43,7 @@ spring:
       max-file-size: 1GB
       max-request-size: 1GB
       # 临时文件存储位置。避免临时文件被系统清理从而报错。Linux 默认在 /tmp 目录，并且系统会定时清理
-      location: ./tmp
+      location: ${user.dir}/temp
   main:
     # 是否允许循环依赖（Spring Cloud Alibaba Sentinel 中就有循环依赖）
     allow-circular-references: false

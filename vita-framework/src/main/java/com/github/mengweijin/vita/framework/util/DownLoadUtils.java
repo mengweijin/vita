@@ -66,7 +66,8 @@ public class DownLoadUtils {
         try (OutputStream out = response.getOutputStream()) {
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             // "multipart/form-data"
-            response.setContentType(request.getServletContext().getMimeType(fileName));
+            String mimeType = request.getServletContext().getMimeType(fileName);
+            response.setContentType(mimeType);
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                     "attachment;fileName=" + setFileName(request, fileName));
             IoUtil.copy(in, out);

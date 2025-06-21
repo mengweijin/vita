@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.system.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import lombok.Data;
@@ -37,4 +38,10 @@ public class FileDO extends BaseEntity {
      * MD5 码
      */
     private String md5;
+
+    /**
+     * 逻辑删除。[Y, N]
+     */
+    @TableLogic
+    protected String deleted;
 }

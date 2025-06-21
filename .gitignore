@@ -14,5 +14,6 @@ logs
 /h2
 /cache
 /uploads
+/temp
 
 application-local.yml

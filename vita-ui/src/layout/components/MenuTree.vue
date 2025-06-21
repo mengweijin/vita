@@ -18,7 +18,7 @@ const handleClick = (menu) => {
 <template>
   <template v-for="item in menuList" :key="item.routePath">
     <!-- 有子菜单时渲染 el-sub-menu -->
-    <el-sub-menu v-if="item.children?.length" :index="item.routePath">
+    <el-sub-menu v-if="item.children?.length" :index="item.routePath ?? ''">
       <template #title>
         <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
         <span>{{ item.title }}</span>
@@ -28,7 +28,7 @@ const handleClick = (menu) => {
     </el-sub-menu>
 
     <!-- 无子菜单 el-menu-item -->
-    <el-menu-item v-else :index="item.routePath" @click="handleClick(item)">
+    <el-menu-item v-else :index="item.routePath ?? ''" @click="handleClick(item)">
       <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
       <span>{{ item.title }}</span>
     </el-menu-item>

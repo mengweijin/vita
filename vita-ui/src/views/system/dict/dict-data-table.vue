@@ -2,6 +2,7 @@
 import { dictDataApi } from "@/api/system/dict-api";
 import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import VtDictTag from "@/components/modules/vt-dict-tag.vue";
+import DictDataEdit from './dict-data-edit.vue';
 
 const loading = ref(true);
 
@@ -41,7 +42,7 @@ const loadTableData = () => {
 const dictDataEditRef = ref(null);
 
 const handleAdd = () => {
-  dictDataEditRef.value.data = {};
+  dictDataEditRef.value.data = { code: dictType.value.code };
   dictDataEditRef.value.visible = true;
 }
 
@@ -114,7 +115,8 @@ defineExpose({ visible, dictType })
           </el-popconfirm>
         </el-col>
         <!-- 右侧 -->
-        <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
+        <VtTableBarRight :tableRef="tableRef" :columns="columns" :shows="['size', 'columns']"
+          @update-size="(val) => size = val" />
       </el-row>
 
       <el-table :data="tableData" :size="size" row-key="id" stripe border show-overflow-tooltip highlight-current-row
@@ -127,7 +129,9 @@ defineExpose({ visible, dictType })
         <el-table-column v-if="columns.val.visible" prop="val" label="字典值" min-width="160" />
         <el-table-column v-if="columns.tag.visible" prop="tag" label="标签样式" min-width="100" align="center">
           <template #default="{ row }">
-            <VtDictTag :code="'vt_dict_tag_style'" :value="row.tag" :size="size"></VtDictTag>
+            <el-tag :key="row.val + ''" :size="size" :type="row.tag" effect="dark">
+              {{ row.label + "" }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="90" align="center" sortable />
@@ -136,7 +140,7 @@ defineExpose({ visible, dictType })
             <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
           </template>
         </el-table-column>
-        <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+        <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="180" />
         <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
           min-width="100" />
         <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center"
@@ -186,6 +190,8 @@ defineExpose({ visible, dictType })
           </template>
         </el-table-column>
       </el-table>
+
+      <DictDataEdit ref="dictDataEditRef" @refresh-table="loadTableData"></DictDataEdit>
     </div>
   </el-dialog>
 </template>

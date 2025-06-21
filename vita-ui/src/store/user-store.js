@@ -18,6 +18,8 @@ export const useUserStore = defineStore(
 
     const getToken = () => user.value?.token;
 
+    const getBearerToken = () => `Bearer ${getToken()}`;
+
     const getRoles = () => user.value?.roles;
 
     const getPermissions = () => user.value?.permissions;
@@ -26,7 +28,7 @@ export const useUserStore = defineStore(
 
     const clear = () => (user.value = null);
 
-    return { user, initUser, getToken, getRoles, getPermissions, isLogin, clear };
+    return { user, initUser, getToken, getBearerToken, getRoles, getPermissions, isLogin, clear };
   },
   {
     persist: {

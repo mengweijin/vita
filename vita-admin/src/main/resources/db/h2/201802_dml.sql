@@ -145,8 +145,9 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 -- 配置
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_captcha_enabled', 'true', '[ true, false ]。用户登录时是否启用验证码。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户初始密码', 'vt_user_password_default', 'aday.fun', '用户初始密码。密码长度应该在8-18位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。系统消息中提醒用户长时间未修改密码的时间间隔。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '系统管理员角色的角色编码。用以接收系统维护相关消息，告警等', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。每 90 天通过系统消息提醒一次用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '用以接收系统维护相关消息，告警等的角色编码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '从磁盘清理已删除文件的时间间隔', 'vt_file_delete_from_dist_interval', '60', '单位：天。每 60 天从磁盘上清理一次已经被逻辑删除的文件和数据记录。', 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 菜单

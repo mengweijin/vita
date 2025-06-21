@@ -182,6 +182,7 @@ create TABLE VT_FILE (
   SUFFIX                        varchar(10) comment '文件后缀',
   STORAGE_PATH                  varchar(500) NOT NULL comment '文件存储路径',
   MD5                           varchar(128) NOT NULL comment 'MD5 码',
+  DELETED                       char(1) DEFAULT 'N' NOT NULL comment '逻辑删除。[Y, N]',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',

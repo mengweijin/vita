@@ -26,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -45,25 +43,6 @@ import java.util.List;
 public class FileService extends CrudRepository<FileMapper, FileDO> {
 
     private VitaProperties vitaProperties;
-
-    @Override
-    public boolean removeByIds(Collection<?> list) {
-        // 注意顺序，先查出来
-        List<FileDO> fileEntityList = this.lambdaQuery().in(FileDO::getId, list).list();
-
-        List<String> shouldBeDeleteFromDistFilePathList = new ArrayList<>();
-        fileEntityList.forEach(fileEntity -> {
-            if (this.countByMd5(fileEntity.getMd5()) <= 1) {
-                shouldBeDeleteFromDistFilePathList.add(fileEntity.getStoragePath());
-            }
-        });
-
-        boolean removed = super.removeByIds(list);
-        if (removed) {
-            shouldBeDeleteFromDistFilePathList.forEach(FileUtil::del);
-        }
-        return removed;
-    }
 
     public LambdaQueryWrapper<FileDO> getQueryWrapper(FileDO fileDO) {
         LambdaQueryWrapper<FileDO> wrapper = new LambdaQueryWrapper<>();

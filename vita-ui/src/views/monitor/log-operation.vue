@@ -21,7 +21,7 @@ const columns = reactive({
   httpMethod: { label: '请求方式', visible: true },
   url: { label: 'URL', visible: true },
   methodName: { label: '方法名称', visible: true },
-  costTime: { label: '执行时间（毫秒）', visible: true },
+  costTime: { label: '执行时间（ms）', visible: true },
   success: { label: '操作状态', visible: true },
   requestData: { label: '请求数据', visible: false },
   responseData: { label: '响应数据', visible: false },
@@ -167,7 +167,7 @@ onMounted(() => {
       </el-table-column>
       <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="230" />
       <el-table-column v-if="columns.methodName.visible" prop="methodName" label="方法名称" min-width="200" />
-      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间（毫秒）" min-width="120"
+      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间（ms）" min-width="130"
         align="center" />
       <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
         <template #default="{ row }">
