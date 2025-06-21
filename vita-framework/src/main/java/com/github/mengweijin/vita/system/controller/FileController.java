@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
+import com.github.mengweijin.vita.system.domain.vo.FileVO;
 import com.github.mengweijin.vita.system.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,8 +49,9 @@ public class FileController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPLOAD)
     @PostMapping("/upload")
-    public List<FileDO> upload(HttpServletRequest request) {
-        return fileService.upload(request);
+    public List<FileVO> upload(HttpServletRequest request) {
+        List<FileDO> fileList = fileService.upload(request);
+        return BeanCopyUtils.copyList(fileList, FileVO.class);
     }
 
     /**
@@ -75,10 +78,11 @@ public class FileController {
      */
     @SaCheckPermission("system:file:select")
     @GetMapping("/page")
-    public IPage<FileDO> page(Page<FileDO> page, FileDO fileEntity) {
+    public IPage<FileVO> page(Page<FileDO> page, FileDO fileEntity) {
         LambdaQueryWrapper<FileDO> wrapper = fileService.getQueryWrapper(fileEntity);
         wrapper.orderByDesc(FileDO::getCreateTime);
-        return fileService.page(page, wrapper);
+        page = fileService.page(page, wrapper);
+        return BeanCopyUtils.copyPage(page, FileVO.class);
     }
 
     /**
@@ -90,8 +94,9 @@ public class FileController {
      */
     @SaCheckPermission("system:file:select")
     @GetMapping("/list")
-    public List<FileDO> list(FileDO fileEntity) {
-        return fileService.list(new LambdaQueryWrapper<>(fileEntity));
+    public List<FileVO> list(FileDO fileEntity) {
+        List<FileDO> list = fileService.list(new LambdaQueryWrapper<>(fileEntity));
+        return BeanCopyUtils.copyList(list, FileVO.class);
     }
 
     /**
@@ -103,8 +108,9 @@ public class FileController {
      */
     @SaCheckPermission("system:file:select")
     @GetMapping("/{id}")
-    public FileDO getById(@PathVariable("id") Long id) {
-        return fileService.getById(id);
+    public FileVO getById(@PathVariable("id") Long id) {
+        FileDO fileDO = fileService.getById(id);
+        return BeanCopyUtils.copyBean(fileDO, FileVO.class);
     }
 
     /**
