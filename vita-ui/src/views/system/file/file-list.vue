@@ -5,8 +5,6 @@ import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 
-const { VITE_API_BASE } = import.meta.env;
-
 const loading = ref(true);
 
 const size = ref('default');
@@ -41,6 +39,10 @@ const loadTableData = () => {
     loading.value = false;
   });
 };
+
+const { VITE_BASE_API } = import.meta.env;
+
+const uploadUrl = `${window.location.origin}${VITE_BASE_API}/system/file/upload`;
 
 const handleUpload = (res) => {
   ElMessage.success({ message: `【${res[0]?.name}】上传成功!`, duration: 3000, showClose: true });
@@ -115,8 +117,8 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5">
-      <el-upload multiple :show-file-list="false" :action="`${VITE_API_BASE}/system/file/upload`"
-        :on-success="handleUpload" :headers="{ Authorization: `${userStore.getBearerToken()}` }">
+      <el-upload multiple :show-file-list="false" :action="uploadUrl" :on-success="handleUpload"
+        :headers="{ Authorization: `${userStore.getBearerToken()}` }">
         <el-button type="primary">
           <template #icon>
             <el-icon>

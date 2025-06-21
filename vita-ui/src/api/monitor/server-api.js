@@ -1,7 +1,7 @@
 import http from '@/utils/http';
 
-const BASE_URL = '/monitor/server';
+const URL_PREFIX = '/monitor/server';
 
 export const serverApi = {
-  serverInfo: () => http.get(`${BASE_URL}/info`),
+  serverInfo: () => http.get(`${URL_PREFIX}/info`),
 };

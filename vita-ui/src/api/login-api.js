@@ -1,15 +1,15 @@
 import http from '@/utils/http';
 
-const BASE_URL = '';
+const URL_PREFIX = '';
 
 export const loginApi = {
-  getCaptchaEnabled: () => http.get(`${BASE_URL}/captchaEnabled`, { params: {} }),
+  getCaptchaEnabled: () => http.get(`${URL_PREFIX}/captchaEnabled`, { params: {} }),
 
-  getCaptcha: () => http.get(`${BASE_URL}/captcha`, { params: {} }),
+  getCaptcha: () => http.get(`${URL_PREFIX}/captcha`, { params: {} }),
 
-  login: (data) => http.post(`${BASE_URL}/login`, data, { loading: false }),
+  login: (data) => http.post(`${URL_PREFIX}/login`, data, { loading: false }),
 
-  logout: () => http.post(`${BASE_URL}/logout`),
+  logout: () => http.post(`${URL_PREFIX}/logout`),
 
-  getLoginUser: () => http.get(`${BASE_URL}/get/login-user`, { params: {} }),
+  getLoginUser: () => http.get(`${URL_PREFIX}/get/login-user`, { params: {} }),
 };

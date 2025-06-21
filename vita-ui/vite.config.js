@@ -51,11 +51,11 @@ export default defineConfig(({ mode }) => {
       // 开发服务器启动时，自动在浏览器中打开应用程序。
       open: false,
       proxy: {
-        [env.VITE_API_BASE]: {
+        [env.VITE_BASE_API]: {
           target: 'http://localhost:8080',
           // target: 'https://vita.aday.fun',
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_API_BASE}`), ''),
+          rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ''),
         },
       },
     },

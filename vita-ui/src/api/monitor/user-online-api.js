@@ -1,13 +1,13 @@
 import http from '@/utils/http';
 
-const BASE_URL = '/monitor/user-online';
+const URL_PREFIX = '/monitor/user-online';
 
 export const userOnlineApi = {
-  page: (args) => http.get(`${BASE_URL}/page`, { params: args }),
+  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  terminalList: (sessionId) => http.get(`${BASE_URL}//terminal-list/${sessionId}`),
+  terminalList: (sessionId) => http.get(`${URL_PREFIX}//terminal-list/${sessionId}`),
 
-  kickOutByUsername: (username) => http.post(`${BASE_URL}/kick-out-by-username/${username}`),
+  kickOutByUsername: (username) => http.post(`${URL_PREFIX}/kick-out-by-username/${username}`),
 
-  kickOutByToken: (data) => http.post(`${BASE_URL}/kick-out-by-token`, data),
+  kickOutByToken: (data) => http.post(`${URL_PREFIX}/kick-out-by-token`, data),
 };

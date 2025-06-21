@@ -6,7 +6,7 @@ import { useUserStore } from '@/store/user-store';
 import { useDictStore } from '@/store/dict-store';
 import { isEmpty } from 'xe-utils';
 
-const { VITE_API_BASE } = import.meta.env;
+const { VITE_BASE_API } = import.meta.env;
 
 let loadingInstance;
 
@@ -14,7 +14,7 @@ const axiosConfig = {
   // 自定义属性，是否启用全屏 loading
   loading: true,
   // axios中请求配置有baseURL选项，表示请求URL公共部分。参考文档 https://cn.vitejs.dev/guide/env-and-mode.html
-  baseURL: VITE_API_BASE,
+  baseURL: VITE_BASE_API,
   // 超时，单位：毫秒
   timeout: 50000,
   // 允许携带cookie请求

@@ -1,17 +1,17 @@
 import http from '@/utils/http';
 
-const BASE_URL = '/system/message';
+const URL_PREFIX = '/system/message';
 
 export const messageApi = {
-  selectUnviewedCount: () => http.get(`${BASE_URL}/query/unviewed-count`),
+  selectUnviewedCount: () => http.get(`${URL_PREFIX}/query/unviewed-count`),
 
-  page: (args) => http.get(`${BASE_URL}/page`, { params: args }),
+  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  list: (args) => http.get(`${BASE_URL}/list`, { params: args }),
+  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-  create: (data) => http.post(`${BASE_URL}/create`, data),
+  create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-  update: (data) => http.post(`${BASE_URL}/update`, data),
+  update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
-  remove: (ids) => http.post(`${BASE_URL}/remove/${ids}`),
+  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 };
