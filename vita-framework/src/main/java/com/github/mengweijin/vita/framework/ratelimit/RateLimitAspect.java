@@ -4,12 +4,13 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
-import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
@@ -35,6 +36,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -95,10 +97,14 @@ public class RateLimitAspect {
         log.warn(msg);
 
         Set<Long> userIds = this.getMessageReceivers();
-        Long loginId = LoginHelper.getLoginUserIdQuietly();
+        LoginUserVO loginUser = LoginHelper.getLoginUserQuietly();
+        String username = Optional.ofNullable(loginUser).map(LoginUserVO::getUsername).orElse(Const.DASH_CN);
         String methodName = joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
         String rateLimitStrategyName = rateLimit.strategy().name();
-        messageService.sendMessageToUsersAsync(userIds, EMessageCategory.ALERT, EMessageTemplate.TRIGGER_RATE_LIMIT, loginId, methodName, rateLimitStrategyName);
+
+        String messageTitle = I18nUtils.msg("system.RATE_LIMIT.title");
+        String messageContent = I18nUtils.msg("system.RATE_LIMIT.content", username, methodName, rateLimitStrategyName);
+        messageService.sendMessageToUsersAsync(EMessageCategory.ALERT, messageTitle, messageContent, userIds);
 
         throw new ClientException(rateLimit.message());
     }

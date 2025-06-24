@@ -16,4 +16,8 @@ public final class Regex implements RegexPool {
      */
     public static final String PWD_PATTERN = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\\u4E00-\\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$";
 
+    /**
+     * TOTP 动态口令正则
+     */
+    public static final String TOTP_PATTERN = "^\\d{4}$";
 }

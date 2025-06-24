@@ -6,13 +6,13 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
-import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -193,7 +193,9 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                         return;
                     }
 
-                    messageService.sendMessageToUser(user.getId(), EMessageCategory.SECURITY, EMessageTemplate.USER_PASSWORD_LONG_TIME_NO_CHANGE, duration.toDays());
+                    String messageTitle = I18nUtils.msg("system.message.USER_PASSWORD_LONG_TIME_NO_CHANGE.title");
+                    String messageContent = I18nUtils.msg("system.message.USER_PASSWORD_LONG_TIME_NO_CHANGE.content", duration.toDays());
+                    messageService.sendMessageToUser(EMessageCategory.SECURITY, messageTitle, messageContent, user.getId());
                 })
                 .exceptionally(e -> {
                     log.error(e.getMessage(), e);

@@ -5,7 +5,9 @@ import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
+import com.github.mengweijin.vita.framework.util.TOTPUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -14,6 +16,7 @@ import com.github.mengweijin.vita.system.enums.ELoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.dromara.hutool.http.useragent.Platform;
 import org.dromara.hutool.http.useragent.UserAgent;
@@ -75,9 +78,25 @@ public class LoginService {
             throw new ClientException("The username or password incorrect!");
         }
 
+        // TOTP
+        if(configService.getLoginOtpEnabled()) {
+            String totpSecretKey = user.getTotp();
+            if(StrUtil.isNotBlank(totpSecretKey)) {
+                String decrypted = AESUtils.getAES().decryptStr(totpSecretKey);
+                boolean validated = TOTPUtils.validate(decrypted, loginBO.getOtp());
+                if(!validated) {
+                    throw new ClientException("The dynamic password has expired!");
+                }
+            }
+        }
+
         SaLoginParameter saLoginParameter = new SaLoginParameter()
-                .setIsLastingCookie(loginBO.isRememberMe())
+                .setIsLastingCookie(loginBO.isRemember())
                 .setDeviceType(platformName);
+        if(loginBO.isRemember()) {
+            // 7 天免登录。覆盖 sa-token.timeout 配置。
+            saLoginParameter.setTimeout(7 * 24 * 60 * 60);
+        }
 
         StpUtil.login(loginBO.getUsername(), saLoginParameter);
 
@@ -93,7 +112,6 @@ public class LoginService {
         loginUser.setUsername(user.getUsername());
         loginUser.setNickname(user.getNickname());
         loginUser.setAvatar(userService.getAvatarById(user.getId()));
-        loginUser.setDeptId(user.getDeptId());
         loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
         loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
         loginUser.setToken(StpUtil.getTokenValue());

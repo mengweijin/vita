@@ -8,7 +8,7 @@ export const columns = reactive({
   remark: { label: '备注', visible: true },
   createByName: { label: '创建者', visible: false },
   createTime: { label: '创建时间', visible: false },
-  updateByName: { label: '更新者', visible: true },
-  updateTime: { label: '更新时间', visible: true },
+  updateByName: { label: '更新者', visible: false },
+  updateTime: { label: '更新时间', visible: false },
   operation: { label: '操作', visible: true },
 });

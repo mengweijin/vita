@@ -37,7 +37,7 @@ const values = computed(() => {
 });
 
 onMounted(() => {
-  options.value = dictStore.getDicts(props.code);
+  options.value = dictStore.get(props.code);
 });
 </script>
 <template>

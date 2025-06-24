@@ -12,7 +12,7 @@ const props = defineProps({
   },
   columns: {
     type: Object,
-    default: null,
+    default: {},
   },
 });
 

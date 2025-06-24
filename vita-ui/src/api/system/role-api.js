@@ -12,4 +12,7 @@ export const roleApi = {
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  setPermission: (id, menuIdList = []) =>
+    http.post(`${URL_PREFIX}/set-permission`, { roleId: id, menuIds: menuIdList }),
 };

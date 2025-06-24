@@ -56,6 +56,12 @@ public class LoginController {
     }
 
     @SaIgnore
+    @GetMapping("/loginOtpEnabled")
+    public boolean getLoginOtpEnabled() {
+        return configService.getLoginOtpEnabled();
+    }
+
+    @SaIgnore
     @RateLimit(duration = 3, max = 1, strategy = ERateLimitStrategy.IP)
     @GetMapping("/captcha")
     public String getCaptcha() {

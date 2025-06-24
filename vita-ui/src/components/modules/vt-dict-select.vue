@@ -30,7 +30,7 @@ const selectValue = defineModel({ type: String || Array });
 const options = ref([]);
 
 onMounted(() => {
-  options.value = dictStore.getDicts(props.code);
+  options.value = dictStore.get(props.code);
 });
 
 </script>

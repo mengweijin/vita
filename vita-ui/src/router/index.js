@@ -55,7 +55,7 @@ const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
 
 export const initDynamicRoutes = () => {
   const menuStore = useMenuStore();
-  let menus = menuStore.getMenus();
+  let menus = menuStore.get();
   addDynamicRoutes(menus);
 };
 

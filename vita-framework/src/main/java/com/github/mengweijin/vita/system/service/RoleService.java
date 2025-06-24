@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,7 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
         return this.getBaseMapper().getRoleCodeByUsername(username);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean setMenuPermission(RolePermissionBO bo) {
         roleMenuService.removeByRoleId(bo.getRoleId());
 

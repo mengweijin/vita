@@ -22,8 +22,7 @@ const form = reactive({
   password: 'aday.fun',
   otp: '',
   captcha: '',
-  remember: [],
-  loginMethod: 'password',
+  remember: false,
 })
 
 const formRef = ref(null);
@@ -51,8 +50,8 @@ const onRefreshCaptcha = async () => {
 };
 
 const onForgetPassword = () => {
-  ElMessageBox.alert('请联系系统管理员！', '忘记密码？', {
-    confirmButtonText: 'OK',
+  ElMessageBox.alert('请联系管理员！', '忘记密码？', {
+    confirmButtonText: '确定',
   })
 };
 
@@ -60,6 +59,8 @@ const onSubmit = () => {
 
   formRef.value.validate((valid, fields) => {
     if (valid) {
+
+
       // loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
       loginApi.login(form).then(async (r) => {
         // 这里手动 loading
@@ -68,9 +69,9 @@ const onSubmit = () => {
         // 先保存 token 到 userStore，并初始化用户基本信息、角色、权限等
         await userStore.initUser(r.data.token);
         // 加载菜单动态路由
-        await menuStore.initMenus();
+        await menuStore.refresh();
         // 加载字典
-        await dictStore.initDicts();
+        await dictStore.refresh();
         // 跳转到访问页或首页
         router.push(route.query.redirect || '/');
 
@@ -87,8 +88,17 @@ const onkeypress = ({ code }) => {
   if (["Enter", "NumpadEnter"].includes(code)) { onSubmit(); }
 }
 
+const optEnabled = ref(false);
+
+const initLoginOtpEnabled = () => {
+  loginApi.getLoginOtpEnabled().then((res) => {
+    optEnabled.value = res;
+  });
+}
+
 onBeforeMount(() => {
   initCaptcha();
+  initLoginOtpEnabled();
 });
 
 onMounted(() => {
@@ -105,10 +115,10 @@ onBeforeUnmount(() => {
     <el-main>
       <el-form :model="form" :rules="rules" ref="formRef" :size="'large'">
         <el-form-item>
-          <div style="width: 100%;text-align: center;"><img src="/logo.svg" /></div>
+          <div style="width: 100%;text-align: center; padding: 10px;"><img src="/logo.svg" /></div>
         </el-form-item>
         <el-form-item style="margin-top: -15px;">
-          <div class="vt-login-title">Vita（微塔）管理系统</div>
+          <div class="vt-login-title">微塔（Vita）管理系统</div>
         </el-form-item>
         <el-form-item prop="username" style="margin-top: 0px;">
           <el-input v-model="form.username" maxlength="30" clearable placeholder="请输入用户名">
@@ -119,7 +129,7 @@ onBeforeUnmount(() => {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="password" v-if="form.loginMethod === 'password'" :rules="[
+        <el-form-item prop="password" :rules="[
           { required: true, message: '必填', trigger: 'blur' },
           { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '密码应在8-18位之间数字、字母、符号的至少任意两种的组合' }
         ]">
@@ -131,11 +141,11 @@ onBeforeUnmount(() => {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="otp" v-if="form.loginMethod === 'otp'" :rules="[
+        <el-form-item prop="otp" v-if="optEnabled" :rules="[
           { required: true, message: '必填', trigger: 'blur' },
           { pattern: /^\d{4}$/, message: '口令应为 4 位数字' }
         ]">
-          <el-input v-model="form.otp" maxlength="4" clearable placeholder="请输入动态口令" show-password>
+          <el-input v-model="form.otp" maxlength="4" clearable placeholder="请输入动态口令">
             <template #prefix>
               <el-icon :size="22">
                 <Icon icon="ri:lock-password-line" />
@@ -159,19 +169,11 @@ onBeforeUnmount(() => {
           </el-input>
         </el-form-item>
         <el-form-item style="margin-top: 5px;">
-          <el-checkbox-group v-model="form.remember">
-            <el-checkbox value="Y" name="remember">记住密码</el-checkbox>
-          </el-checkbox-group>
+          <el-checkbox v-model="form.remember">记住我</el-checkbox>
           <a href="javascript:;" style="position: absolute; right: 0;text-decoration: none;"
             @click="onForgetPassword">忘记密码？</a>
         </el-form-item>
-        <el-form-item label="登录方式" style="margin-top: -5px;">
-          <el-radio-group v-model="form.loginMethod">
-            <el-radio value="password">密码</el-radio>
-            <el-radio value="otp">动态口令</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item style="margin-top: 8px;">
+        <el-form-item style="margin-top: 5px;">
           <el-button type="primary" style="width: 100%;" @click="onSubmit">登录</el-button>
         </el-form-item>
       </el-form>

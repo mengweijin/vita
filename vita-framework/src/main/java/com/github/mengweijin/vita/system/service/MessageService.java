@@ -8,12 +8,10 @@ import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
-import com.github.mengweijin.vita.system.enums.EMessageTemplate;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
 import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.thread.ThreadUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
@@ -63,67 +61,68 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
         return wrapper;
     }
 
-    public void sendMessageToRole(Long roleId, EMessageCategory category, EMessageTemplate template, Object... args) {
+    public void sendMessageToRole(EMessageCategory category, String title, String content, Long roleId) {
         UserRoleService userRoleService = SpringUtil.getBean(UserRoleService.class);
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
-        this.sendMessageToUsersAsync(userIds, category, template, args);
+        this.sendMessageToUsersAsync(category, title, content, userIds);
     }
 
-    public void sendMessageToRole(String roleCode, EMessageCategory category, EMessageTemplate template, Object... args) {
+    public void sendMessageToRole(EMessageCategory category, String title, String content, String roleCode) {
         UserRoleService userRoleService = SpringUtil.getBean(UserRoleService.class);
         Set<Long> userIds = userRoleService.getUserIdsByRoleCode(roleCode);
-        this.sendMessageToUsersAsync(userIds, category, template, args);
+        this.sendMessageToUsersAsync(category, title, content, userIds);
     }
 
-    public void sendMessageToDept(Long deptId, EMessageCategory category, EMessageTemplate template, Object... args) {
+    public void sendMessageToDept(EMessageCategory category, String title, String content, Long deptId) {
         UserService userService = SpringUtil.getBean(UserService.class);
         Set<Long> userIds = userService.getUserIdsInDeptId(deptId);
-        this.sendMessageToUsersAsync(userIds, category, template, args);
+        this.sendMessageToUsersAsync(category, title, content, userIds);
     }
 
-    public void sendMessageToPost(Long postId, EMessageCategory category, EMessageTemplate template, Object... args) {
+    public void sendMessageToPost(EMessageCategory category, String title, String content, Long postId) {
         UserPostService userPostService = SpringUtil.getBean(UserPostService.class);
         Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
-        this.sendMessageToUsersAsync(userIds, category, template, args);
+        this.sendMessageToUsersAsync(category, title, content, userIds);
     }
 
 
-    public void sendMessageToUser(Long receiveUserId, EMessageCategory category, EMessageTemplate template, Object... args) {
-        this.sendMessageToUsersAsync(Set.of(receiveUserId), category, template, args);
+    public void sendMessageToUser(EMessageCategory category, String title, String content, Long receiveUserId) {
+        this.sendMessageToUsersAsync(category, title, content, Set.of(receiveUserId));
     }
 
-    public void sendMessageToUsersAsync(Set<Long> userIds, EMessageCategory category, EMessageTemplate template, Object... args) {
+    public void sendMessageToUsersAsync(EMessageCategory category, String title, String content, Set<Long> userIds) {
         Long loginId = LoginHelper.getLoginUserIdQuietly();
-        CompletableFuture.runAsync(() -> {
-            transactionTemplate.executeWithoutResult(status -> {
-                MessageDO message = new MessageDO();
-                message.setCategory(category.getValue());
-                message.setTitle(CharSequenceUtil.format(template.getTitle(), args));
-                message.setContent(CharSequenceUtil.format(template.getContent(), args));
+        CompletableFuture.runAsync(() -> transactionTemplate.executeWithoutResult(status -> {
+                    MessageDO message = new MessageDO();
+                    message.setCategory(category.getValue());
+                    message.setTitle(title);
+                    message.setContent(content);
 
-                message.setCreateBy(loginId);
-                message.setUpdateBy(loginId);
-                this.save(message);
+                    message.setCreateBy(loginId);
+                    message.setUpdateBy(loginId);
+                    this.save(message);
 
-                if (CollUtil.isEmpty(userIds)) {
-                    log.warn("The user id in Set was empty when send message to users! message = {}", message);
-                    return;
-                }
+                    if (CollUtil.isEmpty(userIds)) {
+                        log.warn("The user id in Set was empty when send message to users! message = {}", message);
+                        return;
+                    }
 
-                List<MessageReceiverDO> messageReceiverList = new ArrayList<>();
-                userIds.forEach(userId -> {
-                    MessageReceiverDO msgReceiver = new MessageReceiverDO();
-                    msgReceiver.setMessageId(message.getId());
-                    msgReceiver.setUserId(userId);
+                    List<MessageReceiverDO> messageReceiverList = new ArrayList<>();
+                    userIds.forEach(userId -> {
+                        MessageReceiverDO msgReceiver = new MessageReceiverDO();
+                        msgReceiver.setMessageId(message.getId());
+                        msgReceiver.setUserId(userId);
 
-                    msgReceiver.setCreateBy(loginId);
-                    msgReceiver.setUpdateBy(loginId);
-                    messageReceiverList.add(msgReceiver);
+                        msgReceiver.setCreateBy(loginId);
+                        msgReceiver.setUpdateBy(loginId);
+                        messageReceiverList.add(msgReceiver);
+                    });
+                    messageReceiverService.saveBatch(messageReceiverList, Constants.DEFAULT_BATCH_SIZE);
+                }), executorService)
+                .exceptionally(e -> {
+                    log.error(e.getMessage(), e);
+                    return null;
                 });
-                messageReceiverService.saveBatch(messageReceiverList, Constants.DEFAULT_BATCH_SIZE);
-            });
-
-        }, executorService);
     }
 
 }

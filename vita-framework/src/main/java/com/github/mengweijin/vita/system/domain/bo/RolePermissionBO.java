@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author mengweijin
@@ -15,5 +15,5 @@ public class RolePermissionBO implements Serializable {
     @NotNull
     private Long roleId;
 
-    private List<Long> menuIds;
+    private Set<Long> menuIds;
 }

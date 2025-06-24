@@ -43,6 +43,8 @@ public final class Const {
 
     public static final String DASH = "-";
 
+    public static final String DASH_CN = "——";
+
     public static final String UNDERSCORE = "_";
 
     public static final String PLUS = "+";
@@ -79,7 +81,7 @@ public final class Const {
 
     public static final String DOT = ".";
 
-    public static final String DOTDOT = "..";
+    public static final String DOT_DOT = "..";
 
     public static final String QUESTION_MARK = "?";
 

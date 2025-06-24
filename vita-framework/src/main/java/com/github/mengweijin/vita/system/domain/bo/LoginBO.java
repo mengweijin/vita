@@ -25,6 +25,7 @@ public class LoginBO implements Serializable {
     @BusinessCheck(checkRule = CaptchaMandatoryCheckRule.class)
     private String captcha;
 
-    private boolean rememberMe;
+    private boolean remember;
 
+    private Integer otp;
 }

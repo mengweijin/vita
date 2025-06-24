@@ -20,14 +20,6 @@ insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY
 insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1005,     1, 'dept_legal',        '法务部',   5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1006,     1, 'dept_compensation', '薪酬管理部',   6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
--- 分类
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,      null,'vt_address',                 '地址区域分类','地址区域分类',1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,      1,'vt_address_shaanxi',         '陕西省',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001001,1001,'vt_address_shaanxi_xian',    '西安市',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001002,1001,'vt_address_shaanxi_xianyang','咸阳市',      null,         2,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001003,1001,'vt_address_shaanxi_hanzhong','汉中市',      null,         3,'Y',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'vt_address_sichuan',         '四川省',      null,         2,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002001,1002,'vt_address_sichuan_chengdou','成都市',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
 
 -- 岗位
 insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, 'CEO',           '执行总裁', 1, 'N', 'Chief Executive Officer', 1, current_timestamp(), 1, current_timestamp());
@@ -60,6 +52,16 @@ insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TI
 insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (28, 'DE',            '开发工程师', 28, 'N', 'Developmental Engineer', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (29, 'TE',            '测试工程师', 29, 'N', 'Test Engineer', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30, 'Production Engineer', '生产工程师', 30, 'Y', 'Production Engineer', 1, current_timestamp(), 1, current_timestamp());
+
+
+-- 分类
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,      null,'vt_address',                 '地址区域分类','地址区域分类',1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,      1,'vt_address_shaanxi',         '陕西省',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001001,1001,'vt_address_shaanxi_xian',    '西安市',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001002,1001,'vt_address_shaanxi_xianyang','咸阳市',      null,         2,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001003,1001,'vt_address_shaanxi_hanzhong','汉中市',      null,         3,'Y',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'vt_address_sichuan',         '四川省',      null,         2,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002001,1002,'vt_address_sichuan_chengdou','成都市',      null,         1,'N',1,current_timestamp(),1,current_timestamp());
 
 
 -- 字典类型
@@ -143,11 +145,12 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 
 
 -- 配置
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_captcha_enabled', 'true', '[ true, false ]。用户登录时是否启用验证码。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户初始密码', 'vt_user_password_default', 'aday.fun', '用户初始密码。密码长度应该在8-18位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。每 90 天通过系统消息提醒一次用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '用以接收系统维护相关消息，告警等的角色编码。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '从磁盘清理已删除文件的时间间隔', 'vt_file_delete_from_dist_interval', '60', '单位：天。每 60 天从磁盘上清理一次已经被逻辑删除的文件和数据记录。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '用户登录是否启用验证码', 'vt_login_captcha_enabled', 'true', '[ true, false ]。用户登录时是否启用验证码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '用户登录是否启用动态口令验证', 'vt_login_otp_enabled', 'false', '[ true, false ]。用户登录时是否启用动态口令二次验证。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '用户初始密码', 'vt_user_password_default', 'aday.fun', '用户初始密码。密码长度应该在8-18位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '用以接收系统维护、告警等相关消息的角色编码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, '从磁盘清理已删除文件的时间间隔', 'vt_file_delete_from_dist_interval', '60', '单位：天。每 60 天从磁盘上清理一次已经被逻辑删除的文件和数据记录。', 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 菜单
@@ -157,11 +160,11 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,CO
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001003,1001,'BTN','通知公告-更新','system:notice:update',null,null,null,null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001004,1001,'BTN','通知公告-删除','system:notice:remove',null,null,null,null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,null,'MENU','我的消息','system:message:view','SystemMessage','/system/message', 'system/message/message-list.vue',null,2,'ep:chat-dot-round','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002001,1002,'BTN','我的消息-查询','system:message:select',null,null,null,null,1,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002002,1002,'BTN','我的消息-创建','system:message:create',null,null,null,null,2,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002003,1002,'BTN','我的消息-更新','system:message:update',null,null,null,null,3,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002004,1002,'BTN','我的消息-删除','system:message:remove',null,null,null,null,4,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,null,'MENU','消息管理','system:message:view','SystemMessage','/system/message', 'system/message/message-list.vue',null,2,'ep:chat-dot-round','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002001,1002,'BTN','消息管理-查询','system:message:select',null,null,null,null,1,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002002,1002,'BTN','消息管理-创建','system:message:create',null,null,null,null,2,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002003,1002,'BTN','消息管理-更新','system:message:update',null,null,null,null,3,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002004,1002,'BTN','消息管理-删除','system:message:remove',null,null,null,null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011,null,'DIR','系统管理','system:manage:view','System','/system',null,null,5,'ri:list-settings-fill','N',1,current_timestamp(),1,current_timestamp());
 

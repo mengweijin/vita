@@ -6,15 +6,15 @@ export const useMenuStore = defineStore(
   () => {
     const menus = ref([]);
 
-    const initMenus = async () => {
+    const refresh = async () => {
       menus.value = await menuApi.listSideMenus();
     };
 
-    const getMenus = () => menus.value;
+    const get = () => menus.value;
 
     const clear = () => (menus.value = []);
 
-    return { menus, initMenus, getMenus, clear };
+    return { menus, refresh, get, clear };
   },
   {
     persist: {

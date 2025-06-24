@@ -45,7 +45,12 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
     }
 
     public boolean getCaptchaEnabled() {
-        ConfigDO config = this.getByCode(ConfigConst.CAPTCHA_ENABLED);
+        ConfigDO config = this.getByCode(ConfigConst.LOGIN_CAPTCHA_ENABLED);
+        return BooleanUtil.toBoolean(config.getVal());
+    }
+
+    public boolean getLoginOtpEnabled() {
+        ConfigDO config = this.getByCode(ConfigConst.LOGIN_OTP_ENABLED);
         return BooleanUtil.toBoolean(config.getVal());
     }
 }

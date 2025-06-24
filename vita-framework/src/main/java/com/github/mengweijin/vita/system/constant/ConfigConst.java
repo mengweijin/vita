@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings({"unused"})
 public abstract class ConfigConst {
 
-    public static final String CAPTCHA_ENABLED = "vt_captcha_enabled";
+    public static final String LOGIN_CAPTCHA_ENABLED = "vt_login_captcha_enabled";
+
+    public static final String LOGIN_OTP_ENABLED = "vt_login_otp_enabled";
 
     public static final String USER_PASSWORD_DEFAULT = "vt_user_password_default";
 

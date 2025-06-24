@@ -69,7 +69,7 @@ const onSubmit = () => {
 const emit = defineEmits(['refresh-table']);
 
 const menuTypeOptions = computed(() => {
-  const menuTypes = dictStore.getDicts('vt_menu_type');
+  const menuTypes = dictStore.get('vt_menu_type');
   return menuTypes.map(item => {
     item.disabled = (item.disabled === 'Y' ? true : false);
     return item;

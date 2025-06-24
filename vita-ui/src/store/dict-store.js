@@ -8,19 +8,19 @@ export const useDictStore = defineStore(
   () => {
     const dicts = ref(null);
 
-    const initDicts = async () => {
+    const refresh = async () => {
       const res = await dictDataApi.list();
       dicts.value = groupBy(res, 'code');
     };
 
-    const getDicts = (code) => {
+    const get = (code) => {
       let list = code ? dicts.value[code] : dicts.value;
       return orderBy(list, ['seq', 'asc']);
     };
 
     const clear = () => (dicts.value = null);
 
-    return { dicts, initDicts, getDicts, clear };
+    return { dicts, refresh, get, clear };
   },
   {
     persist: {

@@ -26,8 +26,8 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
- *  LogLogin Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * LogLogin Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin
@@ -67,31 +67,31 @@ public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLoginDO> {
 
     public void addLoginLogAsync(String username, ELoginType loginType, String errorMsg, HttpServletRequest request) {
         CompletableFuture.runAsync(() -> {
-            LogLoginDO logLogin = new LogLoginDO();
-            if(request != null) {
-                UserAgent userAgent = ServletUtils.getUserAgent(request);
-                String ip = ServletUtil.getClientIP(request);
-                logLogin.setIp(ip);
-                logLogin.setIpLocation(Ip2regionUtils.search(ip));
-                logLogin.setBrowser(Optional.ofNullable(userAgent).map(UserAgent::getBrowser).map(UserAgentInfo::getName).orElse(null));
-                logLogin.setPlatform(Optional.ofNullable(userAgent).map(UserAgent::getPlatform).map(UserAgentInfo::getName).orElse(null));
-                logLogin.setOs(Optional.ofNullable(userAgent).map(UserAgent::getOs).map(UserAgentInfo::getName).orElse(null));
-            }
-            logLogin.setUsername(username);
-            logLogin.setLoginType(loginType.getValue());
-            logLogin.setSuccess(StrValidator.isBlank(errorMsg) ? EYesNo.Y.getValue() : EYesNo.N.getValue());
-            logLogin.setErrorMsg(errorMsg);
+                    LogLoginDO logLogin = new LogLoginDO();
+                    if (request != null) {
+                        UserAgent userAgent = ServletUtils.getUserAgent(request);
+                        String ip = ServletUtil.getClientIP(request);
+                        logLogin.setIp(ip);
+                        logLogin.setIpLocation(Ip2regionUtils.search(ip));
+                        logLogin.setBrowser(Optional.ofNullable(userAgent).map(UserAgent::getBrowser).map(UserAgentInfo::getName).orElse(null));
+                        logLogin.setPlatform(Optional.ofNullable(userAgent).map(UserAgent::getPlatform).map(UserAgentInfo::getName).orElse(null));
+                        logLogin.setOs(Optional.ofNullable(userAgent).map(UserAgent::getOs).map(UserAgentInfo::getName).orElse(null));
+                    }
+                    logLogin.setUsername(username);
+                    logLogin.setLoginType(loginType.getValue());
+                    logLogin.setSuccess(StrValidator.isBlank(errorMsg) ? EYesNo.Y.getValue() : EYesNo.N.getValue());
+                    logLogin.setErrorMsg(errorMsg);
 
-            UserDO user = userService.getByUsername(username);
-            Long userId = Optional.ofNullable(user).map(UserDO::getId).orElse(null);
-            logLogin.setCreateBy(userId);
-            logLogin.setUpdateBy(userId);
+                    UserDO user = userService.getByUsername(username);
+                    Long userId = Optional.ofNullable(user).map(UserDO::getId).orElse(null);
+                    logLogin.setCreateBy(userId);
+                    logLogin.setUpdateBy(userId);
 
-            SpringUtil.getBean(LogLoginService.class).save(logLogin);
+                    SpringUtil.getBean(LogLoginService.class).save(logLogin);
                 })
-        .exceptionally(e -> {
-            log.error(e.getMessage(), e);
-            return null;
-        });
+                .exceptionally(e -> {
+                    log.error(e.getMessage(), e);
+                    return null;
+                });
     }
 }

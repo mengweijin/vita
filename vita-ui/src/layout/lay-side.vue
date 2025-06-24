@@ -21,7 +21,7 @@ const activeMenu = computed(() => {
 const menuTreeList = ref([]);
 
 onMounted(() => {
-  let menuList = menuStore.getMenus();
+  let menuList = menuStore.get();
   // 转为树状
   menuTreeList.value = toArrayTree(menuList, { sortKey: 'seq' });
 });

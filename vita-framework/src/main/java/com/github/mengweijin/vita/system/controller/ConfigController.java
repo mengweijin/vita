@@ -91,7 +91,7 @@ public class ConfigController {
      * @return Config
      */
     @SaCheckPermission("system:config:select")
-    @GetMapping("/code/{code}")
+    @GetMapping("/get-by-code/{code}")
     public ConfigDO getByCode(@PathVariable("code") String code) {
         return configService.getByCode(code);
     }
