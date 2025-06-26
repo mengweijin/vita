@@ -78,6 +78,9 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
         LambdaQueryWrapper<UserDO> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(user.getId() != null, UserDO::getId, user.getId());
+        wrapper.eq(StrUtil.isNotBlank(user.getCitizenId()), UserDO::getCitizenId, user.getCitizenId());
+        wrapper.eq(StrUtil.isNotBlank(user.getMobile()), UserDO::getMobile, user.getMobile());
+        wrapper.eq(StrUtil.isNotBlank(user.getEmail()), UserDO::getEmail, user.getEmail());
         wrapper.eq(StrUtil.isNotBlank(user.getPasswordLevel()), UserDO::getPasswordLevel, user.getPasswordLevel());
         wrapper.eq(StrUtil.isNotBlank(user.getGender()), UserDO::getGender, user.getGender());
         wrapper.eq(StrUtil.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled());
@@ -90,9 +93,6 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(UserDO::getUsername, user.getKeywords()));
                 w.or(w1 -> w1.like(UserDO::getNickname, user.getKeywords()));
-                w.or(w1 -> w1.like(UserDO::getCitizenId, user.getKeywords()));
-                w.or(w1 -> w1.like(UserDO::getMobile, user.getKeywords()));
-                w.or(w1 -> w1.like(UserDO::getEmail, user.getKeywords()));
             });
         }
         return wrapper;

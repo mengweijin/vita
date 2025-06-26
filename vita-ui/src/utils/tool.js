@@ -60,7 +60,8 @@ export const copyDefinedProperties = (target, source) => {
 };
 
 /**
- * 追加完整路径字段
+ * 追加完整路径字段。若使用默认配置，可通过传入 null 值来使用。
+ * 比如：let deptList = addFullPath(dataList, {});
  * @param {Array} list
  * @param {Object} param1 { idKey: 'id', parentKey: 'parentId', pathKey: 'name', separator: '/' }
  * @returns

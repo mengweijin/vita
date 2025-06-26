@@ -6,6 +6,7 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.AESUtils;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.framework.util.TOTPUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -13,6 +14,7 @@ import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.enums.ELoginType;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -55,7 +57,7 @@ public class LoginService {
         if (configService.getCaptchaEnabled()) {
             boolean validate = this.checkCaptcha(request, loginBO.getCaptcha());
             if (!validate) {
-                throw new ClientException("The captcha code was invalid!");
+                throw new ClientException(I18nUtils.msg("system.login.captcha.code.invalid"));
             }
         }
 
@@ -67,15 +69,22 @@ public class LoginService {
 
         UserDO user = userService.getByUsername(loginBO.getUsername());
 
-        String msg = "The username or password incorrect!";
         if (user == null) {
+            String msg = I18nUtils.msg("system.login.username.or.password.incorrect");
+            logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
+            throw new ClientException(msg);
+        }
+
+        if(EYesNo.Y.getValue().equalsIgnoreCase(user.getDisabled())) {
+            String msg = I18nUtils.msg("system.login.account.disabled");
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
             throw new ClientException(msg);
         }
 
         if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
+            String msg = I18nUtils.msg("system.login.username.or.password.incorrect");
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
-            throw new ClientException("The username or password incorrect!");
+            throw new ClientException(msg);
         }
 
         // TOTP
@@ -85,7 +94,8 @@ public class LoginService {
                 String decrypted = AESUtils.getAES().decryptStr(totpSecretKey);
                 boolean validated = TOTPUtils.validate(decrypted, loginBO.getOtp());
                 if(!validated) {
-                    throw new ClientException("The dynamic password has expired!");
+                    String msg = I18nUtils.msg("system.login.dynamic.password.expired");
+                    throw new ClientException(msg);
                 }
             }
         }
@@ -123,7 +133,7 @@ public class LoginService {
         Cache<String, AbstractCaptcha> captchaCache = CacheFactory.getCaptchaCache();
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 60);
+        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 50);
         // 自定义验证码内容为四则运算方式，每个数字的长度为 1 位
         captcha.setGenerator(mathGenerator);
 

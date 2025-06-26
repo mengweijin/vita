@@ -44,7 +44,7 @@ public class UserBO extends BaseEntity {
      * 用户昵称
      */
     @NotBlank
-    @CharsetLength(min = 3, max = 30, message = "{user.nickname.pattern}")
+    @CharsetLength(min = 1, max = 30, message = "{user.nickname.pattern}")
     private String nickname;
 
     /**

@@ -52,20 +52,23 @@ public class UserDO extends BaseEntity {
     /**
      * 密码强度
      */
+    @JsonIgnore
     private String passwordLevel;
 
     /**
      * 密码修改时间
      */
+    @JsonIgnore
     private LocalDateTime passwordChangeTime;
 
     /**
     * 身份证号
     */
+    @JsonIgnore
     private String citizenId;
 
     /**
-    * 性别。关联数据字典：user_gender
+    * 性别。关联数据字典：vt_user_gender
     */
     private String gender;
 

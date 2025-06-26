@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * EnableAspectJAutoProxy：
  * UserService userService = (UserService) AopContext.currentProxy();
- *
+ * <p>
  * 当任务新增进来时：
  * 1. 当前运行的线程 < corePoolSize 时，新起一个线程执行新增进来的任务；
  * 2. 当前运行的线程 >= corePoolSize 时，新增进来的任务添加到阻塞队列；
@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableAsync(proxyTargetClass = true)
-@EnableScheduling
 @Configuration
 @EnableConfigurationProperties({VitaProperties.class})
 public class VitaAutoConfiguration {

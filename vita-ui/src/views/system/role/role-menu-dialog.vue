@@ -11,7 +11,7 @@ const data = ref({});
 
 const treeRef = ref(null);
 
-/** 父子不互相关联。true: 父子不联动；false: 父子联动。 */
+/** true: 父子不联动；false: 父子联动。 */
 const checkStrictly = ref(true);
 
 const treeProps = reactive({
@@ -30,7 +30,6 @@ const loadTreeData = async () => {
 const keywords = ref('');
 
 const filterNodeMethod = (value, data, node) => {
-  console.log(value);
   if (!value) {
     return true;
   }
@@ -69,6 +68,7 @@ const onOpened = async () => {
 
 const onClosed = () => {
   visible.value = false;
+  defaultCheckedKeys.value = [];
   checkStrictly.value = true;
   keywords.value = null;
   data.value = {};
@@ -79,13 +79,15 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色授权 - ${data.name}`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="350px">
+  <el-dialog v-model="visible" :title="`角色授权 - ${data.name} - ${data.code}`" destroy-on-close align-center
+    @opened="onOpened" @closed="onClosed" width="350px">
     <div v-loading="loading">
       <el-checkbox v-model="checkStrictly" v-show="false">父子节点不联动</el-checkbox>
-      <el-input v-model="keywords" placeholder="筛选" />
-      <el-tree ref="treeRef" :node-key="'id'" :show-checkbox="true" :check-strictly="checkStrictly" :props="treeProps"
-        :data="treeData" :default-checked-keys="defaultCheckedKeys" :filter-node-method="filterNodeMethod" />
+      <el-input v-model="keywords" placeholder="筛选" style="margin-bottom: 5px;" />
+      <el-scrollbar max-height="300px">
+        <el-tree ref="treeRef" :node-key="'id'" :show-checkbox="true" :check-strictly="checkStrictly" :props="treeProps"
+          :data="treeData" :default-checked-keys="defaultCheckedKeys" :filter-node-method="filterNodeMethod" />
+      </el-scrollbar>
     </div>
     <template #footer>
       <div>
@@ -97,7 +99,7 @@ defineExpose({ visible, data })
           </template>
           确定
         </el-button>
-        <el-button type="primary" @click="onClosed">
+        <el-button type="danger" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

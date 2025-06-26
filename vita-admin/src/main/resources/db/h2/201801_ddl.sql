@@ -275,7 +275,7 @@ create TABLE VT_USER (
   PASSWORD_LEVEL                varchar(30) DEFAULT 'MEDIUM' NOT NULL comment '密码强度。PasswdStrength.java',
   PASSWORD_CHANGE_TIME          datetime NULL DEFAULT CURRENT_TIMESTAMP comment '密码修改时间',
   CITIZEN_ID                    varchar(20) DEFAULT NULL comment '身份证号',
-  GENDER                        varchar(6) DEFAULT NULL comment '性别。关联数据字典：user_gender',
+  GENDER                        varchar(6) DEFAULT NULL comment '性别。关联数据字典：vt_user_gender',
   EMAIL                         varchar(128) DEFAULT NULL comment '电子邮箱',
   MOBILE                        varchar(15) DEFAULT NULL comment '移动电话',
   TOTP                          varchar(16) DEFAULT NULL comment 'TOTP 动态口令验证密钥',
@@ -347,3 +347,34 @@ create TABLE VT_ROLE_MENU (
 );
 create unique index UIDX_VT_ROLE_MENU_RMID on VT_ROLE_MENU(ROLE_ID, MENU_ID);
 
+
+drop table IF EXISTS VT_SCHEDULING_TASK;
+create TABLE VT_SCHEDULING_TASK (
+  ID                            bigint NOT NULL comment '主键ID',
+  NAME 		                    varchar(255) NOT NULL comment '任务名称',
+  CRON 		                    varchar(64) NOT NULL comment 'CRON 表达式',
+  BEAN_NAME 		            varchar(128) NOT NULL comment '任务实现类的 Bean 名称（Bean 需要实现 ISchedulingTask 类）',
+  DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
+  REMARK 	                    varchar(500) comment '备注',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+create unique index UIDX_SCHEDULING_TASK_NAME on VT_SCHEDULING_TASK(NAME);
+
+
+drop table IF EXISTS VT_SCHEDULING_TASK_LOG;
+create TABLE VT_SCHEDULING_TASK_LOG (
+  ID                            bigint NOT NULL comment '主键ID',
+  SCHEDULING_TASK_ID            bigint NOT NULL comment '调度任务ID',
+  SUCCESS                       char(1) DEFAULT 'N' comment '任务是否执行成功。[Y, N]',
+  ARGS                          varchar(3000) DEFAULT NULL comment '执行参数',
+  FAILD_MESSAGE                 CLOB DEFAULT NULL comment '执行失败时的错误信息',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);

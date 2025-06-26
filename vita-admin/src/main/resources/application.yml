@@ -59,12 +59,11 @@ spring:
     type: JCACHE
     jcache:
       config: classpath:ehcache.xml
-  # TaskExecutionProperties.java
   task:
-    # @Async Spring异步任务
+    # @Async Spring异步任务。TaskExecutionProperties.java
     execution:
       # 默认为：task-
-      thread-name-prefix: vita-async-task-
+      thread-name-prefix: task-
       pool:
         # 核心线程数，线程池创建时候初始化的线程数。默认为 8
         core-size: 8
@@ -72,15 +71,22 @@ spring:
         max-size: 16
         # 允许线程的空闲时间，当超过了核心线程之外的线程，在空闲时间到达之后会被销毁。默认为 60 秒
         keep-alive: 60s
-        # 缓冲队列大小，用来缓冲执行任务的队列的大小。默认为 Integer.MAX_VALUE
-        queue-capacity: 200
+        # 等待执行的任务队列最大容量。若队列满，并且线程数已达 max-size，新任务会触发拒绝策略。默认为 Integer.MAX_VALUE
+        queue-capacity: 100
         # 是否允许核心线程超时，即开启线程池的动态增长和缩小。默认为 true
         allow-core-thread-timeout: true
-    # @Scheduled Spring调度任务
+    # @Scheduled Spring调度任务。TaskSchedulingProperties.java
     scheduling:
+      # 默认为：scheduling-
+      thread-name-prefix: scheduling-
       pool:
-        # default 1  TaskSchedulingProperties
+        # default 1
         size: 8
+      shutdown:
+        # 是否等待未完成的任务执行完成后再关闭线程池（避免强制中断任务）
+        await-termination: true
+        # 等待任务完成的最长时间（单位：秒），超时后强制关闭线程池。（默认无限等待，若 await-termination=true）
+        await-termination-period: 60
   liquibase:
     # 启用liquibase
     enabled: true
