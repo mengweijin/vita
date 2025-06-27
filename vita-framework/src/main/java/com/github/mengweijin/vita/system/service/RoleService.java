@@ -3,6 +3,8 @@ package com.github.mengweijin.vita.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
@@ -14,6 +16,7 @@ import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +36,17 @@ import java.util.stream.Collectors;
 public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
 
     private RoleMenuService roleMenuService;
+
+    private UserRoleService userRoleService;
+
+    @Override
+    public boolean removeByIds(Collection<?> roleIds) {
+        long userCount = userRoleService.countUserInRoleIds(roleIds);
+        if(userCount > 0) {
+            throw new ClientException(I18nUtils.msg("system.role.delete.hasUser"));
+        }
+        return super.removeByIds(roleIds);
+    }
 
     public LambdaQueryWrapper<RoleDO> getQueryWrapper(RoleDO role) {
         LambdaQueryWrapper<RoleDO> wrapper = new LambdaQueryWrapper<>();

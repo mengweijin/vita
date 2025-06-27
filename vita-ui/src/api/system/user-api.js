@@ -12,4 +12,6 @@ export const userApi = {
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  getSensitiveUserById: (id) => http.get(`${URL_PREFIX}/get-sensitive-info/${id}`),
 };

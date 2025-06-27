@@ -33,8 +33,7 @@ public class DynamicTaskManager {
         if(schedulingTask == null) {
             throw new ServerException(StrUtil.format(" Bean【{}】不存在！", task.getBeanName()));
         }
-
-        Runnable runnable = schedulingTask::run;
+        Runnable runnable = () -> schedulingTask.execute(task.getId());
         Trigger trigger = ctx -> new CronTrigger(task.getCron()).nextExecution(ctx);
         TriggerTask triggerTask = new TriggerTask(runnable, trigger);
         ScheduledTask scheduledTask = registrar.scheduleTriggerTask(triggerTask);

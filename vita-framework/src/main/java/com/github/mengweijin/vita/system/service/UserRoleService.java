@@ -2,16 +2,17 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.util.AopUtils;
-import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrValidator;
 import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,10 +54,17 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
         return this.getUserIdsByRoleId(role.getId());
     }
 
-    public boolean setUserRoles(UserRolesBO bo) {
-        Long userId = bo.getUserId();
-        List<Long> roleIds = bo.getRoleIds();
+    public Long countUserInRoleIds(Collection<?> roleIds) {
+        return this.lambdaQuery().in(UserRoleDO::getRoleId, roleIds).count();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void setUserRoles(Long userId, List<Long> roleIds) {
         this.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
+
+        if(CollUtil.isEmpty(roleIds)) {
+            return;
+        }
 
         List<UserRoleDO> list = roleIds.stream().map(roleId -> {
             UserRoleDO userRole = new UserRoleDO();
@@ -65,6 +73,6 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
             return userRole;
         }).toList();
 
-        return AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+        this.saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
     }
 }

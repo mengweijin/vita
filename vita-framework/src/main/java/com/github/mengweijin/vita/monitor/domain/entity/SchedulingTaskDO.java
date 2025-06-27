@@ -24,7 +24,7 @@ public class SchedulingTaskDO extends BaseEntity {
     private String name;
 
     /**
-     * CRON 表达式
+     * CRON 表达式（注意：Spring boot 3.0 后，cron 只支持 6 个字段，即不支持年份）
      */
     private String cron;
 
@@ -32,6 +32,11 @@ public class SchedulingTaskDO extends BaseEntity {
      * 任务实现类的 Bean 名称（Bean 需要实现 ISchedulingTask 类）
      */
     private String beanName;
+
+    /**
+     * 执行参数。以 JSON 字符串存储
+     */
+    private String args;
 
     /**
     * 是否禁用。[Y, N]

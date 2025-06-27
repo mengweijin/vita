@@ -1,5 +1,7 @@
 <script setup>
 import { deptApi } from '@/api/system/dept-api';
+import { roleApi } from '@/api/system/role-api';
+import { postApi } from '@/api/system/post-api';
 import { userApi } from "@/api/system/user-api";
 import { addFullPath } from '@/utils/tool.js';
 import { toArrayTree } from 'xe-utils';
@@ -10,14 +12,6 @@ const loading = ref(true);
 const visible = ref(false);
 
 const data = ref({});
-
-const deptList = ref([]);
-
-const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => item.disabled = false);
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
-});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
@@ -31,6 +25,7 @@ const form = reactive({
   gender: undefined,
   disabled: 'N',
   remark: undefined,
+  roleIds: [],
 });
 
 const init = () => {
@@ -40,10 +35,16 @@ const init = () => {
   form.nickname = data.value.nickname ?? undefined;
   form.mobile = data.value.mobile ?? undefined;
   form.email = data.value.email ?? undefined;
-  form.citizenId = data.value.citizenId ?? undefined;
   form.gender = data.value.gender ?? 'male';
   form.disabled = data.value.disabled ?? 'N';
   form.remark = data.value.remark ?? undefined;
+  form.citizenId = data.value.citizenId ?? undefined;
+  form.roleIds = data.value?.roleIds ?? [];
+  form.postIds = data.value?.postIds ?? [];
+
+  if (data.value.id) {
+    form.citizenId = sensitiveInfo.citizenId;
+  }
 };
 
 const formRef = ref(null);
@@ -71,11 +72,54 @@ const onSubmit = () => {
 
 const emit = defineEmits(['refresh-table']);
 
-const onOpened = () => {
-  loading.value = true;
+
+const deptList = ref([]);
+
+const initDeptList = () => {
   deptApi.list({ disabled: 'N' }).then((res) => {
     deptList.value = res;
   });
+}
+
+const deptTreeSelectOptions = computed(() => {
+  deptList.value.forEach((item) => item.disabled = false);
+  addFullPath(deptList.value, { pathKey: 'name' })
+  return toArrayTree(deptList.value, { sortKey: 'seq' });
+});
+
+const roleList = ref([]);
+
+const initRoleList = () => {
+  roleApi.list({ disabled: 'N' }).then((res) => {
+    roleList.value = res;
+  });
+}
+
+const postList = ref([]);
+
+const initPostList = () => {
+  postApi.list({ disabled: 'N' }).then((res) => {
+    postList.value = res;
+  });
+}
+
+const sensitiveInfo = reactive({
+  citizenId: undefined,
+});
+
+const initSensitiveInfo = async () => {
+  if (data.value.id) {
+    const sensitiveUser = await userApi.getSensitiveUserById(data.value.id);
+    sensitiveInfo.citizenId = sensitiveUser.citizenId;
+  }
+};
+
+const onOpened = async () => {
+  loading.value = true;
+  initDeptList();
+  initRoleList();
+  initPostList();
+  await initSensitiveInfo();
   init();
   loading.value = false;
 }
@@ -92,7 +136,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
 
 <template>
   <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+    @closed="onClosed" width="50%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
 
       <el-form-item prop="deptId" label="部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
@@ -120,7 +164,6 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="mobile" label="移动电话"
@@ -135,10 +178,17 @@ defineExpose({ visible, data, deptTreeSelectOptions })
         </el-col>
       </el-row>
 
-      <el-form-item prop="citizenId" label="身份证号"
-        :rules="[{ pattern: /[1-9]\d{5}[1-2]\d{3}((0\d)|(1[0-2]))(([012]\d)|3[0-1])\d{3}(\d|X|x)/, message: '身份证号格式不正确' }]">
-        <el-input v-model="form.citizenId" clearable maxlength="18" autocomplete="off" />
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item prop="citizenId" label="身份证号"
+            :rules="[{ pattern: /[1-9]\d{5}[1-2]\d{3}((0\d)|(1[0-2]))(([012]\d)|3[0-1])\d{3}(\d|X|x)/, message: '身份证号格式不正确' }]">
+            <el-input v-model="form.citizenId" clearable maxlength="18" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+
+        </el-col>
+      </el-row>
 
       <el-row :gutter="20">
         <el-col :span="12">
@@ -153,6 +203,20 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </el-form-item>
         </el-col>
       </el-row>
+
+      <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-select v-model="form.roleIds" clearable filterable multiple placeholder="请选择">
+          <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"
+            :disabled="item.disabled === 'Y'" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item prop="postIds" label="岗位">
+        <el-select v-model="form.postIds" clearable filterable multiple placeholder="请选择">
+          <el-option v-for="item in postList" :key="item.id" :label="item.name" :value="item.id"
+            :disabled="item.disabled === 'Y'" />
+        </el-select>
+      </el-form-item>
 
       <el-form-item prop="remark" label="备注">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />

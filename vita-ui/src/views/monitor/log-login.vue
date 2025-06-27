@@ -154,8 +154,8 @@ onMounted(() => {
           <VtDictTag :code="'vt_login_type'" :value="row.loginType" :size="size"></VtDictTag>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.ip.visible" prop="ip" label="IP" min-width="110" />
-      <el-table-column v-if="columns.ipLocation.visible" prop="ipLocation" label="登录位置" min-width="200" />
+      <el-table-column v-if="columns.ip.visible" prop="ip" label="IP" min-width="140" />
+      <el-table-column v-if="columns.ipLocation.visible" prop="ipLocation" label="登录位置" min-width="180" />
       <el-table-column v-if="columns.browser.visible" prop="browser" label="浏览器" min-width="100" />
       <el-table-column v-if="columns.platform.visible" prop="platform" label="设备平台" min-width="100" />
       <el-table-column v-if="columns.os.visible" prop="os" label="操作系统" min-width="130" />

@@ -354,6 +354,7 @@ create TABLE VT_SCHEDULING_TASK (
   NAME 		                    varchar(255) NOT NULL comment '任务名称',
   CRON 		                    varchar(64) NOT NULL comment 'CRON 表达式',
   BEAN_NAME 		            varchar(128) NOT NULL comment '任务实现类的 Bean 名称（Bean 需要实现 ISchedulingTask 类）',
+  ARGS 	                        varchar(255) DEFAULT NULL comment '执行参数。以 JSON 字符串存储',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
@@ -363,6 +364,7 @@ create TABLE VT_SCHEDULING_TASK (
   PRIMARY KEY (ID)
 );
 create unique index UIDX_SCHEDULING_TASK_NAME on VT_SCHEDULING_TASK(NAME);
+create unique index UIDX_SCHEDULING_TASK_BEAN_NAME on VT_SCHEDULING_TASK(BEAN_NAME);
 
 
 drop table IF EXISTS VT_SCHEDULING_TASK_LOG;
@@ -370,8 +372,9 @@ create TABLE VT_SCHEDULING_TASK_LOG (
   ID                            bigint NOT NULL comment '主键ID',
   SCHEDULING_TASK_ID            bigint NOT NULL comment '调度任务ID',
   SUCCESS                       char(1) DEFAULT 'N' comment '任务是否执行成功。[Y, N]',
-  ARGS                          varchar(3000) DEFAULT NULL comment '执行参数',
-  FAILD_MESSAGE                 CLOB DEFAULT NULL comment '执行失败时的错误信息',
+  COST_TIME                     bigint NOT NULL DEFAULT 0 comment '执行消耗时间（毫秒）',
+  ARGS 	                        varchar(255) DEFAULT NULL comment '实际执行参数。以 JSON 字符串存储',
+  FAILED_MESSAGE                varchar(3000) DEFAULT NULL comment '执行失败时的错误信息',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',

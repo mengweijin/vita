@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class LogOperationService extends ServiceImpl<LogOperationMapper, LogOperationDO> {
+public class LogOperationService extends CrudRepository<LogOperationMapper, LogOperationDO> {
 
     @Async
     @EventListener

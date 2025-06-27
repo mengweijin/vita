@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @Service
-public class LogSystemService extends ServiceImpl<LogMapper, LogDO> {
+public class LogSystemService extends CrudRepository<LogMapper, LogDO> {
 
     private final ExecutorService executorService = ThreadUtil.newSingleExecutor();
 

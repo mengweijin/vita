@@ -2,11 +2,16 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.mapper.PostMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 /**
  * <p>
@@ -19,7 +24,19 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class PostService extends CrudRepository<PostMapper, PostDO> {
+
+    private UserPostService userPostService;
+
+    @Override
+    public boolean removeByIds(Collection<?> postIds) {
+        long userCount = userPostService.countUserInPostIds(postIds);
+        if(userCount > 0) {
+            throw new ClientException(I18nUtils.msg("system.post.delete.hasUser"));
+        }
+        return super.removeByIds(postIds);
+    }
 
     public LambdaQueryWrapper<PostDO> getQueryWrapper(PostDO post) {
         LambdaQueryWrapper<PostDO> wrapper = new LambdaQueryWrapper<>();

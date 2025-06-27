@@ -6,9 +6,11 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
+import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -24,6 +26,7 @@ import org.dromara.hutool.crypto.digest.BCrypt;
 import org.dromara.hutool.crypto.digest.DigestUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -57,13 +60,32 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     private ConfigService configService;
 
+    private UserRoleService userRoleService;
+
+    private UserPostService userPostService;
+
     @Override
     public boolean save(UserDO user) {
+        if(StrUtil.isBlank(user.getPassword())) {
+            ConfigDO config = configService.getByCode(ConfigConst.USER_PASSWORD_DEFAULT);
+            user.setPassword(config.getVal());
+        }
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
         user.setSalt(BCrypt.gensalt());
         user.setPassword(DigestUtil.bcrypt(this.saltedPassword(user.getPassword(), user.getSalt())));
         user.setPasswordChangeTime(LocalDateTime.now());
         return super.save(user);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void save(UserBO userBO) {
+        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
+        // 保存
+        this.save(userDO);
+        // 角色
+        userRoleService.setUserRoles(userDO.getId(), userBO.getRoleIds());
+        // 岗位
+        userPostService.setUserPosts(userDO.getId(), userBO.getPostIds());
     }
 
     public String saltedPassword(String password, String salt) {

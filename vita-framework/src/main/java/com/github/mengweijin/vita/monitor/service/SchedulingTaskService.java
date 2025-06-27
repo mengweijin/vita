@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class SchedulingTaskService extends ServiceImpl<SchedulingTaskMapper, SchedulingTaskDO> {
+public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, SchedulingTaskDO> {
 
     public LambdaQueryWrapper<SchedulingTaskDO> getQueryWrapper(SchedulingTaskDO schedulingTask) {
         LambdaQueryWrapper<SchedulingTaskDO> wrapper = new LambdaQueryWrapper<>();

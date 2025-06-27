@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
@@ -36,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class LogLoginService extends ServiceImpl<LogLoginMapper, LogLoginDO> {
+public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> {
 
     private UserService userService;
 

@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
-import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
 import com.github.mengweijin.vita.framework.validator.annotation.CharsetLength;
@@ -13,6 +12,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.dromara.hutool.core.regex.RegexPool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -48,13 +50,6 @@ public class UserBO extends BaseEntity {
     private String nickname;
 
     /**
-     * 登录密码
-     */
-    @NotBlank(groups = {Group.Create.class})
-    @Pattern(groups = {Group.Create.class}, regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
-    private String password;
-
-    /**
      * 身份证号
      */
     @Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.citizenId.pattern}")
@@ -87,4 +82,13 @@ public class UserBO extends BaseEntity {
      */
     private String remark;
 
+    /**
+     * 角色
+     */
+    private List<Long> roleIds = new ArrayList<>();
+
+    /**
+     * 岗位
+     */
+    private List<Long> postIds = new ArrayList<>();
 }

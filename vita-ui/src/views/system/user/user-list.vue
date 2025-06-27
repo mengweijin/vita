@@ -104,7 +104,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-container v-loading="loading" style="padding: 10px 0px;">
+  <el-container style="padding: 10px 0px;">
     <el-aside width="200px">
       <el-scrollbar max-height="100%">
         <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
@@ -174,8 +174,9 @@ onMounted(() => {
               <el-avatar :size="size" src="/avatar.jpg" v-else />
             </template>
           </el-table-column>
-          <el-table-column v-if="columns.username.visible" prop="username" label="用户名" min-width="100" />
-          <el-table-column v-if="columns.nickname.visible" prop="nickname" label="用户昵称" min-width="100" />
+          <el-table-column v-if="columns.username.visible" prop="username" label="用户名" min-width="100" align="center" />
+          <el-table-column v-if="columns.nickname.visible" prop="nickname" label="用户昵称" min-width="100"
+            align="center" />
           <el-table-column v-if="columns.deptName.visible" prop="deptName" label="部门名称" min-width="100" />
           <el-table-column v-if="columns.gender.visible" prop="gender" label="性别" min-width="80" align="center">
             <template #default="{ row }">

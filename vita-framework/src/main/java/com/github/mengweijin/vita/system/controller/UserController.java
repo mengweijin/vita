@@ -13,9 +13,9 @@ import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
-import com.github.mengweijin.vita.system.domain.bo.UserRolesBO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
 import com.github.mengweijin.vita.system.domain.vo.UserVO;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -114,10 +114,11 @@ public class UserController {
      * @param id id
      * @return User
      */
-    @SaCheckPermission("system:user:select")
-    @GetMapping("/sensitive/{id}")
-    public UserDO getSensitiveById(@PathVariable("id") Long id) {
-        return userService.getById(id);
+    @SaCheckPermission("system:user:sensitive")
+    @GetMapping("/get-sensitive-info/{id}")
+    public UserSensitiveVO getSensitiveUserById(@PathVariable("id") Long id) {
+        UserDO user = userService.getById(id);
+        return BeanCopyUtils.copyBean(user, UserSensitiveVO.class);
     }
 
     /**
@@ -131,9 +132,8 @@ public class UserController {
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO userBO) {
-        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
-        boolean bool = userService.save(userDO);
-        return R.result(bool);
+        userService.save(userBO);
+        return R.ok();
     }
 
     /**
@@ -223,19 +223,5 @@ public class UserController {
         return R.result(bool);
     }
 
-    /**
-     * <p>
-     * set user Roles
-     * </p>
-     *
-     * @param bo {@link UserRolesBO}
-     */
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:user:setRoles")
-    @PostMapping("/set-roles")
-    public R<Void> setRoles(@Validated @RequestBody UserRolesBO bo) {
-        boolean bool = userRoleService.setUserRoles(bo);
-        return R.result(bool);
-    }
 }
 
