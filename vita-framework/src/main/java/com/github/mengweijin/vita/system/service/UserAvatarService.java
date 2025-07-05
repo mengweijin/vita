@@ -26,4 +26,5 @@ public class UserAvatarService extends CrudRepository<UserAvatarMapper, UserAvat
         optional.ifPresent(avatar -> userAvatar.setId(avatar.getId()));
         return this.saveOrUpdate(userAvatar);
     }
+
 }

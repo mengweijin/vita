@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
@@ -73,6 +74,7 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
             return userRole;
         }).toList();
 
-        this.saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+        AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
     }
+
 }

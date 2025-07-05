@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.scheduler.task;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -8,9 +9,10 @@ import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.LogSystemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.date.DateFormatPool;
+import org.dromara.hutool.core.date.TimeUtil;
 import org.dromara.hutool.core.math.NumberUtil;
 import org.dromara.hutool.core.text.StrUtil;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -32,8 +34,9 @@ public class SystemLogCleanTask implements ISchedulingTask {
 
     private LogSystemService logSystemService;
 
+
     @Override
-    public void run(@NonNull SchedulingTaskDO task, @NonNull Map<?, ?> args) {
+    public String run(SchedulingTaskDO task, Map<?, ?> args) {
         String daysString = StrUtil.toStringOrNull(args.get(LOG_RETAINED_DAYS_KEY));
         if(!NumberUtil.isNumber(daysString)) {
             String msg = I18nUtils.msg("system.scheduling.task.config.incorrect", task.getName(), task.getBeanName(), task.getArgs());
@@ -41,6 +44,11 @@ public class SystemLogCleanTask implements ISchedulingTask {
         }
         int days = NumberUtil.parseInt(daysString);
         LocalDateTime minusTime = LocalDateTime.now().minusDays(days);
-        logSystemService.lambdaUpdate().le(LogDO::getCreateTime, minusTime).remove();
+
+        LambdaQueryWrapper<LogDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.le(LogDO::getCreateTime, minusTime);
+
+        int deleted = logSystemService.getBaseMapper().delete(wrapper);
+        return String.format("%s records before time [%s] were deleted.", deleted, TimeUtil.format(minusTime, DateFormatPool.NORM_DATETIME_FORMATTER));
     }
 }

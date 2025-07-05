@@ -9,11 +9,11 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
-import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
@@ -60,6 +60,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     private ConfigService configService;
 
+    private RoleService roleService;
+
     private UserRoleService userRoleService;
 
     private UserPostService userPostService;
@@ -78,10 +80,17 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void save(UserBO userBO) {
+    public void saveOrUpdate(UserBO userBO) {
         UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
-        // 保存
-        this.save(userDO);
+        // 用户
+        if(userBO.getId() == null) {
+            // 新增
+            this.save(userDO);
+        } else {
+            // 编辑
+            super.updateById(userDO);
+        }
+
         // 角色
         userRoleService.setUserRoles(userDO.getId(), userBO.getRoleIds());
         // 岗位
@@ -171,20 +180,21 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
     }
 
-    public boolean changePassword(ChangePasswordBO bo) {
-        UserDO user = this.getByUsername(bo.getUsername());
-        boolean checked = this.checkPassword(bo.getPassword(), user.getPassword(), user.getSalt());
+    public boolean changePassword(String username, String password, String newPassword) {
+        UserDO user = this.getByUsername(username);
+        boolean checked = this.checkPassword(password, user.getPassword(), user.getSalt());
         if (!checked) {
             throw new ClientException("User or password check failed!");
         }
 
-        return this.updatePassword(bo.getUsername(), bo.getNewPassword());
+        return this.updatePassword(username, newPassword);
     }
 
     public boolean updatePassword(String username, String newPassword) {
         String passwordLevel = PasswdStrength.getLevel(newPassword).name();
         String salt = BCrypt.gensalt();
         String hashedPwd = DigestUtil.bcrypt(this.saltedPassword(newPassword, salt));
+
         return this.lambdaUpdate()
                 .set(UserDO::getSalt, salt)
                 .set(UserDO::getPassword, hashedPwd)
@@ -223,6 +233,16 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                     log.error(e.getMessage(), e);
                     return null;
                 });
+    }
+
+    public UserSensitiveVO getSensitiveUserById(Long id) {
+        UserDO user = this.getById(id);
+        Set<Long> roleIds = userRoleService.getRoleIdsByUserId(id);
+        Set<Long> postIds = userPostService.getPostIdsByUserId(id);
+        UserSensitiveVO vo = BeanCopyUtils.copyBean(user, new UserSensitiveVO());
+        vo.setRoleIds(roleIds);
+        vo.setPostIds(postIds);
+        return vo;
     }
 
 }

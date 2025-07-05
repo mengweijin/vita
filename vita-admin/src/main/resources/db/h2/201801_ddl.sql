@@ -371,10 +371,11 @@ drop table IF EXISTS VT_SCHEDULING_TASK_LOG;
 create TABLE VT_SCHEDULING_TASK_LOG (
   ID                            bigint NOT NULL comment '主键ID',
   SCHEDULING_TASK_ID            bigint NOT NULL comment '调度任务ID',
-  SUCCESS                       char(1) DEFAULT 'N' comment '任务是否执行成功。[Y, N]',
+  STATUS                        varchar(30) DEFAULT NULL comment '任务执行状态。字典：vt_scheduling_task_status',
+  SUCCESS                       char(1) DEFAULT 'N' comment '任务是否执行成功。vt_succeeded [Y, N]',
   COST_TIME                     bigint NOT NULL DEFAULT 0 comment '执行消耗时间（毫秒）',
   ARGS 	                        varchar(255) DEFAULT NULL comment '实际执行参数。以 JSON 字符串存储',
-  FAILED_MESSAGE                varchar(3000) DEFAULT NULL comment '执行失败时的错误信息',
+  MESSAGE                       varchar(3000) DEFAULT NULL comment '执行成功或失败时的附加信息',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',

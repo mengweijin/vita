@@ -40,37 +40,32 @@ public class RepeatSubmitAspect {
 
     @Around("pointCut(repeatSubmit)")
     public Object around(ProceedingJoinPoint joinPoint, RepeatSubmit repeatSubmit) throws Throwable {
-        try {
-            long interval = repeatSubmit.interval();
-            if (interval < 1000 || interval > 10000) {
-                throw new ClientException("Repeat submission interval can not be less than 1 second, and no longer than 10 seconds!");
-            }
+        long interval = repeatSubmit.interval();
+        if (interval < 1000 || interval > 10000) {
+            throw new ClientException("Repeat submission interval can not be less than 1 second, and no longer than 10 seconds!");
+        }
 
-            String sessionId = ServletUtils.getSession().getId();
-            // 请求地址
-            String url = ServletUtils.getRequest().getRequestURI();
-            // 请求参数
-            String args = argsArrayToString(joinPoint.getArgs());
-            // 唯一标识（指定key + url + args MD5）
-            String key = String.join(Const.COLON, sessionId, url, SecureUtil.md5(args));
+        String sessionId = ServletUtils.getSession().getId();
+        // 请求地址
+        String url = ServletUtils.getRequest().getRequestURI();
+        // 请求参数
+        String args = argsArrayToString(joinPoint.getArgs());
+        // 唯一标识（指定key + url + args MD5）
+        String key = String.join(Const.COLON, sessionId, url, SecureUtil.md5(args));
 
-            Cache<String, Long> cache = CacheFactory.getRepeatSubmitCache();
-            Long cachedTimeMillis = cache.get(key);
+        Cache<String, Long> cache = CacheFactory.getRepeatSubmitCache();
+        Long cachedTimeMillis = cache.get(key);
 
-            // 缓存中不存在，继续执行方法，然后加入缓存。或者缓存中存在，但超过了时间间隔，则这个 url 不为重复提交。
-            if (cachedTimeMillis == null || ((System.currentTimeMillis() - cachedTimeMillis) > interval)) {
-                Object object = joinPoint.proceed();
-                // 加入/刷新缓存
-                cache.put(key, System.currentTimeMillis());
-                return object;
-            } else {
-                // 缓存中存在，并且在时间间隔内，则这个url视为重复提交
-                log.warn("Repeat request! url={}", url);
-                throw new ClientException(repeatSubmit.message());
-            }
-        } catch (Throwable e) {
-            log.error(e.getMessage(), e);
-            throw e;
+        // 缓存中不存在，继续执行方法，然后加入缓存。或者缓存中存在，但超过了时间间隔，则这个 url 不为重复提交。
+        if (cachedTimeMillis == null || ((System.currentTimeMillis() - cachedTimeMillis) > interval)) {
+            Object object = joinPoint.proceed();
+            // 加入/刷新缓存
+            cache.put(key, System.currentTimeMillis());
+            return object;
+        } else {
+            // 缓存中存在，并且在时间间隔内，则这个url视为重复提交
+            log.warn("Repeat request! url={}", url);
+            throw new ClientException(repeatSubmit.message());
         }
     }
 

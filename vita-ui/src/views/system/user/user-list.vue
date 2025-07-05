@@ -3,6 +3,8 @@ import { deptApi } from '@/api/system/dept-api';
 import { userApi } from "@/api/system/user-api";
 import { columns } from './user-hook.js';
 import UserEdit from './user-edit.vue';
+import UserSetRoles from './user-set-roles.vue';
+import UserResetPassword from './user-reset-password.vue';
 import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import VtDictTag from "@/components/modules/vt-dict-tag.vue";
 import VtDictSelect from "@/components/modules/vt-dict-select.vue";
@@ -96,6 +98,19 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 }
 
+const userSetRolesRef = ref(null);
+
+const handleSetRoles = (row) => {
+  userSetRolesRef.value.data = { ...row };
+  userSetRolesRef.value.visible = true;
+};
+
+const userResetPasswordRef = ref(null);
+
+const handleResetPassword = (row) => {
+  userResetPasswordRef.value.data = { ...row };
+  userResetPasswordRef.value.visible = true;
+};
 
 onMounted(() => {
   loadTreeData();
@@ -199,14 +214,25 @@ onMounted(() => {
             min-width="100" />
           <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
             min-width="180" />
-          <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+          <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
             <template #default="scope">
               <div>
-                <el-tooltip content="新增" placement="top" v-if="false">
-                  <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
+                <el-tooltip content="设置角色" placement="top">
+                  <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                    @click="handleSetRoles(scope.row)">
                     <template #icon>
                       <el-icon :size="size">
-                        <Icon icon="ep:plus"></Icon>
+                        <Icon icon="ri:group-fill"></Icon>
+                      </el-icon>
+                    </template>
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip content="重置密码" placement="top">
+                  <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                    @click="handleResetPassword(scope.row)">
+                    <template #icon>
+                      <el-icon :size="size">
+                        <Icon icon="ep:key"></Icon>
                       </el-icon>
                     </template>
                   </el-button>
@@ -247,6 +273,8 @@ onMounted(() => {
       </div>
 
       <UserEdit ref="userEditRef" @refresh-table="loadTableData"></UserEdit>
+      <UserSetRoles ref="userSetRolesRef"></UserSetRoles>
+      <UserResetPassword ref="userResetPasswordRef"></UserResetPassword>
     </el-main>
   </el-container>
 

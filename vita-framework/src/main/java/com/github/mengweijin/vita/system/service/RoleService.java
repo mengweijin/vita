@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
+import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
+
+    private ConfigService configService;
 
     private RoleMenuService roleMenuService;
 
@@ -91,5 +95,13 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
     public RoleDO getByCode(String code) {
         return this.lambdaQuery().eq(RoleDO::getCode, code).one();
     }
-    
+
+    public RoleDO getDefaultRole() {
+        ConfigDO config = configService.getByCode(ConfigConst.USER_DEFAULT_ROLE_CODE);
+        String roleCode = config.getVal();
+        if(StrUtil.isNotBlank(roleCode)) {
+            return this.getByCode(roleCode);
+        }
+        return null;
+    }
 }

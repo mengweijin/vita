@@ -77,6 +77,7 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, '日志级别', 'vt_log_level', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, '已发布/未发布', 'vt_released', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, '字典标签样式', 'vt_dict_tag_style', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, '调度任务执行状态', 'vt_scheduling_task_status', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：停用/启用
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, 'vt_disabled', 'N', '启用', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -142,6 +143,10 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120003, 'vt_dict_tag_style', 'info', 'info', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120004, 'vt_dict_tag_style', 'warning', 'warning', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120005, 'vt_dict_tag_style', 'danger', 'danger', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：调度任务执行状态
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130001, 'vt_scheduling_task_status', 'not_started', '未开始', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130002, 'vt_scheduling_task_status', 'running', '执行中', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130003, 'vt_scheduling_task_status', 'finished', '已完成', 'success', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 配置
@@ -150,6 +155,7 @@ insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDA
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '用户初始密码', 'vt_user_password_default', 'aday.fun', '用户初始密码。密码长度应该在8-18位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '用以接收系统维护、告警等相关消息的角色编码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, '用户默认角色编码', 'vt_user_default_role_code', 'common', '创建用户时，用户所拥有的默认的角色编码，用户拥有该角色，即拥有对应的菜单权限。', 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 菜单
@@ -191,6 +197,9 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,CO
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004003,10011004,'BTN','用户管理-更新','system:user:update',null,null,null,null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004004,10011004,'BTN','用户管理-删除','system:user:remove',null,null,null,null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004005,10011004,'BTN','用户管理-敏感信息查询','system:user:sensitive',null,null,null,null,5,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004006,10011004,'BTN','用户管理-设置角色','system:user:setRoles',null,null,null,null,6,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004007,10011004,'BTN','用户管理-修改密码','system:user:changePassword',null,null,null,null,7,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004008,10011004,'BTN','用户管理-重置密码','system:user:resetPassword',null,null,null,null,8,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005,10011,'MENU','角色管理','system:role:view','SystemRole','/system/role','system/role/role-list.vue',null,5,'ri:group-fill','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005001,10011005,'BTN','角色管理-查询','system:role:select',null,null,null,null,1,null,'N',1,current_timestamp(),1,current_timestamp());

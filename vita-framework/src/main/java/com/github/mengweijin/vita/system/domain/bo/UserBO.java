@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
+import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
 import com.github.mengweijin.vita.framework.validator.annotation.CharsetLength;
@@ -41,6 +42,13 @@ public class UserBO extends BaseEntity {
     @Pattern(regexp = RegexPool.GENERAL, message = "{user.username.pattern}")
     @BusinessCheck(groups = {Group.Create.class}, checkRule = UsernameDuplicateCheckRule.class)
     private String username;
+
+    /**
+     * 登录密码
+     */
+    @NotBlank(groups = {Group.Create.class})
+    @Pattern(groups = {Group.Create.class}, regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
+    private String password;
 
     /**
      * 用户昵称

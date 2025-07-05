@@ -15,4 +15,6 @@ export const roleApi = {
 
   setPermission: (id, menuIdList = []) =>
     http.post(`${URL_PREFIX}/set-permission`, { roleId: id, menuIds: menuIdList }),
+
+  getDefaultRole: () => http.get(`${URL_PREFIX}/get-default-role`, {}),
 };

@@ -25,11 +25,13 @@ public class SchedulingTaskLogService extends CrudRepository<SchedulingTaskLogMa
         LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(taskLog.getId() != null, SchedulingTaskLogDO::getId, taskLog.getId());
         wrapper.eq(taskLog.getSchedulingTaskId() != null, SchedulingTaskLogDO::getSchedulingTaskId, taskLog.getSchedulingTaskId());
+        wrapper.eq(StrUtil.isNotBlank(taskLog.getStatus()), SchedulingTaskLogDO::getStatus, taskLog.getStatus());
         wrapper.eq(StrUtil.isNotBlank(taskLog.getSuccess()), SchedulingTaskLogDO::getSuccess, taskLog.getSuccess());
         wrapper.eq(taskLog.getCreateBy() != null, SchedulingTaskLogDO::getCreateBy, taskLog.getCreateBy());
         wrapper.eq(taskLog.getUpdateBy() != null, SchedulingTaskLogDO::getUpdateBy, taskLog.getUpdateBy());
         wrapper.gt(taskLog.getSearchStartTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getSearchStartTime());
         wrapper.le(taskLog.getSearchEndTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getSearchEndTime());
+        wrapper.like(StrUtil.isNotBlank(taskLog.getMessage()), SchedulingTaskLogDO::getMessage, taskLog.getMessage());
         return wrapper;
     }
 }

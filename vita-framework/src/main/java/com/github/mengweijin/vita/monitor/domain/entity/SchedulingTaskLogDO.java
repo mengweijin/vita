@@ -24,7 +24,12 @@ public class SchedulingTaskLogDO extends BaseEntity {
     private Long schedulingTaskId;
 
     /**
-     * 任务是否执行成功。[Y, N]
+     * 任务执行状态。字典：vt_scheduling_task_status {@link com.github.mengweijin.vita.system.enums.ESchedulingTaskStatus}
+     */
+    private String status;
+
+    /**
+     * 任务是否执行成功。vt_succeeded [Y, N]
      */
     private String success;
 
@@ -39,8 +44,8 @@ public class SchedulingTaskLogDO extends BaseEntity {
     private String args;
 
     /**
-     * 执行失败时的错误信息
+     * 执行成功或失败时的附加信息
      */
-    private String failedMessage;
+    private String message;
 
 }

@@ -15,6 +15,8 @@ public abstract class ConfigConst {
 
     public static final String LOGIN_OTP_ENABLED = "vt_login_otp_enabled";
 
+    public static final String USER_DEFAULT_ROLE_CODE = "vt_user_default_role_code";
+
     public static final String USER_PASSWORD_DEFAULT = "vt_user_password_default";
 
     public static final String USER_PASSWORD_CHANGE_INTERVAL = "vt_user_password_change_interval";

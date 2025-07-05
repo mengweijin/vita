@@ -90,6 +90,12 @@ public class RoleController {
         return userRoleService.getRoleIdsByUserId(userId);
     }
 
+    @GetMapping("/get-default-role")
+    public RoleDO getDefaultRole() {
+        return roleService.getDefaultRole();
+    }
+
+
     /**
      * <p>
      * Get Role by id

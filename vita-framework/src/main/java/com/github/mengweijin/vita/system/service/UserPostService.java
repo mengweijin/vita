@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
 import com.github.mengweijin.vita.system.mapper.UserPostMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,11 @@ public class UserPostService extends CrudRepository<UserPostMapper, UserPostDO> 
             return userPost;
         }).toList();
 
-        this.saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+        AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
     }
 
+    public Set<Long> getPostIdsByUserId(Long userId) {
+        List<UserPostDO> list = this.lambdaQuery().select(UserPostDO::getPostId).eq(UserPostDO::getUserId, userId).list();
+        return list.stream().map(UserPostDO::getPostId).collect(Collectors.toSet());
+    }
 }

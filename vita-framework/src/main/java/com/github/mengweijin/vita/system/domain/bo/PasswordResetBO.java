@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author mengweijin
  */
 @Data
-public class ChangePasswordBO implements Serializable {
+public class PasswordResetBO implements Serializable {
 
     @NotBlank
     private String username;
@@ -19,9 +19,5 @@ public class ChangePasswordBO implements Serializable {
     @NotBlank
     @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
-
-    @NotBlank
-    @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
-    private String newPassword;
 
 }

@@ -131,9 +131,9 @@ onBeforeUnmount(() => {
         </el-form-item>
         <el-form-item prop="password" :rules="[
           { required: true, message: '必填', trigger: 'blur' },
-          { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '密码应在8-18位之间数字、字母、符号的至少任意两种的组合' }
+          { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '密码应为8-18位字母、数字、符号至少两种组合' }
         ]">
-          <el-input v-model="form.password" maxlength="30" clearable type="password" placeholder="请输入密码" show-password>
+          <el-input v-model="form.password" maxlength="18" clearable type="password" placeholder="请输入密码" show-password>
             <template #prefix>
               <el-icon :size="22">
                 <Icon icon="ep:lock" />

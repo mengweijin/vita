@@ -3,6 +3,7 @@ import { deptApi } from '@/api/system/dept-api';
 import { roleApi } from '@/api/system/role-api';
 import { postApi } from '@/api/system/post-api';
 import { userApi } from "@/api/system/user-api";
+import { configApi } from "@/api/system/config-api";
 import { addFullPath } from '@/utils/tool.js';
 import { toArrayTree } from 'xe-utils';
 import VtDictSelect from "@/components/modules/vt-dict-select.vue";
@@ -18,6 +19,7 @@ const form = reactive({
   id: undefined,
   deptId: undefined,
   username: undefined,
+  password: undefined,
   nickname: undefined,
   mobile: undefined,
   email: undefined,
@@ -26,12 +28,14 @@ const form = reactive({
   disabled: 'N',
   remark: undefined,
   roleIds: [],
+  postIds: [],
 });
 
 const init = () => {
   form.id = data.value.id ?? undefined;
   form.deptId = data.value.deptId ?? undefined;
   form.username = data.value.username ?? undefined;
+  form.password = data.value.password ?? undefined;
   form.nickname = data.value.nickname ?? undefined;
   form.mobile = data.value.mobile ?? undefined;
   form.email = data.value.email ?? undefined;
@@ -41,10 +45,6 @@ const init = () => {
   form.citizenId = data.value.citizenId ?? undefined;
   form.roleIds = data.value?.roleIds ?? [];
   form.postIds = data.value?.postIds ?? [];
-
-  if (data.value.id) {
-    form.citizenId = sensitiveInfo.citizenId;
-  }
 };
 
 const formRef = ref(null);
@@ -103,15 +103,24 @@ const initPostList = () => {
   });
 }
 
-const sensitiveInfo = reactive({
-  citizenId: undefined,
-});
+const initSensitiveInfo = () => {
+  userApi.getSensitiveUserById(data.value.id).then((res) => {
+    form.citizenId = res.citizenId;
+    form.roleIds = res.roleIds;
+    form.postIds = res.postIds;
+  });
+};
 
-const initSensitiveInfo = async () => {
-  if (data.value.id) {
-    const sensitiveUser = await userApi.getSensitiveUserById(data.value.id);
-    sensitiveInfo.citizenId = sensitiveUser.citizenId;
-  }
+const initDefaultPassword = () => {
+  configApi.getByCode('vt_user_password_default').then((res) => {
+    form.password = res?.val ?? undefined;
+  });
+};
+
+const initDefaultRole = () => {
+  roleApi.getDefaultRole().then((role) => {
+    form.roleIds.push(role?.id);
+  });
 };
 
 const onOpened = async () => {
@@ -119,8 +128,13 @@ const onOpened = async () => {
   initDeptList();
   initRoleList();
   initPostList();
-  await initSensitiveInfo();
   init();
+  if (data.value.id) {
+    initSensitiveInfo();
+  } else {
+    initDefaultPassword();
+    initDefaultRole();
+  }
   loading.value = false;
 }
 
@@ -136,20 +150,29 @@ defineExpose({ visible, data, deptTreeSelectOptions })
 
 <template>
   <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="50%">
+    @closed="onClosed" width="55%" style="padding-left: 30px;padding-right: 30px;">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
 
-      <el-form-item prop="deptId" label="部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-tree-select v-model="form.deptId" :data="deptTreeSelectOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="请选择">
-          <template #default="{ data: { name } }">
-            {{ name }}
-          </template>
-        </el-tree-select>
-      </el-form-item>
-
       <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item prop="nickname" label="用户昵称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+            <el-input v-model="form.nickname" clearable maxlength="30" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="deptId" label="归属部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+            <el-tree-select v-model="form.deptId" :data="deptTreeSelectOptions"
+              :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
+              default-expand-all placeholder="请选择">
+              <template #default="{ data: { name } }">
+                {{ name }}
+              </template>
+            </el-tree-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20" v-if="!(data.id)">
         <el-col :span="12">
           <el-form-item prop="username" label="登录账号" :rules="[
             { required: true, message: '必填', trigger: 'blur' },
@@ -159,8 +182,12 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="nickname" label="用户昵称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-            <el-input v-model="form.nickname" clearable maxlength="30" autocomplete="off" />
+          <el-form-item prop="password" label="登录密码" :rules="[
+            { required: true, message: '必填', trigger: 'blur' },
+            { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '应为8-18位字母、数字、符号至少两种组合' },
+          ]">
+            <el-input v-model="form.password" maxlength="18" clearable type="password" placeholder="请输入密码" show-password
+              autocomplete="off" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -172,7 +199,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="email" label="邮箱" :rules="[]">
+          <el-form-item prop="email" label="电子邮箱" :rules="[]">
             <el-input v-model="form.email" clearable maxlength="128" autocomplete="off" />
           </el-form-item>
         </el-col>
@@ -204,19 +231,24 @@ defineExpose({ visible, data, deptTreeSelectOptions })
         </el-col>
       </el-row>
 
-      <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-select v-model="form.roleIds" clearable filterable multiple placeholder="请选择">
-          <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"
-            :disabled="item.disabled === 'Y'" />
-        </el-select>
-      </el-form-item>
-
-      <el-form-item prop="postIds" label="岗位">
-        <el-select v-model="form.postIds" clearable filterable multiple placeholder="请选择">
-          <el-option v-for="item in postList" :key="item.id" :label="item.name" :value="item.id"
-            :disabled="item.disabled === 'Y'" />
-        </el-select>
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item prop="postIds" label="岗位">
+            <el-select v-model="form.postIds" clearable filterable multiple placeholder="请选择">
+              <el-option v-for="item in postList" :key="item.id" :label="item.name" :value="item.id"
+                :disabled="item.disabled === 'Y'" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+            <el-select v-model="form.roleIds" clearable filterable multiple placeholder="请选择">
+              <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"
+                :disabled="item.disabled === 'Y'" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-form-item prop="remark" label="备注">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />

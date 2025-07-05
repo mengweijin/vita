@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -20,4 +22,8 @@ public class UserSensitiveVO implements Serializable {
     private String passwordLevel;
 
     private String citizenId;
+
+    private Set<Long> roleIds = new HashSet<>();
+
+    private Set<Long> postIds = new HashSet<>();
 }

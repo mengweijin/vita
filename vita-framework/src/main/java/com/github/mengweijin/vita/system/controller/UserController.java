@@ -8,11 +8,14 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.bo.ChangePasswordBO;
+import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
+import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
+import com.github.mengweijin.vita.system.domain.bo.UserRoleBO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
@@ -117,8 +120,7 @@ public class UserController {
     @SaCheckPermission("system:user:sensitive")
     @GetMapping("/get-sensitive-info/{id}")
     public UserSensitiveVO getSensitiveUserById(@PathVariable("id") Long id) {
-        UserDO user = userService.getById(id);
-        return BeanCopyUtils.copyBean(user, UserSensitiveVO.class);
+        return userService.getSensitiveUserById(id);
     }
 
     /**
@@ -132,7 +134,7 @@ public class UserController {
     @SaCheckPermission("system:user:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody UserBO userBO) {
-        userService.save(userBO);
+        userService.saveOrUpdate(userBO);
         return R.ok();
     }
 
@@ -147,9 +149,8 @@ public class UserController {
     @SaCheckPermission("system:user:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO userBO) {
-        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
-        boolean bool = userService.updateById(userDO);
-        return R.result(bool);
+        userService.saveOrUpdate(userBO);
+        return R.ok();
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -181,31 +182,32 @@ public class UserController {
 
     /**
      * <p>
-     * change user password
+     * change password
      * </p>
      *
-     * @param bo {@link ChangePasswordBO}
+     * @param bo {@link PasswordChangeBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:changePassword")
     @PostMapping("/change-password")
-    public R<Void> changePassword(@Validated @RequestBody ChangePasswordBO bo) {
-        boolean bool = userService.changePassword(bo);
+    public R<Void> changePassword(@Validated @RequestBody PasswordChangeBO bo) {
+        String username = LoginHelper.getLoginUser().getUsername();
+        boolean bool = userService.changePassword(username, bo.getPassword(), bo.getNewPassword());
         return R.result(bool);
     }
 
     /**
      * <p>
-     * change user password
+     * reset a user password
      * </p>
      *
-     * @param bo {@link ChangePasswordBO}
+     * @param bo {@link PasswordResetBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:resetPassword")
     @PostMapping("/reset-password")
-    public R<Void> resetPassword(@Validated @RequestBody ChangePasswordBO bo) {
-        boolean bool = userService.updatePassword(bo.getUsername(), bo.getNewPassword());
+    public R<Void> resetPassword(@Validated @RequestBody PasswordResetBO bo) {
+        boolean bool = userService.updatePassword(bo.getUsername(), bo.getPassword());
         return R.result(bool);
     }
 
@@ -223,5 +225,18 @@ public class UserController {
         return R.result(bool);
     }
 
+    /**
+     * <p>
+     * set user Roles
+     * </p>
+     *
+     * @param bo {@link UserRoleBO}
+     */
+    @SaCheckPermission("system:user:setRoles")
+    @PostMapping("/set-roles")
+    public R<Void> setRoles(@Validated @RequestBody UserRoleBO bo) {
+        userRoleService.setUserRoles(bo.getUserId(), bo.getRoleIds());
+        return R.ok();
+    }
 }
 
