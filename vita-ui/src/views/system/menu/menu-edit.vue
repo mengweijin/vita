@@ -1,6 +1,5 @@
 <script setup>
 import { addFullPath } from "@/utils/tool";
-import VtIconPicker from "@/components/modules/vt-icon-picker.vue";
 import { menuApi } from "@/api/system/menu-api";
 import { toArrayTree } from "xe-utils";
 import { useDictStore } from "@/store/dict-store.js";

@@ -6,7 +6,7 @@ import { userApi } from "@/api/system/user-api";
 import { configApi } from "@/api/system/config-api";
 import { addFullPath } from '@/utils/tool.js';
 import { toArrayTree } from 'xe-utils';
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
+import VtDictSelect from "@/components/modules/system/vt-dict-select.vue";
 
 const loading = ref(true);
 

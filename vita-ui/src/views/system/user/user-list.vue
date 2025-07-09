@@ -5,9 +5,6 @@ import { columns } from './user-hook.js';
 import UserEdit from './user-edit.vue';
 import UserSetRoles from './user-set-roles.vue';
 import UserResetPassword from './user-reset-password.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 import { toArrayTree } from 'xe-utils';
 
 const loading = ref(false);
@@ -183,9 +180,9 @@ onMounted(() => {
           <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
           <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
           <el-table-column v-if="columns.deptId.visible" prop="deptId" label="部门 ID" min-width="180" />
-          <el-table-column v-if="columns.avatar.visible" prop="avatar" label="头像" min-width="60" align="center">
+          <el-table-column v-if="columns.avatar.visible" prop="avatar" label="头像" min-width="70" align="center">
             <template #default="{ row }">
-              <el-avatar :size="'small'" :src="row.avatar" v-if="row.avatar" />
+              <el-avatar :size="size" :src="row.avatar" v-if="row.avatar" />
               <el-avatar :size="size" src="/avatar.jpg" v-else />
             </template>
           </el-table-column>

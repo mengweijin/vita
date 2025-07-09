@@ -42,6 +42,11 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
         return list.stream().map(UserRoleDO::getUserId).collect(Collectors.toSet());
     }
 
+    public Set<Long> getUserIdsInRoleIds(List<Long> roleIds) {
+        List<UserRoleDO> list = this.lambdaQuery().select(UserRoleDO::getUserId).in(UserRoleDO::getRoleId, roleIds).list();
+        return list.stream().map(UserRoleDO::getUserId).collect(Collectors.toSet());
+    }
+
     public Set<Long> getUserIdsByRoleCode(String roleCode) {
         Set<Long> set = new HashSet<>();
         if (StrValidator.isBlank(roleCode)) {
@@ -75,6 +80,10 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
         }).toList();
 
         AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+    }
+
+    public boolean removeByRoleIdInUserIds(Long roleId, List<Long> userIds) {
+        return this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
     }
 
 }

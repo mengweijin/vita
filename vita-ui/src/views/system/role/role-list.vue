@@ -3,9 +3,7 @@ import { roleApi } from "@/api/system/role-api";
 import { columns } from './role-hook.js';
 import RoleEdit from './role-edit.vue';
 import RoleMenuDialog from './role-menu-dialog.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
+import RoleUserDialog from './role-user-dialog.vue';
 
 const loading = ref(true);
 
@@ -48,6 +46,14 @@ const handleAuthorization = (row) => {
   roleMenuDialogRef.value.data = { ...row };
   roleMenuDialogRef.value.visible = true;
 };
+
+
+const roleUserDialogRef = ref(null);
+
+const handleAssigningUsers = (row) => {
+  roleUserDialogRef.value.data = { ...row };
+  roleUserDialogRef.value.visible = true;
+}
 
 
 const roleEditRef = ref(null);
@@ -179,7 +185,7 @@ onMounted(() => {
         min-width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
         min-width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
             <el-tooltip content="授权" placement="top">
@@ -191,8 +197,18 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+            <el-tooltip content="分配用户" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                @click="handleAssigningUsers(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:user-filled"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button type="primary" text :size="size" @click="handleAdd(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleAdd(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:plus"></Icon>
@@ -238,6 +254,8 @@ onMounted(() => {
   <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
 
   <RoleMenuDialog ref="roleMenuDialogRef"></RoleMenuDialog>
+
+  <RoleUserDialog ref="roleUserDialogRef"></RoleUserDialog>
 </template>
 
 <style scoped></style>

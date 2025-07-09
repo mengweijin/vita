@@ -1,6 +1,6 @@
 <script setup>
 import { dictDataApi } from "@/api/system/dict-api";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
+import VtDictSelect from "@/components/modules/system/vt-dict-select.vue";
 import { isEmpty } from 'xe-utils';
 
 const loading = ref(true);

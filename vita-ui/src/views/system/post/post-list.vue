@@ -2,9 +2,6 @@
 import { postApi } from "@/api/system/post-api";
 import { columns } from './post-hook.js';
 import PostEdit from './post-edit.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 

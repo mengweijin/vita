@@ -1,6 +1,5 @@
 <script setup>
 import { userOnlineApi } from "@/api/monitor/user-online-api";
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 
 const loading = ref(true);
 

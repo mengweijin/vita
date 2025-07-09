@@ -77,6 +77,9 @@
 
 ```shell
 java -jar vita-admin.jar
+
+# 或指定参数
+java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.timezone=Asia/Shanghai -Xms128m -Xmx512m -jar vita-admin.jar
 ```
 
 浏览器访问：http://localhost:8080

@@ -84,7 +84,7 @@ defineExpose({ visible, data })
         { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '应为8-18位字母、数字、符号至少两种组合' },
       ]">
         <el-input v-model="form.password" maxlength="18" :readonly="isResetToDefaultPassword" clearable type="password"
-          placeholder="请输入旧密码" show-password autocomplete="off" />
+          placeholder="请输入新密码" show-password autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>

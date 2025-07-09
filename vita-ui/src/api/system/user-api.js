@@ -5,6 +5,10 @@ const URL_PREFIX = '/system/user';
 export const userApi = {
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
+  pageByRole: (roleId, args) => http.get(`${URL_PREFIX}/pageByRole/${roleId}`, { params: args }),
+
+  pageByPost: (postId, args) => http.get(`${URL_PREFIX}/pageByPost/${postId}`, { params: args }),
+
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
   create: (data) => http.post(`${URL_PREFIX}/create`, data),

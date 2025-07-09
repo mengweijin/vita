@@ -3,9 +3,6 @@ import { categoryApi } from "@/api/system/category-api";
 import { toArrayTree } from 'xe-utils';
 import { columns } from './category-hook.js';
 import CategoryEdit from './category-edit.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 

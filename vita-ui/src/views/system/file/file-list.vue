@@ -1,7 +1,6 @@
 <script setup>
 import { fileApi } from "@/api/system/file-api";
 import { columns } from './file-hook.js';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 

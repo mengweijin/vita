@@ -2,7 +2,6 @@
 import { configApi } from "@/api/system/config-api";
 import { columns } from './config-hook.js';
 import ConfigEdit from './config-edit.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 
 const loading = ref(true);
 

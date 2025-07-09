@@ -79,8 +79,8 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色授权 - ${data.name} - ${data.code}`" destroy-on-close align-center
-    @opened="onOpened" @closed="onClosed" width="350px">
+  <el-dialog v-model="visible" :title="`角色【${data.name}】授权`" destroy-on-close align-center @opened="onOpened"
+    @closed="onClosed" width="350px">
     <div v-loading="loading">
       <el-checkbox v-model="checkStrictly" v-show="false">父子节点不联动</el-checkbox>
       <el-input v-model="keywords" placeholder="筛选" style="margin-bottom: 5px;" />

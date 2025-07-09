@@ -158,5 +158,10 @@ public class RoleController {
         return R.result(roleService.removeByIds(Arrays.asList(ids)));
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
+    @SaCheckPermission("system:role:assignUser")
+    @PostMapping("/removeByRoleIdInUserIds/{roleId}/{userIds}")
+    public R<Void> removeByRoleIdInUserIds(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] ids) {
+        return R.result(userRoleService.removeByRoleIdInUserIds(roleId, Arrays.asList(ids)));
+    }
 }
-

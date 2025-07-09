@@ -3,9 +3,6 @@ import { menuApi } from "@/api/system/menu-api";
 import { toArrayTree } from 'xe-utils';
 import { columns } from './menu-hook.js';
 import MenuEdit from './menu-edit.vue';
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
 
 const loading = ref(true);
 

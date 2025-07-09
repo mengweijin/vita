@@ -79,6 +79,20 @@ public class UserController {
         return BeanCopyUtils.copyPage(userPage, UserVO.class);
     }
 
+    @SaCheckPermission("system:user:select")
+    @GetMapping("/pageByRole/{roleId}")
+    public IPage<UserVO> pageByRole(@PathVariable("roleId") Long roleId, Page<UserDO> page, UserDO user) {
+        IPage<UserDO> userPage = userService.pageByRole(roleId, page, user);
+        return BeanCopyUtils.copyPage(userPage, UserVO.class);
+    }
+
+    @SaCheckPermission("system:user:select")
+    @GetMapping("/pageByPost/{postId}")
+    public IPage<UserVO> pageByPost(@PathVariable("postId") Long postId, Page<UserDO> page, UserDO user) {
+        IPage<UserDO> userPage = userService.pageByPost(postId, page, user);
+        return BeanCopyUtils.copyPage(userPage, UserVO.class);
+    }
+
     /**
      * <p>
      * Get User list by User

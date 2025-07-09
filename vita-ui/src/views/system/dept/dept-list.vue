@@ -3,9 +3,6 @@ import { deptApi } from "@/api/system/dept-api";
 import { toArrayTree } from 'xe-utils';
 import { columns } from './dept-hook.js';
 import DeptEdit from './dept-edit.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 

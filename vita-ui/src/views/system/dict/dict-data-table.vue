@@ -1,8 +1,5 @@
 <script setup>
 import { dictDataApi } from "@/api/system/dict-api";
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import DictDataEdit from './dict-data-edit.vue';
 
 const loading = ref(true);
 

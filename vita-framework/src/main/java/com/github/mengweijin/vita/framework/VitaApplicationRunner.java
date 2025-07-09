@@ -58,7 +58,7 @@ public class VitaApplicationRunner implements ApplicationRunner {
                 FileUtil.mkdir(location);
                 log.info("Make multipart temp location: {}", location);
             } else {
-                log.info("Multipart temp location already exists, no need to create. location: {}", location);
+                log.info("Multipart temp location already exists in location: {}", location);
             }
         }
     }

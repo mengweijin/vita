@@ -2,7 +2,6 @@
 import { dictTypeApi } from "@/api/system/dict-api";
 import DictTypeEdit from './dict-type-edit.vue';
 import DictDataTable from './dict-data-table.vue';
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
 
 const loading = ref(true);
 

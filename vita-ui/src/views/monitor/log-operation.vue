@@ -1,8 +1,5 @@
 <script setup>
 import { logOperationApi } from "@/api/monitor/log-operation-api";
-import VtTableBarRight from "@/components/modules/vt-table-bar-right.vue";
-import VtDictTag from "@/components/modules/vt-dict-tag.vue";
-import VtDictSelect from "@/components/modules/vt-dict-select.vue";
 
 const loading = ref(true);
 

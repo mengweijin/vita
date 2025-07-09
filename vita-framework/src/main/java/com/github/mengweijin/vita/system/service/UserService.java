@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
@@ -245,4 +247,17 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         return vo;
     }
 
+    public IPage<UserDO> pageByRole(Long roleId, Page<UserDO> page, UserDO user) {
+        Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
+        LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
+        wrapper.in(UserDO::getId, userIds);
+        return this.page(page, wrapper);
+    }
+
+    public IPage<UserDO> pageByPost(Long postId, Page<UserDO> page, UserDO user) {
+        Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
+        LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
+        wrapper.in(UserDO::getId, userIds);
+        return this.page(page, wrapper);
+    }
 }
