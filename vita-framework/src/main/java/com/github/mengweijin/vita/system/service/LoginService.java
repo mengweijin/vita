@@ -106,6 +106,7 @@ public class LoginService {
         if(loginBO.isRemember()) {
             // 7 天免登录（7 * 24 * 60 * 60）。覆盖 sa-token.timeout 配置。
             saLoginParameter.setTimeout(604800);
+            saLoginParameter.setActiveTimeout(604800);
         }
 
         StpUtil.login(loginBO.getUsername(), saLoginParameter);

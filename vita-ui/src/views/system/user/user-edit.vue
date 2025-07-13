@@ -1,12 +1,10 @@
 <script setup>
-import { deptApi } from '@/api/system/dept-api';
 import { roleApi } from '@/api/system/role-api';
-import { postApi } from '@/api/system/post-api';
 import { userApi } from "@/api/system/user-api";
 import { configApi } from "@/api/system/config-api";
-import { addFullPath } from '@/utils/tool.js';
-import { toArrayTree } from 'xe-utils';
 import VtDictSelect from "@/components/modules/system/vt-dict-select.vue";
+import VtDeptSelect from '@/components/modules/system/vt-dept-select.vue';
+import VtPostSelect from '@/components/modules/system/vt-post-select.vue';
 
 const loading = ref(true);
 
@@ -72,34 +70,11 @@ const onSubmit = () => {
 
 const emit = defineEmits(['refresh-table']);
 
-
-const deptList = ref([]);
-
-const initDeptList = () => {
-  deptApi.list({ disabled: 'N' }).then((res) => {
-    deptList.value = res;
-  });
-}
-
-const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => item.disabled = false);
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
-});
-
 const roleList = ref([]);
 
 const initRoleList = () => {
   roleApi.list({ disabled: 'N' }).then((res) => {
     roleList.value = res;
-  });
-}
-
-const postList = ref([]);
-
-const initPostList = () => {
-  postApi.list({ disabled: 'N' }).then((res) => {
-    postList.value = res;
   });
 }
 
@@ -125,9 +100,7 @@ const initDefaultRole = () => {
 
 const onOpened = async () => {
   loading.value = true;
-  initDeptList();
   initRoleList();
-  initPostList();
   init();
   if (data.value.id) {
     initSensitiveInfo();
@@ -145,7 +118,7 @@ const onClosed = () => {
 }
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data, deptTreeSelectOptions })
+defineExpose({ visible, data })
 </script>
 
 <template>
@@ -161,13 +134,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
         </el-col>
         <el-col :span="12">
           <el-form-item prop="deptId" label="归属部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-            <el-tree-select v-model="form.deptId" :data="deptTreeSelectOptions"
-              :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-              default-expand-all placeholder="请选择">
-              <template #default="{ data: { name } }">
-                {{ name }}
-              </template>
-            </el-tree-select>
+            <VtDeptSelect v-model="form.deptId"></VtDeptSelect>
           </el-form-item>
         </el-col>
       </el-row>
@@ -234,10 +201,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="postIds" label="岗位">
-            <el-select v-model="form.postIds" clearable filterable multiple placeholder="请选择">
-              <el-option v-for="item in postList" :key="item.id" :label="item.name" :value="item.id"
-                :disabled="item.disabled === 'Y'" />
-            </el-select>
+            <VtPostSelect v-model="form.postIds"></VtPostSelect>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -264,7 +228,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="init">
+        <el-button type="warning" @click="init" v-if="!data?.id">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -272,7 +236,7 @@ defineExpose({ visible, data, deptTreeSelectOptions })
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClosed">
+        <el-button type="danger" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

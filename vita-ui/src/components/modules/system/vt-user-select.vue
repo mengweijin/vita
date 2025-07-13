@@ -1,11 +1,9 @@
 <script setup>
-import { useDictStore } from "@/store/dict-store.js";
-const dictStore = useDictStore();
 
 const props = defineProps({
-  code: {
+  size: {
     type: String,
-    required: true,
+    default: 'default'
   },
   filterable: {
     type: Boolean,
@@ -15,13 +13,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  size: {
-    type: String,
-    default: 'default'
-  },
   style: {
     type: String,
-    default: 'min-width: 200px;',
+    default: 'width: 160px;',
   },
 });
 
@@ -30,7 +24,7 @@ const selectValue = defineModel({ type: String || Array });
 const options = ref([]);
 
 onMounted(() => {
-  options.value = dictStore.get(props.code);
+  // options.value = dictStore.get(props.code);
 });
 
 </script>

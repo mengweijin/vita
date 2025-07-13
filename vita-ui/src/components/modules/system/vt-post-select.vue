@@ -1,19 +1,14 @@
 <script setup>
-import { useDictStore } from "@/store/dict-store.js";
-const dictStore = useDictStore();
+import { postApi } from '@/api/system/post-api';
 
 const props = defineProps({
-  code: {
-    type: String,
-    required: true,
-  },
   filterable: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   multiple: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   size: {
     type: String,
@@ -27,10 +22,16 @@ const props = defineProps({
 
 const selectValue = defineModel({ type: String || Array });
 
-const options = ref([]);
+const postList = ref([]);
+
+const initPostList = () => {
+  postApi.list({ disabled: 'N' }).then((res) => {
+    postList.value = res;
+  });
+}
 
 onMounted(() => {
-  options.value = dictStore.get(props.code);
+  initPostList();
 });
 
 </script>
@@ -38,7 +39,7 @@ onMounted(() => {
 <template>
   <el-select v-model="selectValue" clearable :filterable="props.filterable" :multiple="props.multiple"
     :size="props.size" :style="props.style" placeholder="请选择">
-    <el-option v-for="item in options" :key="item.val" :label="item.label" :value="item.val"
+    <el-option v-for="item in postList" :key="item.id" :label="`${item.name}`" :value="item.id"
       :disabled="item.disabled === 'Y'" />
   </el-select>
 </template>

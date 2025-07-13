@@ -15,7 +15,6 @@ const data = ref({});
 
 const queryParams = reactive({
   keywords: undefined,
-  deptId: undefined,
   disabled: 'N',
   current: 1,
   size: 10,
@@ -47,23 +46,6 @@ const handlePageChange = (currentPage, pageSize) => {
   queryParams.size = pageSize;
   loadTableData();
 }
-
-
-const deptList = ref([]);
-
-const initDeptList = () => {
-  deptApi.list({ disabled: 'N' }).then((res) => {
-    deptList.value = res;
-  });
-}
-
-const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => item.disabled = false);
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
-});
-
-
 
 const selected = ref([]);
 
@@ -107,15 +89,6 @@ defineExpose({ visible, data })
       class="vt-search-container">
       <el-form-item prop="keywords" label="关键字">
         <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
-      </el-form-item>
-      <el-form-item prop="deptId" label="部门">
-        <el-tree-select v-model="queryParams.deptId" :data="deptTreeSelectOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="请选择">
-          <template #default="{ data: { name } }">
-            {{ name }}
-          </template>
-        </el-tree-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">
