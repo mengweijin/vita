@@ -41,7 +41,7 @@ public class DynamicTaskManager {
     }
 
     public void updateTask(ScheduledTaskRegistrar registrar, SchedulingTaskDO task) {
-        destroyTask(task.getId(), false);
+        destroyTask(task.getId(), true);
         addTask(registrar, task);
     }
 

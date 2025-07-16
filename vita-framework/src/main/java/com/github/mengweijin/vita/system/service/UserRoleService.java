@@ -82,6 +82,19 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
         AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addUsers(Long roleId, List<Long> userIds) {
+        this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
+
+        List<UserRoleDO> list = userIds.stream().map(userId -> {
+            UserRoleDO userRoleDO = new UserRoleDO();
+            userRoleDO.setRoleId(roleId);
+            userRoleDO.setUserId(userId);
+            return userRoleDO;
+        }).toList();
+        return AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+    }
+
     public boolean removeByRoleIdInUserIds(Long roleId, List<Long> userIds) {
         return this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
     }

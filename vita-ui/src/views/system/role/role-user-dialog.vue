@@ -1,9 +1,7 @@
 <script setup>
-import { deptApi } from "@/api/system/dept-api";
 import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
-import { addFullPath } from '@/utils/tool.js';
-import { toArrayTree } from 'xe-utils';
+import RoleUsersSelectDialog from "./role-users-select-dialog.vue";
 
 const loading = ref(true);
 
@@ -28,7 +26,7 @@ const resetQueryForm = () => {
   loadTableData();
 };
 
-const tableRef = ref(null);
+const tableRef = ref({});
 
 const tableData = ref([]);
 
@@ -49,8 +47,12 @@ const handlePageChange = (currentPage, pageSize) => {
 
 const selected = ref([]);
 
+
+const roleUsersSelectDialogRef = ref(null);
+
 const handleRoleAddUser = () => {
-  alert("handleRoleAddUser");
+  roleUsersSelectDialogRef.value.data = { ...data.value };
+  roleUsersSelectDialogRef.value.visible = true;
 };
 
 const handleRoleRemoveUser = (userId) => {
@@ -68,7 +70,6 @@ const handleRoleRemoveUserBatch = () => {
 
 const onOpened = () => {
   loading.value = true;
-  initDeptList();
   loadTableData();
 }
 
@@ -83,7 +84,7 @@ defineExpose({ visible, data })
 
 <template>
   <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="90%" style="min-height: 70%; max-height: 90%;">
+    @closed="onClosed" width="70%" style="max-height: 90%;">
     <!-- 查询表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
       class="vt-search-container">
@@ -126,14 +127,19 @@ defineExpose({ visible, data })
         </el-button>
       </el-col>
       <el-col :span="1.5" v-if="selected.length">
-        <el-button type="danger" @click="handleRoleRemoveUserBatch">
-          <template #icon>
-            <el-icon>
-              <Icon icon="ep:delete"></Icon>
-            </el-icon>
+        <el-popconfirm placement="right" width="400" :title="`确定从角色中移除已选中的所有用户吗？`" confirm-button-text="确定"
+          cancel-button-text="取消" @confirm="handleRoleRemoveUserBatch">
+          <template #reference>
+            <el-button type="danger">
+              <template #icon>
+                <el-icon>
+                  <Icon icon="ep:delete"></Icon>
+                </el-icon>
+              </template>
+              从角色中移除
+            </el-button>
           </template>
-          从角色中移除
-        </el-button>
+        </el-popconfirm>
       </el-col>
       <!-- 右侧 -->
       <VtTableBarRight :tableRef="tableRef" :shows="['size']" @update-size="(val) => size = val" />
@@ -145,8 +151,8 @@ defineExpose({ visible, data })
         border show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="false" prop="id" label="ID" min-width="180" />
-        <el-table-column prop="username" label="用户名" min-width="100" align="center" />
         <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
+        <el-table-column prop="username" label="用户名" min-width="100" align="center" />
         <el-table-column prop="deptName" label="部门名称" min-width="100" />
         <el-table-column prop="gender" label="性别" min-width="80" align="center">
           <template #default="{ row }">
@@ -160,12 +166,12 @@ defineExpose({ visible, data })
             <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" width="70">
+        <el-table-column label="操作" fixed="right" width="80" align="center">
           <template #default="scope">
             <div>
               <el-tooltip content="从角色中移除" placement="top">
                 <div style="display: inline-block;">
-                  <el-popconfirm placement="left" width="400" :title="`确定从角色中移除用户【${scope.row.name}】吗？`"
+                  <el-popconfirm placement="left" width="400" :title="`确定从角色中移除用户【${scope.row.nickname}】吗？`"
                     confirm-button-text="确定" cancel-button-text="取消" @confirm="handleRoleRemoveUser(scope.row.id)">
                     <template #reference>
                       <el-button type="danger" text :size="size">
@@ -189,12 +195,17 @@ defineExpose({ visible, data })
         @change="handlePageChange" />
     </div>
 
+    <RoleUsersSelectDialog ref="roleUsersSelectDialogRef"></RoleUsersSelectDialog>
   </el-dialog>
 </template>
 
 <style scoped>
+.vt-search-container {
+  padding: 5px 0 0 0;
+}
+
 .vt-table-container {
   /* 查询表单：70px; 表格头：63px；分页组件：50px */
-  height: calc(100% - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px - 50px);
+  height: calc(100% - 70px - 63px - 50px);
 }
 </style>

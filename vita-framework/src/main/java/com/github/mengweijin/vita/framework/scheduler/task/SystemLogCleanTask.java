@@ -15,6 +15,7 @@ import org.dromara.hutool.core.math.NumberUtil;
 import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class SystemLogCleanTask implements ISchedulingTask {
     /**
      * 系统日志最大保留时间（单位：天）
      */
-    private static final String LOG_RETAINED_DAYS_KEY = "logRetainedDays";
+    private static final String LOG_RETAINED_DAYS_KEY = "days";
 
     private LogSystemService logSystemService;
 
@@ -43,7 +44,7 @@ public class SystemLogCleanTask implements ISchedulingTask {
             throw new ServerException(msg);
         }
         int days = NumberUtil.parseInt(daysString);
-        LocalDateTime minusTime = LocalDateTime.now().minusDays(days);
+        LocalDateTime minusTime = LocalDate.now().minusDays(days).atTime(0, 0, 0);
 
         LambdaQueryWrapper<LogDO> wrapper = new LambdaQueryWrapper<>();
         wrapper.le(LogDO::getCreateTime, minusTime);

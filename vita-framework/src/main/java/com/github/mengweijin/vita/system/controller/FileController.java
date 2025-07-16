@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -117,14 +120,14 @@ public class FileController {
      * <p>
      * Add File
      * </p>
-     * @param fileEntity {@link FileDO}
+     * @param file {@link MultipartFile}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:file:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FileDO fileEntity) {
-        boolean bool = fileService.save(fileEntity);
-        return R.result(bool);
+    public R<FileVO> create(@RequestPart("file") MultipartFile file, @RequestParam(name = "fileName", required = false) String fileName) {
+        FileDO fileDO = fileService.upload(file, fileName);
+        return R.ok(BeanCopyUtils.copyBean(fileDO, FileVO.class));
     }
 
     /**

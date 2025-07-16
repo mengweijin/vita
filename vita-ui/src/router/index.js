@@ -92,7 +92,7 @@ router.beforeEach(async (to, from) => {
 
   // 未登录且访问受保护路由，强制跳转登录页，并携带访问路径。（ to.fullPath = '/login?redirect=/home' ）
   if (!isLogin() && !to.fullPath.startsWith('/login')) {
-    return { path: '/login', query: { redirect: to.fullPath } };
+    return { path: '/login', query: { redirect: to.fullPath.endsWith('/404') ? '/' : to.fullPath } };
   }
 
   // 已登录但访问登录页。强制跳转到参数页或首页

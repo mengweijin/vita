@@ -13,6 +13,8 @@ export const roleApi = {
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
+  addUsers: (roleId, userIds) => http.post(`${URL_PREFIX}/add-users/${roleId}/${userIds}`),
+
   removeByRoleIdInUserIds: (roleId, userIds) => http.post(`${URL_PREFIX}/removeByRoleIdInUserIds/${roleId}/${userIds}`),
 
   setPermission: (id, menuIdList = []) =>

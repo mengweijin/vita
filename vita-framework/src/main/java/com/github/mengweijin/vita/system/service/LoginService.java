@@ -102,6 +102,7 @@ public class LoginService {
 
         SaLoginParameter saLoginParameter = new SaLoginParameter()
                 .setIsLastingCookie(loginBO.isRemember())
+                .setDeviceId(loginBO.getDeviceId())
                 .setDeviceType(platformName);
         if(loginBO.isRemember()) {
             // 7 天免登录（7 * 24 * 60 * 60）。覆盖 sa-token.timeout 配置。

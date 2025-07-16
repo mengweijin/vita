@@ -153,14 +153,15 @@ onMounted(() => {
           <div>
             <div style="padding: 5px 0;"><span>显示/隐藏列</span></div>
             <el-divider style="margin: 0px;" />
-            <div style="max-height: 260px; overflow-y: auto;">
+            <div style="max-height: 300px; overflow-y: auto;">
               <el-checkbox label="全选" :value="-1" :key="-1" @change="columnCheckAllChange" />
               <el-button type="primary" size="small" @click="columnReset"
                 style="font-size: 14px; height: 20px; margin-top: 6px; float: right;">重置</el-button>
               <el-divider style="margin: 0px;" />
               <el-checkbox-group v-model="columnCheckedList" @change="columnGroupChange">
-                <el-checkbox v-for="(item, index) in columnList" :label="item.label" :value="item.key"
-                  :key="item.key" />
+                <div v-for="(item, index) in columnList" :key="item.key">
+                  <el-checkbox :label="item.label" :value="item.key" />
+                </div>
               </el-checkbox-group>
             </div>
           </div>

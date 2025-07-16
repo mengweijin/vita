@@ -1,6 +1,7 @@
-package com.github.mengweijin.vita.system.domain.vo;
+package com.github.mengweijin.vita.monitor.domain.vo;
 
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.session.SaTerminalInfo;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.Data;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.date.TimeUtil;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mengweijin
@@ -49,9 +52,10 @@ public class SaSessionVO {
     private LocalDateTime createTime;
 
     /**
-     * 当前账号历史总计登录设备数量（当此 SaSession 属于 Account-Session 时，此值有效）
+     * 此 Session 绑定的登录设备终端信息 Model
      */
-    private int historyTerminalCount;
+    private List<SaTerminalInfoVO> terminalInfoList = new ArrayList<>();
+
 
     public SaSessionVO(SaSession session) {
         this.id = session.getId();
@@ -60,7 +64,10 @@ public class SaSessionVO {
         this.loginId = session.getLoginId();
         this.token = session.getToken();
         this.createTime = TimeUtil.of(session.getCreateTime());
-        this.historyTerminalCount = session.getHistoryTerminalCount();
+        this.terminalInfoList = this.copyTerminalInfoList(session.getTerminalList());
     }
 
+    private List<SaTerminalInfoVO> copyTerminalInfoList(List<SaTerminalInfo> list) {
+        return list.stream().map(SaTerminalInfoVO::new).toList();
+    }
 }

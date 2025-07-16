@@ -1,10 +1,11 @@
 <script setup>
-import { roleApi } from '@/api/system/role-api';
+import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
 import { configApi } from "@/api/system/config-api";
 import VtDictSelect from "@/components/modules/system/vt-dict-select.vue";
 import VtDeptSelect from '@/components/modules/system/vt-dept-select.vue';
 import VtPostSelect from '@/components/modules/system/vt-post-select.vue';
+import VtRoleSelect from '@/components/modules/system/vt-role-select.vue';
 
 const loading = ref(true);
 
@@ -70,14 +71,6 @@ const onSubmit = () => {
 
 const emit = defineEmits(['refresh-table']);
 
-const roleList = ref([]);
-
-const initRoleList = () => {
-  roleApi.list({ disabled: 'N' }).then((res) => {
-    roleList.value = res;
-  });
-}
-
 const initSensitiveInfo = () => {
   userApi.getSensitiveUserById(data.value.id).then((res) => {
     form.citizenId = res.citizenId;
@@ -100,7 +93,6 @@ const initDefaultRole = () => {
 
 const onOpened = async () => {
   loading.value = true;
-  initRoleList();
   init();
   if (data.value.id) {
     initSensitiveInfo();
@@ -206,10 +198,7 @@ defineExpose({ visible, data })
         </el-col>
         <el-col :span="12">
           <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-            <el-select v-model="form.roleIds" clearable filterable multiple placeholder="请选择">
-              <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"
-                :disabled="item.disabled === 'Y'" />
-            </el-select>
+            <VtRoleSelect v-model="form.roleIds"></VtRoleSelect>
           </el-form-item>
         </el-col>
       </el-row>

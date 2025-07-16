@@ -28,4 +28,6 @@ public class LoginBO implements Serializable {
     private boolean remember;
 
     private Integer otp;
+
+    private String deviceId;
 }

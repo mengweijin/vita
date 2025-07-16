@@ -280,7 +280,7 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,CO
 
 
 -- 调度任务
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{"logRetainedDays": 90}','N','logRetainedDays：系统日志保留天数，默认 90 天。超过该配置天数的系统日志将被调度任务清理。CRON 默认每个月 1 日 3:00 执行一次',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{"days": 90}','N','days：系统日志保留天数。超过该配置天数的系统日志将被调度任务清理。CRON 默认每个月 1 日 3:00 执行一次',1,current_timestamp(),1,current_timestamp());
 
 
 -- 用户-角色

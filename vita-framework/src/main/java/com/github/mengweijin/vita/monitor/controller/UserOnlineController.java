@@ -8,10 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.system.domain.vo.SaSessionVO;
+import com.github.mengweijin.vita.framework.util.AESUtils;
+import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
+import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,4 +64,12 @@ public class UserOnlineController {
         return R.ok();
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
+    @SaCheckPermission("monitor:userOnline:kickOut")
+    @PostMapping("/kick-out-by-token")
+    public R<Void> kickOutByToken(@RequestBody SaTerminalInfoVO vo) {
+        // 强制指定 Token 注销下线
+        StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getEncryptTokenValue()));
+        return R.ok();
+    }
 }

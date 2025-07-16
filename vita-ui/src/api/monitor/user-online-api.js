@@ -6,4 +6,6 @@ export const userOnlineApi = {
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
   kickOutByUsername: (username) => http.post(`${URL_PREFIX}/kick-out-by-username/${username}`),
+
+  kickOutByToken: (token) => http.post(`${URL_PREFIX}/kick-out-by-token`, { encryptTokenValue: token }),
 };

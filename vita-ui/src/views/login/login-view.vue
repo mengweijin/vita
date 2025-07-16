@@ -15,6 +15,10 @@ const dictStore = useDictStore();
 import { useMenuStore } from '@/store/menu-store';
 const menuStore = useMenuStore();
 
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
+
+const loading = ref(false);
+
 const visible = ref(false);
 
 const form = reactive({
@@ -23,6 +27,7 @@ const form = reactive({
   otp: '',
   captcha: '',
   remember: false,
+  deviceId: undefined,
 })
 
 const formRef = ref(null);
@@ -42,7 +47,6 @@ const initCaptcha = async () => {
   if (captchaEnabled.value) {
     await onRefreshCaptcha();
   }
-  visible.value = true;
 }
 
 const onRefreshCaptcha = async () => {
@@ -90,19 +94,26 @@ const onkeypress = ({ code }) => {
 
 const optEnabled = ref(false);
 
-const initLoginOtpEnabled = () => {
-  loginApi.getLoginOtpEnabled().then((res) => {
-    optEnabled.value = res;
-  });
+const initLoginOtpEnabled = async () => {
+  optEnabled.value = await loginApi.getLoginOtpEnabled();
 }
 
-onBeforeMount(() => {
-  initCaptcha();
-  initLoginOtpEnabled();
-});
+const initVisitorId = async () => {
+  // 初始化指纹库
+  const fp = await FingerprintJS.load();
+  // 生成浏览器指纹
+  const result = await fp.get();
+  form.deviceId = result.visitorId;
+};
 
-onMounted(() => {
+onMounted(async () => {
+  loading.value = true;
+  await initCaptcha();
+  await initLoginOtpEnabled();
+  await initVisitorId();
   window.document.addEventListener("keypress", onkeypress);
+  visible.value = true;
+  loading.value = false;
 });
 
 onBeforeUnmount(() => {
@@ -111,7 +122,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <el-container v-show="visible">
+  <el-container v-loading="loading" v-show="visible">
     <el-main>
       <el-form :model="form" :rules="rules" ref="formRef" :size="'large'">
         <el-form-item>

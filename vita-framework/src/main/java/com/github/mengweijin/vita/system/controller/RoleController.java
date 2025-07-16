@@ -145,6 +145,14 @@ public class RoleController {
         return R.result(bool);
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
+    @SaCheckPermission("system:role:update")
+    @PostMapping("/add-users/{roleId}/{userIds}")
+    public R<Void> addUsers(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] userIds) {
+        return R.result(userRoleService.addUsers(roleId, Arrays.asList(userIds)));
+
+    }
+
     /**
      * <p>
      * Delete Role by id(s), Multiple ids can be separated by commas ",".
@@ -161,7 +169,7 @@ public class RoleController {
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("system:role:assignUser")
     @PostMapping("/removeByRoleIdInUserIds/{roleId}/{userIds}")
-    public R<Void> removeByRoleIdInUserIds(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] ids) {
-        return R.result(userRoleService.removeByRoleIdInUserIds(roleId, Arrays.asList(ids)));
+    public R<Void> removeByRoleIdInUserIds(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] userIds) {
+        return R.result(userRoleService.removeByRoleIdInUserIds(roleId, Arrays.asList(userIds)));
     }
 }

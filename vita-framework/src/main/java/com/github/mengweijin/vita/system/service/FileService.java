@@ -9,6 +9,7 @@ import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
+import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -71,33 +72,45 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
     }
 
     public List<FileDO> upload(HttpServletRequest request) {
-        List<FileDO> list = UploadUtils.upload(request, multipartFile -> {
-            String md5 = UploadUtils.md5(multipartFile);
-            String fileName = multipartFile.getOriginalFilename();
-            String suffix = FileNameUtil.getSuffix(fileName);
-
-            FileDO fileEntity = new FileDO();
-            fileEntity.setMd5(md5);
-            fileEntity.setName(fileName);
-            fileEntity.setSuffix(suffix);
-
-            List<FileDO> fileEntityList = this.getByMd5(md5);
-            if (CollUtil.isEmpty(fileEntityList)) {
-                String storagePath = getPath(vitaProperties.getFileDir(), suffix);
-                copyFile(multipartFile, storagePath);
-                fileEntity.setStoragePath(storagePath);
-            } else {
-                String storagePath = fileEntityList.get(0).getStoragePath();
-                if (!FileUtil.exists(storagePath)) {
-                    copyFile(multipartFile, storagePath);
-                }
-                fileEntity.setStoragePath(storagePath);
-            }
-            return fileEntity;
-        });
-
+        List<FileDO> list = UploadUtils.upload(request, this::buildFileDO);
         AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
         return list;
+    }
+
+    public FileDO upload(MultipartFile multipartFile, String fileName) {
+        FileDO fileDO = this.buildFileDO(multipartFile, fileName);
+        AopUtils.getAopProxy(this).save(fileDO);
+        return fileDO;
+    }
+
+    public FileDO buildFileDO(MultipartFile multipartFile) {
+        return this.buildFileDO(multipartFile, null);
+    }
+
+    public FileDO buildFileDO(MultipartFile multipartFile, String fileName) {
+        String md5 = UploadUtils.md5(multipartFile);
+        fileName = StrUtil.isBlank(fileName) ? multipartFile.getOriginalFilename() : fileName;
+        String suffix = FileNameUtil.getSuffix(fileName);
+
+        FileDO fileEntity = new FileDO();
+        fileEntity.setMd5(md5);
+        fileEntity.setName(fileName);
+        fileEntity.setSuffix(suffix);
+        fileEntity.setDeleted(EYesNo.N.getValue());
+
+        List<FileDO> fileEntityList = this.getByMd5(md5);
+        if (CollUtil.isEmpty(fileEntityList)) {
+            String storagePath = getPath(vitaProperties.getFileDir(), suffix);
+            copyFile(multipartFile, storagePath);
+            fileEntity.setStoragePath(storagePath);
+        } else {
+            String storagePath = fileEntityList.get(0).getStoragePath();
+            if (!FileUtil.exists(storagePath)) {
+                copyFile(multipartFile, storagePath);
+            }
+            fileEntity.setStoragePath(storagePath);
+        }
+        return fileEntity;
     }
 
     public static void copyFile(MultipartFile multipartFile, String path) {
@@ -115,4 +128,5 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         String day = CharSequenceUtil.padPre(String.valueOf(now.getDayOfMonth()), 2, "0");
         return dir + String.join(File.separator, year, month, day, IdUtil.simpleUUID()) + Const.DOT + suffix;
     }
+
 }
