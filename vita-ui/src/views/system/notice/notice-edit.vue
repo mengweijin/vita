@@ -1,6 +1,6 @@
 <script setup>
-import { roleApi } from '@/api/system/role-api';
-import VtSelectUser from '@/components/modules/system/vt-select-user.vue';
+import { noticeApi } from "@/api/system/notice-api";
+import VtEditor from "@/components/modules/common/vt-editor.vue";
 
 const loading = ref(true);
 
@@ -10,13 +10,15 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  roleId: undefined,
-  userIds: [],
+  id: undefined,
+  title: undefined,
+  description: undefined,
 });
 
 const init = () => {
-  form.roleId = data.value.id ?? undefined;
-  form.userIds = data.value?.userIds ?? [];
+  form.id = data.value.id ?? undefined;
+  form.title = data.value.title ?? undefined;
+  form.description = data.value.description ?? undefined;
 };
 
 const formRef = ref(null);
@@ -28,16 +30,23 @@ const onSubmit = () => {
       console.log(fields)
       return;
     }
-    roleApi.addUsers(form.roleId, form.userIds).then((r) => {
-      emit('refresh-table');
-      onClosed();
-    });
+    if (form.id) {
+      noticeApi.update(form).then((r) => {
+        emit('refresh-table');
+        onClosed();
+      });
+    } else {
+      noticeApi.create(form).then((r) => {
+        emit('refresh-table');
+        onClosed();
+      });
+    }
   });
 }
 
 const emit = defineEmits(['refresh-table']);
 
-const onOpened = async () => {
+const onOpened = () => {
   loading.value = true;
   init();
   loading.value = false;
@@ -54,10 +63,17 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色【${data.name}】新增用户`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="600px">
+  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
+    @closed="onClosed" width="70%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <VtSelectUser v-model="form.userIds"></VtSelectUser>
+
+      <el-form-item prop="title" label="标题" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.title" clearable maxlength="100" autocomplete="off" />
+      </el-form-item>
+
+      <el-form-item prop="description" label="内容" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <VtEditor v-model="form.description"></VtEditor>
+      </el-form-item>
     </el-form>
     <template #footer>
       <div>
@@ -69,7 +85,7 @@ defineExpose({ visible, data })
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="init" v-if="false">
+        <el-button type="warning" @click="init">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>

@@ -15,22 +15,27 @@ public enum EMessageCategory implements IEnum<String> {
     /**
      * 来自系统发送的消息
      */
-    SYSTEM("SYSTEM"),
+    SYSTEM("system"),
 
     /**
      * 安全
      */
-    SECURITY("SECURITY"),
+    SECURITY("security"),
 
     /**
      * 告警消息
      */
-    ALERT("ALERT"),
+    ALERT("alert"),
 
     /**
-     * 来自其它用户的消息
+     * 来自用户的消息
      */
-    USER("USER");
+    USER("user"),
+
+    /**
+     * 其它
+     */
+    OTHER("other");
 
     private final String value;
 

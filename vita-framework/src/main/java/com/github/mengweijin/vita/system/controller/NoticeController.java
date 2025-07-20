@@ -54,6 +54,7 @@ public class NoticeController {
     @GetMapping("/page")
     public IPage<NoticeDO> page(Page<NoticeDO> page, NoticeDO notice) {
         LambdaQueryWrapper<NoticeDO> wrapper = noticeService.getQueryWrapper(notice);
+        wrapper.orderByDesc(NoticeDO::getUpdateTime);
         return noticeService.page(page, wrapper);
     }
 
@@ -133,7 +134,7 @@ public class NoticeController {
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:notice:revocation")
+    @SaCheckPermission("system:notice:revoke")
     @PostMapping("/revoke/{id}")
     public R<Void> revoke(@PathVariable("id") Long id) {
         boolean bool = noticeService.lambdaUpdate().set(NoticeDO::getReleased, EYesNo.N.getValue()).eq(NoticeDO::getId, id).update();

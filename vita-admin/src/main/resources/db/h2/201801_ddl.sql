@@ -9,7 +9,7 @@
 drop table IF EXISTS VT_NOTICE;
 create TABLE VT_NOTICE (
   ID                            bigint NOT NULL comment '主键ID',
-  NAME                          varchar(255) DEFAULT NULL comment '名称',
+  TITLE                         varchar(255) DEFAULT NULL comment '标题',
   DESCRIPTION                   text DEFAULT NULL comment '内容',
   RELEASED                      char(1) DEFAULT 'N' comment '是否已发布。[Y, N]',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',

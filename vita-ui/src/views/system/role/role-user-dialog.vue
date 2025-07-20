@@ -3,7 +3,7 @@ import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
 import RoleUsersSelectDialog from "./role-users-select-dialog.vue";
 
-const loading = ref(true);
+const loading = ref(false);
 
 const visible = ref(false);
 
@@ -69,7 +69,6 @@ const handleRoleRemoveUserBatch = () => {
 };
 
 const onOpened = () => {
-  loading.value = true;
   loadTableData();
 }
 
@@ -156,14 +155,14 @@ defineExpose({ visible, data })
         <el-table-column prop="deptName" label="部门名称" min-width="100" />
         <el-table-column prop="gender" label="性别" min-width="80" align="center">
           <template #default="{ row }">
-            <VtDictTag :code="'vt_user_gender'" :value="row.gender" :size="size"></VtDictTag>
+            <VtTagDict :code="'vt_user_gender'" :value="row.gender" :size="size"></VtTagDict>
           </template>
         </el-table-column>
         <el-table-column prop="mobile" label="移动电话" min-width="120" />
         <el-table-column prop="email" label="邮箱" min-width="140" />
         <el-table-column prop="disabled" label="状态" min-width="80" align="center">
           <template #default="{ row }">
-            <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
+            <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="80" align="center">
@@ -195,7 +194,7 @@ defineExpose({ visible, data })
         @change="handlePageChange" />
     </div>
 
-    <RoleUsersSelectDialog ref="roleUsersSelectDialogRef"></RoleUsersSelectDialog>
+    <RoleUsersSelectDialog ref="roleUsersSelectDialogRef" @refresh-table="loadTableData"></RoleUsersSelectDialog>
   </el-dialog>
 </template>
 

@@ -2,10 +2,10 @@
 import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
 import { configApi } from "@/api/system/config-api";
-import VtDictSelect from "@/components/modules/system/vt-dict-select.vue";
-import VtDeptSelect from '@/components/modules/system/vt-dept-select.vue';
-import VtPostSelect from '@/components/modules/system/vt-post-select.vue';
-import VtRoleSelect from '@/components/modules/system/vt-role-select.vue';
+import VtSelectDict from "@/components/modules/system/vt-select-dict.vue";
+import VtSelectDept from '@/components/modules/system/vt-select-dept.vue';
+import VtSelectPost from '@/components/modules/system/vt-select-post.vue';
+import VtSelectRole from '@/components/modules/system/vt-select-role.vue';
 
 const loading = ref(true);
 
@@ -126,7 +126,7 @@ defineExpose({ visible, data })
         </el-col>
         <el-col :span="12">
           <el-form-item prop="deptId" label="归属部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-            <VtDeptSelect v-model="form.deptId"></VtDeptSelect>
+            <VtSelectDept v-model="form.deptId"></VtSelectDept>
           </el-form-item>
         </el-col>
       </el-row>
@@ -179,7 +179,7 @@ defineExpose({ visible, data })
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="gender" label="性别">
-            <VtDictSelect v-model="form.gender" :code="'vt_user_gender'"></VtDictSelect>
+            <VtSelectDict v-model="form.gender" :code="'vt_user_gender'"></VtSelectDict>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -193,12 +193,12 @@ defineExpose({ visible, data })
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="postIds" label="岗位">
-            <VtPostSelect v-model="form.postIds"></VtPostSelect>
+            <VtSelectPost v-model="form.postIds"></VtSelectPost>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-            <VtRoleSelect v-model="form.roleIds"></VtRoleSelect>
+            <VtSelectRole v-model="form.roleIds"></VtSelectRole>
           </el-form-item>
         </el-col>
       </el-row>

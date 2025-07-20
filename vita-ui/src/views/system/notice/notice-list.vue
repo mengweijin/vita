@@ -1,9 +1,7 @@
 <script setup>
-import { roleApi } from "@/api/system/role-api";
-import { columns } from './role-hook.js';
-import RoleEdit from './role-edit.vue';
-import RoleMenuDialog from './role-menu-dialog.vue';
-import RoleUserDialog from './role-user-dialog.vue';
+import { noticeApi } from "@/api/system/notice-api";
+import { columns } from './notice-hook.js';
+import NoticeEdit from './notice-edit.vue';
 
 const loading = ref(true);
 
@@ -18,7 +16,7 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   keywords: undefined,
-  disabled: undefined,
+  released: undefined,
   current: 1,
   size: 10,
   total: 0,
@@ -33,47 +31,48 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  roleApi.page(queryParams).then((res) => {
+  noticeApi.page(queryParams).then((res) => {
     tableData.value = res.records;
     queryParams.total = res.total;
     loading.value = false;
   });
 };
 
-const roleMenuDialogRef = ref(null);
-
-const handleAuthorization = (row) => {
-  roleMenuDialogRef.value.data = { ...row };
-  roleMenuDialogRef.value.visible = true;
-};
-
-
-const roleUserDialogRef = ref(null);
-
-const handleAssigningUsers = (row) => {
-  roleUserDialogRef.value.data = { ...row };
-  roleUserDialogRef.value.visible = true;
-}
-
-
-const roleEditRef = ref(null);
+const noticeEditRef = ref(null);
 
 const handleAdd = () => {
-  roleEditRef.value.data = {};
-  roleEditRef.value.visible = true;
+  noticeEditRef.value.data = {};
+  noticeEditRef.value.visible = true;
 }
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  roleEditRef.value.data = { ...row };
-  roleEditRef.value.visible = true;
+  noticeEditRef.value.data = { ...row };
+  noticeEditRef.value.visible = true;
 }
+
+const handleRelease = (id) => {
+  noticeApi.release(id).then(() => {
+    loadTableData();
+  });
+}
+
+const handleRevoke = (id) => {
+  noticeApi.revoke(id).then(() => {
+    loadTableData();
+  });
+}
+
+const handleViewDetail = (row) => {
+
+};
+
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  roleApi.remove(ids).then(() => {
+  noticeApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -102,10 +101,10 @@ onMounted(() => {
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
     class="vt-search-container">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="标题、内容" clearable />
     </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
+    <el-form-item prop="released" label="发布状态">
+      <VtSelectDict v-model="queryParams.released" :code="'vt_released'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -143,7 +142,7 @@ onMounted(() => {
       </el-button>
     </el-col>
     <el-col :span="1.5" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.title).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -168,55 +167,49 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="角色名称" min-width="200" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="200" />
-      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
+      <el-table-column v-if="columns.title.visible" prop="title" label="标题" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.description.visible" prop="description" label="内容" min-width="300" />
+      <el-table-column v-if="columns.released.visible" prop="released" label="发布状态" width="120" align="center">
         <template #default="{ row }">
-          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
+          <VtTagDict :code="'vt_released'" :value="row.released" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center"
-        min-width="180" />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
-        min-width="180" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
+      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
+      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
-            <el-tooltip content="授权" placement="top">
-              <el-button type="primary" text :size="size" @click="handleAuthorization(scope.row)">
+            <el-tooltip content="查看" placement="top">
+              <el-button type="primary" text :size="size" @click="handleViewDetail(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ri:shield-user-fill"></Icon>
+                    <Icon icon="ep:view"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="分配用户" placement="top">
+            <el-tooltip content="发布" placement="top" v-if="scope.row.released === 'N'">
               <el-button type="primary" text :size="size" style="margin-left: 0px;"
-                @click="handleAssigningUsers(scope.row)">
+                @click="handleRelease(scope.row.id)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:user-filled"></Icon>
+                    <Icon icon="ep:promotion"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleAdd(scope.row)">
+            <el-tooltip content="撤回" placement="top" v-if="scope.row.released === 'Y'">
+              <el-button type="warning" text :size="size" style="margin-left: 0px;" @click="handleRevoke(scope.row.id)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
+                    <Icon icon="ri:arrow-go-back-fill"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
+            <el-tooltip content="编辑" placement="top" v-if="scope.row.released === 'N'">
               <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
@@ -225,9 +218,9 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <el-tooltip content="删除" placement="top" v-if="scope.row.released === 'N'">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.title}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
@@ -251,11 +244,7 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
-
-  <RoleMenuDialog ref="roleMenuDialogRef"></RoleMenuDialog>
-
-  <RoleUserDialog ref="roleUserDialogRef"></RoleUserDialog>
+  <NoticeEdit ref="noticeEditRef" @refresh-table="loadTableData"></NoticeEdit>
 </template>
 
 <style scoped></style>

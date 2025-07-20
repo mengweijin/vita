@@ -87,10 +87,10 @@ onMounted(() => {
       <el-input v-model="queryParams.keywords" placeholder="名称、权限字符、组件" clearable />
     </el-form-item>
     <el-form-item prop="type" label="菜单类型">
-      <VtDictSelect v-model="queryParams.type" :code="'vt_menu_type'"></VtDictSelect>
+      <VtSelectDict v-model="queryParams.type" :code="'vt_menu_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
-      <VtDictSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtDictSelect>
+      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -167,12 +167,12 @@ onMounted(() => {
       </el-table-column>
       <el-table-column v-if="columns.type.visible" prop="type" label="菜单类型" min-width="120" align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_menu_type'" :value="row.type" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_menu_type'" :value="row.type" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />

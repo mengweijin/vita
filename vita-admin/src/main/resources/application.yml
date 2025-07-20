@@ -137,13 +137,13 @@ sa-token:
   token-prefix: Bearer
   # token 风格。可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
   token-style: random-128
-  # token有效期，单位s 默认30天, -1代表永不过期。这里设置为 7 * 24 * 60 * 60 = 604800 秒（即：7天）
+  # token有效期，单位s 默认30天, -1代表永不过期。这里设置为 8 * 60 * 60 = 28800 秒（即：8小时）
   # token 的绝对有效期（8小时），即使持续操作，超过该时间仍需重新登录，作为兜底策略。
-  timeout: 604800
+  timeout: 28800
   # token 最低活跃频率（单位：秒）
   # 控制 Token 的临时有效期，用户最后一次操作后超过 1800 秒（30分钟）无新请求，则 Token 失效。
   # 每次请求会自动更新 Token 的最后活跃时间，重置倒计时。
-  # 登录时可通过 SaLoginModel().setActiveTimeout(7 * 24 * 60 * 60); 来覆盖，设置为 7 天免登录
+  # 登录时可通过 SaLoginModel().setActiveTimeout(7 * 24 * 60 * 60) = 604800 秒; 来覆盖，设置为 7 天免登录
   active-timeout: 1800
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
   is-concurrent: true

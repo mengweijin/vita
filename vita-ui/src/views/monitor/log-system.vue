@@ -88,7 +88,7 @@ onMounted(() => {
       <el-input v-model="queryParams.keywords" placeholder="线程名称、日志名称、日志内容" style="width: 260px;" clearable />
     </el-form-item>
     <el-form-item prop="loggerLevel" label="日志级别">
-      <VtDictSelect v-model="queryParams.loggerLevel" :code="'vt_log_level'"></VtDictSelect>
+      <VtSelectDict v-model="queryParams.loggerLevel" :code="'vt_log_level'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -143,7 +143,7 @@ onMounted(() => {
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
       <el-table-column v-if="columns.loggerLevel.visible" prop="loggerLevel" label="日志级别" width="100" align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_log_level'" :value="row.loggerLevel" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_log_level'" :value="row.loggerLevel" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.threadName.visible" prop="threadName" label="线程名称" min-width="160" />

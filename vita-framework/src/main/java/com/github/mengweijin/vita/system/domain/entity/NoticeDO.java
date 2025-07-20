@@ -19,9 +19,9 @@ import lombok.EqualsAndHashCode;
 public class NoticeDO extends BaseEntity {
 
     /**
-    * 名称
+    * 标题
     */
-    private String name;
+    private String title;
 
     /**
     * 内容

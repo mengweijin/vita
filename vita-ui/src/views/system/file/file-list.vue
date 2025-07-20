@@ -154,10 +154,10 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="文件名称" min-width="240" fixed="left" />
-      <el-table-column v-if="columns.suffix.visible" prop="suffix" label="文件后缀" min-width="80" />
-      <el-table-column v-if="columns.storagePath.visible" prop="storagePath" label="存储路径" min-width="260" />
-      <el-table-column v-if="columns.md5.visible" prop="md5" label="MD5" min-width="260" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="文件名称" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.suffix.visible" prop="suffix" label="文件后缀" width="90" />
+      <el-table-column v-if="columns.storagePath.visible" prop="storagePath" label="存储路径" min-width="240" />
+      <el-table-column v-if="columns.md5.visible" prop="md5" label="MD5" width="290" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />

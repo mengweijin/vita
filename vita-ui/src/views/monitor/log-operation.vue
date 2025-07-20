@@ -94,10 +94,10 @@ onMounted(() => {
       <el-input v-model="queryParams.keywords" placeholder="模块标题、URL、方法名称" clearable />
     </el-form-item>
     <el-form-item prop="operationType" label="操作类型">
-      <VtDictSelect v-model="queryParams.operationType" :code="'vt_operation_log_type'"></VtDictSelect>
+      <VtSelectDict v-model="queryParams.operationType" :code="'vt_operation_log_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item prop="httpMethod" label="请求方式">
-      <VtDictSelect v-model="queryParams.httpMethod" :code="'vt_http_request_type'"></VtDictSelect>
+      <VtSelectDict v-model="queryParams.httpMethod" :code="'vt_http_request_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -154,12 +154,12 @@ onMounted(() => {
       <el-table-column v-if="columns.operationType.visible" prop="operationType" label="操作类型" min-width="100"
         align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_operation_log_type'" :value="row.operationType" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_operation_log_type'" :value="row.operationType" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.httpMethod.visible" prop="httpMethod" label="请求方式" min-width="100" align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_http_request_type'" :value="row.httpMethod" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_http_request_type'" :value="row.httpMethod" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="230" />
@@ -168,7 +168,7 @@ onMounted(() => {
         align="center" />
       <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
         <template #default="{ row }">
-          <VtDictTag :code="'vt_succeeded'" :value="row.success" :size="size"></VtDictTag>
+          <VtTagDict :code="'vt_succeeded'" :value="row.success" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.requestData.visible" prop="requestData" label="请求数据" min-width="260" />

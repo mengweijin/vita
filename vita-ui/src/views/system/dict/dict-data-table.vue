@@ -134,7 +134,7 @@ defineExpose({ visible, dictType })
         <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="90" align="center" sortable />
         <el-table-column v-if="columns.disabled.visible" prop="disabled" label="字典状态" min-width="100" align="center">
           <template #default="{ row }">
-            <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
+            <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="180" />

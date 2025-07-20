@@ -39,3 +39,7 @@
 .el-pagination {
   margin-top: 10px;
 }
+
+.el-dialog__footer {
+  padding-top: 0px !important;
+}

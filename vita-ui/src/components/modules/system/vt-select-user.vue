@@ -1,7 +1,7 @@
 <script setup>
 import { deptApi } from '@/api/system/dept-api';
 import { userApi } from '@/api/system/user-api';
-import { toArrayTree } from 'xe-utils';
+import { toArrayTree, find, remove } from 'xe-utils';
 
 const props = defineProps({
   multiple: {
@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const selectValue = defineModel({ type: Array, default: [] });
 
 const treeRef = ref(null);
 
@@ -91,6 +91,27 @@ const handlePageChange = (currentPage, pageSize) => {
   }, 10);
 }
 
+const selected = ref([]);
+
+const handleTableRowClick = (row) => {
+  if (!find(selected.value, item => item.id === row.id)) {
+    selected.value.push(row);
+  }
+  if (!selectValue.value.includes(row.id)) {
+    selectValue.value.push(row.id);
+  }
+};
+
+const handleRemoveTag = (value) => {
+  remove(selected.value, item => item.id === value);
+  console.log(selected.value);
+};
+
+const getUserByUserId = (userId) => {
+  return find(selected.value, item => item.id === userId);
+};
+
+
 onMounted(() => {
   loadTreeData();
   loadTableData();
@@ -102,9 +123,10 @@ onMounted(() => {
   <el-dropdown ref="dropdownRef" trigger="click" placement="bottom" :size="props.size" :hide-on-click="false"
     :max-height="500" :style="props.style" :popper-append-to-body="false">
     <el-input-tag v-model="selectValue" draggable clearable :save-on-blur="false" :trigger="''" :tag-type="'primary'"
-      :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户">
+      :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户"
+      @remove-tag="handleRemoveTag">
       <template #tag="{ value }">
-        <span>{{ value }} （测试）</span>
+        <span>{{ getUserByUserId(value)?.nickname + '(' + getUserByUserId(value)?.username + ')' }}</span>
       </template>
     </el-input-tag>
     <template #dropdown>
@@ -144,12 +166,12 @@ onMounted(() => {
 
           <!-- 表格 -->
           <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px"
-            stripe border show-overflow-tooltip highlight-current-row>
+            stripe border show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
             <el-table-column prop="username" label="用户名" min-width="100" align="center" />
             <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
             <el-table-column prop="gender" label="性别" min-width="80" align="center">
               <template #default="{ row }">
-                <VtDictTag :code="'vt_user_gender'" :value="row.gender" :size="'small'"></VtDictTag>
+                <VtTagDict :code="'vt_user_gender'" :value="row.gender" :size="'small'"></VtTagDict>
               </template>
             </el-table-column>
             <el-table-column prop="deptName" label="部门名称" min-width="100" />

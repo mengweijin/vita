@@ -4,7 +4,6 @@ import { useFullscreen } from '@vueuse/core';
 const props = defineProps({
   tableRef: {
     type: Object,
-    required: true,
   },
   shows: {
     type: Array,

@@ -131,7 +131,7 @@ onMounted(() => {
           <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
         </el-form-item>
         <el-form-item prop="disabled" label="状态">
-          <VtDictSelect v-model="queryParams.disabled" :code="'vt_disabled'"></VtDictSelect>
+          <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" native-type="submit">
@@ -192,14 +192,14 @@ onMounted(() => {
           <el-table-column v-if="columns.deptName.visible" prop="deptName" label="部门名称" min-width="100" />
           <el-table-column v-if="columns.gender.visible" prop="gender" label="性别" min-width="80" align="center">
             <template #default="{ row }">
-              <VtDictTag :code="'vt_user_gender'" :value="row.gender" :size="size"></VtDictTag>
+              <VtTagDict :code="'vt_user_gender'" :value="row.gender" :size="size"></VtTagDict>
             </template>
           </el-table-column>
           <el-table-column v-if="columns.mobile.visible" prop="mobile" label="移动电话" min-width="120" />
           <el-table-column v-if="columns.email.visible" prop="email" label="邮箱" min-width="140" />
           <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
             <template #default="{ row }">
-              <VtDictTag :code="'vt_disabled'" :value="row.disabled" :size="size"></VtDictTag>
+              <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
             </template>
           </el-table-column>
           <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
