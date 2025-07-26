@@ -14,7 +14,7 @@ import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

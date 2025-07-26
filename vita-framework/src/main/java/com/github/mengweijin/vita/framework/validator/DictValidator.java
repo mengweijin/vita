@@ -5,10 +5,10 @@ import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.hibernate.validator.internal.util.logging.Log;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 

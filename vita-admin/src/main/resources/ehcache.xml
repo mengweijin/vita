@@ -82,7 +82,7 @@
     </cache>
 
     <cache alias="CAPTCHA" uses-template="DEFAULT_TEMPLATE">
-        <value-type>org.dromara.hutool.swing.captcha.AbstractCaptcha</value-type>
+        <value-type>cn.hutool.v7.swing.captcha.AbstractCaptcha</value-type>
         <expiry>
             <ttl unit="minutes">1</ttl>
         </expiry>

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
-import org.dromara.hutool.core.date.DateFormatPool;
+import cn.hutool.v7.core.date.DateFormatPool;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;

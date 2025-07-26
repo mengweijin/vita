@@ -2,9 +2,9 @@ package com.github.mengweijin.vita.monitor.domain.vo.application;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.dromara.hutool.extra.management.HostInfo;
-import org.dromara.hutool.extra.management.OsInfo;
-import org.dromara.hutool.extra.management.oshi.OshiUtil;
+import cn.hutool.v7.extra.management.HostInfo;
+import cn.hutool.v7.extra.management.OsInfo;
+import cn.hutool.v7.extra.management.oshi.OshiUtil;
 
 import java.io.Serializable;
 

@@ -18,11 +18,11 @@ import com.github.mengweijin.vita.generator.util.GeneratorUtils;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.compress.ZipUtil;
-import org.dromara.hutool.core.data.id.IdUtil;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import cn.hutool.v7.core.compress.ZipUtil;
+import cn.hutool.v7.core.data.id.IdUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;

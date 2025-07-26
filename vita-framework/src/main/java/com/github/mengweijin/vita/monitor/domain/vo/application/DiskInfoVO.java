@@ -1,9 +1,9 @@
 package com.github.mengweijin.vita.monitor.domain.vo.application;
 
 import lombok.Data;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.extra.management.oshi.OshiUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.extra.management.oshi.OshiUtil;
 import oshi.software.os.OSFileStore;
 
 import java.io.Serializable;

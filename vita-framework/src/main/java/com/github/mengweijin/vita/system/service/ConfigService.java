@@ -6,8 +6,8 @@ import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.core.util.BooleanUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.util.BooleanUtil;
 import org.springframework.stereotype.Service;
 
 /**

@@ -4,11 +4,11 @@ import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.data.id.IdUtil;
-import org.dromara.hutool.crypto.KeyUtil;
-import org.dromara.hutool.crypto.SecureUtil;
-import org.dromara.hutool.crypto.symmetric.AES;
-import org.dromara.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.v7.core.data.id.IdUtil;
+import cn.hutool.v7.crypto.KeyUtil;
+import cn.hutool.v7.crypto.SecureUtil;
+import cn.hutool.v7.crypto.symmetric.AES;
+import cn.hutool.v7.crypto.symmetric.SymmetricAlgorithm;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;

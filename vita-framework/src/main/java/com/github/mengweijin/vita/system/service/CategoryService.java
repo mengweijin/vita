@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.mapper.CategoryMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

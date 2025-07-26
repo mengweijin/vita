@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.regex.RegexPool;
+import cn.hutool.v7.core.regex.RegexPool;
 
 /**
  * @author mengweijin

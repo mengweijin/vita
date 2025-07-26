@@ -23,11 +23,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.date.TimeUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
-import org.dromara.hutool.http.server.servlet.ServletUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.http.server.servlet.ServletUtil;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;

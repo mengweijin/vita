@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;

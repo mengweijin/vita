@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.io.IoUtil;
+import cn.hutool.v7.core.io.IoUtil;
 import org.lionsoul.ip2region.xdb.Searcher;
 
 import java.io.IOException;

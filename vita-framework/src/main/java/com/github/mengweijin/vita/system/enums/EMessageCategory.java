@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * vt_message_category
  * @author mengweijin
  * @since 2023/5/20
  */

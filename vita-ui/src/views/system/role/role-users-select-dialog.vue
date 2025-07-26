@@ -60,7 +60,7 @@ defineExpose({ visible, data })
       <VtSelectUser v-model="form.userIds"></VtSelectUser>
     </el-form>
     <template #footer>
-      <div>
+      <div style="margin-top: 15px;">
         <el-button type="primary" @click="onSubmit">
           <template #icon>
             <el-icon>

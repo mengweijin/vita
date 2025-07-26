@@ -16,11 +16,11 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dromara.hutool.core.io.IoUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
-import org.dromara.hutool.extra.spring.SpringUtil;
-import org.dromara.hutool.json.JSONUtil;
+import cn.hutool.v7.core.io.IoUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.extra.spring.SpringUtil;
+import cn.hutool.v7.json.JSONUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

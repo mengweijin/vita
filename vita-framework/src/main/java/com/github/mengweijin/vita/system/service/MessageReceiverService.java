@@ -1,14 +1,20 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -43,5 +49,30 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
                 .eq(MessageReceiverDO::getUserId, userId)
                 .eq(MessageReceiverDO::getViewed, EYesNo.N.getValue())
                 .count();
+    }
+
+    public IPage<MessageVO> page(Page<MessageVO> page, MessageVO message) {
+        return this.getBaseMapper().page(page, message);
+    }
+
+    public boolean setViewed(List<Long> ids) {
+        List<Long> unViewedIds = this.lambdaQuery()
+                .select(MessageReceiverDO::getId)
+                .eq(MessageReceiverDO::getViewed, EYesNo.N.getValue())
+                .in(MessageReceiverDO::getId, ids)
+                .list().stream().map(MessageReceiverDO::getId).toList();
+        return this.lambdaUpdate()
+                .set(MessageReceiverDO::getViewed, EYesNo.Y.getValue())
+                .set(MessageReceiverDO::getViewedTime, LocalDateTime.now())
+                .in(MessageReceiverDO::getId, unViewedIds)
+                .update();
+    }
+
+    public boolean setUnviewed(List<Long> ids) {
+        return this.lambdaUpdate()
+                .set(MessageReceiverDO::getViewed, EYesNo.N.getValue())
+                .set(MessageReceiverDO::getViewedTime, null)
+                .in(MessageReceiverDO::getId, ids)
+                .update();
     }
 }

@@ -84,7 +84,10 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 
 浏览器访问：http://localhost:8080
 
-注：当然，你也可以使用 nginx 代理服务器前后端分离部署。
+注：当然，你也可以使用 nginx 代理服务器前后端分离部署。更多文档参考：
+
+- [打包指南](docs/package.md)
+- [部署指南](docs/deploy.md)
 
 ### 系统功能
 

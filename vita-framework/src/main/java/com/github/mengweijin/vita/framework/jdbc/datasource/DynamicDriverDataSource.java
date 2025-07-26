@@ -2,10 +2,10 @@ package com.github.mengweijin.vita.framework.jdbc.datasource;
 
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.Getter;
-import org.dromara.hutool.core.classloader.JarClassLoader;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.lang.Assert;
-import org.dromara.hutool.db.driver.DriverIdentifier;
+import cn.hutool.v7.core.classloader.JarClassLoader;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.lang.Assert;
+import cn.hutool.v7.db.driver.DriverIdentifier;
 
 import javax.sql.DataSource;
 import java.io.File;

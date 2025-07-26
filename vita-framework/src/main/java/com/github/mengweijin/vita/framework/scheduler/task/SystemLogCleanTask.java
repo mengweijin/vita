@@ -9,10 +9,10 @@ import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.LogSystemService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.date.DateFormatPool;
-import org.dromara.hutool.core.date.TimeUtil;
-import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.date.DateFormatPool;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

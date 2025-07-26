@@ -5,7 +5,7 @@ import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import org.dromara.hutool.core.io.IoUtil;
+import cn.hutool.v7.core.io.IoUtil;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.BufferedReader;

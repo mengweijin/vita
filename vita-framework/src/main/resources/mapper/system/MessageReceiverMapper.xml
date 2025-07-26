@@ -2,4 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.mengweijin.vita.system.mapper.MessageReceiverMapper">
 
+    <select id="page" resultType="com.github.mengweijin.vita.system.domain.vo.MessageVO">
+        select
+        t.MESSAGE_ID,
+        t.USER_ID,
+        t.VIEWED,
+        t.VIEWED_TIME,
+        t.ID,
+        t.CREATE_BY,
+        t.CREATE_TIME,
+        t.UPDATE_BY,
+        t.UPDATE_TIME,
+        a.CATEGORY,
+        a.TITLE,
+        a.CONTENT
+        from VT_MESSAGE_RECEIVER t
+        left join VT_MESSAGE a on a.ID = t.MESSAGE_ID
+        <where>
+            <if test="p.id != null">
+                and t.ID = #{p.id}
+            </if>
+            <if test="p.createBy != null and p.createBy != ''">
+                and t.CREATE_BY = #{p.createBy}
+            </if>
+            <if test="p.createTime != null">
+                and t.CREATE_TIME = #{p.createTime}
+            </if>
+            <if test="p.updateBy != null and p.updateBy != ''">
+                and t.UPDATE_BY = #{p.updateBy}
+            </if>
+            <if test="p.updateTime != null">
+                and t.UPDATE_TIME = #{p.updateTime}
+            </if>
+            <if test="p.messageId != null">
+                and t.MESSAGE_ID = #{p.messageId}
+            </if>
+            <if test="p.userId != null">
+                and t.USER_ID = #{p.userId}
+            </if>
+            <if test="p.viewed != null and p.viewed != ''">
+                and t.VIEWED = #{p.viewed}
+            </if>
+            <if test="p.viewedTime != null">
+                and t.VIEWED_TIME = #{p.viewedTime}
+            </if>
+
+            <if test="p.category != null and p.category != ''">
+                and a.CATEGORY = #{p.category}
+            </if>
+            <if test="p.keywords != null and p.keywords != ''">
+                and a.TITLE like concat(concat('%', #{p.keywords}), '%')
+                and a.CONTENT like concat(concat('%', #{p.keywords}), '%')
+            </if>
+        </where>
+        order by t.CREATE_TIME desc
+    </select>
 </mapper>

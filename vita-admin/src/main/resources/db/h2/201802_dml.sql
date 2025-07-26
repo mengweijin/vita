@@ -79,6 +79,7 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, '字典标签样式', 'vt_dict_tag_style', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, '调度任务执行状态', 'vt_scheduling_task_status', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14, '系统消息类别', 'vt_message_category', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, '已读/未读', 'vt_message_viewed_status', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：停用/启用
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, 'vt_disabled', 'N', '启用', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -154,6 +155,9 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140003, 'vt_message_category', 'alert', '告警消息', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140004, 'vt_message_category', 'user', '用户消息', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140005, 'vt_message_category', 'other', '其它消息', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：已发布/未发布
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150001, 'vt_message_viewed_status', 'Y', '已读', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150002, 'vt_message_viewed_status', 'N', '未读', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 配置
@@ -365,3 +369,7 @@ insert into VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPD
 	 (1876458392760836106,3,10021004,1,current_timestamp(),1,current_timestamp()),
 	 (1876458392760836107,3,10021005,1,current_timestamp(),1,current_timestamp()),
 	 (1876458392760836108,3,10021006,1,current_timestamp(),1,current_timestamp());
+
+
+-- 通知公告
+INSERT INTO VT_NOTICE (ID,TITLE,DESCRIPTION,RELEASED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (1948579666135564289,'欢迎使用 Vita（微塔）管理系统！','<p style="text-align: left;"><strong>Vita</strong>（中文名：<strong>微塔</strong>）：是一款轻量级快速开发平台应用系统。</p><p style="text-align: left;">基于 SpringBoot 3、sa-token、mybatis-plus、vite、vue 3、element-plus、javascript 等技术，不依赖任何第三方服务。</p>','Y',1,current_timestamp(),1,current_timestamp());

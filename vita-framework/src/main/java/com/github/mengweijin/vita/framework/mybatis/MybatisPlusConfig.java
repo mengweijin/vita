@@ -14,7 +14,7 @@ import com.github.mengweijin.vita.framework.mybatis.data.permission.DefaultDataP
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.dromara.hutool.core.net.NetUtil;
+import cn.hutool.v7.core.net.NetUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;

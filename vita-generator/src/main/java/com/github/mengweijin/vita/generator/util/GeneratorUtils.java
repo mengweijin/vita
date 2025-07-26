@@ -7,9 +7,9 @@ import com.github.mengweijin.vita.generator.domain.dto.GeneratorArgs;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.reflect.FieldUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrValidator;
+import cn.hutool.v7.core.reflect.FieldUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.lang.reflect.Field;

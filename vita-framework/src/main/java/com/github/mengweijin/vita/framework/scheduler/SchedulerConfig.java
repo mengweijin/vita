@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskService;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

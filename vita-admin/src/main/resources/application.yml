@@ -124,7 +124,7 @@ mybatis-plus:
     # MyBatis 在使用 resultMap 来映射查询结果中的列，如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段，
     # 这就导致在调用到该字段的时候由于没有映射，取不到而报空指针异常。
     call-setters-on-nulls: true
-    # 对JavaBean中属性开启自动驼峰命名规则（camel case）映射，默认对返回类型为Map的对象的key不起作用，所以需要使用自定义MybatisMapWrapperFactory类来处理
+    # 对JavaBean中属性开启自动驼峰命名规则（camel case）映射，默认对返回类型为Map的对象的key不起作用，所以需要使用自定义 MybatisMapWrapperFactory 类来处理
     map-underscore-to-camel-case: true
 ############## Sa-Token 配置 (SaTokenConfig.java & 文档: https://sa-token.cc) 可以零配置启动项目 ##############
 sa-token:

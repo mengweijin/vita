@@ -5,10 +5,10 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.dromara.hutool.core.bean.BeanUtil;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.bean.BeanUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

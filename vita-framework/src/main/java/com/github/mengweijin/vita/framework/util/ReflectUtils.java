@@ -2,9 +2,9 @@ package com.github.mengweijin.vita.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.reflect.ReflectUtil;
-import org.dromara.hutool.core.reflect.method.MethodUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.reflect.ReflectUtil;
+import cn.hutool.v7.core.reflect.method.MethodUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.lang.reflect.Method;
 

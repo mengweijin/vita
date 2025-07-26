@@ -5,7 +5,7 @@ import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.service.DeptService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import com.github.mengweijin.vita.system.service.UserService;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 
 import java.util.ArrayList;
 import java.util.List;

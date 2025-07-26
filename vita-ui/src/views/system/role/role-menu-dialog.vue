@@ -61,6 +61,7 @@ const defaultCheckedKeys = ref([]);
 const onOpened = async () => {
   loading.value = true;
   await loadTreeData();
+  checkStrictly.value = true;
   defaultCheckedKeys.value = await menuApi.getMenuIdsByRoleId(data.value.id);
   checkStrictly.value = false;
   loading.value = false;
@@ -82,7 +83,7 @@ defineExpose({ visible, data })
   <el-dialog v-model="visible" :title="`角色【${data.name}】授权`" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="350px">
     <div v-loading="loading">
-      <el-checkbox v-model="checkStrictly" v-show="false">父子节点不联动</el-checkbox>
+      <el-checkbox v-model="checkStrictly">父子节点不联动</el-checkbox>
       <el-input v-model="keywords" placeholder="筛选" style="margin-bottom: 5px;" />
       <el-scrollbar max-height="300px">
         <el-tree ref="treeRef" :node-key="'id'" :show-checkbox="true" :check-strictly="checkStrictly" :props="treeProps"
@@ -90,7 +91,7 @@ defineExpose({ visible, data })
       </el-scrollbar>
     </div>
     <template #footer>
-      <div>
+      <div style="margin-top: 15px;">
         <el-button type="primary" @click="onSubmit">
           <template #icon>
             <el-icon>

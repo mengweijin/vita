@@ -2,8 +2,8 @@ package com.github.mengweijin.vita.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.reflect.ClassUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.reflect.ClassUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 

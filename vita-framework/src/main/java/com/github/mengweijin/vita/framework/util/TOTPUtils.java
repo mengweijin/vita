@@ -2,12 +2,12 @@ package com.github.mengweijin.vita.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.codec.binary.Base32;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.crypto.digest.otp.HOTP;
-import org.dromara.hutool.crypto.digest.otp.TOTP;
-import org.dromara.hutool.swing.qrcode.QrCodeUtil;
-import org.dromara.hutool.swing.qrcode.QrConfig;
+import cn.hutool.v7.core.codec.binary.Base32;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.crypto.digest.otp.HOTP;
+import cn.hutool.v7.crypto.digest.otp.TOTP;
+import cn.hutool.v7.swing.qrcode.QrCodeUtil;
+import cn.hutool.v7.swing.qrcode.QrConfig;
 
 import java.time.Duration;
 import java.time.Instant;

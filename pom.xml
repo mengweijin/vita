@@ -5,10 +5,10 @@
     <parent> 
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <relativePath/> 
     </parent>  
-    <groupId>com.github.mengweijin</groupId>  
+    <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -32,13 +32,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
-        <hutool.version>6.0.0-M21</hutool.version>
+        <hutool.version>7.0.0-M1</hutool.version>
         <sa-token.version>1.44.0</sa-token.version>
-        <oshi.version>6.8.1</oshi.version>
+        <oshi.version>6.8.2</oshi.version>
         <zxing.version>3.5.3</zxing.version>
         <fastexcel.version>1.2.0</fastexcel.version>
         <ip2region.version>2.7.0</ip2region.version>
-        <p6spy-spring-boot-starter.version>1.11.0</p6spy-spring-boot-starter.version>
+        <p6spy-spring-boot-starter.version>1.12.0</p6spy-spring-boot-starter.version>
         <knife4j.version>4.5.0</knife4j.version>
     </properties>
     <profiles>
@@ -125,7 +125,7 @@
                 <version>${sa-token.version}</version> 
             </dependency>
             <dependency> 
-                <groupId>org.dromara.hutool</groupId>  
+                <groupId>cn.hutool.v7</groupId>
                 <artifactId>hutool-all</artifactId>  
                 <version>${hutool.version}</version> 
             </dependency>

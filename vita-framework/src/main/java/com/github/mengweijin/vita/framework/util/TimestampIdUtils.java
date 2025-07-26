@@ -2,8 +2,8 @@ package com.github.mengweijin.vita.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.date.DateFormatPool;
-import org.dromara.hutool.core.date.TemporalAccessorUtil;
+import cn.hutool.v7.core.date.DateFormatPool;
+import cn.hutool.v7.core.date.TemporalAccessorUtil;
 
 import java.time.LocalDateTime;
 

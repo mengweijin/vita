@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
 import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveBeanFieldSerializer;
 import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveMapSerializer;
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.util.List;
 

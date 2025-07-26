@@ -1,12 +1,12 @@
 package com.github.mengweijin.vita.framework.jackson.sensitive;
 
+import cn.hutool.v7.core.data.masking.MaskingManager;
+import cn.hutool.v7.core.data.masking.MaskingUtil;
+import cn.hutool.v7.core.lang.Validator;
+import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.data.MaskingUtil;
-import org.dromara.hutool.core.data.masking.MaskingManager;
-import org.dromara.hutool.core.lang.Validator;
-import org.dromara.hutool.core.text.StrUtil;
 
 import java.util.function.Function;
 

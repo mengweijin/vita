@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.date.DateUtil;
+import cn.hutool.v7.core.date.DateUtil;
 import org.springframework.scheduling.support.CronExpression;
 
 import java.util.Date;

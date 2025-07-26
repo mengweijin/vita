@@ -10,7 +10,7 @@ import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.framework.jackson.translation.TranslationStrategyFactory;
 import com.github.mengweijin.vita.framework.jackson.translation.strategy.ITranslationStrategy;
 import com.github.mengweijin.vita.framework.util.ReflectUtils;
-import org.dromara.hutool.core.text.StrValidator;
+import cn.hutool.v7.core.text.StrValidator;
 
 import java.io.IOException;
 import java.util.Objects;

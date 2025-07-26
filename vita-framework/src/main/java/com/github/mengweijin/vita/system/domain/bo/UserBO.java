@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.dromara.hutool.core.regex.RegexPool;
+import cn.hutool.v7.core.regex.RegexPool;
 
 import java.util.ArrayList;
 import java.util.List;

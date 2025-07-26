@@ -8,8 +8,8 @@ import com.github.mengweijin.vita.monitor.service.SchedulingTaskService;
 import com.github.mengweijin.vita.system.enums.ESchedulingTaskStatus;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import org.apache.commons.lang3.time.StopWatch;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

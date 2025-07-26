@@ -6,10 +6,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.lang.Assert;
-import org.dromara.hutool.core.util.RuntimeUtil;
-import org.dromara.hutool.extra.management.OsInfo;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.lang.Assert;
+import cn.hutool.v7.core.util.RuntimeUtil;
+import cn.hutool.v7.extra.management.OsInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;

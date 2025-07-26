@@ -2,9 +2,9 @@ package com.github.mengweijin.vita.framework.cache;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
-import org.dromara.hutool.swing.captcha.AbstractCaptcha;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
+import cn.hutool.v7.swing.captcha.AbstractCaptcha;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.cache.Cache;

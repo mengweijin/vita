@@ -13,7 +13,7 @@ import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.map.MapUtil;
+import cn.hutool.v7.core.map.MapUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

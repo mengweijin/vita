@@ -20,12 +20,13 @@ import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.data.PasswdStrength;
-import org.dromara.hutool.core.date.TimeUtil;
-import org.dromara.hutool.core.math.NumberUtil;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.crypto.digest.BCrypt;
-import org.dromara.hutool.crypto.digest.DigestUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.data.PasswdStrength;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.crypto.digest.BCrypt;
+import cn.hutool.v7.crypto.digest.DigestUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -249,6 +250,9 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public IPage<UserDO> pageByRole(Long roleId, Page<UserDO> page, UserDO user) {
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
+        if(CollUtil.isEmpty(userIds)) {
+            return page;
+        }
         LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
         wrapper.in(UserDO::getId, userIds);
         return this.page(page, wrapper);
@@ -256,6 +260,9 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public IPage<UserDO> pageByPost(Long postId, Page<UserDO> page, UserDO user) {
         Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
+        if(CollUtil.isEmpty(userIds)) {
+            return page;
+        }
         LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
         wrapper.in(UserDO::getId, userIds);
         return this.page(page, wrapper);

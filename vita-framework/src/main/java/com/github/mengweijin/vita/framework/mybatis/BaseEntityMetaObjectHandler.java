@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
-import org.dromara.hutool.core.func.LambdaUtil;
-import org.dromara.hutool.core.func.SerFunction;
+import cn.hutool.v7.core.func.LambdaUtil;
+import cn.hutool.v7.core.func.SerFunction;
 
 import java.time.LocalDateTime;
 

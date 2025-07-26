@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.HashMap;

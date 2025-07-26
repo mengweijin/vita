@@ -6,7 +6,7 @@ import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
 import com.github.mengweijin.vita.system.mapper.UserPostMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.collection.CollUtil;
+import cn.hutool.v7.core.collection.CollUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

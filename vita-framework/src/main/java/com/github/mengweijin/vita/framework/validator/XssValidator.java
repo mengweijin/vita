@@ -4,7 +4,7 @@ package com.github.mengweijin.vita.framework.validator;
 import com.github.mengweijin.vita.framework.validator.annotation.Xss;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.dromara.hutool.http.html.HtmlUtil;
+import cn.hutool.v7.http.html.HtmlUtil;
 
 /**
  * 自定义xss校验注解实现

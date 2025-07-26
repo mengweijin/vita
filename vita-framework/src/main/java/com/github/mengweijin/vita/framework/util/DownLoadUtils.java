@@ -9,8 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
-import org.dromara.hutool.core.io.IoUtil;
-import org.dromara.hutool.core.io.NioUtil;
+import cn.hutool.v7.core.io.IoUtil;
+import cn.hutool.v7.core.io.NioUtil;
 import org.springframework.http.HttpHeaders;
 
 import java.io.File;

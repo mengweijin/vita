@@ -50,6 +50,7 @@ class FileControllerTest {
 
     @Test
     @SneakyThrows
+    @SuppressWarnings("java:S125")
     void create() {
         // 构建请求体
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -99,10 +100,10 @@ class FileControllerTest {
         if(response.getStatusCode().is2xxSuccessful()) {
             // TypeReference ✅ 解决泛型擦除
             R<HashMap<String, String>> r = objectMapper.readValue(str, new TypeReference<>() {});
-            String token = r.getData().get("token");
-            Assertions.assertNotNull(token);
-            log.info("token={}", token);
-            return token;
+            String tokenString = r.getData().get("tokenString");
+            Assertions.assertNotNull(tokenString);
+            log.info("token={}", tokenString);
+            return tokenString;
         } else {
             log.error(str);
             return null;

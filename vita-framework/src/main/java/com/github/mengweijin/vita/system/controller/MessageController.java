@@ -9,6 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
+import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import com.github.mengweijin.vita.system.service.MessageReceiverService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -49,20 +50,30 @@ public class MessageController {
         return messageReceiverService.selectUnviewedCount();
     }
 
+    @PostMapping("/set-viewed/{messageReceiverIds}")
+    public R<Void> setViewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
+        boolean bool = messageReceiverService.setViewed(Arrays.asList(messageReceiverIds));
+        return R.result(bool);
+    }
+
+    @PostMapping("/set-unviewed/{messageReceiverIds}")
+    public R<Void> setUnviewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
+        boolean bool = messageReceiverService.setUnviewed(Arrays.asList(messageReceiverIds));
+        return R.result(bool);
+    }
 
     /**
      * <p>
      * Get Message page by Message
      * </p>
      * @param page page
-     * @param message {@link MessageDO}
-     * @return Page<Message>
+     * @param message {@link MessageVO}
+     * @return Page<MessageVO>
      */
     @SaCheckPermission("system:message:select")
     @GetMapping("/page")
-    public IPage<MessageDO> page(Page<MessageDO> page, MessageDO message) {
-        LambdaQueryWrapper<MessageDO> wrapper = messageService.getQueryWrapper(message);
-        return messageService.page(page, wrapper);
+    public IPage<MessageVO> page(Page<MessageVO> page, MessageVO message) {
+        return messageReceiverService.page(page, message);
     }
 
     /**

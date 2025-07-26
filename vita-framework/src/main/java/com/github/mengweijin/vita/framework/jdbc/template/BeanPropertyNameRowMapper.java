@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.jdbc.template;
 
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;

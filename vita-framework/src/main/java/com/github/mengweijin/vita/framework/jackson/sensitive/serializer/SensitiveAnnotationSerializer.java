@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;

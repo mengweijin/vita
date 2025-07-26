@@ -90,7 +90,7 @@ public class NoticeController {
      * </p>
      * @param notice {@link NoticeDO}
      */
-    @Log(operationType = EOperationType.INSERT)
+    @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:notice:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody NoticeDO notice) {

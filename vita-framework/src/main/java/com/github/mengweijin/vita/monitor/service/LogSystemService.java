@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.core.text.StrValidator;
-import org.dromara.hutool.core.thread.ThreadUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.core.thread.ThreadUtil;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 

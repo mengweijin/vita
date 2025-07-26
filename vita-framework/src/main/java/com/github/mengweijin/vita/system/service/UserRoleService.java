@@ -7,9 +7,9 @@ import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrValidator;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

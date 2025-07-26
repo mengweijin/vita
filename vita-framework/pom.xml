@@ -74,7 +74,7 @@
             <artifactId>sa-token-spring-boot3-starter</artifactId> 
         </dependency>
         <dependency> 
-            <groupId>org.dromara.hutool</groupId>  
+            <groupId>cn.hutool.v7</groupId>
             <artifactId>hutool-all</artifactId> 
         </dependency>
         <dependency> 

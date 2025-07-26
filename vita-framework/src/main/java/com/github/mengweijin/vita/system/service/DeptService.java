@@ -9,8 +9,8 @@ import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 

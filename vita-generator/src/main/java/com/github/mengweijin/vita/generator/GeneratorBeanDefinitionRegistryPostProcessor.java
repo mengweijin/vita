@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.generator;
 
-import org.dromara.hutool.core.reflect.ClassUtil;
+import cn.hutool.v7.core.reflect.ClassUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;

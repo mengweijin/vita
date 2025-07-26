@@ -2,13 +2,13 @@ package com.github.mengweijin.vita.monitor.domain.vo.application;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.dromara.hutool.core.date.DateFormatPool;
-import org.dromara.hutool.core.date.TimeUtil;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.extra.management.JavaRuntimeInfo;
-import org.dromara.hutool.extra.management.JvmInfo;
-import org.dromara.hutool.extra.management.RuntimeInfo;
-import org.dromara.hutool.extra.management.UserInfo;
+import cn.hutool.v7.core.date.DateFormatPool;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.extra.management.JavaRuntimeInfo;
+import cn.hutool.v7.extra.management.JvmInfo;
+import cn.hutool.v7.extra.management.RuntimeInfo;
+import cn.hutool.v7.extra.management.UserInfo;
 
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;

@@ -60,16 +60,12 @@ const onForgetPassword = () => {
 };
 
 const onSubmit = () => {
-
+  // 这里手动 loading
+  let loading = ElLoading.service({ fullscreen: true });
   formRef.value.validate((valid, fields) => {
     if (valid) {
-
-
       // loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
       loginApi.login(form).then(async (r) => {
-        // 这里手动 loading
-        let loading = ElLoading.service({ fullscreen: true });
-
         // 先保存 token 到 userStore，并初始化用户基本信息、角色、权限等
         await userStore.initUser(r.data.token);
         // 加载菜单动态路由
@@ -78,12 +74,14 @@ const onSubmit = () => {
         await dictStore.refresh();
         // 跳转到访问页或首页
         router.push(route.query.redirect || '/');
-
+        loading?.close();
+      }).catch(() => {
         loading?.close();
       });
     } else {
       // fields 只有在验证失败的情况下才有值
       console.log(fields)
+      loading?.close();
     }
   });
 };
@@ -166,7 +164,7 @@ onBeforeUnmount(() => {
         </el-form-item>
         <el-form-item prop="captcha" v-if="captchaEnabled" :rules="[
           { required: true, message: '必填', trigger: 'blur' },
-          { pattern: /^-*\d+$/, message: '验证码应为数字' }
+          { pattern: /^\d+$/, message: '验证码应为数字' }
         ]">
           <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
             <template #prefix>

@@ -4,7 +4,7 @@ import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.text.StrValidator;
+import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 /**

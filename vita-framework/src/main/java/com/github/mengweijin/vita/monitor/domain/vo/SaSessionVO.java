@@ -6,7 +6,7 @@ import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.date.TimeUtil;
+import cn.hutool.v7.core.date.TimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

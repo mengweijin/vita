@@ -17,10 +17,10 @@ import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.reflect.ClassUtil;
-import org.dromara.hutool.core.text.CharSequenceUtil;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
+import cn.hutool.v7.core.reflect.ClassUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 

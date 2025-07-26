@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.mapper.PostMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

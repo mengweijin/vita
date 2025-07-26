@@ -1,5 +1,9 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.thread.ThreadUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
@@ -11,10 +15,6 @@ import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.core.thread.ThreadUtil;
-import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
