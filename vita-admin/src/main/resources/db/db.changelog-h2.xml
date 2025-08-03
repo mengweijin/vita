@@ -7,5 +7,6 @@
     <include file="./h2/201801_ddl.sql" relativeToChangelogFile="true"/>
     <include file="./h2/201802_dml.sql" relativeToChangelogFile="true"/>
     <include file="./h2/201803_dev.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/202501_aday.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

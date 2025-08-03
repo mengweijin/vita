@@ -39,7 +39,7 @@
         <fastexcel.version>1.2.0</fastexcel.version>
         <ip2region.version>2.7.0</ip2region.version>
         <p6spy-spring-boot-starter.version>1.12.0</p6spy-spring-boot-starter.version>
-        <knife4j.version>4.5.0</knife4j.version>
+        <springdoc.version>2.8.9</springdoc.version>
     </properties>
     <profiles>
         <profile>
@@ -149,10 +149,10 @@
                 <artifactId>fastexcel</artifactId>
                 <version>${fastexcel.version}</version>
             </dependency>
-            <dependency> 
-                <groupId>com.github.xiaoymin</groupId>  
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>  
-                <version>${knife4j.version}</version> 
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
         </dependencies> 
     </dependencyManagement>  

@@ -94,23 +94,37 @@ const handlePageChange = (currentPage, pageSize) => {
 const selected = ref([]);
 
 const handleTableRowClick = (row) => {
-  if (!find(selected.value, item => item.id === row.id)) {
-    selected.value.push(row);
+  if (props.multiple) {
+    if (!find(selected.value, item => item.id === row.id)) {
+      selected.value.push(row);
+    }
+    if (!selectValue.value.includes(row.id)) {
+      selectValue.value.push(row.id);
+    }
+    return;
   }
-  if (!selectValue.value.includes(row.id)) {
+
+  if (selectValue.value.length) {
+    if (!find(selected.value, item => item.id === row.id)) {
+      selected.value.push(row);
+    }
+    // 清空数组
+    selectValue.value.splice(0, selectValue.value.length);
+    selectValue.value.push(row.id);
+  } else {
+    selected.value.push(row);
     selectValue.value.push(row.id);
   }
 };
 
 const handleRemoveTag = (value) => {
   remove(selected.value, item => item.id === value);
-  console.log(selected.value);
 };
 
-const getUserByUserId = (userId) => {
-  return find(selected.value, item => item.id === userId);
+const getLabelValue = (userId) => {
+  let user = find(selected.value, item => item.id === userId);
+  return user?.nickname + '(' + user?.username + ')'
 };
-
 
 onMounted(() => {
   loadTreeData();
@@ -126,7 +140,7 @@ onMounted(() => {
       :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户"
       @remove-tag="handleRemoveTag">
       <template #tag="{ value }">
-        <span>{{ getUserByUserId(value)?.nickname + '(' + getUserByUserId(value)?.username + ')' }}</span>
+        <span>{{ getLabelValue(value) }}</span>
       </template>
     </el-input-tag>
     <template #dropdown>

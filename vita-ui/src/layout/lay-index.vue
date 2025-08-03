@@ -36,6 +36,7 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
   height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
   overflow-y: hidden;
   padding: 0 15px;
+  background-color: #f7f7f7;
 }
 
 :deep(.el-header) {

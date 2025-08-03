@@ -24,11 +24,8 @@ import java.io.IOException;
 @Configuration
 public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
 
-    /**
-     * knife4j 文档: "/doc.html", "/webjars/**", "/v3/api-docs/**"
-     */
     private static final String[] WHITE_LIST = new String[]{
-            "/doc.html",
+            "/swagger-ui.html",
             "/webjars/**",
             "/v3/api-docs/**",
 

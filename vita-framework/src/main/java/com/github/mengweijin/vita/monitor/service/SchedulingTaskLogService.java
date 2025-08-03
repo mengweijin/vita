@@ -1,12 +1,16 @@
 package com.github.mengweijin.vita.monitor.service;
 
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskLogMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * <p>
@@ -33,5 +37,16 @@ public class SchedulingTaskLogService extends CrudRepository<SchedulingTaskLogMa
         wrapper.le(taskLog.getSearchEndTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getSearchEndTime());
         wrapper.like(StrUtil.isNotBlank(taskLog.getMessage()), SchedulingTaskLogDO::getMessage, taskLog.getMessage());
         return wrapper;
+    }
+
+    public Long getDailyScheduledTaskExecutedCount() {
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
+        LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
+        return this.lambdaQuery().between(SchedulingTaskLogDO::getCreateTime, startTime, endTime).count();
+    }
+
+    public Long getTotalScheduledTaskExecutedCount() {
+        return this.lambdaQuery().count();
     }
 }

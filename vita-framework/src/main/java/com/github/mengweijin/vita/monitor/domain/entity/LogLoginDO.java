@@ -24,7 +24,7 @@ public class LogLoginDO extends BaseEntity {
     private String username;
 
     /**
-    * 登录类型。枚举类 ELoginType.java
+    * 登录类型。枚举类 {@link com.github.mengweijin.vita.system.enums.ELoginType}
     */
     private String loginType;
 

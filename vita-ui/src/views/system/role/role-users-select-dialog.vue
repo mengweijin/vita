@@ -57,7 +57,7 @@ defineExpose({ visible, data })
   <el-dialog v-model="visible" :title="`角色【${data.name}】新增用户`" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="600px">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <VtSelectUser v-model="form.userIds"></VtSelectUser>
+      <VtSelectUser v-model="form.userIds" :multiple="true"></VtSelectUser>
     </el-form>
     <template #footer>
       <div style="margin-top: 15px;">

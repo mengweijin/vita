@@ -1,5 +1,11 @@
 package com.github.mengweijin.vita.monitor.service;
 
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.extra.spring.SpringUtil;
+import cn.hutool.v7.http.server.servlet.ServletUtil;
+import cn.hutool.v7.http.useragent.UserAgent;
+import cn.hutool.v7.http.useragent.UserAgentInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
@@ -13,14 +19,11 @@ import com.github.mengweijin.vita.system.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.text.StrValidator;
-import cn.hutool.v7.extra.spring.SpringUtil;
-import cn.hutool.v7.http.server.servlet.ServletUtil;
-import cn.hutool.v7.http.useragent.UserAgent;
-import cn.hutool.v7.http.useragent.UserAgentInfo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -93,5 +96,12 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
                     log.error(e.getMessage(), e);
                     return null;
                 });
+    }
+
+    public Long getDailyActiveUserCount() {
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
+        LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
+        return this.lambdaQuery().between(LogLoginDO::getCreateTime, startTime, endTime).count();
     }
 }

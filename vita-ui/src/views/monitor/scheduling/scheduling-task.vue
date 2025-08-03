@@ -1,5 +1,7 @@
 <script setup>
 import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api";
+import SchedulingTaskLogDialog from "./scheduling-task-log-dialog.vue";
+import SchedulingTaskEdit from "./scheduling-task-edit.vue";
 
 const loading = ref(true);
 
@@ -53,10 +55,21 @@ const loadTableData = () => {
   });
 };
 
+const schedulingTaskLogDialogRef = ref(null);
+
 const handleViewTaskLog = (row) => {
-  ElMessage.warning({ message: '功能开发中......' });
-  console.log(row);
+  schedulingTaskLogDialogRef.value.data = { ...row };
+  schedulingTaskLogDialogRef.value.visible = true;
 };
+
+
+const schedulingTaskEditRef = ref(null);
+
+const handleEdit = (row) => {
+  schedulingTaskEditRef.value.data = { ...row };
+  schedulingTaskEditRef.value.visible = true;
+};
+
 
 /** selected rows */
 const selected = ref([]);
@@ -165,7 +178,7 @@ onMounted(() => {
         min-width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
         min-width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
         <template #default="scope">
           <div>
             <el-tooltip content="执行日志" placement="top">
@@ -173,6 +186,15 @@ onMounted(() => {
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:tickets"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="编辑" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:edit"></Icon>
                   </el-icon>
                 </template>
               </el-button>
@@ -203,6 +225,8 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
+  <SchedulingTaskLogDialog ref="schedulingTaskLogDialogRef"></SchedulingTaskLogDialog>
+  <SchedulingTaskEdit ref="schedulingTaskEditRef" @refresh-table="loadTableData"></SchedulingTaskEdit>
 </template>
 
 <style scoped></style>

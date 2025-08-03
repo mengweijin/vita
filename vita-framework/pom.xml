@@ -93,9 +93,9 @@
             <groupId>cn.idev.excel</groupId>
             <artifactId>fastexcel</artifactId>
         </dependency>
-        <dependency> 
-            <groupId>com.github.xiaoymin</groupId>  
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId> 
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <dependency> 
             <groupId>org.projectlombok</groupId>  

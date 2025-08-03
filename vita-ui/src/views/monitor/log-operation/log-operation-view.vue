@@ -1,5 +1,6 @@
 <script setup>
 import { logOperationApi } from "@/api/monitor/log-operation-api";
+import LogOperationDetail from "./log-operation-detail.vue";
 
 const loading = ref(true);
 
@@ -79,6 +80,12 @@ const handlePageChange = (currentPage, pageSize) => {
   queryParams.size = pageSize;
   loadTableData();
 }
+
+const logOperationDetailRef = ref(null);
+const handleDetail = (row) => {
+  logOperationDetailRef.value.data = { ...row };
+  logOperationDetailRef.value.visible = true;
+};
 
 onMounted(() => {
   loadTableData();
@@ -162,10 +169,13 @@ onMounted(() => {
           <VtTagDict :code="'vt_http_request_type'" :value="row.httpMethod" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="230" />
-      <el-table-column v-if="columns.methodName.visible" prop="methodName" label="方法名称" min-width="200" />
-      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间（ms）" min-width="130"
-        align="center" />
+      <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="220" />
+      <el-table-column v-if="columns.methodName.visible" prop="methodName" label="方法名称" min-width="190" />
+      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间" min-width="100" align="center">
+        <template #default="{ row }">
+          {{ row.costTime }} 毫秒
+        </template>
+      </el-table-column>
       <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_succeeded'" :value="row.success" :size="size"></VtTagDict>
@@ -182,9 +192,18 @@ onMounted(() => {
         min-width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
         min-width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="70">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
+            <el-tooltip content="详情" placement="top">
+              <el-button type="primary" text :size="size" @click="handleDetail(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:view"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
                 <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
@@ -211,6 +230,7 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
+  <LogOperationDetail ref="logOperationDetailRef"></LogOperationDetail>
 </template>
 
 <style scoped></style>

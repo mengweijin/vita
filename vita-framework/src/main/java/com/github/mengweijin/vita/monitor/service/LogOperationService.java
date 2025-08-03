@@ -1,15 +1,19 @@
 package com.github.mengweijin.vita.monitor.service;
 
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * <p>
@@ -51,5 +55,12 @@ public class LogOperationService extends CrudRepository<LogOperationMapper, LogO
             });
         }
         return wrapper;
+    }
+
+    public Long getDailyOperationCount() {
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
+        LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
+        return this.lambdaQuery().between(LogOperationDO::getCreateTime, startTime, endTime).count();
     }
 }

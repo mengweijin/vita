@@ -282,7 +282,7 @@ create TABLE VT_USER (
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   DELETED                       char(1) DEFAULT 'N' NOT NULL comment '逻辑删除。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
-  EXTEND_DATA                   JSON comment '动态扩展的 JSON 字段',
+  EXT_DATA                      JSON comment '动态扩展的 JSON 字段',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
@@ -382,3 +382,25 @@ create TABLE VT_SCHEDULING_TASK_LOG (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+
+
+-- 动态扩展列
+drop table IF EXISTS VT_EXT_COLUMN;
+create TABLE VT_EXT_COLUMN (
+  ID                            bigint NOT NULL comment '主键ID',
+  TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
+  LABEL_NAME                    varchar(255) NOT NULL comment '标签名称',
+  COLUMN_NAME                   varchar(64) NOT NULL comment '列名称',
+  CLASS_TYPE_NAME               varchar(255) NOT NULL DEFAULT 'java.lang.String' comment '类型名称，比如：java.lang.Integer',
+  REQUIRED                      char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
+  MIN                           bigint DEFAULT NULL comment '最小值',
+  MAX                           bigint DEFAULT NULL comment '最大值',
+  DICT_CODE                     varchar(255) DEFAULT NULL comment '值关联的字典编码。可选项。',
+  CATEGORY_CODE                 varchar(255) DEFAULT NULL comment '值关联的分类编码。可选项。',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+create unique index UIDX_VT_EXT_COLUMN_TNCN on VT_EXT_COLUMN(TABLE_NAME, COLUMN_NAME);

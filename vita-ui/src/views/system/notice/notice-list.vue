@@ -2,6 +2,7 @@
 import { noticeApi } from "@/api/system/notice-api";
 import { columns } from './notice-hook.js';
 import NoticeEdit from './notice-edit.vue';
+import NoticeDetail from './notice-detail.vue';
 
 const loading = ref(true);
 
@@ -63,8 +64,11 @@ const handleRevoke = (id) => {
   });
 }
 
-const handleViewDetail = (row) => {
+const noticeDetailRef = ref(null);
 
+const handleViewDetail = (row) => {
+  noticeDetailRef.value.data = { ...row };
+  noticeDetailRef.value.visible = true;
 };
 
 
@@ -245,6 +249,7 @@ onMounted(() => {
   </div>
 
   <NoticeEdit ref="noticeEditRef" @refresh-table="loadTableData"></NoticeEdit>
+  <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
 </template>
 
 <style scoped></style>

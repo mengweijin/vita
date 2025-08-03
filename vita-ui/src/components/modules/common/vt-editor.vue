@@ -4,6 +4,7 @@ import '@wangeditor-next/editor/dist/css/style.css';
 import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
 
 const props = defineProps({
+  // 'default' 或 'simple'
   mode: {
     type: String,
     default: 'default'

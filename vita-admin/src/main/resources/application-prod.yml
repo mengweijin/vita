@@ -9,12 +9,15 @@ spring:
     password:
   h2:
     console:
-      enabled: true
+      enabled: false
       path: /h2
       settings:
         web-allow-others: false
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
 decorator:
   datasource:
     enabled: false
-knife4j:
-  production: true
