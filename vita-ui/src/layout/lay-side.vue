@@ -4,7 +4,7 @@ import { toArrayTree } from 'xe-utils';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 
-import MenuTree from "./components/MenuTree.vue";
+import MenuTree from "./components/menu-tree.vue";
 
 import { useMenuStore } from '@/store/menu-store';
 const menuStore = useMenuStore();

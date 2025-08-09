@@ -13,8 +13,14 @@
 	<a target="_blank" href="https://gitee.com/mengweijin/vita/stargazers">
 		<img src="https://gitee.com/mengweijin/vita/badge/star.svg?theme=dark" alt='gitee star'/>
 	</a>
+    <a href='https://gitee.com/mengweijin/vita/members'>
+      <img src='https://gitee.com/mengweijin/vita/badge/fork.svg?theme=dark' alt='gitee fork'>
+    </a>
 	<a target="_blank" href='https://github.com/mengweijin/vita'>
-		<img src="https://img.shields.io/github/stars/mengweijin/vita.svg?style=social" alt="github star"/>
+		<img src="https://img.shields.io/github/stars/mengweijin/vita?style=social" alt="github star"/>
+	</a>
+	<a target="_blank" href='https://github.com/mengweijin/vita'>
+		<img src="https://img.shields.io/github/forks/mengweijin/vita?style=social" alt="github fork"/>
 	</a>
 </p>
 

@@ -12,6 +12,8 @@ export const schedulingTaskApi = {
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  run: (id) => http.post(`${URL_PREFIX}/run/${id}`),
 };
 
 const LOG_URL_PREFIX = '/monitor/scheduling-task-log';

@@ -126,5 +126,12 @@ public class SchedulingTaskController {
         return R.result(i);
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @SaCheckPermission("monitor:schedulingTask:run")
+    @PostMapping("/run/{id}")
+    public R<Void> run(@PathVariable("id") Long id) {
+        schedulingTaskService.run(id);
+        return R.ok();
+    }
 }
 

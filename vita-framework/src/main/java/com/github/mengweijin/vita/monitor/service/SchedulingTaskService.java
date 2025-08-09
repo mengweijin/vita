@@ -1,12 +1,15 @@
 package com.github.mengweijin.vita.monitor.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
-import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
-import lombok.extern.slf4j.Slf4j;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
+import com.github.mengweijin.vita.framework.scheduler.SchedulingTaskFactory;
+import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
+import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +23,10 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, SchedulingTaskDO> {
+
+    private SchedulingTaskFactory schedulingTaskFactory;
 
     public LambdaQueryWrapper<SchedulingTaskDO> getQueryWrapper(SchedulingTaskDO schedulingTask) {
         LambdaQueryWrapper<SchedulingTaskDO> wrapper = new LambdaQueryWrapper<>();
@@ -37,5 +43,12 @@ public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, 
             });
         }
         return wrapper;
+    }
+
+    public void run(Long id) {
+        SchedulingTaskDO taskDO = this.getById(id);
+        String beanName = taskDO.getBeanName();
+        ISchedulingTask schedulingTask = schedulingTaskFactory.getSchedulingTask(beanName);
+        schedulingTask.execute(id);
     }
 }

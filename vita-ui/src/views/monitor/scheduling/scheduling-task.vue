@@ -62,6 +62,9 @@ const handleViewTaskLog = (row) => {
   schedulingTaskLogDialogRef.value.visible = true;
 };
 
+const handleRunTask = (row) => {
+  schedulingTaskApi.run(row.id);
+}
 
 const schedulingTaskEditRef = ref(null);
 
@@ -169,7 +172,7 @@ onMounted(() => {
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
         min-width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center"
@@ -178,7 +181,7 @@ onMounted(() => {
         min-width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
         min-width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
             <el-tooltip content="执行日志" placement="top">
@@ -186,6 +189,15 @@ onMounted(() => {
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:tickets"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="立即执行" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleRunTask(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:video-play"></Icon>
                   </el-icon>
                 </template>
               </el-button>

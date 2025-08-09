@@ -58,7 +58,13 @@ const emit = defineEmits(['refresh-table']);
 const deptList = ref([]);
 
 const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => item.disabled = false);
+  deptList.value.forEach((item) => {
+    if (data.value.id && item.id === data.value.id) {
+      item.disabled = true;
+    } else {
+      item.disabled = false;
+    }
+  });
   addFullPath(deptList.value, { pathKey: 'name' })
   return toArrayTree(deptList.value, { sortKey: 'seq' });
 });

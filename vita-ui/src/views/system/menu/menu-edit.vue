@@ -78,7 +78,13 @@ const menuTypeOptions = computed(() => {
 const menuList = ref([]);
 
 const menuTreeSelectOptions = computed(() => {
-  menuList.value.forEach((item) => item.disabled = false);
+  menuList.value.forEach((item) => {
+    if (data.value.id && item.id === data.value.id) {
+      item.disabled = true;
+    } else {
+      item.disabled = false;
+    }
+  });
   addFullPath(menuList.value, { pathKey: 'title' })
   return toArrayTree(menuList.value, { sortKey: 'seq' });
 });
@@ -91,7 +97,6 @@ const onOpened = () => {
     nextTick(() => {
       loading.value = false;
     });
-
   });
 }
 
