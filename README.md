@@ -1,7 +1,7 @@
 # Vita（微塔）
 
 <p align="center">	
-	<a target="_blank" href="https://search.maven.org/search?q=g:%22com.github.mengweijin%22%20AND%20a:%22vita-parent%22">
+	<a target="_blank" href="https://central.sonatype.com/artifact/com.github.mengweijin/vita-parent/versions">
 		<img src="https://img.shields.io/maven-central/v/com.github.mengweijin/vita-parent" />
 	</a>
 	<a target="_blank" href="https://github.com/mengweijin/vita/blob/master/LICENSE">

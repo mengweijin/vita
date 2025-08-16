@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.domain.vo;
+package com.github.mengweijin.vita.system.domain.vo.home;
 
 import lombok.Data;
 
@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Data
 public class HomeConsoleStatisticVO implements Serializable {
 
-    private Long dailyActiveUserCount;
+    private Long dailyUserLoginCount;
 
-    private Long dailyOperationCount;
+    private Long dailyUserOperationCount;
 
     private Long dailyScheduledTaskExecutedCount;
 

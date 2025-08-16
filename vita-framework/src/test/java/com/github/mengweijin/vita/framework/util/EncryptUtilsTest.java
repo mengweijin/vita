@@ -1,10 +1,10 @@
 package com.github.mengweijin.vita.framework.util;
 
+import cn.hutool.v7.core.io.IoUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.crypto.SecureUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.io.IoUtil;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.crypto.SecureUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

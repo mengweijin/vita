@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.mengweijin.vita.monitor.mapper.LogOperationMapper">
 
+    <select id="selectDailyUserOperationCountBetweenTime" resultType="com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO">
+        SELECT
+        CAST(CREATE_TIME AS DATE) AS category,
+        COUNT(1) AS category_value
+        FROM VT_LOG_OPERATION
+        WHERE CREATE_TIME BETWEEN #{startTime} AND #{endTime}
+        GROUP BY CAST(CREATE_TIME AS DATE)
+        ORDER BY category ASC
+    </select>
+
+    <select id="selectDailyUserOperationCountBetweenTime" resultType="com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO" databaseId="oracle">
+        SELECT
+        TRUNC(CREATE_TIME) AS category,
+        COUNT(1) AS category_value
+        FROM VT_LOG_OPERATION
+        WHERE CREATE_TIME BETWEEN #{startTime} AND #{endTime}
+        GROUP BY TRUNC(CREATE_TIME)
+        ORDER BY category ASC
+    </select>
 </mapper>

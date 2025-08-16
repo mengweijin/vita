@@ -13,6 +13,7 @@ import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.monitor.mapper.LogLoginMapper;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO;
 import com.github.mengweijin.vita.system.enums.ELoginType;
 import com.github.mengweijin.vita.system.enums.EYesNo;
 import com.github.mengweijin.vita.system.service.UserService;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -98,10 +100,14 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
                 });
     }
 
-    public Long getDailyActiveUserCount() {
+    public Long getDailyUserLoginCount() {
         LocalDate localDate = LocalDate.now();
         LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
         LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
-        return this.lambdaQuery().between(LogLoginDO::getCreateTime, startTime, endTime).count();
+        return this.lambdaQuery().eq(LogLoginDO::getLoginType, ELoginType.LOGIN.getValue()).between(LogLoginDO::getCreateTime, startTime, endTime).count();
+    }
+
+    public List<HomeConsoleChartDataVO> selectDailyUserLoginCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
+        return this.getBaseMapper().selectDailyUserLoginCountBetweenTime(startTime, endTime);
     }
 }

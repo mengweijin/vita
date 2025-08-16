@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.domain.vo;
+package com.github.mengweijin.vita.system.domain.vo.user;
 
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;

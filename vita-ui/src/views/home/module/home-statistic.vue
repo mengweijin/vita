@@ -14,19 +14,19 @@ onMounted(() => {
   <div style="padding-top: 15px;">
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-statistic :value="data?.dailyActiveUserCount" class="vt-statistic-item">
+        <el-statistic :value="data?.dailyUserLoginCount" class="vt-statistic-item">
           <template #title>
             <div style="display: inline-flex; align-items: center">
               <el-icon style="margin-right: 4px" :size="24">
                 <Icon icon="ri:group-fill"></Icon>
               </el-icon>
-              日活跃用户数
+              日用户登录次数
             </div>
           </template>
         </el-statistic>
       </el-col>
       <el-col :span="6">
-        <el-statistic :value="data?.dailyOperationCount" class="vt-statistic-item">
+        <el-statistic :value="data?.dailyUserOperationCount" class="vt-statistic-item">
           <template #title>
             <div style="display: inline-flex; align-items: center">
               <el-icon style="margin-right: 4px" :size="24">

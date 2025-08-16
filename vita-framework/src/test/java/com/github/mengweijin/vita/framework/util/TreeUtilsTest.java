@@ -1,11 +1,11 @@
 package com.github.mengweijin.vita.framework.util;
 
+import cn.hutool.v7.core.map.MapUtil;
+import cn.hutool.v7.core.reflect.TypeUtil;
+import cn.hutool.v7.core.tree.MapTree;
+import cn.hutool.v7.core.tree.TreeNode;
+import cn.hutool.v7.core.tree.TreeUtil;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
-import org.dromara.hutool.core.map.MapUtil;
-import org.dromara.hutool.core.reflect.TypeUtil;
-import org.dromara.hutool.core.tree.MapTree;
-import org.dromara.hutool.core.tree.TreeNode;
-import org.dromara.hutool.core.tree.TreeUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

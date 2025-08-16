@@ -1,12 +1,12 @@
 package com.github.mengweijin.vita.framework.otp;
 
+import cn.hutool.v7.core.codec.binary.Base32;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.crypto.digest.otp.TOTP;
+import cn.hutool.v7.swing.qrcode.QrCodeUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.codec.binary.Base32;
-import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.text.StrUtil;
-import org.dromara.hutool.crypto.digest.otp.TOTP;
-import org.dromara.hutool.swing.qrcode.QrCodeUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

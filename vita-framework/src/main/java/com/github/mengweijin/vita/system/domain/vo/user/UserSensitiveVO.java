@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.domain.vo;
+package com.github.mengweijin.vita.system.domain.vo.user;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

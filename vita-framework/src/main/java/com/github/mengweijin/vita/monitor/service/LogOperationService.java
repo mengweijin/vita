@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
+import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * <p>
@@ -57,10 +59,14 @@ public class LogOperationService extends CrudRepository<LogOperationMapper, LogO
         return wrapper;
     }
 
-    public Long getDailyOperationCount() {
+    public Long getDailyUserOperationCount() {
         LocalDate localDate = LocalDate.now();
         LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
         LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
         return this.lambdaQuery().between(LogOperationDO::getCreateTime, startTime, endTime).count();
+    }
+
+    public List<HomeConsoleChartDataVO> selectDailyUserOperationCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
+        return this.getBaseMapper().selectDailyUserOperationCountBetweenTime(startTime, endTime);
     }
 }

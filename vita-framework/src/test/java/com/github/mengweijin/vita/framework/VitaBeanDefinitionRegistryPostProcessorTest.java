@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework;
 
+import cn.hutool.v7.core.reflect.ClassUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
-import org.dromara.hutool.core.reflect.ClassUtil;
-import org.dromara.hutool.core.text.StrUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

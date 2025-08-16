@@ -15,7 +15,7 @@ import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.vo.UserSensitiveVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
 import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;

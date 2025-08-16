@@ -45,6 +45,7 @@ onMounted(() => {
   transition: width 0.3s;
   height: calc(100vh - var(--vt-header-height));
   overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .el-menu-item>span,

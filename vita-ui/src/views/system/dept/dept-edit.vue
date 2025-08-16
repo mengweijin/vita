@@ -95,7 +95,7 @@ defineExpose({ visible, data })
       <el-form-item prop="parentId" label="父部门">
         <el-tree-select v-model="form.parentId" :data="deptTreeSelectOptions"
           :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="请选择">
+          default-expand-all placeholder="请选择" :disabled="data?.id">
           <template #default="{ data: { name } }">
             {{ name }}
           </template>
@@ -107,7 +107,7 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="code" label="编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
+        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" :disabled="data?.id" />
       </el-form-item>
 
       <el-row :gutter="20">

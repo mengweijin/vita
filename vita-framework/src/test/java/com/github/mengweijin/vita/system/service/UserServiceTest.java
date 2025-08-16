@@ -1,10 +1,10 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.data.PasswdStrength;
+import cn.hutool.v7.crypto.digest.BCrypt;
+import cn.hutool.v7.crypto.digest.DigestUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.data.PasswdStrength;
-import org.dromara.hutool.crypto.digest.BCrypt;
-import org.dromara.hutool.crypto.digest.DigestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

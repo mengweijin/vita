@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.util;
 
-import org.dromara.hutool.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

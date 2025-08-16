@@ -1,28 +1,41 @@
 <script setup>
-import VtConsoleStatistic from './module/vt-console-statistic.vue';
-import VtConsoleNoticeList from './module/vt-console-notice-list.vue';
+import HomeStatistic from './module/home-statistic.vue';
+import HomeOperationChart from './module/home-operation-chart.vue';
+import HomeNoticeList from './module/home-notice-list.vue';
 </script>
 
 <template>
-  <el-container>
-    <el-main>
-      <VtConsoleStatistic></VtConsoleStatistic>
-    </el-main>
-    <el-aside width="450px">
-      <VtConsoleNoticeList></VtConsoleNoticeList>
-    </el-aside>
-  </el-container>
-
+  <el-scrollbar class="vt-home">
+    <el-container>
+      <el-main>
+        <HomeStatistic />
+        <HomeOperationChart />
+        <HomeOperationChart />
+        <HomeOperationChart />
+      </el-main>
+      <el-aside width="450px">
+        <HomeNoticeList />
+      </el-aside>
+    </el-container>
+  </el-scrollbar>
 </template>
 
 
 <style lang="css" scoped>
+/* 隐藏垂直滚动条 */
+:deep(.el-scrollbar__bar.is-vertical) {
+  display: none !important;
+}
+
+.vt-home {
+  max-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
+}
+
 :deep(.el-main) {
-  padding: 0 0px;
+  padding: 0px 10px 0px 0px;
 }
 
 :deep(.el-aside) {
   padding: 15px 0px 15px 10px;
-  overflow-x: hidden;
 }
 </style>

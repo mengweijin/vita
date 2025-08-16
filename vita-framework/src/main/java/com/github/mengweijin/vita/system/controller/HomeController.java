@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.controller;
 
-import com.github.mengweijin.vita.system.domain.vo.HomeConsoleStatisticVO;
+import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartVO;
+import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleStatisticVO;
 import com.github.mengweijin.vita.system.service.HomeService;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -25,4 +26,8 @@ public class HomeController {
         return homeService.getConsoleStatistic();
     }
 
+    @GetMapping("/get-console-chart")
+    public HomeConsoleChartVO getConsoleChart() {
+        return homeService.getConsoleChart();
+    }
 }

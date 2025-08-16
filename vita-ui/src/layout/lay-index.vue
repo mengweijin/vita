@@ -19,7 +19,7 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
       <el-aside :width="asideWidth" style="transition: width 0.3s;">
         <LaySide />
       </el-aside>
-      <el-container>
+      <el-container class="vt-main">
         <el-main>
           <RouterView />
         </el-main>
@@ -33,8 +33,7 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
 
 <style scoped>
 :deep(.el-main) {
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
-  overflow-y: hidden;
+  min-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
   padding: 0 15px;
   background-color: #f7f7f7;
 }

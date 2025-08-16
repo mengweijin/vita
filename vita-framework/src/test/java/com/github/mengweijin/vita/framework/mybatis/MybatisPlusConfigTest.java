@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework.mybatis;
 
+import cn.hutool.v7.core.net.NetUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
-import org.dromara.hutool.core.net.NetUtil;
-import org.dromara.hutool.core.text.StrUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

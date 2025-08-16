@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.domain.vo;
+package com.github.mengweijin.vita.system.domain.vo.user;
 
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import lombok.Data;
