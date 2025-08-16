@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita;
 
+import cn.hutool.v7.core.data.id.IdUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.data.id.IdUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
