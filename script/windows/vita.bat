@@ -7,7 +7,7 @@ rem jar平级目录
 set AppName=vita-admin.jar
 
 rem JVM参数
-set JVM_OPTS="-Dname=%AppName% -Dserver.port=8080 -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.timezone=Asia/Shanghai -Xms128m -Xmx512m"
+set JVM_OPTS=-Dname=%AppName% -Dserver.port=8080 -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.timezone=Asia/Shanghai -Xms128m -Xmx512m
 
 ECHO.
 	ECHO.  [1] 启动%AppName%
@@ -25,6 +25,9 @@ set /p ID=
 	IF "%id%"=="4" GOTO status
 	IF "%id%"=="5" EXIT
 PAUSE
+
+rem 下面所有 jps -l 命令要生效，需要以管理员身份运行当前脚本！
+
 :start
     for /f "usebackq tokens=1-2" %%a in (`jps -l ^| findstr %AppName%`) do (
 		set pid=%%a
