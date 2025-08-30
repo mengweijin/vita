@@ -195,14 +195,10 @@ onMounted(() => {
       <el-table-column v-if="columns.routeName.visible" prop="routeName" label="路由名称" min-width="180" />
       <el-table-column v-if="columns.routePath.visible" prop="routePath" label="路由路径" min-width="200" />
       <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="200" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center"
-        min-width="180" />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
-        min-width="180" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
+      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
+      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" min-width="180">
         <template #default="scope">
           <div>

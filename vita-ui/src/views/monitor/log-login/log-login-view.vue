@@ -170,14 +170,10 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column v-if="columns.errorMsg.visible" prop="errorMsg" label="失败信息" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="操作者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="操作时间" align="center"
-        min-width="180" />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center"
-        min-width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center"
-        min-width="180" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="操作者" align="center" width="100" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="操作时间" align="center" width="180" />
+      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
+      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>

@@ -106,7 +106,7 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`任务【${data.name}】-【${data.beanName}】执行日志`" destroy-on-close align-center
+  <el-dialog v-model="visible" :title="`任务【${data.name}】-【${data.beanName}】执行日志`" destroy-on-close fullscreen
     @opened="onOpened" @closed="onClosed" width="90%">
     <div v-loading="loading" style="padding: 0 7px;">
       <!-- 查询表单 -->

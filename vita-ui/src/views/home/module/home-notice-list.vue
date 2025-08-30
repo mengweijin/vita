@@ -1,5 +1,7 @@
 <script setup>
 import { noticeApi } from '@/api/system/notice-api';
+import NoticeDetail from '@/views/system/notice/notice-detail.vue';
+import { toDateString } from 'xe-utils';
 
 const loading = ref(false);
 
@@ -10,7 +12,7 @@ const tableData = ref([]);
 const queryParams = reactive({
   released: 'Y',
   total: 0,
-  size: 8,
+  size: 5,
   current: 1,
 });
 
@@ -29,6 +31,14 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 }
 
+const noticeDetailRef = ref(null);
+
+const handleViewDetail = (row) => {
+  noticeDetailRef.value.data = { ...row };
+  noticeDetailRef.value.visible = true;
+};
+
+
 onMounted(() => {
   loadTableData();
 });
@@ -44,7 +54,7 @@ onMounted(() => {
       </el-col>
 
       <!-- 右侧 -->
-      <el-col :span="1.5" style="margin-left: auto;">
+      <el-col :span="1.5" style="margin-left: auto;" v-if="false">
         <el-button type="primary" :size="size">
           <template #icon>
             <el-icon>
@@ -56,15 +66,29 @@ onMounted(() => {
       </el-col>
 
     </el-row>
-    <el-table v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
+    <el-table v-loading="loading" :data="tableData" :size="size" row-key="id" height="190px" stripe border
       show-overflow-tooltip highlight-current-row>
-      <el-table-column prop="title" label="标题" min-width="160" fixed="left" />
-      <el-table-column prop="createTime" label="发布时间" align="center" width="140" />
+      <el-table-column prop="title" label="标题" min-width="150" fixed="left">
+        <template #default="{ row }">
+          <a href="javascript:void(0);" class="vt-title" @click="handleViewDetail(row)">{{ row.title }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateTime" label="发布日期" align="center" width="90">
+        <template #default="{ row }">
+          {{ toDateString(row.updateTime, 'yyyy-MM-dd') }}
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination layout="total, prev, pager, next, jumper" :size="size" v-model:current-page="queryParams.current"
       v-model:page-size="queryParams.size" :total="queryParams.total" @change="handlePageChange" />
+
+    <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
   </div>
 </template>
 
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+.vt-title {
+  cursor: pointer;
+}
+</style>

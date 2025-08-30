@@ -174,21 +174,21 @@ onMounted(() => {
             </template>
           </el-table-column>
           <el-table-column v-if="columns.createByName.visible" prop="createByName" label="发送者" align="center"
-            min-width="100">
+            width="100">
             <template #default="{ row }">
               <span v-if="row.category === 'user'">{{ row.createByName }}</span>
               <span v-else>{{ row.createByName ?? '系统' }}</span>
             </template>
           </el-table-column>
           <el-table-column v-if="columns.createTime.visible" prop="createTime" label="发送时间" align="center"
-            min-width="180" />
+            width="180" />
           <el-table-column v-if="columns.viewed.visible" prop="viewed" label="已读/未读" min-width="100" align="center">
             <template #default="{ row }">
               <VtTagDict :code="'vt_message_viewed_status'" :value="row.viewed" :size="size"></VtTagDict>
             </template>
           </el-table-column>
           <el-table-column v-if="columns.viewedTime.visible" prop="viewedTime" label="查看时间" align="center"
-            min-width="180" />
+            width="180" />
           <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="75">
             <template #default="scope">
               <div>

@@ -137,6 +137,12 @@ public class UserController {
         return userService.getSensitiveUserById(id);
     }
 
+    @GetMapping("/get-login-user-info")
+    public UserSensitiveVO getLoginUserInfo() {
+        Long userId = LoginHelper.getLoginUser().getUserId();
+        return userService.getSensitiveUserById(userId);
+    }
+
     /**
      * <p>
      * Add User

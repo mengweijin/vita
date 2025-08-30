@@ -13,6 +13,8 @@ import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
@@ -64,6 +66,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     private ConfigService configService;
 
     private RoleService roleService;
+
+    private PostService postService;
 
     private UserRoleService userRoleService;
 
@@ -245,6 +249,17 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         UserSensitiveVO vo = BeanCopyUtils.copyBean(user, new UserSensitiveVO());
         vo.setRoleIds(roleIds);
         vo.setPostIds(postIds);
+
+        if(CollUtil.isNotEmpty(roleIds)) {
+            List<RoleDO> roleList = roleService.listByIds(roleIds);
+            vo.setRoleList(roleList);
+        }
+
+        if(CollUtil.isNotEmpty(postIds)) {
+            List<PostDO> postList = postService.listByIds(postIds);
+            vo.setPostList(postList);
+        }
+
         return vo;
     }
 

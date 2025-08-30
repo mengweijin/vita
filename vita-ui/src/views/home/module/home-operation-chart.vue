@@ -59,14 +59,20 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <div class="vt-chart-title">用户活跃度统计</div>
   <div ref="chartDomRef" class="vt-chart"></div>
 </template>
 
 <style lang="css" scoped>
+.vt-chart-title {
+  margin-top: 20px;
+  padding: 10px 0px 0px 15px;
+  background-color: white;
+}
+
 .vt-chart {
   width: 100%;
-  height: 400px;
-  margin-top: 20px;
+  height: 515px;
   background-color: white;
 }
 </style>

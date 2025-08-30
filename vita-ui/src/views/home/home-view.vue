@@ -2,6 +2,7 @@
 import HomeStatistic from './module/home-statistic.vue';
 import HomeOperationChart from './module/home-operation-chart.vue';
 import HomeNoticeList from './module/home-notice-list.vue';
+import HomeLink from './module/home-link.vue';
 </script>
 
 <template>
@@ -10,11 +11,10 @@ import HomeNoticeList from './module/home-notice-list.vue';
       <el-main>
         <HomeStatistic />
         <HomeOperationChart />
-        <HomeOperationChart />
-        <HomeOperationChart />
       </el-main>
-      <el-aside width="450px">
+      <el-aside width="350px">
         <HomeNoticeList />
+        <HomeLink />
       </el-aside>
     </el-container>
   </el-scrollbar>

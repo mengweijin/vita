@@ -12,4 +12,6 @@ export const logLoginApi = {
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  pageByLoginUser: (args) => http.get(`${URL_PREFIX}/page-by-login-user`, { params: args }),
 };

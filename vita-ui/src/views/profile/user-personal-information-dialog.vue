@@ -1,0 +1,99 @@
+<script setup>
+import { userApi } from "@/api/system/user-api";
+
+const loading = ref(true);
+
+const visible = ref(false);
+
+const size = ref('default');
+
+const userInfo = ref({});
+
+const onOpened = () => {
+  loading.value = true;
+  userApi.getLoginUserInfo().then(res => {
+    userInfo.value = res;
+    loading.value = false;
+  }).catch(() => {
+    loading.value = false;
+  });
+}
+
+const onClosed = () => {
+  visible.value = false;
+  userInfo.value = {};
+}
+
+defineExpose({ visible })
+</script>
+
+<template>
+  <el-dialog v-model="visible" :title="'个人信息'" destroy-on-close fullscreen :align-center="false" @opened="onOpened"
+    @closed="onClosed" width="70%">
+    <div v-loading="loading">
+      <el-container>
+        <el-aside width="350px">
+          <el-descriptions title="" :column="1" :size="size" border>
+            <el-descriptions-item label="头像" label-align="right" width="50" span="2">
+              <el-avatar :src="userInfo?.avatar" size="large" v-if="userInfo?.avatar" />
+              <el-avatar src="/avatar.jpg" size="large" v-else />
+            </el-descriptions-item>
+            <el-descriptions-item label="昵称" label-align="right">
+              {{ userInfo?.nickname }}
+            </el-descriptions-item>
+            <el-descriptions-item label="用户名" label-align="right">
+              {{ userInfo?.username }}
+            </el-descriptions-item>
+            <el-descriptions-item label="部门" label-align="right">
+              {{ userInfo?.deptName }}
+            </el-descriptions-item>
+            <el-descriptions-item label="性别" label-align="right">
+              <VtTagDict :code="'vt_user_gender'" :value="userInfo?.gender" :size="size"></VtTagDict>
+            </el-descriptions-item>
+            <el-descriptions-item label="邮箱" label-align="right">
+              {{ userInfo?.email }}
+            </el-descriptions-item>
+            <el-descriptions-item label="手机号" label-align="right">
+              {{ userInfo?.mobile }}
+            </el-descriptions-item>
+            <el-descriptions-item label="用户状态" label-align="right">
+              <VtTagDict :code="'vt_disabled'" :value="userInfo?.disabled" :size="size"></VtTagDict>
+            </el-descriptions-item>
+            <el-descriptions-item label="角色" label-align="right">
+              <template v-for="(item, index) in userInfo?.roleList" el-tag :key="item.id">
+                <el-tag :size="size" :index="index" :type="'primary'" effect="dark">
+                  {{ item.name }}
+                </el-tag>
+              </template>
+            </el-descriptions-item>
+            <el-descriptions-item label="岗位" label-align="right">
+              <template v-for="(item, index) in userInfo?.postList" el-tag :key="item.id">
+                <el-tag :size="size" :index="index" :type="'info'" effect="dark">
+                  {{ item.name }}
+                </el-tag>
+              </template>
+            </el-descriptions-item>
+            <el-descriptions-item label="备注" label-align="right">
+              <div style="white-space: pre-wrap;">
+                {{ userInfo?.remark }}
+              </div>
+            </el-descriptions-item>
+          </el-descriptions>
+        </el-aside>
+        <el-main>
+
+        </el-main>
+      </el-container>
+
+
+
+    </div>
+
+  </el-dialog>
+</template>
+
+<style scoped>
+.el-tag+.el-tag {
+  margin-left: 5px;
+}
+</style>

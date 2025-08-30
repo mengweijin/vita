@@ -58,6 +58,11 @@ public class LogLoginController {
         return logLoginService.page(page, wrapper);
     }
 
+    @GetMapping("/page-by-login-user")
+    public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
+        return logLoginService.pageByLoginUser(page);
+    }
+
     /**
      * <p>
      * Get LogLogin list by LogLogin

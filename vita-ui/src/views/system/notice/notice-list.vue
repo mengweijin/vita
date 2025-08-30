@@ -171,7 +171,11 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.title.visible" prop="title" label="标题" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.title.visible" prop="title" label="标题" min-width="200" fixed="left">
+        <template #default="{ row }">
+          <a href="javascript:void(0);" class="vt-title" @click="handleViewDetail(row)">{{ row.title }}</a>
+        </template>
+      </el-table-column>
       <el-table-column v-if="columns.description.visible" prop="description" label="内容" min-width="300" />
       <el-table-column v-if="columns.released.visible" prop="released" label="发布状态" width="120" align="center">
         <template #default="{ row }">

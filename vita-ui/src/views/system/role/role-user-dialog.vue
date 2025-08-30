@@ -82,7 +82,7 @@ defineExpose({ visible, data })
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close align-center @opened="onOpened"
+  <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close :align-center="false" @opened="onOpened"
     @closed="onClosed" width="70%" style="max-height: 90%;">
     <!-- 查询表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"

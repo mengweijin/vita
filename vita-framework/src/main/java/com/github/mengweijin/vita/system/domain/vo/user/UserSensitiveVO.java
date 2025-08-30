@@ -1,10 +1,12 @@
 package com.github.mengweijin.vita.system.domain.vo.user;
 
+import com.github.mengweijin.vita.system.domain.entity.PostDO;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,15 +17,19 @@ import java.util.Set;
  * @author mengweijin
  * @since 2023-06-03
  */
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UserSensitiveVO implements Serializable {
+public class UserSensitiveVO extends UserVO implements Serializable {
 
     private String passwordLevel;
 
     private String citizenId;
 
-    private Set<Long> roleIds = new HashSet<>();
+    private Set<Long> roleIds;
 
-    private Set<Long> postIds = new HashSet<>();
+    private Set<Long> postIds;
+
+    private List<RoleDO> roleList;
+
+    private List<PostDO> postList;
 }

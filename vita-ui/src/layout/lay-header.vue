@@ -15,6 +15,21 @@ import { messageApi } from '@/api/system/message-api';
 // 强制刷新（适合更新静态资源）
 const refresh = () => { top.location.reload(true); };
 
+
+// 打开个人信息对话框
+import UserPersonalInformationDialog from '@/views/profile/user-personal-information-dialog.vue';
+const userPersonalInfoDialogRef = ref(null);
+const onUserPersonalInformation = () => {
+  userPersonalInfoDialogRef.value.visible = true;
+};
+
+// 打开安全日志对话框
+import UserSecurityLogDialog from '@/views/profile/user-security-log-dialog.vue';
+const userSecurityLogDialogRef = ref(null);
+const onUserSecurityLog = () => {
+  userSecurityLogDialogRef.value.visible = true;
+};
+
 const onLogout = () => {
   loginApi.logout().finally(() => {
     // 清理前端登录信息
@@ -70,17 +85,21 @@ onMounted(async () => {
         <el-avatar src="/avatar.jpg" v-else />
         <span style="margin-left: 10px;">{{ userStore.user?.nickname }}</span>
       </template>
-      <el-menu-item index="8-1">
+      <el-menu-item index="8-1" @click="onUserPersonalInformation()">
         <Icon icon="ri:home-9-fill" width="16" height="16" />
-        <span>个人主页</span>
+        <span>个人信息</span>
       </el-menu-item>
-      <el-menu-item index="8-2">
+      <el-menu-item index="8-2" v-show="false">
+        <Icon icon="ri:layout-3-fill" width="16" height="16" />
+        <span>布局设置</span>
+      </el-menu-item>
+      <el-menu-item index="8-3" v-show="false">
         <Icon icon="ri:user-settings-line" width="16" height="16" />
         <span>偏好设置</span>
       </el-menu-item>
-      <el-menu-item index="8-3">
-        <Icon icon="ri:layout-3-fill" width="16" height="16" />
-        <span>布局设置</span>
+      <el-menu-item index="8-98" @click="onUserSecurityLog()">
+        <Icon icon="ri:secure-payment-line" width="16" height="16" />
+        <span>安全日志</span>
       </el-menu-item>
       <el-divider style="margin: 5px 0;" />
       <el-menu-item index="8-99" @click="onLogout()">
@@ -89,6 +108,9 @@ onMounted(async () => {
       </el-menu-item>
     </el-sub-menu>
   </el-menu>
+
+  <UserPersonalInformationDialog ref="userPersonalInfoDialogRef" />
+  <UserSecurityLogDialog ref="userSecurityLogDialogRef" />
 </template>
 
 <style scoped>

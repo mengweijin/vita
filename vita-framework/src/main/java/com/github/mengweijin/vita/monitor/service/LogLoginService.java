@@ -7,7 +7,10 @@ import cn.hutool.v7.http.server.servlet.ServletUtil;
 import cn.hutool.v7.http.useragent.UserAgent;
 import cn.hutool.v7.http.useragent.UserAgentInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
@@ -109,5 +112,13 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
 
     public List<HomeConsoleChartDataVO> selectDailyUserLoginCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
         return this.getBaseMapper().selectDailyUserLoginCountBetweenTime(startTime, endTime);
+    }
+
+    public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
+        String username = LoginHelper.getLoginUser().getUsername();
+        LambdaQueryWrapper<LogLoginDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(LogLoginDO::getUsername, username);
+        wrapper.orderByDesc(LogLoginDO::getCreateTime);
+        return this.page(page, wrapper);
     }
 }

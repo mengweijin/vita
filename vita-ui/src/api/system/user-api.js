@@ -19,6 +19,8 @@ export const userApi = {
 
   getSensitiveUserById: (id) => http.get(`${URL_PREFIX}/get-sensitive-info/${id}`),
 
+  getLoginUserInfo: () => http.get(`${URL_PREFIX}/get-login-user-info`),
+
   /**
    *
    * @param {UserRoleBO} data

@@ -135,7 +135,7 @@ onMounted(() => {
           {{ row.terminalInfoList.length }}
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="Session 创建时间" min-width="150" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="Session 创建时间" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
