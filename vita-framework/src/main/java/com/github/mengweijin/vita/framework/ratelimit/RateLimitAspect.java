@@ -6,11 +6,11 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.constant.UserConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
-import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.EConfig;
+import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
@@ -111,7 +111,7 @@ public class RateLimitAspect {
 
     private Set<Long> getMessageReceivers() {
         Set<Long> userIds = new HashSet<>();
-        ConfigDO config = configService.getByCode(ConfigConst.SYSTEM_ADMIN_ROLE_CODE);
+        ConfigDO config = configService.getByCode(EConfig.SYSTEM_ADMIN_ROLE_CODE.getValue());
         if (config != null && StrValidator.isNotBlank(config.getVal())) {
             userIds = userRoleService.getUserIdsByRoleCode(config.getVal());
         }

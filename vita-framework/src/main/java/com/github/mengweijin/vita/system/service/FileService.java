@@ -9,7 +9,7 @@ import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
-import com.github.mengweijin.vita.system.enums.EYesNo;
+import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

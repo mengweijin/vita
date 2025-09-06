@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.system.enums.dict.ELoginType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +25,7 @@ public class LogLoginDO extends BaseEntity {
     private String username;
 
     /**
-    * 登录类型。枚举类 {@link com.github.mengweijin.vita.system.enums.ELoginType}
+    * 登录类型。枚举类 {@link ELoginType}
     */
     private String loginType;
 

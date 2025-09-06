@@ -3,8 +3,8 @@ package com.github.mengweijin.vita.system.listener.config;
 import ch.qos.logback.classic.Level;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.logback.DbLoggerAppender;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.enums.EConfig;
 import com.github.mengweijin.vita.system.listener.ConfigChangeListener;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class SystemLogRecordLevelChangeListener implements ConfigChangeListener {
     @Override
     public String supported() {
-        return ConfigConst.LOG_RECORD_LEVEL;
+        return EConfig.LOG_RECORD_LEVEL.getValue();
     }
 
     @Override

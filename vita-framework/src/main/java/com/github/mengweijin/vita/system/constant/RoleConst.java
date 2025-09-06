@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings({"unused"})
-public abstract class RoleConst {
+public final class RoleConst {
 
     public static final String ADMIN = "admin";
 

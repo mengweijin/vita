@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
  * @since 2023/4/16
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@SuppressWarnings({"unused"})
-public abstract class UserConst {
+public final class UserConst {
 
     public static final long ADMIN_USER_ID = 1L;
 

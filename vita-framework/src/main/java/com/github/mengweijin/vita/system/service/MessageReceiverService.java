@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
-import com.github.mengweijin.vita.system.enums.EYesNo;
+import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

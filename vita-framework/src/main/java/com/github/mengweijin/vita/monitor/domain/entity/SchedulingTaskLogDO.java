@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.system.enums.dict.ESchedulingTaskStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +25,7 @@ public class SchedulingTaskLogDO extends BaseEntity {
     private Long schedulingTaskId;
 
     /**
-     * 任务执行状态。字典：vt_scheduling_task_status {@link com.github.mengweijin.vita.system.enums.ESchedulingTaskStatus}
+     * 任务执行状态。字典：vt_scheduling_task_status {@link ESchedulingTaskStatus}
      */
     private String status;
 

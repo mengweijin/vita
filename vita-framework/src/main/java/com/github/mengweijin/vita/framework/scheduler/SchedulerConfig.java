@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.scheduler;
 
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskService;
-import com.github.mengweijin.vita.system.enums.EYesNo;
+import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import lombok.AllArgsConstructor;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.context.annotation.Bean;

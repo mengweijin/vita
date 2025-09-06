@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.enums;
+package com.github.mengweijin.vita.system.enums.dict;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,11 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ESchedulingTaskStatus implements IEnum<String> {
+public enum EYesNo implements IEnum<String> {
 
-    NOT_STARTED("not_started"),
+    Y("Y"),
 
-    RUNNING("running"),
-
-    FINISHED("finished");
+    N("N");
 
     private final String value;
 }

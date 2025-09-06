@@ -17,8 +17,8 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.enums.EConfig;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
@@ -61,7 +61,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
     @PostConstruct
     @SuppressWarnings({"unused","java:S3252"})
     public void init() {
-        initConfig();
+        initLevel();
 
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -69,9 +69,9 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
         super.start();
     }
 
-    public void initConfig() {
+    public void initLevel() {
         ConfigService configService = SpringUtil.getBean(ConfigService.class);
-        ConfigDO config = configService.getByCode(ConfigConst.LOG_RECORD_LEVEL);
+        ConfigDO config = configService.getByCode(EConfig.LOG_RECORD_LEVEL.getValue());
         String logLevel = config.getVal();
         // 将字符串转换为 Level 对象（如果为 null 默认记录级别为 Level.ERROR 的日志）
         level = Level.toLevel(logLevel, Level.ERROR);

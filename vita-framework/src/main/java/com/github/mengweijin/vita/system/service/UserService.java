@@ -10,7 +10,6 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
@@ -18,7 +17,8 @@ import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
-import com.github.mengweijin.vita.system.enums.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.EConfig;
+import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +76,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     @Override
     public boolean save(UserDO user) {
         if(StrUtil.isBlank(user.getPassword())) {
-            ConfigDO config = configService.getByCode(ConfigConst.USER_PASSWORD_DEFAULT);
+            ConfigDO config = configService.getByCode(EConfig.USER_PASSWORD_DEFAULT.getValue());
             user.setPassword(config.getVal());
         }
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
@@ -217,7 +217,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public void checkAndSendPasswordLongTimeNoChangeMessageAsync(String username) {
         CompletableFuture.runAsync(() -> {
-                    ConfigDO config = configService.getByCode(ConfigConst.USER_PASSWORD_CHANGE_INTERVAL);
+                    ConfigDO config = configService.getByCode(EConfig.USER_PASSWORD_CHANGE_INTERVAL.getValue());
                     if (config == null) {
                         return;
                     }

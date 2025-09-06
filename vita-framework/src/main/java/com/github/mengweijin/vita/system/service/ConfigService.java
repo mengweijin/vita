@@ -4,8 +4,8 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.enums.EConfig;
 import com.github.mengweijin.vita.system.listener.ConfigChangeListener;
 import com.github.mengweijin.vita.system.listener.ConfigChangeListenerFactory;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
@@ -58,12 +58,12 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
     }
 
     public boolean getCaptchaEnabled() {
-        ConfigDO config = this.getByCode(ConfigConst.LOGIN_CAPTCHA_ENABLED);
+        ConfigDO config = this.getByCode(EConfig.LOGIN_CAPTCHA_ENABLED.getValue());
         return BooleanUtil.toBoolean(config.getVal());
     }
 
     public boolean getLoginOtpEnabled() {
-        ConfigDO config = this.getByCode(ConfigConst.LOGIN_OTP_ENABLED);
+        ConfigDO config = this.getByCode(EConfig.LOGIN_OTP_ENABLED.getValue());
         return BooleanUtil.toBoolean(config.getVal());
     }
 }

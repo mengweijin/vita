@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.enums;
+package com.github.mengweijin.vita.system.enums.dict;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,18 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum EYesNo implements IEnum<String> {
+public enum EMenuType implements IEnum<String> {
 
-    Y("Y"),
+    DIR("DIR"),
 
-    N("N");
+    MENU("MENU"),
+
+    BTN("BTN"),
+
+    IFRAME("IFRAME"),
+
+    URL("URL");
 
     private final String value;
+
 }
