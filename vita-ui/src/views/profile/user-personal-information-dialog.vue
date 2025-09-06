@@ -29,7 +29,7 @@ defineExpose({ visible })
 
 <template>
   <el-dialog v-model="visible" :title="'个人信息'" destroy-on-close fullscreen :align-center="false" @opened="onOpened"
-    @closed="onClosed" width="70%">
+    @closed="onClosed">
     <div v-loading="loading">
       <el-container>
         <el-aside width="350px">

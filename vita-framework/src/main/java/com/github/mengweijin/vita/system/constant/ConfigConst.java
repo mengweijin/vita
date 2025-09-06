@@ -23,4 +23,6 @@ public abstract class ConfigConst {
 
     public static final String SYSTEM_ADMIN_ROLE_CODE = "vt_system_admin_role_code";
 
+    public static final String LOG_RECORD_LEVEL = "vt_log_record_level";
+
 }

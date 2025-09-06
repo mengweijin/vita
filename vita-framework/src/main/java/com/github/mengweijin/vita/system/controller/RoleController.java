@@ -142,6 +142,9 @@ public class RoleController {
     @PostMapping("/set-permission")
     public R<Void> setPermission(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
         boolean bool = roleService.setMenuPermission(rolePermissionBO);
+        if(bool) {
+            roleService.sendPermissionChangeMessageToOnlineUsers(rolePermissionBO.getRoleId());
+        }
         return R.result(bool);
     }
 

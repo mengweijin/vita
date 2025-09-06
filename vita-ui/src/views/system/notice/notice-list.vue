@@ -3,6 +3,7 @@ import { noticeApi } from "@/api/system/notice-api";
 import { columns } from './notice-hook.js';
 import NoticeEdit from './notice-edit.vue';
 import NoticeDetail from './notice-detail.vue';
+import { template } from "xe-utils";
 
 const loading = ref(true);
 
@@ -135,7 +136,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5">
+    <el-col :span="1.5" v-permission="'system:notice:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -145,7 +146,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'system:notice:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.title).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -198,9 +199,10 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+
             <el-tooltip content="发布" placement="top" v-if="scope.row.released === 'N'">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;"
-                @click="handleRelease(scope.row.id)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleRelease(scope.row.id)"
+                v-permission="'system:notice:release'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:promotion"></Icon>
@@ -208,8 +210,10 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+
             <el-tooltip content="撤回" placement="top" v-if="scope.row.released === 'Y'">
-              <el-button type="warning" text :size="size" style="margin-left: 0px;" @click="handleRevoke(scope.row.id)">
+              <el-button type="warning" text :size="size" style="margin-left: 0px;" @click="handleRevoke(scope.row.id)"
+                v-permission="'system:notice:revoke'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ri:arrow-go-back-fill"></Icon>
@@ -217,8 +221,10 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+
             <el-tooltip content="编辑" placement="top" v-if="scope.row.released === 'N'">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)"
+                v-permission="'system:notice:update'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -226,12 +232,13 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+
             <el-tooltip content="删除" placement="top" v-if="scope.row.released === 'N'">
               <div style="display: inline-block;">
                 <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.title}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'system:notice:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -242,6 +249,7 @@ onMounted(() => {
                 </el-popconfirm>
               </div>
             </el-tooltip>
+
           </div>
         </template>
       </el-table-column>

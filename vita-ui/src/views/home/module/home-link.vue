@@ -42,18 +42,7 @@ onMounted(() => {
           </el-icon> &nbsp;Vita Gitee 码云
         </el-button>
       </div>
-
-      <div class="vt-home-link-item">
-        <el-button type="warning" class="vt-home-link-item-button"
-          @click="openBlankUrl('https://gitee.com/mengweijin/db-migration')">
-          <el-icon :size="30">
-            <Icon icon="simple-icons:gitee"></Icon>
-          </el-icon> &nbsp;db-migration Gitee 码云
-        </el-button>
-      </div>
     </div>
-
-
   </div>
 </template>
 

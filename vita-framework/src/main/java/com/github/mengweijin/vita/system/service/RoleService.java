@@ -1,5 +1,9 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
@@ -11,14 +15,16 @@ import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
+import com.github.mengweijin.vita.system.enums.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -103,5 +109,33 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
             return this.getByCode(roleCode);
         }
         return null;
+    }
+
+    public void sendPermissionChangeMessageToOnlineUsers(@NotNull Long roleId) {
+        // 角色下所有用户 id
+        Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
+
+        UserService userService = SpringUtil.getBean(UserService.class);
+
+        // 获取所有在线 session
+        List<String> sessionIdList = StpUtil.searchSessionId("", 0, -1, false);
+        Set<String> usernameSet = new HashSet<>();
+        for (String sessionId : sessionIdList) {
+            // 根据会话id，查询对应的 SaSession 对象，此处一个 SaSession 对象即代表一个登录的账号
+            SaSession session = StpUtil.getSessionBySessionId(sessionId);
+            String username = session.getLoginId().toString();
+            usernameSet.add(username);
+        }
+
+        // 在线用户 id
+        Set<Long> idSet = userService.getUserIdsInUsernames(usernameSet);
+
+        // 求交集
+        userIds.retainAll(idSet);
+
+        MessageService messageService = SpringUtil.getBean(MessageService.class);
+        String messageTitle = I18nUtils.msg("system.message.role.permission.change.title");
+        String messageContent = I18nUtils.msg("system.message.role.permission.change.content");
+        messageService.sendMessageToUsersAsync(EMessageCategory.SYSTEM, messageTitle, messageContent, userIds);
     }
 }

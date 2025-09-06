@@ -63,7 +63,6 @@ public class DictDataController {
      * @param dictData {@link DictDataDO}
      * @return List<DictData>
      */
-    @SaCheckPermission("system:dictData:select")
     @GetMapping("/list")
     public List<DictDataDO> list(DictDataDO dictData) {
         return dictDataService.list(new LambdaQueryWrapper<>(dictData).orderByAsc(DictDataDO::getSeq));

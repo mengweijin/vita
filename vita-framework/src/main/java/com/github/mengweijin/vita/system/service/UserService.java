@@ -282,4 +282,12 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         wrapper.in(UserDO::getId, userIds);
         return this.page(page, wrapper);
     }
+
+    public Set<Long> getUserIdsInUsernames(Set<String> usernameSet) {
+        return this.lambdaQuery()
+                .select(UserDO::getId)
+                .in(UserDO::getUsername, usernameSet)
+                .list()
+                .stream().map(UserDO::getId).collect(Collectors.toSet());
+    }
 }

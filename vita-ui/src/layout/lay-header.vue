@@ -97,7 +97,7 @@ onMounted(async () => {
         <Icon icon="ri:user-settings-line" width="16" height="16" />
         <span>偏好设置</span>
       </el-menu-item>
-      <el-menu-item index="8-98" @click="onUserSecurityLog()">
+      <el-menu-item index="8-97" @click="onUserSecurityLog()">
         <Icon icon="ri:secure-payment-line" width="16" height="16" />
         <span>安全日志</span>
       </el-menu-item>

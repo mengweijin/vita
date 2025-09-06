@@ -384,17 +384,18 @@ create TABLE VT_SCHEDULING_TASK_LOG (
 );
 
 
--- 动态扩展列
-drop table IF EXISTS VT_EXT_COLUMN;
-create TABLE VT_EXT_COLUMN (
+-- 扩展属性定义表
+drop table IF EXISTS VT_EXT_PROPS;
+create TABLE VT_EXT_PROPS (
   ID                            bigint NOT NULL comment '主键ID',
   TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
-  LABEL_NAME                    varchar(255) NOT NULL comment '标签名称',
-  COLUMN_NAME                   varchar(64) NOT NULL comment '列名称',
-  CLASS_TYPE_NAME               varchar(255) NOT NULL DEFAULT 'java.lang.String' comment '类型名称，比如：java.lang.Integer',
-  REQUIRED                      char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
-  MIN                           bigint DEFAULT NULL comment '最小值',
-  MAX                           bigint DEFAULT NULL comment '最大值',
+  LABEL_NAME                    varchar(64) NOT NULL comment '标签名称',
+  PROP_NAME                     varchar(64) NOT NULL comment '属性字段名称',
+  FORM_TYPE                     varchar(64) NOT NULL DEFAULT 'input' comment '表单组件类型。关联字典：vt_ext_prop_form_types',
+  MANDATORY                     char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
+  MIN                           bigint DEFAULT NULL comment '最小长度（字符串）/最小值（数字类型）',
+  MAX                           bigint DEFAULT NULL comment '最大长度（字符串）/最大值（数字类型）',
+  REGEXP                        varchar(255) NOT NULL comment '值约束的正则表达式',
   DICT_CODE                     varchar(255) DEFAULT NULL comment '值关联的字典编码。可选项。',
   CATEGORY_CODE                 varchar(255) DEFAULT NULL comment '值关联的分类编码。可选项。',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
@@ -403,4 +404,4 @@ create TABLE VT_EXT_COLUMN (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-create unique index UIDX_VT_EXT_COLUMN_TNCN on VT_EXT_COLUMN(TABLE_NAME, COLUMN_NAME);
+create unique index UIDX_VT_EXT_PROPS_TNCN on VT_EXT_PROPS(TABLE_NAME, PROP_NAME);

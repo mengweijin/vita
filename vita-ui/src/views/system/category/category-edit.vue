@@ -89,7 +89,7 @@ defineExpose({ visible, data })
       <el-form-item prop="parentId" label="父节点">
         <el-tree-select v-model="form.parentId" :data="categoryTreeSelectOptions"
           :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="请选择">
+          default-expand-all placeholder="" :disabled="data?.id">
           <template #default="{ data: { name } }">
             {{ name }}
           </template>

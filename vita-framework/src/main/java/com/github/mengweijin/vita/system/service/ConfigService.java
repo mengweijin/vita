@@ -1,13 +1,15 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.constant.ConfigConst;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.listener.ConfigChangeListener;
+import com.github.mengweijin.vita.system.listener.ConfigChangeListenerFactory;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.util.BooleanUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,6 +24,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
+
+    @Override
+    public boolean updateById(ConfigDO config) {
+        boolean updated = super.updateById(config);
+        if(updated) {
+            ConfigDO configDO = this.getById(config.getId());
+            ConfigChangeListener listener = ConfigChangeListenerFactory.getConfigChangeListenerByCode(configDO.getCode());
+            listener.run(configDO);
+        }
+        return updated;
+    }
 
     public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = new LambdaQueryWrapper<>();

@@ -72,7 +72,7 @@ onUnmounted(() => {
 
 .vt-chart {
   width: 100%;
-  height: 515px;
+  height: 450px;
   background-color: white;
 }
 </style>
