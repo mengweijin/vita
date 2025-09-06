@@ -74,7 +74,7 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, '密码强度', 'vt_password_level', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8, '操作日志类型', 'vt_operation_log_type', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9, 'HTTP请求类型', 'vt_http_request_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, '日志级别', 'vt_log_level', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, '系统日志记录级别', 'vt_log_level', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, '已发布/未发布', 'vt_released', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, '字典标签样式', 'vt_dict_tag_style', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, '调度任务执行状态', 'vt_scheduling_task_status', null, 1, current_timestamp(), 1, current_timestamp());
@@ -196,7 +196,7 @@ insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDA
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '修改密码的时间间隔', 'vt_user_password_change_interval', '90', '单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '系统管理员角色编码', 'vt_system_admin_role_code', 'admin', '用以接收系统维护、告警等相关消息的角色编码。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, '用户默认角色编码', 'vt_user_default_role_code', 'common', '创建用户时，用户所拥有的默认的角色编码，用户拥有该角色，即拥有对应的菜单权限。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, '系统日志记录级别', 'vt_log_record_level', 'INFO', '[ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF]。系统日志记录到数据库的最低日志级别（不区分大小写）。注意：请勿设置过低，否则极度影响性能！', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, NAME, CODE, VAL, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, '系统日志记录的级别', 'vt_log_record_level', 'INFO', '[ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF]。系统日志记录到数据库的最低日志级别（不区分大小写）。注意：请勿设置过低，否则极度影响性能！', 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 菜单

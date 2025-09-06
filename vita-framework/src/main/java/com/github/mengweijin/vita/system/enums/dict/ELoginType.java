@@ -12,12 +12,24 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ELoginType implements IEnum<String> {
 
+    /**
+     * 登入
+     */
     LOGIN("LOGIN"),
 
+    /**
+     * 注销
+     */
     LOGOUT("LOGOUT"),
 
+    /**
+     * 被踢下线
+     */
     KICK_OUT("KICK_OUT"),
 
+    /**
+     * 被顶下线
+     */
     REPLACED("REPLACED");
 
     private final String value;
