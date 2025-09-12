@@ -83,7 +83,7 @@ onMounted(() => {
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
     class="vt-search-container">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码、值" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="配置键、配置值" clearable />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -146,9 +146,8 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="配置名称" min-width="260" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="配置编码" min-width="260" />
-      <el-table-column v-if="columns.val.visible" prop="val" label="值" min-width="160" />
+      <el-table-column v-if="columns.configKey.visible" prop="configKey" label="配置键" min-width="260" fixed="left" />
+      <el-table-column v-if="columns.configValue.visible" prop="configValue" label="配置值" min-width="160" />
       <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="360" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />

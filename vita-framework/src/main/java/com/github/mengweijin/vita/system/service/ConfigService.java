@@ -1,16 +1,20 @@
 package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.util.BooleanUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.propertysource.DatabasePropertySource;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
-import com.github.mengweijin.vita.system.enums.EConfig;
-import com.github.mengweijin.vita.system.listener.ConfigChangeListener;
-import com.github.mengweijin.vita.system.listener.ConfigChangeListenerFactory;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * <p>
@@ -23,17 +27,39 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
+
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Override
+    public boolean save(ConfigDO entity) {
+        boolean saved = super.save(entity);
+        if(saved) {
+            // 发布配置更新事件以动态刷新配置
+            this.publishEnvironmentChangeEvent();
+        }
+        return saved;
+    }
 
     @Override
     public boolean updateById(ConfigDO config) {
         boolean updated = super.updateById(config);
         if(updated) {
-            ConfigDO configDO = this.getById(config.getId());
-            ConfigChangeListener listener = ConfigChangeListenerFactory.getConfigChangeListenerByCode(configDO.getCode());
-            listener.run(configDO);
+            // 发布配置更新事件以动态刷新配置
+            this.publishEnvironmentChangeEvent();
         }
         return updated;
+    }
+
+    @Override
+    public boolean removeByIds(Collection<?> list) {
+        boolean removed = super.removeByIds(list);
+        if(removed) {
+            // 发布配置更新事件以动态刷新配置
+            publishEnvironmentChangeEvent();
+        }
+        return removed;
     }
 
     public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
@@ -45,25 +71,24 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         wrapper.le(config.getSearchEndTime() != null, ConfigDO::getCreateTime, config.getSearchEndTime());
         if (StrUtil.isNotBlank(config.getKeywords())) {
             wrapper.and(w -> {
-                w.or(w1 -> w1.like(ConfigDO::getName, config.getKeywords()));
-                w.or(w1 -> w1.like(ConfigDO::getCode, config.getKeywords()));
-                w.or(w1 -> w1.like(ConfigDO::getVal, config.getKeywords()));
+                w.or(w1 -> w1.like(ConfigDO::getConfigKey, config.getKeywords()));
+                w.or(w1 -> w1.like(ConfigDO::getConfigValue, config.getKeywords()));
+                w.or(w1 -> w1.like(ConfigDO::getRemark, config.getKeywords()));
             });
         }
         return wrapper;
     }
 
-    public ConfigDO getByCode(String code) {
-        return this.lambdaQuery().eq(ConfigDO::getCode, code).one();
+    public ConfigDO getByConfigKey(String key) {
+        return this.lambdaQuery().eq(ConfigDO::getConfigKey, key).one();
     }
 
-    public boolean getCaptchaEnabled() {
-        ConfigDO config = this.getByCode(EConfig.LOGIN_CAPTCHA_ENABLED.getValue());
-        return BooleanUtil.toBoolean(config.getVal());
-    }
-
-    public boolean getLoginOtpEnabled() {
-        ConfigDO config = this.getByCode(EConfig.LOGIN_OTP_ENABLED.getValue());
-        return BooleanUtil.toBoolean(config.getVal());
+    public void publishEnvironmentChangeEvent() {
+        DatabasePropertySource databasePropertySource = SpringUtil.getBean(DatabasePropertySource.class);
+        // 更新数据库配置缓存
+        databasePropertySource.refresh();
+        Set<String> keys = databasePropertySource.getKeys();
+        // 发布事件
+        applicationEventPublisher.publishEvent(new EnvironmentChangeEvent(this, keys));
     }
 }

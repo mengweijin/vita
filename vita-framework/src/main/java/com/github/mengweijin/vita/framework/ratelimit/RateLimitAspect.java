@@ -1,17 +1,20 @@
 package com.github.mengweijin.vita.framework.ratelimit;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.http.server.servlet.ServletUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.system.constant.UserConst;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
-import com.github.mengweijin.vita.system.enums.EConfig;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
-import com.github.mengweijin.vita.system.service.ConfigService;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -23,11 +26,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.core.date.TimeUtil;
-import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.core.text.StrValidator;
-import cn.hutool.v7.http.server.servlet.ServletUtil;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;
@@ -55,11 +53,11 @@ public class RateLimitAspect {
 
     private MessageService messageService;
 
-    private ConfigService configService;
-
     private RoleService roleService;
 
     private UserRoleService userRoleService;
+
+    private VitaProperties vitaProperties;
 
     @Pointcut("@annotation(rateLimit)")
     public void pointCut(RateLimit rateLimit) {
@@ -111,12 +109,12 @@ public class RateLimitAspect {
 
     private Set<Long> getMessageReceivers() {
         Set<Long> userIds = new HashSet<>();
-        ConfigDO config = configService.getByCode(EConfig.SYSTEM_ADMIN_ROLE_CODE.getValue());
-        if (config != null && StrValidator.isNotBlank(config.getVal())) {
-            userIds = userRoleService.getUserIdsByRoleCode(config.getVal());
+        String systemAdminRoleCode = vitaProperties.getRoleCodeForAdmin();
+        if (StrValidator.isNotBlank(systemAdminRoleCode)) {
+            userIds = userRoleService.getUserIdsByRoleCode(systemAdminRoleCode);
         }
         if (CollUtil.isEmpty(userIds)) {
-            userIds.add(UserConst.ADMIN_USER_ID);
+            userIds.add(VitaConst.USER_ADMIN_ID);
         }
         return userIds;
     }

@@ -1,40 +1,32 @@
 package com.github.mengweijin.vita.framework.springdoc;
 
+import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author mengweijin
  */
+@AllArgsConstructor
 @Configuration
 public class SpringDocConfig {
 
-    @Value("${application.name}")
-    private String applicationName;
-
-    @Value("${application.version}")
-    private String applicationVersion;
-
-    @Value("${application.author}")
-    private String applicationAuthor;
-
-    @Value("${application.email}")
-    private String applicationEmail;
-
-    @Value("${application.home}")
-    private String applicationHome;
-
-    @Value("${application.github}")
-    private String applicationGithub;
+    private ApplicationProperties applicationProperties;
 
     @Bean
     public OpenAPI openAPI() {
+        String applicationName = applicationProperties.getName();
+        String applicationVersion = applicationProperties.getVersion();
+        String applicationAuthor = applicationProperties.getAuthor();
+        String applicationGithub = applicationProperties.getGithub();
+        String applicationEmail = applicationProperties.getEmail();
+        String applicationHome = applicationProperties.getHome();
         return new OpenAPI()
                 .info(new Info()
                         .title(applicationName + " - API")

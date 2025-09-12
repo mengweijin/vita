@@ -2,8 +2,16 @@ package com.github.mengweijin.vita.system.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.http.server.servlet.ServletUtil;
+import cn.hutool.v7.http.useragent.Platform;
+import cn.hutool.v7.http.useragent.UserAgent;
+import cn.hutool.v7.swing.captcha.AbstractCaptcha;
+import cn.hutool.v7.swing.captcha.CaptchaUtil;
+import cn.hutool.v7.swing.captcha.generator.MathGenerator;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -18,13 +26,6 @@ import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.http.server.servlet.ServletUtil;
-import cn.hutool.v7.http.useragent.Platform;
-import cn.hutool.v7.http.useragent.UserAgent;
-import cn.hutool.v7.swing.captcha.AbstractCaptcha;
-import cn.hutool.v7.swing.captcha.CaptchaUtil;
-import cn.hutool.v7.swing.captcha.generator.MathGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.cache.Cache;
@@ -48,13 +49,13 @@ public class LoginService {
 
     private LogLoginService logLoginService;
 
-    private ConfigService configService;
-
     private MathGenerator mathGenerator;
+
+    private VitaProperties vitaProperties;
 
     public String login(LoginBO loginBO) {
         HttpServletRequest request = ServletUtils.getRequest();
-        if (configService.getCaptchaEnabled()) {
+        if (vitaProperties.getLoginCaptchaEnabled()) {
             boolean validate = this.checkCaptcha(request, loginBO.getCaptcha());
             if (!validate) {
                 throw new ClientException(I18nUtils.msg("system.login.captcha.code.invalid"));
@@ -88,7 +89,7 @@ public class LoginService {
         }
 
         // TOTP
-        if(configService.getLoginOtpEnabled()) {
+        if(vitaProperties.getLoginOtpEnabled()) {
             String totpSecretKey = user.getTotp();
             if(StrUtil.isNotBlank(totpSecretKey)) {
                 String decrypted = AESUtils.getAES().decryptStr(totpSecretKey);

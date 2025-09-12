@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
@@ -193,7 +193,7 @@ public class UserController {
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         List<Long> list = Arrays.asList(ids);
-        boolean isAdmin = list.stream().anyMatch(id -> UserConst.ADMIN_USER_ID == NumberUtil.parseLong(CharSequenceUtil.toString(id)));
+        boolean isAdmin = list.stream().anyMatch(id -> VitaConst.USER_ADMIN_ID == NumberUtil.parseLong(CharSequenceUtil.toString(id)));
         if (isAdmin) {
             throw new ClientException("Can't delete admin account!");
         }

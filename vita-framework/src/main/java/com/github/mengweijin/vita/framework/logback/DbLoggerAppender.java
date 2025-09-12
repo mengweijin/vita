@@ -14,15 +14,12 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
-import com.github.mengweijin.vita.system.enums.EConfig;
-import com.github.mengweijin.vita.system.service.ConfigService;
 import jakarta.annotation.PostConstruct;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,6 +36,7 @@ import java.util.Arrays;
  */
 @Slf4j
 @Component
+@AllArgsConstructor
 public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     /**
@@ -51,9 +49,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
 
     private static final String TAB = StrUtil.fillAfter(Const.EMPTY, ' ', 4);
 
-    @Getter
-    @Setter
-    private Level level;
+    private VitaProperties vitaProperties;
 
     /**
      * DbErrorLogAppender初始化
@@ -61,24 +57,15 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
     @PostConstruct
     @SuppressWarnings({"unused","java:S3252"})
     public void init() {
-        initLevel();
-
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.addAppender(DbLoggerAppender.this);
         super.start();
     }
 
-    public void initLevel() {
-        ConfigService configService = SpringUtil.getBean(ConfigService.class);
-        ConfigDO config = configService.getByCode(EConfig.LOG_RECORD_LEVEL.getValue());
-        String logLevel = config.getVal();
-        // 将字符串转换为 Level 对象（如果为 null 默认记录级别为 Level.ERROR 的日志）
-        level = Level.toLevel(logLevel, Level.ERROR);
-    }
-
     @Override
     protected void append(ILoggingEvent event) {
+        Level level = Level.toLevel(vitaProperties.getLogRecordLevel(), Level.ERROR);
         // 只有当事件的级别 >= 当前设置的阈值级别时，才记录日志
         if (event.getLevel().isGreaterOrEqual(level)) {
             recordLog(event);

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.NonNull;
 
 /**
  * @author mengweijin
@@ -20,7 +19,7 @@ public class VitaMapperBeanDefinitionRegistryPostProcessor implements BeanDefini
     private ApplicationContext applicationContext;
 
     @Override
-    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         String pkg = ClassUtil.getPackage(VitaMapperBeanDefinitionRegistryPostProcessor.class);
         String parentPkg = CharSequenceUtil.subBefore(pkg, Const.DOT, true);
         ClassPathMapperScanner mapperScanner = new ClassPathMapperScanner(beanDefinitionRegistry, applicationContext.getEnvironment());

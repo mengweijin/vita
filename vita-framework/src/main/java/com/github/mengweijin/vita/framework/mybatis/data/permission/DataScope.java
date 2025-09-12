@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.mybatis.data.permission;
 
-import com.github.mengweijin.vita.framework.constant.ConstColumn;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import lombok.Getter;
 
 import java.lang.annotation.Documented;
@@ -31,14 +31,26 @@ public @interface DataScope {
 
     Scope scope() default Scope.USER;
 
+    /**
+     * 数据范围枚举
+     */
     @Getter
     enum Scope {
 
-        USER(ConstColumn.CREATE_BY),
+        /**
+         * 用户级数据范围
+         */
+        USER(VitaConst.COLUMN_CREATE_BY),
 
-        DEPT(ConstColumn.DEPT_ID),
+        /**
+         * 部门级数据范围
+         */
+        DEPT(VitaConst.COLUMN_DEPT_ID),
 
-        ROLE(ConstColumn.ROLE_ID);
+        /**
+         * 角色级数据范围
+         */
+        ROLE(VitaConst.COLUMN_ROLE_ID);
 
         private final String columnName;
 

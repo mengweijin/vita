@@ -86,12 +86,28 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
         return where == null ? expression : new AndExpression(where, expression);
     }
 
+    /**
+     * 获取当前登录用户 ID
+     * @return userId
+     */
     protected abstract Long getLoginUserId();
 
+    /**
+     * 当前登录用户是否为超级管理员
+     * @return true/false
+     */
     protected abstract boolean isAdmin();
 
+    /**
+     * 当前用户所在的部门 id 的集合
+     * @return List<Long>
+     */
     protected abstract List<Long> getLoginUserDeptIdList();
 
+    /**
+     * 当前用户所拥有的角色 id 的集合
+     * @return List<Long>
+     */
     protected abstract List<Long> getLoginUserRoleIdList();
 
     /**

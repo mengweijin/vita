@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.framework;
 
 import cn.hutool.v7.swing.captcha.generator.MathGenerator;
+import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -25,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableAsync(proxyTargetClass = true)
 @Configuration
-@EnableConfigurationProperties({VitaProperties.class})
+@EnableConfigurationProperties({VitaProperties.class, ApplicationProperties.class})
 public class VitaAutoConfiguration {
 
     @Bean
@@ -42,4 +44,5 @@ public class VitaAutoConfiguration {
     public MathGenerator mathGenerator() {
         return new MathGenerator(1, false);
     }
+
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.lang.NonNull;
 
 /**
  * @author mengweijin
@@ -16,7 +15,7 @@ import org.springframework.lang.NonNull;
 public class VitaBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 
     @Override
-    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         String pkg = ClassUtil.getPackage(VitaBeanDefinitionRegistryPostProcessor.class);
         String parentPkg = CharSequenceUtil.subBefore(pkg, Const.DOT, true);
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(beanDefinitionRegistry);

@@ -52,9 +52,8 @@ create TABLE VT_MESSAGE_RECEIVER (
 drop table IF EXISTS VT_CONFIG;
 create TABLE VT_CONFIG (
   ID                            bigint NOT NULL comment '主键ID',
-  NAME                          varchar(255) NOT NULL comment '名称',
-  CODE                          varchar(100) NOT NULL comment '编码',
-  VAL                           varchar(255) NOT NULL comment '值',
+  CONFIG_KEY                    varchar(255) NOT NULL comment '配置 key。比如：spring.profiles.active',
+  CONFIG_VALUE                  varchar(2000) NOT NULL comment '配置 key 对应的值。比如 ${spring.profiles.active} 的值：dev',
   REMARK 	                    varchar(500) comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
@@ -62,8 +61,7 @@ create TABLE VT_CONFIG (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-create unique index UIDX_VT_CONFIG_CODE on VT_CONFIG(CODE);
-create unique index UIDX_VT_CONFIG_NAME on VT_CONFIG(NAME);
+create unique index UIDX_VT_CONFIG_KEY on VT_CONFIG(CONFIG_KEY);
 
 
 drop table IF EXISTS VT_CATEGORY;
@@ -385,8 +383,8 @@ create TABLE VT_SCHEDULING_TASK_LOG (
 
 
 -- 扩展属性定义表
-drop table IF EXISTS VT_EXT_PROPS;
-create TABLE VT_EXT_PROPS (
+drop table IF EXISTS VT_EXT_PROP_DEFINITION;
+create TABLE VT_EXT_PROP_DEFINITION (
   ID                            bigint NOT NULL comment '主键ID',
   TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
   LABEL_NAME                    varchar(64) NOT NULL comment '标签名称',
@@ -404,4 +402,4 @@ create TABLE VT_EXT_PROPS (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-create unique index UIDX_VT_EXT_PROPS_TNCN on VT_EXT_PROPS(TABLE_NAME, PROP_NAME);
+create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEFINITION(TABLE_NAME, PROP_NAME);

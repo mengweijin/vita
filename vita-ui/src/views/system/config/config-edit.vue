@@ -10,17 +10,15 @@ const data = ref({});
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
   id: undefined,
-  name: undefined,
-  code: undefined,
-  val: undefined,
+  configKey: undefined,
+  configValue: undefined,
   remark: undefined,
 });
 
 const init = () => {
   form.id = data.value.id ?? undefined;
-  form.name = data.value.name ?? undefined;
-  form.code = data.value.code ?? undefined;
-  form.val = data.value.val ?? undefined;
+  form.configKey = data.value.configKey ?? undefined;
+  form.configValue = data.value.configValue ?? undefined;
   form.remark = data.value.remark ?? undefined;
 };
 
@@ -70,16 +68,13 @@ defineExpose({ visible, data })
     @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
 
-      <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
+      <el-form-item prop="configKey" label="配置键" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.configKey" clearable maxlength="128" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="code" label="编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
-      </el-form-item>
-
-      <el-form-item prop="val" label="值" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.val" type="textarea" clearable maxlength="255" :autosize="{ minRows: 1, maxRows: 8 }" />
+      <el-form-item prop="configValue" label="配置值" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.configValue" type="textarea" clearable maxlength="255"
+          :autosize="{ minRows: 1, maxRows: 8 }" />
       </el-form-item>
 
       <el-form-item prop="remark" label="备注">

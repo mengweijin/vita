@@ -1,17 +1,23 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertySource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +47,8 @@ public class ConfigController {
 
     private ConfigService configService;
 
+    private VitaProperties vitaProperties;
+
     /**
      * <p>
      * Get Config page by Config
@@ -53,7 +61,7 @@ public class ConfigController {
     @GetMapping("/page")
     public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = configService.getQueryWrapper(config);
-        wrapper.orderByAsc(ConfigDO::getCode);
+        wrapper.orderByAsc(ConfigDO::getConfigKey);
         return configService.page(page, wrapper);
     }
 
@@ -93,7 +101,7 @@ public class ConfigController {
     @SaCheckPermission("system:config:select")
     @GetMapping("/get-by-code/{code}")
     public ConfigDO getByCode(@PathVariable("code") String code) {
-        return configService.getByCode(code);
+        return configService.getByConfigKey(code);
     }
     /**
      * <p>
@@ -134,6 +142,31 @@ public class ConfigController {
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         return R.result(configService.removeByIds(Arrays.asList(ids)));
+    }
+
+    /**
+     * 手动更新所有配置缓存接口
+     */
+    @PostMapping("/refresh-config")
+    public R<Void> refreshConfig() {
+        configService.publishEnvironmentChangeEvent();
+        return R.ok();
+    }
+
+    @SaIgnore
+    @GetMapping("/get-config-vita-properties")
+    public R<Integer> getConfigVitaProperties() {
+        return R.ok(vitaProperties.getUser().getPasswordChangeInterval());
+    }
+
+    @SaIgnore
+    @GetMapping("/get-config-env")
+    public R<Object> getConfigEnv() {
+        ConfigurableEnvironment env = SpringUtil.getBean(ConfigurableEnvironment.class);
+        MutablePropertySources propertySources = env.getPropertySources();
+        PropertySource<?> targetSource = propertySources.get("databasePropertySource");
+        Object source = targetSource.getSource();
+        return R.ok(source);
     }
 
 }

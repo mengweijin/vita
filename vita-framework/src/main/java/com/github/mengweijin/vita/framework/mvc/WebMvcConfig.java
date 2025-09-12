@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.mvc;
 
-import com.github.mengweijin.vita.framework.VitaProperties;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

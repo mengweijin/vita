@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.satoken;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class LoginHelper {
      * 设置登录用户缓存
      */
     public static void setLoginUser(LoginUserVO loginUser) {
-        StpUtil.getTokenSession().set(UserConst.SESSION_LOGIN_USER, loginUser);
+        StpUtil.getTokenSession().set(VitaConst.SESSION_LOGIN_USER, loginUser);
     }
 
     /**
@@ -55,7 +55,7 @@ public class LoginHelper {
         if (session == null) {
             return null;
         }
-        return (LoginUserVO) session.get(UserConst.SESSION_LOGIN_USER);
+        return (LoginUserVO) session.get(VitaConst.SESSION_LOGIN_USER);
     }
 
     public static List<String> getPermissionList() {
@@ -73,6 +73,6 @@ public class LoginHelper {
      */
     public static boolean isAdmin() {
         LoginUserVO loginUser = getLoginUser();
-        return UserConst.ADMIN_USER_ID == loginUser.getUserId() && UserConst.ADMIN_USERNAME.equals(loginUser.getUsername());
+        return VitaConst.USER_ADMIN_ID == loginUser.getUserId() && VitaConst.USER_ADMIN_USERNAME.equals(loginUser.getUsername());
     }
 }

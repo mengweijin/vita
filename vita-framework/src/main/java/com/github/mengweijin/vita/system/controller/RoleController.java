@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
@@ -47,6 +48,8 @@ public class RoleController {
     private RoleService roleService;
 
     private UserRoleService userRoleService;
+
+    private VitaProperties vitaProperties;
 
     /**
      * <p>
@@ -91,8 +94,8 @@ public class RoleController {
     }
 
     @GetMapping("/get-default-role")
-    public RoleDO getDefaultRole() {
-        return roleService.getDefaultRole();
+    public String getDefaultRole() {
+        return vitaProperties.getUser().getDefaultRoleCode();
     }
 
 

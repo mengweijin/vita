@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.system.constant.UserConst;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.enums.dict.EMenuType;
@@ -71,7 +71,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
     }
 
     public Set<String> getMenuPermissionListByUsername(String username) {
-        if (UserConst.ADMIN_USERNAME.equals(username)) {
+        if (VitaConst.USER_ADMIN_USERNAME.equals(username)) {
             return this.lambdaQuery().select(MenuDO::getPermission).isNotNull(MenuDO::getPermission).list()
                     .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
         }
@@ -85,7 +85,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
     }
 
     public List<MenuDO> getSideMenuByUserId(Long userId) {
-        if (userId.equals(UserConst.ADMIN_USER_ID)) {
+        if (userId.equals(VitaConst.USER_ADMIN_ID)) {
             return this.lambdaQuery().eq(MenuDO::getDisabled, EYesNo.N.getValue()).ne(MenuDO::getType, EMenuType.BTN.getValue()).list();
         }
 

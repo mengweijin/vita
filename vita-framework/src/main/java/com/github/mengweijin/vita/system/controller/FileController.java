@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.io.file.FileUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -63,12 +63,14 @@ public class FileController {
     @Log(title = LOG_TITLE, operationType = EOperationType.DOWNLOAD)
     @GetMapping("/download/{id}")
     public void download(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-        FileDO fileDO = fileService.getById(id);
-        if(fileDO == null) {
-            log.warn("No file was found!");
-            return;
-        }
-        DownLoadUtils.simpleDownload(FileUtil.getInputStream(fileDO.getStoragePath()), fileDO.getName(), request, response);
+        Supplier<FileDO> supplier = fileService.getFileSupplierById(id);
+        DownLoadUtils.download(request, response, supplier);
+    }
+
+    @GetMapping("/preview/{id}")
+    public void preview(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+        Supplier<FileDO> supplier = fileService.getFileSupplierById(id);
+        DownLoadUtils.preview(request, response, supplier);
     }
 
     /**

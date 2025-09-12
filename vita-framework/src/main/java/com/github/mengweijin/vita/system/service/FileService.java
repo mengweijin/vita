@@ -1,9 +1,16 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.data.id.IdUtil;
+import cn.hutool.v7.core.io.file.FileNameUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.VitaProperties;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.AopUtils;
@@ -14,13 +21,6 @@ import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.core.data.id.IdUtil;
-import cn.hutool.v7.core.io.file.FileNameUtil;
-import cn.hutool.v7.core.io.file.FileUtil;
-import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -100,7 +101,7 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
 
         List<FileDO> fileEntityList = this.getByMd5(md5);
         if (CollUtil.isEmpty(fileEntityList)) {
-            String storagePath = getPath(vitaProperties.getFileDir(), suffix);
+            String storagePath = getPath(vitaProperties.getUploadPath(), suffix);
             copyFile(multipartFile, storagePath);
             fileEntity.setStoragePath(storagePath);
         } else {
@@ -129,4 +130,13 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         return dir + String.join(File.separator, year, month, day, IdUtil.simpleUUID()) + Const.DOT + suffix;
     }
 
+    public Supplier<FileDO> getFileSupplierById(Long id) {
+        return () -> {
+            FileDO fileDO = this.getById(id);
+            if (fileDO == null) {
+                throw new ServerException("No file was found By id=" + id);
+            }
+            return fileDO;
+        };
+    }
 }

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * @author mengweijin
  * @since 2023/5/20
@@ -51,4 +53,10 @@ public enum EConfig implements IEnum<String> {
 
     private final String value;
 
+    public static EConfig fromValue(String value) {
+        return Arrays.stream(EConfig.values())
+                .filter(i -> i.getValue().equalsIgnoreCase(value))
+                .findFirst()
+                .orElse(null);
+    }
 }

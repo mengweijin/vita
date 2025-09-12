@@ -1,5 +1,12 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.data.PasswdStrength;
+import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.crypto.digest.BCrypt;
+import cn.hutool.v7.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,27 +15,19 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
-import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
-import com.github.mengweijin.vita.system.enums.EConfig;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.core.data.PasswdStrength;
-import cn.hutool.v7.core.date.TimeUtil;
-import cn.hutool.v7.core.math.NumberUtil;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.crypto.digest.BCrypt;
-import cn.hutool.v7.crypto.digest.DigestUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +62,6 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     private MessageService messageService;
 
-    private ConfigService configService;
-
     private RoleService roleService;
 
     private PostService postService;
@@ -73,11 +70,13 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     private UserPostService userPostService;
 
+    private VitaProperties vitaProperties;
+
     @Override
     public boolean save(UserDO user) {
         if(StrUtil.isBlank(user.getPassword())) {
-            ConfigDO config = configService.getByCode(EConfig.USER_PASSWORD_DEFAULT.getValue());
-            user.setPassword(config.getVal());
+            String defaultPassword = vitaProperties.getUser().getDefaultPassword();
+            user.setPassword(defaultPassword);
         }
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
         user.setSalt(BCrypt.gensalt());
@@ -217,18 +216,14 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public void checkAndSendPasswordLongTimeNoChangeMessageAsync(String username) {
         CompletableFuture.runAsync(() -> {
-                    ConfigDO config = configService.getByCode(EConfig.USER_PASSWORD_CHANGE_INTERVAL.getValue());
-                    if (config == null) {
-                        return;
-                    }
-                    long daysInterval = NumberUtil.parseLong(config.getVal());
-                    if (daysInterval <= 0) {
+                    int userPasswordChangeInterval = vitaProperties.getUser().getPasswordChangeInterval();
+                    if (userPasswordChangeInterval <= 0) {
                         return;
                     }
 
                     UserDO user = this.getByUsername(username);
                     Duration duration = TimeUtil.between(user.getPasswordChangeTime(), LocalDateTime.now());
-                    if (duration.toDays() < daysInterval) {
+                    if (duration.toDays() < userPasswordChangeInterval) {
                         return;
                     }
 
