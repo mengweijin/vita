@@ -9,12 +9,10 @@ import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder;
+import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * <p>
@@ -32,6 +30,8 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
 
     private ApplicationEventPublisher applicationEventPublisher;
 
+    private ContextRefresher contextRefresher;
+
     @Override
     public boolean save(ConfigDO entity) {
         boolean saved = super.save(entity);
@@ -46,20 +46,11 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
     public boolean updateById(ConfigDO config) {
         boolean updated = super.updateById(config);
         if(updated) {
+            ConfigDO latestConfig = this.getById(config.getId());
             // 发布配置更新事件以动态刷新配置
             this.publishEnvironmentChangeEvent();
         }
         return updated;
-    }
-
-    @Override
-    public boolean removeByIds(Collection<?> list) {
-        boolean removed = super.removeByIds(list);
-        if(removed) {
-            // 发布配置更新事件以动态刷新配置
-            publishEnvironmentChangeEvent();
-        }
-        return removed;
     }
 
     public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
@@ -87,8 +78,16 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         DatabasePropertySource databasePropertySource = SpringUtil.getBean(DatabasePropertySource.class);
         // 更新数据库配置缓存
         databasePropertySource.refresh();
-        Set<String> keys = databasePropertySource.getKeys();
+        // Set<String> keys = databasePropertySource.getKeys();
+
         // 发布事件
-        applicationEventPublisher.publishEvent(new EnvironmentChangeEvent(this, keys));
+        // applicationEventPublisher.publishEvent(new EnvironmentChangeEvent(this, SetUtil.of(keys)));
+
+        // 触发Spring上下文刷新，更新 @RefreshScope 注解的 bean
+        // contextRefresher.refresh();
+
+        ConfigurationPropertiesRebinder rebinder = SpringUtil.getBean(ConfigurationPropertiesRebinder.class);
+        // rebinder.rebind(VitaProperties.class);
+        rebinder.rebind("vitaProperties");
     }
 }

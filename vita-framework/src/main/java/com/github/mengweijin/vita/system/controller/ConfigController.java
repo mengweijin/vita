@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,10 +15,9 @@ import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -147,26 +147,25 @@ public class ConfigController {
     /**
      * 手动更新所有配置缓存接口
      */
-    @PostMapping("/refresh-config")
-    public R<Void> refreshConfig() {
+    @SaIgnore
+    @SneakyThrows
+    @PostMapping("/update-refresh-config")
+    public R<VitaProperties> refreshConfig() {
+        ConfigDO config = new ConfigDO();
+        config.setId(4L);
+        config.setConfigValue(IdUtil.fastSimpleUUID());
+        configService.updateById(config);
+
         configService.publishEnvironmentChangeEvent();
-        return R.ok();
-    }
 
-    @SaIgnore
-    @GetMapping("/get-config-vita-properties")
-    public R<Integer> getConfigVitaProperties() {
-        return R.ok(vitaProperties.getUser().getPasswordChangeInterval());
-    }
+        Thread.sleep(5000);
 
-    @SaIgnore
-    @GetMapping("/get-config-env")
-    public R<Object> getConfigEnv() {
-        ConfigurableEnvironment env = SpringUtil.getBean(ConfigurableEnvironment.class);
-        MutablePropertySources propertySources = env.getPropertySources();
-        PropertySource<?> targetSource = propertySources.get("databasePropertySource");
-        Object source = targetSource.getSource();
-        return R.ok(source);
+        ConfigurableEnvironment environment = SpringUtil.getBean(ConfigurableEnvironment.class);
+        String property = environment.getProperty("vita.user.default-password");
+
+        vitaProperties.getUser().setDefaultPasswordNew(config.getConfigValue());
+        vitaProperties.getUser().setDefaultPasswordNewConfig(property);
+        return R.ok(vitaProperties);
     }
 
 }

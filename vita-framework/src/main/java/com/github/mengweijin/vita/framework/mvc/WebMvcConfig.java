@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.framework.mvc;
 
-import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +21,6 @@ import java.time.Duration;
 @AllArgsConstructor
 @SuppressWarnings({"unused"})
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    private VitaProperties vitaProperties;
 
     /**
      * 允许跨域。

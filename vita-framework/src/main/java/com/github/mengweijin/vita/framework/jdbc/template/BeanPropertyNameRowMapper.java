@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.jdbc.template;
 
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,14 @@ import java.util.Set;
  */
 @SuppressWarnings({"unused"})
 public class BeanPropertyNameRowMapper<T> extends BeanPropertyRowMapper<T> {
+
+    /**
+     * 调用前必须指定 mappedClass
+     * @param mappedClass 比如：User.class
+     */
+    public BeanPropertyNameRowMapper(Class<T> mappedClass){
+        super(mappedClass);
+    }
 
     /**
      * 自定义数据库字段到实体类属性的映射规则。额外增加驼峰命名规则的映射。

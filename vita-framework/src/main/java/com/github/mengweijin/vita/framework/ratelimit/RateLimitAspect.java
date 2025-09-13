@@ -26,6 +26,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.cache.Cache;
@@ -57,6 +58,7 @@ public class RateLimitAspect {
 
     private UserRoleService userRoleService;
 
+    @Lazy
     private VitaProperties vitaProperties;
 
     @Pointcut("@annotation(rateLimit)")

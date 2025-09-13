@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
@@ -35,7 +34,6 @@ import java.io.File;
  **/
 @Data
 @Validated
-@RefreshScope
 @ConfigurationProperties(prefix = "vita")
 public class VitaProperties {
 
@@ -71,8 +69,7 @@ public class VitaProperties {
     /**
      * ${vita.role-code-for-admin}
      */
-    @NotBlank
-    private String roleCodeForAdmin = "role_admin";
+    private String roleCodeForAdmin;
 
     @Valid
     private UserProperties user = new UserProperties();
@@ -83,8 +80,7 @@ public class VitaProperties {
         /**
          * ${vita.user.default-role-code}
          */
-        @NotBlank
-        private String defaultRoleCode = "role_general";
+        private String defaultRoleCode;
 
         /**
          * ${vita.user.default-password}
@@ -99,6 +95,10 @@ public class VitaProperties {
         @Min(-1)
         @Max(Integer.MAX_VALUE)
         private Integer passwordChangeInterval = 90;
+
+        private String defaultPasswordNew = "";
+
+        private String defaultPasswordNewConfig = "";
 
     }
 }
