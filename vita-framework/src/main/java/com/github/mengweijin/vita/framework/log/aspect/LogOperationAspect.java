@@ -49,6 +49,10 @@ public class LogOperationAspect {
 
     private static final ThreadLocal<Long> LOGIN_USER_ID = new ThreadLocal<>();
 
+    private static final String REQUEST_ARGS = "REQUEST_ARGS";
+
+    private static final String REQUEST_BODY = "REQUEST_BODY";
+
     @Pointcut("@annotation(com.github.mengweijin.vita.framework.log.aspect.annotation.Log)")
     public void pointCut() {}
 
@@ -132,10 +136,6 @@ public class LogOperationAspect {
             LOGIN_USER_ID.remove();
         }
     }
-
-    private static final String REQUEST_ARGS = "REQUEST_ARGS";
-
-    private static final String REQUEST_BODY = "REQUEST_BODY";
 
     private void setRequestData(HttpServletRequest request, LogOperationDO logOperation) throws IOException {
         Map<String, Object> dataMap = new LinkedHashMap<>();

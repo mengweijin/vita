@@ -1,16 +1,13 @@
 package com.github.mengweijin.vita.framework.propertysource;
 
-import cn.hutool.v7.extra.spring.SpringUtil;
-import com.github.mengweijin.vita.framework.properties.VitaProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.mengweijin.vita.system.service.ConfigService;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.core.env.StandardEnvironment;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
 
 /**
  *
@@ -18,41 +15,29 @@ import javax.sql.DataSource;
  * @since 2025/9/13
  */
 @Component
+@AllArgsConstructor
 public class DatabasePropertySourceLoader implements ApplicationListener<ApplicationReadyEvent> {
-    @Autowired
+
     private ConfigurableEnvironment environment;
 
-    @Autowired
-    private DataSource dataSource;
+    private ConfigService configService;
 
-    @Autowired
-    private ConfigurationPropertiesRebinder rebinder;
+    DatabasePropertySource databasePropertySource;
 
+    /**
+     * 也可以添加 DatabasePropertySource 到最优先位置：
+     * environment.getPropertySources().addFirst(databasePropertySource);
+     * @param event ApplicationReadyEvent
+     */
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        // 创建并添加 DatabasePropertySource
-        DatabasePropertySource databasePropertySource = new DatabasePropertySource(jdbcTemplate);
-        // 添加到最优先位置
-        environment.getPropertySources().addFirst(databasePropertySource);
-
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         // 将数据库配置源添加到环境属性源中，优先级高于 application.yml 但低于命令行参数
-        // environment.getPropertySources().addAfter(
-        //         StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
-        //         databasePropertySource
-        // );
+        environment.getPropertySources().addAfter(
+                StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
+                databasePropertySource
+        );
 
-        System.out.println(environment.getProperty("vita.role-code-for-admin"));
-
-        // 触发配置刷新，使 VitaProperties 重新绑定到新的属性值
-        rebinder.rebind("vitaProperties");
-
-        System.out.println(SpringUtil.getBean(VitaProperties.class));
-        System.out.println("VitaProperties refreshed successfully after adding DatabasePropertySource.");
-    }
-
-    @Override
-    public boolean supportsAsyncExecution() {
-        return false;
+        // 初始化后，发布更新事件，动态刷新一次配置值
+        configService.publishEnvironmentChangeEvent();
     }
 }

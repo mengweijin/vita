@@ -1,9 +1,6 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaIgnore;
-import cn.hutool.v7.core.data.id.IdUtil;
-import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,12 +9,11 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.ConfigBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -112,7 +108,7 @@ public class ConfigController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:config:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigDO config) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigBO config) {
         boolean bool = configService.save(config);
         return R.result(bool);
     }
@@ -126,7 +122,7 @@ public class ConfigController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigDO config) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigBO config) {
         boolean bool = configService.updateById(config);
         return R.result(bool);
     }
@@ -145,27 +141,12 @@ public class ConfigController {
     }
 
     /**
-     * 手动更新所有配置缓存接口
+     * 手动从数据库配置读取，并刷新被 @ConfigurationProperties 注解的类的属性的值
      */
-    @SaIgnore
-    @SneakyThrows
-    @PostMapping("/update-refresh-config")
-    public R<VitaProperties> refreshConfig() {
-        ConfigDO config = new ConfigDO();
-        config.setId(4L);
-        config.setConfigValue(IdUtil.fastSimpleUUID());
-        configService.updateById(config);
-
+    @PostMapping("/manual-refresh")
+    public R<Void> manualRefresh() {
         configService.publishEnvironmentChangeEvent();
-
-        Thread.sleep(5000);
-
-        ConfigurableEnvironment environment = SpringUtil.getBean(ConfigurableEnvironment.class);
-        String property = environment.getProperty("vita.user.default-password");
-
-        vitaProperties.getUser().setDefaultPasswordNew(config.getConfigValue());
-        vitaProperties.getUser().setDefaultPasswordNewConfig(property);
-        return R.ok(vitaProperties);
+        return R.ok();
     }
 
 }

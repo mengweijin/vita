@@ -106,6 +106,12 @@ spring:
     # user:
     # 访问数据库的密码
     # password:
+  cloud:
+    refresh:
+      # 配置：多个以 , 分隔。
+      # 问题类似于：https://blog.csdn.net/qq_34859327/article/details/108872894
+      # 源码参考：org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder.rebind(name, applicationContext) 方法
+      never-refreshable: com.zaxxer.hikari.HikariDataSource,com.github.gavlyukovskiy.boot.jdbc.decorator.DecoratedDataSource
 mybatis-plus:
   # MyBatis Mapper 所对应的 XML 文件位置，如果您在 Mapper 中有自定义方法（XML 中有自定义实现），需要进行该配置，告诉 Mapper 所对应的 XML 文件位置。
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -165,6 +171,11 @@ management:
     health:
       # 显示详细信息
       show-details: always
+  endpoints:
+    web:
+      exposure:
+        # 暴露刷新端点（关键！）
+        include: refresh,health,info
 springdoc:
   swagger-ui:
     enabled: true

@@ -14,6 +14,7 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
@@ -48,6 +49,8 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
 
     private static final String TAB = StrUtil.fillAfter(Const.EMPTY, ' ', 4);
 
+    private VitaProperties vitaProperties;
+
     /**
      * DbErrorLogAppender初始化
      */
@@ -62,7 +65,8 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
 
     @Override
     protected void append(ILoggingEvent event) {
-        Level level = Level.toLevel("INFO", Level.ERROR);
+        String logRecordLevel = vitaProperties.getLogRecordLevel();
+        Level level = Level.toLevel(logRecordLevel, Level.ERROR);
         // 只有当事件的级别 >= 当前设置的阈值级别时，才记录日志
         if (event.getLevel().isGreaterOrEqual(level)) {
             recordLog(event);

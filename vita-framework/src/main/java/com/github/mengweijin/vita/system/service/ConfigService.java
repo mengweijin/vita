@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.array.ArrayUtil;
+import cn.hutool.v7.core.collection.set.SetUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,10 +11,11 @@ import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder;
-import org.springframework.cloud.context.refresh.ContextRefresher;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * <p>
@@ -28,16 +31,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
 
-    private ApplicationEventPublisher applicationEventPublisher;
-
-    private ContextRefresher contextRefresher;
+    private ApplicationContext applicationContext;
 
     @Override
     public boolean save(ConfigDO entity) {
         boolean saved = super.save(entity);
         if(saved) {
             // 发布配置更新事件以动态刷新配置
-            this.publishEnvironmentChangeEvent();
+            this.publishEnvironmentChangeEvent(entity.getConfigKey());
         }
         return saved;
     }
@@ -48,7 +49,7 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         if(updated) {
             ConfigDO latestConfig = this.getById(config.getId());
             // 发布配置更新事件以动态刷新配置
-            this.publishEnvironmentChangeEvent();
+            this.publishEnvironmentChangeEvent(latestConfig.getConfigKey());
         }
         return updated;
     }
@@ -74,20 +75,17 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         return this.lambdaQuery().eq(ConfigDO::getConfigKey, key).one();
     }
 
-    public void publishEnvironmentChangeEvent() {
+    public void publishEnvironmentChangeEvent(String... keys) {
         DatabasePropertySource databasePropertySource = SpringUtil.getBean(DatabasePropertySource.class);
         // 更新数据库配置缓存
         databasePropertySource.refresh();
-        // Set<String> keys = databasePropertySource.getKeys();
+
+        Set<String> changeKeys = SetUtil.of(keys);
+        if(ArrayUtil.isEmpty(changeKeys)) {
+            changeKeys = databasePropertySource.getAllKeys();
+        }
 
         // 发布事件
-        // applicationEventPublisher.publishEvent(new EnvironmentChangeEvent(this, SetUtil.of(keys)));
-
-        // 触发Spring上下文刷新，更新 @RefreshScope 注解的 bean
-        // contextRefresher.refresh();
-
-        ConfigurationPropertiesRebinder rebinder = SpringUtil.getBean(ConfigurationPropertiesRebinder.class);
-        // rebinder.rebind(VitaProperties.class);
-        rebinder.rebind("vitaProperties");
+        applicationContext.publishEvent(new EnvironmentChangeEvent(applicationContext, changeKeys));
     }
 }

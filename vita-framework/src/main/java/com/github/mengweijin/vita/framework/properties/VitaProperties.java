@@ -96,9 +96,5 @@ public class VitaProperties {
         @Max(Integer.MAX_VALUE)
         private Integer passwordChangeInterval = 90;
 
-        private String defaultPasswordNew = "";
-
-        private String defaultPasswordNewConfig = "";
-
     }
 }

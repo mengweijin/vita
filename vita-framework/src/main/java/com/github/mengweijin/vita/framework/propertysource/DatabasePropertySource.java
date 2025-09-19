@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -47,6 +48,9 @@ public class DatabasePropertySource extends PropertySource<Map<String, String>> 
 
         source.clear();
         source.putAll(map);
+    }
 
+    public Set<String> getAllKeys() {
+        return source.keySet();
     }
 }
