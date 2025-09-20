@@ -130,7 +130,7 @@ onMounted(() => {
       <el-descriptions-item label="JVM 剩余可用内存" label-align="right">
         {{ jvmInfo?.usableMemory }}
       </el-descriptions-item>
-      <el-descriptions-item label="启动参数" label-align="right">
+      <el-descriptions-item label="启动参数" label-align="right" v-if="false">
         {{ jvmInfo?.startArgs }}
       </el-descriptions-item>
     </el-descriptions>

@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.monitor.domain.vo.application;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import cn.hutool.v7.core.date.DateFormatPool;
 import cn.hutool.v7.core.date.TimeUtil;
@@ -45,6 +46,7 @@ public class JvmInfoVO implements Serializable {
     private String freeMemory;
     private String usableMemory;
 
+    @JsonIgnore
     private String startArgs;
 
     public JvmInfoVO() {
