@@ -2,11 +2,13 @@ package com.github.mengweijin.vita.framework.properties;
 
 import ch.qos.logback.classic.Level;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.constant.Regex;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -85,7 +87,9 @@ public class VitaProperties {
         /**
          * ${vita.user.default-password}
          */
+        @SuppressWarnings({"java:S2068"})
         @NotBlank
+        @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
         private String defaultPassword = "aday.fun";
 
         /**

@@ -8,7 +8,7 @@
 		<img src="https://img.shields.io/badge/license-Apache2.0-blue.svg" />
 	</a>
 	<a target="_blank" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">
-		<img src="https://img.shields.io/badge/JDK-17-green.svg" />
+		<img src="https://img.shields.io/badge/JDK-17+-green.svg" />
 	</a>
 	<a target="_blank" href="https://gitee.com/mengweijin/vita/stargazers">
 		<img src="https://gitee.com/mengweijin/vita/badge/star.svg?theme=dark" alt='gitee star'/>
@@ -22,16 +22,12 @@
 	<a target="_blank" href='https://github.com/mengweijin/vita'>
 		<img src="https://img.shields.io/github/forks/mengweijin/vita?style=social" alt="github fork"/>
 	</a>
-</p>
-
-<p align="center">
+    <br>
     <a target="_blank" href="https://sonarcloud.io/summary/overall?id=mengweijin_vita&branch=master">
 		<img src="https://sonarcloud.io/api/project_badges/quality_gate?project=mengweijin_vita&branch=master" />
 	</a>
-</p>
-
-<p align="center">
-	<a target="_blank" href="https://sonarcloud.io/summary/overall?id=mengweijin_vita&branch=master">
+    <br>
+    <a target="_blank" href="https://sonarcloud.io/summary/overall?id=mengweijin_vita&branch=master">
 		<img src="https://sonarcloud.io/api/project_badges/measure?project=mengweijin_vita&metric=alert_status&branch=master" />
 	</a>
     <a target="_blank" href="https://sonarcloud.io/summary/overall?id=mengweijin_vita&branch=master">
