@@ -29,19 +29,24 @@ import java.util.logging.Logger;
 @SuppressWarnings({"unused"})
 public class DynamicDriverDataSource implements DataSource {
 
-    private final JarClassLoader classLoader;
+    private JarClassLoader classLoader;
 
-    private final String url;
+    private String url;
 
-    private final String username;
+    private String username;
 
-    private final String password;
+    private String password;
 
     public DynamicDriverDataSource(String jarFilePath, String url, String username, String password) {
-        this(FileUtil.file(jarFilePath), url, username, password);
+        File jarFile = FileUtil.file(jarFilePath);
+        init(jarFile, url, username, password);
     }
 
     public DynamicDriverDataSource(File jarFile, String url, String username, String password) {
+        init(jarFile, url, username, password);
+    }
+
+    private void init(File jarFile, String url, String username, String password) {
         Assert.notNull(jarFile);
         if (!FileUtil.exists(jarFile)) {
             throw new ServerException("File not exist at path " + jarFile.getAbsolutePath());
