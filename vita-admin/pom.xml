@@ -14,6 +14,10 @@
     <packaging>jar</packaging>  
     <name>vita-admin</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency> 
             <groupId>com.github.mengweijin</groupId>
@@ -70,7 +74,7 @@
                 <configuration> 
                     <includeSystemScope>true</includeSystemScope>
                 </configuration> 
-            </plugin>  
+            </plugin>
             <plugin> 
                 <groupId>com.spotify</groupId>  
                 <artifactId>dockerfile-maven-plugin</artifactId>  
