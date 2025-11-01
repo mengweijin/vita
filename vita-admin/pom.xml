@@ -69,7 +69,7 @@
                 <configuration> 
                     <includeSystemScope>true</includeSystemScope>
                     <!-- 设置为 true 时会跳过 repackage，生成普通 Jar。可在发布到中央仓库时设置为 true 来去掉依赖包减小体积。-->
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration> 
             </plugin>
             <plugin>
