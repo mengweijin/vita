@@ -11,7 +11,7 @@
         <value-type>java.lang.String</value-type>
         <expiry>
             <!-- 单位默认为秒当用秒作单位时,可以不填-->
-            <ttl unit="hours">12</ttl>
+            <ttl unit="hours">2</ttl>
         </expiry>
         <listeners>
             <listener>
@@ -27,9 +27,9 @@
         </listeners>
         <resources>
             <!-- 内存中存放的条目个数。单位默认为entries当用entries作单位时,可以不填-->
-            <heap unit="entries">100</heap>
+            <heap unit="entries">10000</heap>
             <!-- 堆外内存大小-->
-            <offheap unit="MB">5</offheap>
+            <!-- <offheap unit="MB">100</offheap> -->
             <!--
                 persistent 默认为 false，可以不填。
                 用于定义缓存数据在应用重启后是否需要恢复。
@@ -38,17 +38,23 @@
                 需要注意的是，开启diskPersistent会增加磁盘IO的开销，并且在磁盘故障等异常情况下，可能会导致缓存数据的丢失。
                 因此，在使用diskPersistent时需要根据实际情况进行权衡和配置，以保证数据的安全性和可靠性。
             -->
-            <disk unit="MB" persistent="false">1024</disk>
-        </resources>
-    </cache-template>
+            <!-- <disk unit="MB" persistent="false">1024</disk> -->
+</resources>
+</cache-template>
 
-    <!-- 缓存对象,如果使用了模版会覆盖模版中的内容,使用 uses-template="" 来引用模版 -->
+<!-- 缓存对象,如果使用了模版会覆盖模版中的内容,使用 uses-template="" 来引用模版 -->
     <cache alias="DEPT_ID_TO_NAME" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
     </cache>
 
     <cache alias="DICT_VAL_TO_LABEL" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
+        <expiry>
+            <ttl unit="hours">2</ttl>
+        </expiry>
     </cache>
 
     <cache alias="REPEAT_SUBMIT" uses-template="DEFAULT_TEMPLATE">
@@ -64,14 +70,23 @@
 
     <cache alias="USER_ID_TO_AVATAR" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
     </cache>
 
     <cache alias="USER_ID_TO_NICKNAME" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
     </cache>
 
     <cache alias="USER_ID_TO_USERNAME" uses-template="DEFAULT_TEMPLATE">
         <value-type>java.lang.String</value-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
     </cache>
 
     <cache alias="RATE_LIMIT" uses-template="DEFAULT_TEMPLATE">

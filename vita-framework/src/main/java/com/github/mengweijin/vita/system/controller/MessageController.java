@@ -46,9 +46,9 @@ public class MessageController {
 
     private MessageReceiverService messageReceiverService;
 
-    @GetMapping("/query/unviewed-count")
-    public Long selectUnviewedCount() {
-        return messageReceiverService.selectUnviewedCount();
+    @GetMapping("/query/not-viewed-count")
+    public Long selectNotViewedCount() {
+        return messageReceiverService.selectNotViewedCount();
     }
 
     @PostMapping("/set-viewed/{messageReceiverIds}")
@@ -57,9 +57,9 @@ public class MessageController {
         return R.result(bool);
     }
 
-    @PostMapping("/set-unviewed/{messageReceiverIds}")
-    public R<Void> setUnviewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
-        boolean bool = messageReceiverService.setUnviewed(Arrays.asList(messageReceiverIds));
+    @PostMapping("/set-not-viewed/{messageReceiverIds}")
+    public R<Void> setNotViewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
+        boolean bool = messageReceiverService.setNotViewed(Arrays.asList(messageReceiverIds));
         return R.result(bool);
     }
 

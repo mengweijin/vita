@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.monitor.controller;
 
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.sse.SseConnector;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +21,12 @@ public class SseController {
     private SseConnector sseConnector;
 
     /**
-     * @param token token
-     * @return SseEmitter
+     * @return 建立SSE连接
      */
-    @GetMapping("/connect")
-    public SseEmitter connect(String token) {
-        return sseConnector.connect(token);
+    @GetMapping(value = "/connect", produces = "text/event-stream;charset=UTF-8")
+    public SseEmitter connect() {
+        String username = LoginHelper.getLoginUser().getUsername();
+        return sseConnector.connect(username);
     }
 
 }

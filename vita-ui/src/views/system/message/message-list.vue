@@ -84,8 +84,8 @@ const handleBatchSetViewed = () => {
   handleSetViewed(messageReceiverIds);
 }
 
-const handleSetUnviewed = (messageReceiverIds) => {
-  messageApi.setUnviewed(messageReceiverIds).then(() => {
+const handleSetNotViewed = (messageReceiverIds) => {
+  messageApi.setNotViewed(messageReceiverIds).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -202,7 +202,7 @@ onMounted(() => {
                   </el-button>
                 </el-tooltip>
                 <el-tooltip content="标为未读" placement="top" v-if="scope.row.viewed === 'Y'">
-                  <el-button type="primary" text :size="size" @click="handleSetUnviewed(scope.row.id)">
+                  <el-button type="primary" text :size="size" @click="handleSetNotViewed(scope.row.id)">
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ri:eye-off-line"></Icon>

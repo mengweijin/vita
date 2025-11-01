@@ -5,14 +5,14 @@
     <parent> 
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.5</version>
+        <version>3.5.7</version>
         <relativePath/> 
     </parent>  
     <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
-    <version>${revision}</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>vita-parent</name>
+    <name>${project.artifactId}</name>
     <description>vita-parent</description>
     <url>https://github.com/mengweijin/vita</url>
     <modules> 
@@ -21,26 +21,24 @@
         <module>vita-generator</module>
     </modules>
     <properties>
-        <!-- 全局版本控制，如果要修改版本号，修改此处即可-->
-        <revision>2.0.0-SNAPSHOT</revision>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <gpg.skip>false</gpg.skip>
-        <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
-        <skipTests>true</skipTests>
+        <vita.version>2.0.0-SNAPSHOT</vita.version>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
         <mybatis-plus.version>3.5.14</mybatis-plus.version>
         <hutool.version>7.0.0-M2</hutool.version>
         <sa-token.version>1.44.0</sa-token.version>
-        <oshi.version>6.9.0</oshi.version>
+        <oshi.version>6.9.1</oshi.version>
         <zxing.version>3.5.3</zxing.version>
         <fastexcel.version>1.3.0</fastexcel.version>
-        <ip2region.version>3.1.0</ip2region.version>
+        <ip2region.version>3.1.1</ip2region.version>
         <p6spy-spring-boot-starter.version>1.12.0</p6spy-spring-boot-starter.version>
-        <springdoc.version>2.8.12</springdoc.version>
+        <springdoc.version>2.8.13</springdoc.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
     </properties>
     <profiles>
         <profile>
@@ -105,6 +103,21 @@
     </profiles>  
     <dependencyManagement> 
         <dependencies>
+            <dependency>
+                <groupId>com.github.mengweijin</groupId>
+                <artifactId>vita-admin</artifactId>
+                <version>${vita.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.mengweijin</groupId>
+                <artifactId>vita-framework</artifactId>
+                <version>${vita.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.mengweijin</groupId>
+                <artifactId>vita-generator</artifactId>
+                <version>${vita.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -189,14 +202,18 @@
     </issueManagement>  
     <build> 
         <plugins>
+            <!-- 用来执行单元测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- 是否跳过执行单元测试。 也可以配置 <properties> <skipTests>true</skipTests> </properties> 来实现。 -->
+                    <skip>true</skip>
+                </configuration>
             </plugin>
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-source-plugin</artifactId>  
-                <version>3.3.1</version>
+                <artifactId>maven-source-plugin</artifactId>
                 <executions> 
                     <execution> 
                         <phase>package</phase>  
@@ -209,15 +226,14 @@
             <!-- Javadoc -->  
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-javadoc-plugin</artifactId>  
-                <version>3.11.2</version>
+                <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration> 
                     <doclint>none</doclint>  
                     <charset>UTF-8</charset>  
                     <docencoding>UTF-8</docencoding>
                 </configuration>  
                 <executions> 
-                    <execution> 
+                    <execution>
                         <phase>package</phase>  
                         <goals> 
                             <goal>jar</goal> 
@@ -229,7 +245,7 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-gpg-plugin</artifactId>  
-                <version>3.2.8</version>
+                <version>${maven-gpg-plugin.version}</version>
                 <executions> 
                     <execution> 
                         <phase>verify</phase>  
@@ -239,10 +255,21 @@
                     </execution> 
                 </executions> 
             </plugin>
+            <!-- 统一更新 pom.xml 中的版本 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <allowSnapshots>true</allowSnapshots>
+                    <processAllModules>true</processAllModules>
+                    <generateBackupPoms>true</generateBackupPoms>
+                    <newVersion>${project.version}</newVersion>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.9.0</version>
+                <version>${central-publishing-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
@@ -253,16 +280,20 @@
         </plugins> 
     </build>  
 
-    <repositories> 
-        <repository> 
-            <id>huawei</id>  
-            <url>https://mirrors.huaweicloud.com/repository/maven/</url> 
-        </repository> 
-    </repositories>  
+    <repositories>
+        <repository>
+            <id>snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
     <pluginRepositories> 
-        <pluginRepository> 
-            <id>huawei</id>  
-            <url>https://mirrors.huaweicloud.com/repository/maven/</url> 
+        <pluginRepository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
         </pluginRepository> 
     </pluginRepositories> 
 </project>

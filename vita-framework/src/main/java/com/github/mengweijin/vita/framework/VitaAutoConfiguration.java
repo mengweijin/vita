@@ -21,7 +21,10 @@ import org.springframework.web.client.RestTemplate;
  * 2. 当前运行的线程 >= corePoolSize 时，新增进来的任务添加到阻塞队列；
  * 3. 阻塞队列已经满了时，但当前运行线程数 < maxPoolSize, 新起一个线程执行新增进来的任务；
  * 4. 阻塞队列已经满了时，并且当前运行线程数 = maxPoolSize，执行任务丢弃策略。
- *
+ * </p>
+ * <p>
+ * 使用 @ComponentScan("com.github.mengweijin.vita") 扫描自身工程，以便工程 SDK 化。
+ * </p>
  * @author mengweijin
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
@@ -43,6 +46,16 @@ public class VitaAutoConfiguration {
     @Bean
     public MathGenerator mathGenerator() {
         return new MathGenerator(1, false);
+    }
+
+    @Bean
+    public VitaBeanDefinitionRegistryPostProcessor vitaBeanDefinitionRegistryPostProcessor() {
+        return new VitaBeanDefinitionRegistryPostProcessor();
+    }
+
+    @Bean
+    public VitaMapperBeanDefinitionRegistryPostProcessor vitaMapperBeanDefinitionRegistryPostProcessor() {
+        return new VitaMapperBeanDefinitionRegistryPostProcessor();
     }
 
 }

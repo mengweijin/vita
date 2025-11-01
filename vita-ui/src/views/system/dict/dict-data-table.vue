@@ -124,7 +124,7 @@ defineExpose({ visible, dictType })
         <el-table-column v-if="columns.code.visible" prop="code" label="字典编码" min-width="220" />
         <el-table-column v-if="columns.label.visible" prop="label" label="字典标签" min-width="160" />
         <el-table-column v-if="columns.val.visible" prop="val" label="字典值" min-width="160" />
-        <el-table-column v-if="columns.tag.visible" prop="tag" label="标签样式" min-width="100" align="center">
+        <el-table-column v-if="columns.tag.visible" prop="tag" label="标签样式" min-width="130" align="center">
           <template #default="{ row }">
             <el-tag :key="row.val + ''" :size="size" :type="row.tag" effect="dark">
               {{ row.label + "" }}
@@ -137,7 +137,7 @@ defineExpose({ visible, dictType })
             <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
           </template>
         </el-table-column>
-        <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="180" />
+        <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="150" />
         <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center"
           width="100" />
         <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />

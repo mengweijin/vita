@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.core.io.IoUtil;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,14 +19,16 @@ import java.io.InputStream;
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Ip2regionUtils {
+public class IpRegionUtils {
 
     private static final String XDB = "ip2region_v4.xdb";
 
     private static final String IP_LOCALHOST_V6 = "0:0:0:0:0:0:0:1";
 
+    private static volatile LongByteArray xdbBytesArray;
+
     public static String search(String ip) {
-        if(IP_LOCALHOST_V6.equals(ip.trim())) {
+        if (IP_LOCALHOST_V6.equals(ip.trim())) {
             return "0|0|内网IP|内网IP";
         }
         return search(ip, Version.IPv4);
@@ -37,20 +40,20 @@ public class Ip2regionUtils {
      * @return 数据格式：国家|省份|城市|ISP。例如：中国|广东省|广州市|联通
      */
     public static String search(String ip, Version version) {
-        if(ip == null) {
+        if (ip == null) {
             return null;
         }
 
-        InputStream in = Ip2regionUtils.class.getClassLoader().getResourceAsStream(XDB);
         Searcher searcher = null;
-        try(in) {
-            searcher = Searcher.newWithBuffer(version, new LongByteArray(IoUtil.readBytes(in)));
+        try {
+            loadData();
+            searcher = Searcher.newWithBuffer(version, xdbBytesArray);
             return searcher.search(ip);
         } catch (Exception e) {
             log.error("Search ip to region error! ip={}", ip);
             return null;
         } finally {
-            if(searcher != null) {
+            if (searcher != null) {
                 try {
                     searcher.close();
                 } catch (IOException e) {
@@ -60,9 +63,24 @@ public class Ip2regionUtils {
         }
     }
 
+    private static void loadData() {
+        if (xdbBytesArray == null) {
+            synchronized (XDB) {
+                if (xdbBytesArray == null) {
+                    InputStream in = IpRegionUtils.class.getClassLoader().getResourceAsStream(XDB);
+                    try (in) {
+                        xdbBytesArray = new LongByteArray(IoUtil.readBytes(in));
+                    } catch (IOException e) {
+                        throw new ServerException(e);
+                    }
+                }
+            }
+        }
+    }
+
     public static IpRegion searchIpRegion(String ip) {
         String regionString = search(ip);
-        if(regionString == null) {
+        if (regionString == null) {
             return null;
         }
         try {
@@ -82,13 +100,21 @@ public class Ip2regionUtils {
 
     @Data
     public static class IpRegion {
-        /** 国家 */
+        /**
+         * 国家
+         */
         private String country;
-        /** 省 */
+        /**
+         * 省
+         */
         private String province;
-        /** 市 */
+        /**
+         * 市
+         */
         private String city;
-        /** 运营商 */
+        /**
+         * 运营商
+         */
         private String isp;
     }
 

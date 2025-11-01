@@ -142,7 +142,7 @@ onMounted(() => {
   <!-- 表格 -->
   <div class="vt-table-container">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-      show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+      highlight-current-row @selection-change="(val) => selected = val">
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />

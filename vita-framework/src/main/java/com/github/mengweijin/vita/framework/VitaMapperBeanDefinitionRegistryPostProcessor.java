@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework;
 
-import com.github.mengweijin.vita.framework.constant.Const;
 import cn.hutool.v7.core.reflect.ClassUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -20,11 +20,11 @@ public class VitaMapperBeanDefinitionRegistryPostProcessor implements BeanDefini
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
-        String pkg = ClassUtil.getPackage(VitaMapperBeanDefinitionRegistryPostProcessor.class);
+        String pkg = ClassUtil.getPackage(VitaAutoConfiguration.class);
         String parentPkg = CharSequenceUtil.subBefore(pkg, Const.DOT, true);
         ClassPathMapperScanner mapperScanner = new ClassPathMapperScanner(beanDefinitionRegistry, applicationContext.getEnvironment());
         mapperScanner.registerFilters();
-        mapperScanner.scan(parentPkg);
+        mapperScanner.scan(parentPkg + ".**.mapper");
     }
 
     @Override

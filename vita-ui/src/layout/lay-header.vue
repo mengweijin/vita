@@ -43,11 +43,10 @@ const onLogout = () => {
 const target = ref(null);
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
-const unviewedMessageCount = ref('');
+const notViewedMessageCount = ref('');
 
 onMounted(async () => {
-  let messageCount = await messageApi.selectUnviewedCount();
-  unviewedMessageCount.value = messageCount === 0 ? '' : messageCount;
+  notViewedMessageCount.value = await messageApi.selectNotViewedCount();
 });
 
 </script>
@@ -70,8 +69,9 @@ onMounted(async () => {
       <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
     <el-menu-item index="6">
-      <el-icon>
-        <el-badge :value="unviewedMessageCount" :max="99">
+      <Icon v-if="notViewedMessageCount === 0" icon="ep:bell-filled" width="24" height="24" />
+      <el-icon v-else>
+        <el-badge :value="notViewedMessageCount" :max="99">
           <el-icon :size="24">
             <Icon icon="ep:bell-filled" width="24" height="24" />
           </el-icon>

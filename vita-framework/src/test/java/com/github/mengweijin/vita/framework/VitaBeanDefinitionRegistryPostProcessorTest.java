@@ -13,7 +13,7 @@ class VitaBeanDefinitionRegistryPostProcessorTest {
 
     @Test
     void packagePath() {
-        String pkg = ClassUtil.getPackage(VitaBeanDefinitionRegistryPostProcessor.class);
+        String pkg = ClassUtil.getPackage(VitaAutoConfiguration.class);
         Assertions.assertEquals("com.github.mengweijin.framework", pkg);
 
         String parentPkg = StrUtil.subBefore(pkg, Const.DOT, true);

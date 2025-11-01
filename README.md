@@ -72,14 +72,16 @@
 
 于是，就有了 **Vita**，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。
 
-### 在线演示
+## 在线演示
 |        版本        |          演示链接          |
 |:----------------:|:----------------------:|
 |    Vita（开发中）     | https://vita.aday.fun  |
 |  Vitality Vue 版  |  https://vue.aday.fun  |
 | Vitality Layui 版 | https://layui.aday.fun |
 
-#### 最简单的启动
+## 启动应用
+
+### 源码启动
 
 默认前后端一体化部署，因此你只需要一个 JDK 17 的运行环境，然后直接启动即可！
 
@@ -97,12 +99,50 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 - [打包指南](docs/package.md)
 - [部署指南](docs/deploy.md)
 
+### 后端 SDK 化启动
+
+使用方式可参考 SDK 化的示例工程：[vita-sdk-demo](./vita-sdk-demo)
+
+很多时候，我们依赖上游应用，就希望可以在 maven 中直接依赖一个 jar 包，而不是克隆所有源代码，以方便基础工程的更新迭代。
+
+此时就需要将基础工程 SDK 化，打包成 jar 发布到 maven 中央仓库。幸运的是，本项目已经将 jar 发布到了 maven 中央仓库。
+
+核心操作如下：
+
+1. 将 pom.xml 中的 parent 配置为如下示例：
+
+    ```xml
+        <parent>
+            <groupId>com.github.mengweijin</groupId>
+            <artifactId>vita-parent</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </parent>
+    ```
+
+2. 将 pom.xml 中的依赖增加如下示例：
+
+    ```xml
+    <dependency>
+        <groupId>com.github.mengweijin</groupId>
+        <artifactId>vita-framework</artifactId>
+        <version>${vita.version}</version>
+    </dependency>
+    <dependency>
+        <!-- 可选 -->
+        <groupId>com.github.mengweijin</groupId>
+        <artifactId>vita-generator</artifactId>
+        <version>${vita.version}</version>
+    </dependency>
+    ```
+
+3. 然后增加一个 @SpringBootApplication 启动类，直接启动就可以了。
+
 ### 功能矩阵
 
 | 系统功能 | 系统管理 | 系统监控 | 开发工具  | 开发功能（列 1） | 开发功能（列 2） |
 |------|------|------|-------|-----------|-----------|
 | 首页   | 菜单管理 | 调度任务 | 接口文档  | 角色授权      | SSE 推送    |
-| 通知公告 | 部门管理 | 应用监控 | 代码生成器 | 数据脱敏      | 一系列前端组件   |
+| 系统公告 | 部门管理 | 应用监控 | 代码生成器 | 数据脱敏      | 一系列前端组件   |
 | 消息管理 | 岗位管理 | 缓存监控 |       | 字典翻译      |           |
 |      | 用户管理 | 在线用户 |       | 接口限流      |           |
 |      | 角色管理 | 登录日志 |       | 缓存过期      |           |

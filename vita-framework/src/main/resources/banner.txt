@@ -57,8 +57,8 @@ _/_/__/_(___ _/___/_(___/_|/_|/__(___ _/___/___/___/___/__
 ${AnsiColor.BRIGHT_GREEN}
 =====================================================================================
            Application Name:  ${application.name}
-        Application Version:  ${application.version} ${application.formatted-version}
-        Spring Boot Version:  ${spring-boot.version} ${spring-boot.formatted-version}
+        Application Version:  ${application.version}
+        Spring Boot Version:  ${spring-boot.version}
                 Server Port:  ${server.port}
      Spring Profiles Active:  ${spring.profiles.active}
 Server Servlet Content-Path:  ${server.servlet.context-path}

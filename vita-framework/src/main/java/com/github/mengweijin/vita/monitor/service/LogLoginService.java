@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.framework.util.Ip2regionUtils;
+import com.github.mengweijin.vita.framework.util.IpRegionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.monitor.mapper.LogLoginMapper;
@@ -80,7 +80,7 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
                         UserAgent userAgent = ServletUtils.getUserAgent(request);
                         String ip = ServletUtil.getClientIP(request);
                         logLogin.setIp(ip);
-                        logLogin.setIpLocation(Ip2regionUtils.search(ip));
+                        logLogin.setIpLocation(IpRegionUtils.search(ip));
                         logLogin.setBrowser(Optional.ofNullable(userAgent).map(UserAgent::getBrowser).map(UserAgentInfo::getName).orElse(null));
                         logLogin.setPlatform(Optional.ofNullable(userAgent).map(UserAgent::getPlatform).map(UserAgentInfo::getName).orElse(null));
                         logLogin.setOs(Optional.ofNullable(userAgent).map(UserAgent::getOs).map(UserAgentInfo::getName).orElse(null));

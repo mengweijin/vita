@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita;
+package com.github.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -9,16 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @Slf4j
 @SpringBootApplication
-public class VitaAdminApplication {
+public class DemoApplication {
 
 	public static void main(String[] args) {
 		try {
             long start = System.currentTimeMillis();
-			SpringApplication.run(VitaAdminApplication.class, args);
+			SpringApplication.run(DemoApplication.class, args);
             long end = System.currentTimeMillis();
             log.info("-----------------------------------------------------------------------");
-            log.info("----------- Started Vita in {} seconds", (end - start) / 1000D);
             log.info("----------- Vita startup success!");
+            log.info("----------- Started Vita in {} seconds", (end - start) / 1000D);
             log.info("-----------------------------------------------------------------------");
 		} catch (Exception e) {
             log.error("----------------------------------------------------------------------");

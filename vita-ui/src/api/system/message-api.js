@@ -3,7 +3,7 @@ import http from '@/utils/http';
 const URL_PREFIX = '/system/message';
 
 export const messageApi = {
-  selectUnviewedCount: () => http.get(`${URL_PREFIX}/query/unviewed-count`),
+  selectNotViewedCount: () => http.get(`${URL_PREFIX}/query/not-viewed-count`),
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
@@ -17,5 +17,5 @@ export const messageApi = {
 
   setViewed: (messageReceiverIds) => http.post(`${URL_PREFIX}/set-viewed/${messageReceiverIds}`),
 
-  setUnviewed: (messageReceiverIds) => http.post(`${URL_PREFIX}/set-unviewed/${messageReceiverIds}`),
+  setNotViewed: (messageReceiverIds) => http.post(`${URL_PREFIX}/set-not-viewed/${messageReceiverIds}`),
 };

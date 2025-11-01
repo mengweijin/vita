@@ -43,7 +43,7 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
         return wrapper;
     }
 
-    public Long selectUnviewedCount() {
+    public Long selectNotViewedCount() {
         Long userId = LoginHelper.getLoginUser().getUserId();
         return this.lambdaQuery()
                 .eq(MessageReceiverDO::getUserId, userId)
@@ -68,7 +68,7 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
                 .update();
     }
 
-    public boolean setUnviewed(List<Long> ids) {
+    public boolean setNotViewed(List<Long> ids) {
         return this.lambdaUpdate()
                 .set(MessageReceiverDO::getViewed, EYesNo.N.getValue())
                 .set(MessageReceiverDO::getViewedTime, null)

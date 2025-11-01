@@ -38,7 +38,7 @@ import java.util.List;
 @RequestMapping("/system/notice")
 public class NoticeController {
 
-    private static final String LOG_TITLE = "通知公告";
+    private static final String LOG_TITLE = "系统公告";
 
     private NoticeService noticeService;
 
