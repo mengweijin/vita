@@ -80,8 +80,8 @@ const initSensitiveInfo = () => {
 };
 
 const initDefaultPassword = () => {
-  configApi.getByCode('vt_user_password_default').then((res) => {
-    form.password = res?.val ?? undefined;
+  configApi.getByCode('vita.user.default-password').then((res) => {
+    form.password = res?.configValue ?? undefined;
   });
 };
 

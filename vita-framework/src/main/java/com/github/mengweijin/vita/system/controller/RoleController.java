@@ -94,8 +94,9 @@ public class RoleController {
     }
 
     @GetMapping("/get-default-role")
-    public String getDefaultRole() {
-        return vitaProperties.getUser().getDefaultRoleCode();
+    public RoleDO getDefaultRole() {
+        String defaultRoleCode = vitaProperties.getUser().getDefaultRoleCode();
+        return roleService.getByCode(defaultRoleCode);
     }
 
 

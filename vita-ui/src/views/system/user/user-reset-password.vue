@@ -46,8 +46,8 @@ watch(isResetToDefaultPassword, (newData) => {
 const defaultPassword = ref(null);
 
 const initDefaultPassword = () => {
-  configApi.getByCode('vt_user_password_default').then((res) => {
-    defaultPassword.value = res?.val ?? undefined;
+  configApi.getByCode('vita.user.default-password').then((res) => {
+    defaultPassword.value = res?.configValue ?? undefined;
     if (isResetToDefaultPassword.value) {
       form.password = defaultPassword.value;
     }
