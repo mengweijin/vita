@@ -57,9 +57,9 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
 
     /**
      * 自定义当请求 path 校验不通过时 sa-token 处理方案。
-     * Version <= 1.39.0：SaStrategy.instance.requestPathInvalidHandle
-     * Version = 1.40.0：SaFirewallStrategy.instance.requestPathInvalidHandle
-     * Version >= 1.41.0：SaFirewallStrategy.instance.checkFailHandle
+     * Version 小于等于 1.39.0：SaStrategy.instance.requestPathInvalidHandle
+     * Version 等于 1.40.0：SaFirewallStrategy.instance.requestPathInvalidHandle
+     * Version 大于等于 1.41.0：SaFirewallStrategy.instance.checkFailHandle
      * <p>
      * 比如访问：localhost:8080/.xxx
      * 上面这个 url 包含了 .xxx 这样包含小数点的非常规 url，很多漏洞扫描工具（比如：AppScan）会模拟类似的 url 对应用进行扫描。
@@ -67,8 +67,8 @@ public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
      * 因此通过自定义修改 SaStrategy.instance.requestPathInvalidHandle 的处理默认处理方式来规避。
      * 这里直接 throw new RuntimeException(e);
      * <p>
-     * Version = 1.40.0：cn.dev33.satoken.filter.SaPathCheckFilterForJakartaServlet.java
-     * Version >= 1.41.0：{@link SaFirewallCheckFilterForJakartaServlet } 在处理的时候就会抛运行时异常，客户端收到的就是 500 的异常。
+     * Version 等于 1.40.0：cn.dev33.satoken.filter.SaPathCheckFilterForJakartaServlet.java
+     * Version 大于等于 1.41.0：{@link SaFirewallCheckFilterForJakartaServlet } 在处理的时候就会抛运行时异常，客户端收到的就是 500 的异常。
      */
     @Override
     public void afterPropertiesSet() throws Exception {

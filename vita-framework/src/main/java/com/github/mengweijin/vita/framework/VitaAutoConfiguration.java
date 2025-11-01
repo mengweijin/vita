@@ -17,14 +17,13 @@ import org.springframework.web.client.RestTemplate;
  * UserService userService = (UserService) AopContext.currentProxy();
  * <p>
  * 当任务新增进来时：
- * 1. 当前运行的线程 < corePoolSize 时，新起一个线程执行新增进来的任务；
- * 2. 当前运行的线程 >= corePoolSize 时，新增进来的任务添加到阻塞队列；
- * 3. 阻塞队列已经满了时，但当前运行线程数 < maxPoolSize, 新起一个线程执行新增进来的任务；
- * 4. 阻塞队列已经满了时，并且当前运行线程数 = maxPoolSize，执行任务丢弃策略。
- * </p>
+ * 1. 当前运行的线程小于 corePoolSize 时，新起一个线程执行新增进来的任务；
+ * 2. 当前运行的线程大于等于 corePoolSize 时，新增进来的任务添加到阻塞队列；
+ * 3. 阻塞队列已经满了时，但当前运行线程数小于 maxPoolSize, 新起一个线程执行新增进来的任务；
+ * 4. 阻塞队列已经满了时，并且当前运行线程数等于 maxPoolSize，执行任务丢弃策略。
  * <p>
  * 使用 @ComponentScan("com.github.mengweijin.vita") 扫描自身工程，以便工程 SDK 化。
- * </p>
+ * <p>
  * @author mengweijin
  */
 @EnableAspectJAutoProxy(exposeProxy = true)

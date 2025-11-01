@@ -227,14 +227,18 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration> 
+                <configuration>
+                    <!-- 可选：减少严格检查 -->
                     <doclint>none</doclint>  
-                    <charset>UTF-8</charset>  
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
+                    <!-- 可选：显示私有成员 -->
+                    <show>private</show>
                 </configuration>  
                 <executions> 
                     <execution>
-                        <phase>package</phase>  
+                        <id>attach-javadocs</id>
                         <goals> 
                             <goal>jar</goal> 
                         </goals> 
@@ -274,7 +278,7 @@
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
-                    <waitUntil>published</waitUntil>
+                    <!--<waitUntil>published</waitUntil>-->
                 </configuration>
             </plugin>
         </plugins> 

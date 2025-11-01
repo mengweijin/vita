@@ -21,9 +21,9 @@ import org.springframework.context.annotation.Configuration;
  * （也就是ecache2.x），所以必须借助JCacheCacheManager（org.springframework.cache.jcache）实现@Cacheable缓存。
  * 注意：JCache(JSR-107)是一种标准规范，在springboot中需要引入javax.cache.cache-api.jar包。
  * <p>
- * ehcache和jcache结合参考：https://www.ehcache.org/documentation/3.8/107.html
+ * ehcache和jcache结合参考：<a href="https://www.ehcache.org/documentation/3.8/107.html">https://www.ehcache.org/documentation/3.8/107.html</a>
  * <p>
- * {@link <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Spring Cache Documents</a>}
+ * Spring Cache Documents 参考：<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Spring Cache Documents</a>
  * <p>
  * 1、使用注解
  * KEY_EXPRESSION 为 @Cacheable 中的 key 值，默认使用 SPEL 表达式，若要拼接普通文本，需要用单引号包裹起来。
