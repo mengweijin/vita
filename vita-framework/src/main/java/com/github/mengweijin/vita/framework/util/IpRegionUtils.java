@@ -65,7 +65,7 @@ public class IpRegionUtils {
 
     private static void loadData() {
         if (xdbBytesArray == null) {
-            synchronized (XDB) {
+            synchronized (IpRegionUtils.class) {
                 if (xdbBytesArray == null) {
                     InputStream in = IpRegionUtils.class.getClassLoader().getResourceAsStream(XDB);
                     try (in) {
