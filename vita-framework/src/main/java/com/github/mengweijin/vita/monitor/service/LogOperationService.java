@@ -66,7 +66,12 @@ public class LogOperationService extends CrudRepository<LogOperationMapper, LogO
         return this.lambdaQuery().between(LogOperationDO::getCreateTime, startTime, endTime).count();
     }
 
+    public Long getTotalUserOperationCount() {
+        return this.lambdaQuery().count();
+    }
+
     public List<HomeConsoleChartDataVO> selectDailyUserOperationCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
         return this.getBaseMapper().selectDailyUserOperationCountBetweenTime(startTime, endTime);
     }
+
 }

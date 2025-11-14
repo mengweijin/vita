@@ -110,6 +110,10 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
         return this.lambdaQuery().eq(LogLoginDO::getLoginType, ELoginType.LOGIN.getValue()).between(LogLoginDO::getCreateTime, startTime, endTime).count();
     }
 
+    public Long getTotalUserLoginCount() {
+        return this.lambdaQuery().eq(LogLoginDO::getLoginType, ELoginType.LOGIN.getValue()).count();
+    }
+
     public List<HomeConsoleChartDataVO> selectDailyUserLoginCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
         return this.getBaseMapper().selectDailyUserLoginCountBetweenTime(startTime, endTime);
     }

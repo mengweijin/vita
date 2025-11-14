@@ -15,6 +15,10 @@ public class HomeConsoleStatisticVO implements Serializable {
 
     private Long dailyUserOperationCount;
 
+    private Long totalUserLoginCount;
+
+    private Long totalUserOperationCount;
+
     private Long dailyScheduledTaskExecutedCount;
 
     private Long totalScheduledTaskExecutedCount;

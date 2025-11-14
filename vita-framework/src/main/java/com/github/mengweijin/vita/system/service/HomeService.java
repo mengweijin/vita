@@ -36,6 +36,8 @@ public class HomeService {
         HomeConsoleStatisticVO vo = new HomeConsoleStatisticVO();
         vo.setDailyUserLoginCount(logLoginService.getDailyUserLoginCount());
         vo.setDailyUserOperationCount(logOperationService.getDailyUserOperationCount());
+        vo.setTotalUserLoginCount(logLoginService.getTotalUserLoginCount());
+        vo.setTotalUserOperationCount(logOperationService.getTotalUserOperationCount());
         vo.setDailyScheduledTaskExecutedCount(schedulingTaskLogService.getDailyScheduledTaskExecutedCount());
         vo.setTotalScheduledTaskExecutedCount(schedulingTaskLogService.getTotalScheduledTaskExecutedCount());
         return vo;
