@@ -1,5 +1,6 @@
 <script setup>
 import { dictDataApi } from "@/api/system/dict-api";
+import DictDataEdit from './dict-data-edit.vue';
 
 const loading = ref(true);
 
@@ -8,6 +9,8 @@ const visible = ref(false);
 const dictType = ref(null);
 
 const size = ref('default');
+
+const tableRef = ref({});
 
 const tableData = ref([]);
 

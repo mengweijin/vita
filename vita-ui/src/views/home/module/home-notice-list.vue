@@ -1,7 +1,7 @@
 <script setup>
 import { noticeApi } from '@/api/system/notice-api';
 import NoticeDetail from '@/views/system/notice/notice-detail.vue';
-import { toDateString } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const loading = ref(false);
 
@@ -75,7 +75,7 @@ onMounted(() => {
       </el-table-column>
       <el-table-column prop="updateTime" label="发布日期" align="center" width="90">
         <template #default="{ row }">
-          {{ toDateString(row.updateTime, 'yyyy-MM-dd') }}
+          {{ utils.toDateString(row.updateTime, 'yyyy-MM-dd') }}
         </template>
       </el-table-column>
     </el-table>

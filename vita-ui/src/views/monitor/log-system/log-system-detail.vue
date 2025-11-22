@@ -1,6 +1,8 @@
 <script setup>
 const loading = ref(true);
 
+const size = ref('default');
+
 const visible = ref(false);
 
 const data = ref({});

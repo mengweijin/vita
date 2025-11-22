@@ -1,6 +1,6 @@
 <script setup>
 import { categoryApi } from "@/api/system/category-api";
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { columns } from './category-hook.js';
 import CategoryEdit from './category-edit.vue';
 
@@ -36,7 +36,7 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   categoryApi.list(queryParams).then((res) => {
-    tableData.value = toArrayTree(res, { sortKey: 'seq' });
+    tableData.value = utils.toArrayTree(res, { sortKey: 'seq' });
     loading.value = false;
   });
 };

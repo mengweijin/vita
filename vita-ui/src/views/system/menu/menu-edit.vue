@@ -1,7 +1,6 @@
 <script setup>
-import { addFullPath } from "@/utils/tool";
+import utils from "@/utils/utils.js";
 import { menuApi } from "@/api/system/menu-api";
-import { toArrayTree } from "xe-utils";
 import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
 
@@ -85,8 +84,8 @@ const menuTreeSelectOptions = computed(() => {
       item.disabled = false;
     }
   });
-  addFullPath(menuList.value, { pathKey: 'title' })
-  return toArrayTree(menuList.value, { sortKey: 'seq' });
+  utils.addFullPath(menuList.value, { pathKey: 'title' })
+  return utils.toArrayTree(menuList.value, { sortKey: 'seq' });
 });
 
 const onOpened = () => {

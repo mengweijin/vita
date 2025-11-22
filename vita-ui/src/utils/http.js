@@ -4,7 +4,7 @@ import router from '@/router/index';
 
 import { useUserStore } from '@/store/user-store';
 import { useDictStore } from '@/store/dict-store';
-import { isEmpty } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const { VITE_BASE_API } = import.meta.env;
 
@@ -129,7 +129,7 @@ axiosInstance.download = function (url, fileName = undefined) {
       // attachment;fileName=%E6%A8%AA%E5%9B%BE_%E4%BA%91%E6%9B%A6_1.jpg
       const contentDisposition = response.headers['content-disposition'];
 
-      if (isEmpty(fileName)) {
+      if (utils.isEmpty(fileName)) {
         const encodedFileName = contentDisposition
           .split(';')
           .map((item) => item.trim())

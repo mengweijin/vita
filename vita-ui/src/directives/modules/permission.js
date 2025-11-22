@@ -1,4 +1,4 @@
-import { isEmpty } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { useUserStore } from '@/store/user-store';
 
 /**
@@ -30,7 +30,7 @@ export default {
 
       const valueArray = Array.isArray(value) ? value : [value];
 
-      if (isEmpty(modifiers) || modifiers.all) {
+      if (utils.isEmpty(modifiers) || modifiers.all) {
         return valueArray.every((perm) => permissionList.includes(perm));
       } else if (modifiers.any) {
         return valueArray.some((perm) => permissionList.includes(perm));

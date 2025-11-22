@@ -163,18 +163,17 @@ onMounted(() => {
   <!-- 表格 -->
   <div class="vt-table-container">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-      show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+      highlight-current-row @selection-change="(val) => selected = val">
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
-      <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="字典名称" min-width="220" align="center" fixed="left"
-        :tooltip-formatter="'false'">
+      <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" show-overflow-tooltip />
+      <el-table-column v-if="columns.name.visible" prop="name" label="字典名称" min-width="220" align="center" fixed="left">
         <template #default="{ row }">
           <a href="javascript:" @click="openDictDataTableListDialog(row)">{{ row.name }}</a>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.code.visible" prop="code" label="字典编码" min-width="220" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="字典编码" min-width="220" show-overflow-tooltip />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" show-overflow-tooltip />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />

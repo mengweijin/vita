@@ -5,7 +5,7 @@ import { columns } from './user-hook.js';
 import UserEdit from './user-edit.vue';
 import UserSetRoles from './user-set-roles.vue';
 import UserResetPassword from './user-reset-password.vue';
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const loading = ref(false);
 
@@ -22,7 +22,7 @@ const treeData = ref([]);
 const loadTreeData = () => {
   deptApi.list({ disabled: 'N' }).then((res) => {
     // 转为树状
-    treeData.value = toArrayTree(res, { sortKey: 'seq' });
+    treeData.value = utils.toArrayTree(res, { sortKey: 'seq' });
   });
 };
 

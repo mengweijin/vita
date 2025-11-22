@@ -1,6 +1,6 @@
 <script setup>
 import { deptApi } from "@/api/system/dept-api";
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { columns } from './dept-hook.js';
 import DeptEdit from './dept-edit.vue';
 
@@ -36,7 +36,7 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   deptApi.list(queryParams).then((res) => {
-    tableData.value = toArrayTree(res, { sortKey: 'seq' });
+    tableData.value = utils.toArrayTree(res, { sortKey: 'seq' });
     loading.value = false;
   });
 };

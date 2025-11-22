@@ -1,7 +1,6 @@
 <script setup>
-import { addFullPath } from "@/utils/tool";
+import utils from "@/utils/utils.js";
 import { categoryApi } from "@/api/system/category-api";
-import { toArrayTree } from "xe-utils";
 
 const loading = ref(true);
 
@@ -59,8 +58,8 @@ const categoryList = ref([]);
 
 const categoryTreeSelectOptions = computed(() => {
   categoryList.value.forEach((item) => item.disabled = false);
-  addFullPath(categoryList.value, { pathKey: 'name' })
-  return toArrayTree(categoryList.value, { sortKey: 'seq' });
+  utils.addFullPath(categoryList.value, { pathKey: 'name' })
+  return utils.toArrayTree(categoryList.value, { sortKey: 'seq' });
 });
 
 const onOpened = () => {

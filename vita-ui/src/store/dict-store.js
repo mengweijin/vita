@@ -1,4 +1,4 @@
-import { groupBy, orderBy } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { dictDataApi } from '@/api/system/dict-api';
 
 const { VITE_APP_PREFIX } = import.meta.env;
@@ -10,12 +10,12 @@ export const useDictStore = defineStore(
 
     const refresh = async () => {
       const res = await dictDataApi.list();
-      dicts.value = groupBy(res, 'code');
+      dicts.value = utils.groupBy(res, 'code');
     };
 
     const get = (code) => {
       let list = code ? dicts.value[code] : dicts.value;
-      return orderBy(list, ['seq', 'asc']);
+      return utils.orderBy(list, ['seq', 'asc']);
     };
 
     const clear = () => (dicts.value = null);

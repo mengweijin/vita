@@ -1,7 +1,6 @@
 <script setup>
 import { deptApi } from '@/api/system/dept-api';
-import { addFullPath } from '@/utils/tool.js';
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const props = defineProps({
   filterable: {
@@ -34,8 +33,8 @@ const initDeptList = () => {
 
 const deptTreeSelectOptions = computed(() => {
   deptList.value.forEach((item) => item.disabled = false);
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
+  utils.addFullPath(deptList.value, { pathKey: 'name' })
+  return utils.toArrayTree(deptList.value, { sortKey: 'seq' });
 });
 
 onMounted(() => {

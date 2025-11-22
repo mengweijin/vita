@@ -2,8 +2,7 @@
 import { cacheApi } from "@/api/monitor/cache-api";
 import "vue-json-pretty/lib/styles.css";
 import VueJsonPretty from "vue-json-pretty";
-import { debounce, isEmpty } from 'xe-utils';
-import { isJSON } from "@/utils/tool";
+import utils from '@/utils/utils.js';
 
 const loading = ref(false);
 
@@ -24,7 +23,7 @@ const handleCacheNameChange = async (name) => {
   cacheValue.value = "";
   activeIndex.value = -1;
 
-  if (!isEmpty(name)) {
+  if (!utils.isEmpty(name)) {
     loading.value = true;
     dataList.value = await cacheApi.query(name);
     handleFilterDataList(keywords.value);
@@ -36,8 +35,8 @@ const keywords = ref(null);
 
 const filteredDataList = ref([]);
 
-const handleFilterDataList = debounce((name) => {
-  if (isEmpty(name)) {
+const handleFilterDataList = utils.debounce((name) => {
+  if (utils.isEmpty(name)) {
     filteredDataList.value = dataList.value;
   } else {
     filteredDataList.value = dataList.value.filter(item => item.name.includes(name));
@@ -91,7 +90,7 @@ onMounted(async () => {
           </el-select>
         </el-form-item>
         <el-form-item style="margin: 0px; margin-left: 18px;">
-          <el-button type="primary" :disabled="isEmpty(cacheName)" @click="refreshByCacheName(cacheName)">
+          <el-button type="primary" :disabled="utils.isEmpty(cacheName)" @click="refreshByCacheName(cacheName)">
             <template #icon>
               <el-icon>
                 <Icon icon="ep:refresh"></Icon>
@@ -99,7 +98,7 @@ onMounted(async () => {
             </template>
             刷新
           </el-button>
-          <el-button type="danger" :disabled="isEmpty(cacheName)" @click="clearByCacheName(cacheName)">
+          <el-button type="danger" :disabled="utils.isEmpty(cacheName)" @click="clearByCacheName(cacheName)">
             <template #icon>
               <el-icon>
                 <Icon icon="ep:delete"></Icon>
@@ -127,7 +126,7 @@ onMounted(async () => {
         </div>
 
         <el-tooltip content="删除" placement="top">
-          <el-button type="danger" text :disabled="isEmpty(cacheName)" @click="removeCache(cacheName, item.key)"
+          <el-button type="danger" text :disabled="utils.isEmpty(cacheName)" @click="removeCache(cacheName, item.key)"
             style="float: right;margin-right: 2px;">
             <template #icon>
               <el-icon>
@@ -138,7 +137,7 @@ onMounted(async () => {
         </el-tooltip>
 
         <el-tooltip content="刷新" placement="top">
-          <el-button type="primary" text :disabled="isEmpty(cacheName)" style="float: right;"
+          <el-button type="primary" text :disabled="utils.isEmpty(cacheName)" style="float: right;"
             @click="refreshCacheByNameAndKey(cacheName, item.key)">
             <template #icon>
               <el-icon>
@@ -152,7 +151,7 @@ onMounted(async () => {
     <el-main style="background-color: #f7f7f7; margin-left: 10px; padding: 5px 10px;">
       <el-scrollbar>
         <template v-if="cacheValue != null">
-          <vue-json-pretty v-if="isJSON(cacheValue)" :data="JSON.parse(cacheValue)" />
+          <vue-json-pretty v-if="utils.isJSON(cacheValue)" :data="JSON.parse(cacheValue)" />
           <div v-else>{{ cacheValue }}</div>
         </template>
       </el-scrollbar>

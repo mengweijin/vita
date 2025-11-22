@@ -1,7 +1,7 @@
 <script setup>
 import { dictDataApi } from "@/api/system/dict-api";
 import VtSelectDict from "@/components/modules/system/vt-select-dict.vue";
-import { isEmpty } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const loading = ref(true);
 
@@ -91,9 +91,9 @@ defineExpose({ visible, data })
       </el-form-item>
 
       <el-form-item prop="tag" label="标签样式">
-        <VtSelectDict v-model="form.tag" :code="'vt_dict_tag_style'"></VtSelectDict>
+        <VtSelectDict v-model="form.tag" :code="'vt_dict_tag_style'" :style="'width: 240px'"></VtSelectDict>
         <el-tag :size="'large'" :type="form.tag" effect="dark" style="margin-left: 10px;" v-if="form.tag">
-          {{ isEmpty(form.label) ? form.tag : form.label }}
+          {{ utils.isEmpty(form.label) ? form.tag : form.label }}
         </el-tag>
       </el-form-item>
 

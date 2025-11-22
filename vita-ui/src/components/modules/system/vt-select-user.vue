@@ -1,7 +1,7 @@
 <script setup>
 import { deptApi } from '@/api/system/dept-api';
 import { userApi } from '@/api/system/user-api';
-import { toArrayTree, find, remove } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const props = defineProps({
   multiple: {
@@ -33,7 +33,7 @@ const treeData = ref([]);
 const loadTreeData = () => {
   deptApi.list({ disabled: 'N' }).then((res) => {
     // 转为树状
-    treeData.value = toArrayTree(res, { sortKey: 'seq' });
+    treeData.value = utils.toArrayTree(res, { sortKey: 'seq' });
   });
 };
 
@@ -95,17 +95,17 @@ const selected = ref([]);
 
 const handleTableRowClick = (row) => {
   if (props.multiple) {
-    if (!find(selected.value, item => item.id === row.id)) {
+    if (!utils.find(selected.value, item => item.id === row.id)) {
       selected.value.push(row);
     }
-    if (!selectValue.value.includes(row.id)) {
+    if (!utils.includes(selectValue.value, row.id)) {
       selectValue.value.push(row.id);
     }
     return;
   }
 
   if (selectValue.value.length) {
-    if (!find(selected.value, item => item.id === row.id)) {
+    if (!utils.find(selected.value, item => item.id === row.id)) {
       selected.value.push(row);
     }
     // 清空数组
@@ -118,11 +118,11 @@ const handleTableRowClick = (row) => {
 };
 
 const handleRemoveTag = (value) => {
-  remove(selected.value, item => item.id === value);
+  utils.remove(selected.value, item => item.id === value);
 };
 
 const getLabelValue = (userId) => {
-  let user = find(selected.value, item => item.id === userId);
+  let user = utils.find(selected.value, item => item.id === userId);
   return user?.nickname + '(' + user?.username + ')'
 };
 

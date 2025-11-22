@@ -1,7 +1,6 @@
 <script setup>
-import { addFullPath } from "@/utils/tool";
+import utils from "@/utils/utils.js";
 import { deptApi } from "@/api/system/dept-api";
-import { toArrayTree } from "xe-utils";
 
 const loading = ref(true);
 
@@ -65,8 +64,8 @@ const deptTreeSelectOptions = computed(() => {
       item.disabled = false;
     }
   });
-  addFullPath(deptList.value, { pathKey: 'name' })
-  return toArrayTree(deptList.value, { sortKey: 'seq' });
+  utils.addFullPath(deptList.value, { pathKey: 'name' })
+  return utils.toArrayTree(deptList.value, { sortKey: 'seq' });
 });
 
 const onOpened = () => {

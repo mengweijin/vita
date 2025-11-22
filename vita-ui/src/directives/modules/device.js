@@ -1,4 +1,4 @@
-import { browse } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 /**
  * 使用（在元素上增加指令）：
@@ -13,7 +13,7 @@ export default {
 
     // 初始检查
     const checkDevice = () => {
-      const currentDevice = browse().isMobile ? 'mobile' : 'pc';
+      const currentDevice = utils.browse().isMobile ? 'mobile' : 'pc';
       const isMatch = Object.keys(modifiers).some((d) => d === currentDevice);
       // 匹配则显示，否则隐藏
       el.style.display = isMatch ? '' : 'none';

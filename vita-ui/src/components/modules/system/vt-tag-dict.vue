@@ -1,5 +1,5 @@
 <script setup>
-import { isEmpty } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { useDictStore } from '@/store/dict-store';
 
 const dictStore = useDictStore();
@@ -26,7 +26,7 @@ const props = defineProps({
 const options = ref([]);
 
 const values = computed(() => {
-  if (!props.value || isEmpty(props.value)) {
+  if (!props.value || utils.isEmpty(props.value)) {
     return [];
   }
   if (Array.isArray(props.value)) {

@@ -1,6 +1,6 @@
 <script setup>
 import { serverApi } from "@/api/monitor/server-api";
-import { timeAgo } from "@/utils/tool";
+import utils from "@/utils/utils.js";
 
 const loading = ref(true);
 
@@ -116,7 +116,7 @@ onMounted(() => {
         {{ jvmInfo?.startTime }}
       </el-descriptions-item>
       <el-descriptions-item label="运行时间" label-align="right">
-        {{ timeAgo(jvmInfo?.runTimeSeconds) }}
+        {{ utils.timeAgo(jvmInfo?.runTimeSeconds) }}
       </el-descriptions-item>
       <el-descriptions-item label="JVM 最大内存" label-align="right">
         {{ jvmInfo?.maxMemory }}

@@ -1,7 +1,7 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
 import { roleApi } from "@/api/system/role-api";
-import { toArrayTree, debounce } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const loading = ref(true);
 
@@ -24,7 +24,7 @@ const treeData = ref([]);
 
 const loadTreeData = async () => {
   let menuList = await menuApi.list();
-  treeData.value = toArrayTree(menuList, { sortKey: 'seq' });
+  treeData.value = utils.toArrayTree(menuList, { sortKey: 'seq' });
 };
 
 const keywords = ref('');
@@ -36,7 +36,7 @@ const filterNodeMethod = (value, data, node) => {
   return data.title.includes(value);
 };
 
-const handleSearch = debounce((val) => {
+const handleSearch = utils.debounce((val) => {
   treeRef.value?.filter(val);
 }, 1000);
 

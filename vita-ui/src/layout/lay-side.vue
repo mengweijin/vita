@@ -1,5 +1,5 @@
 <script setup>
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 import { useRoute } from 'vue-router';
 const route = useRoute();
@@ -23,7 +23,7 @@ const menuTreeList = ref([]);
 onMounted(() => {
   let menuList = menuStore.get();
   // 转为树状
-  menuTreeList.value = toArrayTree(menuList, { sortKey: 'seq' });
+  menuTreeList.value = utils.toArrayTree(menuList, { sortKey: 'seq' });
 });
 
 </script>

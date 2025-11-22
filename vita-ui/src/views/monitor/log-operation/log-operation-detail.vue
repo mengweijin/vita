@@ -1,9 +1,11 @@
 <script setup>
 import "vue-json-pretty/lib/styles.css";
 import VueJsonPretty from "vue-json-pretty";
-import { isJSON } from "@/utils/tool";
+import utils from "@/utils/utils.js";
 
 const loading = ref(true);
+
+const size = ref('default');
 
 const visible = ref(false);
 
@@ -48,13 +50,13 @@ defineExpose({ visible, data })
 
         <el-descriptions-item label=" 请求数据" label-align="right">
           <template v-if="data?.requestData != null">
-            <vue-json-pretty v-if="isJSON(data?.requestData)" :data="JSON.parse(data?.requestData)" />
+            <vue-json-pretty v-if="utils.isJSON(data?.requestData)" :data="JSON.parse(data?.requestData)" />
             <div v-else>{{ data?.requestData }}</div>
           </template>
         </el-descriptions-item>
         <el-descriptions-item label="响应数据" label-align="right">
           <template v-if="data?.responseData != null">
-            <vue-json-pretty v-if="isJSON(data?.responseData)" :data="JSON.parse(data?.responseData)" />
+            <vue-json-pretty v-if="utils.isJSON(data?.responseData)" :data="JSON.parse(data?.responseData)" />
             <div v-else>{{ data?.responseData }}</div>
           </template>
         </el-descriptions-item>

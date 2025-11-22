@@ -1,6 +1,6 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
-import { toArrayTree } from 'xe-utils';
+import utils from '@/utils/utils.js';
 import { columns } from './menu-hook.js';
 import MenuEdit from './menu-edit.vue';
 
@@ -37,7 +37,7 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   menuApi.list(queryParams).then((res) => {
-    tableData.value = toArrayTree(res, { sortKey: 'seq' });
+    tableData.value = utils.toArrayTree(res, { sortKey: 'seq' });
     loading.value = false;
   });
 };

@@ -1,6 +1,6 @@
 <script setup>
 import { userOnlineApi } from "@/api/monitor/user-online-api";
-import { remove } from 'xe-utils';
+import utils from '@/utils/utils.js';
 
 const loading = ref(true);
 
@@ -62,7 +62,7 @@ const handleKickOutByUsername = (username) => {
 
 const handleKickOutByToken = (row) => {
   userOnlineApi.kickOutByToken(row.encryptTokenValue).then(() => {
-    remove(dialog.data.terminalInfoList, item => item.index === row.index);
+    utils.remove(dialog.data.terminalInfoList, item => item.index === row.index);
     loadTableData();
   });
 }
