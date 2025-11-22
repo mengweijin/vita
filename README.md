@@ -115,7 +115,7 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
         <parent>
             <groupId>com.github.mengweijin</groupId>
             <artifactId>vita-parent</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>${vita.version}</version>
         </parent>
     ```
 
@@ -125,13 +125,11 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
     <dependency>
         <groupId>com.github.mengweijin</groupId>
         <artifactId>vita-framework</artifactId>
-        <version>${vita.version}</version>
     </dependency>
     <dependency>
         <!-- 可选 -->
         <groupId>com.github.mengweijin</groupId>
         <artifactId>vita-generator</artifactId>
-        <version>${vita.version}</version>
     </dependency>
     ```
 
