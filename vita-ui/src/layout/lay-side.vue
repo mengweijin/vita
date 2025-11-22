@@ -1,7 +1,6 @@
 <script setup>
 import utils from '@/utils/utils.js';
 
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 import MenuTree from "./components/menu-tree.vue";

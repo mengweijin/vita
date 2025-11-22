@@ -77,7 +77,7 @@ const router = createRouter({
 let isDynamicRoutesAdded = false;
 
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
-router.beforeEach(async (to, from) => {
+router.beforeEach((to, from) => {
   NProgress.start();
   // 设置标题
   let title = to?.meta?.title;

@@ -68,7 +68,7 @@ export default defineConfig(({ mode }) => {
       }),
       AutoImport({
         // 自动导入 vue, pinia 等相关函数，如：ref, reactive, toRef, storeToRefs 等
-        imports: ['vue', 'pinia'],
+        imports: ['vue', 'vue-router', 'pinia'],
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
         eslintrc: {

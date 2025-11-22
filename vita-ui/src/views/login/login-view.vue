@@ -2,8 +2,8 @@
 import LayFooter from "@/layout/lay-footer.vue";
 
 import { loginApi } from '@/api/login-api';
-import router from '@/router/index';
-import { useRoute } from 'vue-router';
+
+const router = useRouter();
 const route = useRoute();
 
 import { useUserStore } from '@/store/user-store';
