@@ -8,7 +8,7 @@ const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 
 const treeProps = reactive({
@@ -26,7 +26,7 @@ const queryParams = reactive({
   disabled: undefined,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -41,7 +41,7 @@ const loadTableData = () => {
   });
 };
 
-const deptEditRef = ref(null);
+const deptEditRef = useTemplateRef('deptEditRef');
 
 const handleAdd = (id) => {
   deptEditRef.value.data = {

@@ -9,7 +9,7 @@ const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -24,7 +24,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -40,7 +40,7 @@ const loadTableData = () => {
   });
 };
 
-const roleMenuDialogRef = ref(null);
+const roleMenuDialogRef = useTemplateRef('roleMenuDialogRef');
 
 const handleAuthorization = (row) => {
   roleMenuDialogRef.value.data = { ...row };
@@ -48,7 +48,7 @@ const handleAuthorization = (row) => {
 };
 
 
-const roleUserDialogRef = ref(null);
+const roleUserDialogRef = useTemplateRef('roleUserDialogRef');
 
 const handleAssigningUsers = (row) => {
   roleUserDialogRef.value.data = { ...row };
@@ -56,7 +56,7 @@ const handleAssigningUsers = (row) => {
 }
 
 
-const roleEditRef = ref(null);
+const roleEditRef = useTemplateRef('roleEditRef');
 
 const handleAdd = () => {
   roleEditRef.value.data = {};

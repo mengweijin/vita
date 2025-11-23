@@ -7,7 +7,7 @@ const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -39,7 +39,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -55,7 +55,7 @@ const loadTableData = () => {
   });
 };
 
-const schedulingTaskLogDialogRef = ref(null);
+const schedulingTaskLogDialogRef = useTemplateRef('schedulingTaskLogDialogRef');
 
 const handleViewTaskLog = (row) => {
   schedulingTaskLogDialogRef.value.data = { ...row };
@@ -66,7 +66,7 @@ const handleRunTask = (row) => {
   schedulingTaskApi.run(row.id);
 }
 
-const schedulingTaskEditRef = ref(null);
+const schedulingTaskEditRef = useTemplateRef('schedulingTaskEditRef');
 
 const handleEdit = (row) => {
   schedulingTaskEditRef.value.data = { ...row };

@@ -21,7 +21,7 @@ const init = () => {
   form.description = data.value.description ?? undefined;
 };
 
-const formRef = ref(null);
+const formRef = useTemplateRef('formRef');
 
 const onSubmit = () => {
   formRef.value.validate((valid, fields) => {

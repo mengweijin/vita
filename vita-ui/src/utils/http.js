@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { stringify } from 'qs';
-import router from '@/router/index';
+
+const router = useRouter();
 
 import { useUserStore } from '@/store/user-store';
 import { useDictStore } from '@/store/dict-store';

@@ -26,7 +26,7 @@ const init = () => {
   form.remark = data.value.remark ?? undefined;
 };
 
-const formRef = ref(null);
+const formRef = useTemplateRef('formRef');
 
 const onSubmit = () => {
   formRef.value.validate((valid, fields) => {

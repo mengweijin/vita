@@ -51,7 +51,7 @@ const handleSearch = debounce(() => {
   }
 }, 1000);
 
-const popoverRef = ref(null);
+const popoverRef = useTemplateRef('popoverRef');
 
 const changeIcon = (value) => {
   inputValue.value = value;

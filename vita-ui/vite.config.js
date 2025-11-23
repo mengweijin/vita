@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
     base: env.VITE_PUBLIC_PATH,
     resolve: {
       // 导入时可以省略的后缀名，可根据需求扩展。若同一目录下存在同名 `.js` 和 `.vue` 文件，按照配置的顺序优先加载。
+      // extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'], // 默认值
       extensions: ['.js'],
       alias: {
         /**
@@ -75,7 +76,7 @@ export default defineConfig(({ mode }) => {
           enabled: true, // 自动生成 ESLint 全局变量声明文件
           filepath: './.eslintrc-auto-import.json',
         },
-        dts: false, // 禁用 TypeScript 类型声明生成（纯 JS 项目无需此文件）
+        dts: true, // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
       }),
       Components({
         resolvers: [

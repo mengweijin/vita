@@ -9,7 +9,7 @@ const visible = ref(false);
 
 const data = ref({});
 
-const treeRef = ref(null);
+const treeRef = useTemplateRef('treeRef');
 
 /** true: 父子不联动；false: 父子联动。 */
 const checkStrictly = ref(true);

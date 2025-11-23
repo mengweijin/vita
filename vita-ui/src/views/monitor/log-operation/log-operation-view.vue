@@ -6,7 +6,7 @@ const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -43,7 +43,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -81,7 +81,7 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 }
 
-const logOperationDetailRef = ref(null);
+const logOperationDetailRef = useTemplateRef('logOperationDetailRef');
 const handleDetail = (row) => {
   logOperationDetailRef.value.data = { ...row };
   logOperationDetailRef.value.visible = true;

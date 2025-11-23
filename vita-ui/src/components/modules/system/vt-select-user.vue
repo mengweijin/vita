@@ -20,7 +20,7 @@ const props = defineProps({
 
 const selectValue = defineModel({ type: Array, default: [] });
 
-const treeRef = ref(null);
+const treeRef = useTemplateRef('treeRef');
 
 const treeProps = reactive({
   children: 'children',
@@ -45,8 +45,6 @@ const handleTreeNodeClick = (data, node) => {
 
 const loading = ref(false);
 
-const tableRef = ref({});
-
 const tableData = ref([]);
 
 const queryParams = reactive({
@@ -58,7 +56,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -77,7 +75,7 @@ const loadTableData = () => {
   });
 };
 
-const dropdownRef = ref(null);
+const dropdownRef = useTemplateRef('dropdownRef');
 
 const handlePageChange = (currentPage, pageSize) => {
   queryParams.current = currentPage;
@@ -179,8 +177,8 @@ onMounted(() => {
           </el-form>
 
           <!-- 表格 -->
-          <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px"
-            stripe border show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
+          <el-table v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px" stripe border
+            show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
             <el-table-column prop="username" label="用户名" min-width="100" align="center" />
             <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
             <el-table-column prop="gender" label="性别" min-width="80" align="center">

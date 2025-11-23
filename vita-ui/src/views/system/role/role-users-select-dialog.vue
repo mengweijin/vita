@@ -19,7 +19,7 @@ const init = () => {
   form.userIds = data.value?.userIds ?? [];
 };
 
-const formRef = ref(null);
+const formRef = useTemplateRef('formRef');
 
 const onSubmit = () => {
   formRef.value.validate((valid, fields) => {

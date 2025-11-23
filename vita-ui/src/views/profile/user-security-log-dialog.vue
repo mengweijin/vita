@@ -7,7 +7,7 @@ const visible = ref(false);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 

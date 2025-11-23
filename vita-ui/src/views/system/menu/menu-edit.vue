@@ -41,7 +41,7 @@ const init = () => {
   form.disabled = data.value.disabled ?? 'N';
 };
 
-const formRef = ref(null);
+const formRef = useTemplateRef('formRef');
 
 const onSubmit = () => {
   formRef.value.validate((valid, fields) => {

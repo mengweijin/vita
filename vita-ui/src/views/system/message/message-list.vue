@@ -6,7 +6,7 @@ const dictStore = useDictStore();
 
 const loading = ref(true);
 
-const treeRef = ref(null);
+const treeRef = useTemplateRef('treeRef');
 
 const treeProps = reactive({
   children: 'children',
@@ -33,7 +33,7 @@ const handleTreeNodeClick = (data, node) => {
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -48,7 +48,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();

@@ -30,7 +30,7 @@ const form = reactive({
   deviceId: undefined,
 })
 
-const formRef = ref(null);
+const formRef = useTemplateRef('formRef');
 
 const rules = reactive({
   username: [

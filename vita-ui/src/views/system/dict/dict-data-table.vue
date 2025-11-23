@@ -10,7 +10,7 @@ const dictType = ref(null);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -39,7 +39,7 @@ const loadTableData = () => {
   });
 };
 
-const dictDataEditRef = ref(null);
+const dictDataEditRef = useTemplateRef('dictDataEditRef');
 
 const handleAdd = () => {
   dictDataEditRef.value.data = { code: dictType.value.code };

@@ -19,14 +19,14 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
   loadTableData();
 };
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -48,7 +48,7 @@ const handlePageChange = (currentPage, pageSize) => {
 const selected = ref([]);
 
 
-const roleUsersSelectDialogRef = ref(null);
+const roleUsersSelectDialogRef = useTemplateRef('roleUsersSelectDialogRef');
 
 const handleRoleAddUser = () => {
   roleUsersSelectDialogRef.value.data = { ...data.value };

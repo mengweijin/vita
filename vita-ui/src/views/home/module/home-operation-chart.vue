@@ -2,7 +2,7 @@
 import * as echarts from 'echarts';
 import { homeApi } from '@/api/home-api';
 
-const chartDomRef = ref(null);
+const chartDomRef = useTemplateRef('chartDomRef');
 
 let chart = null;
 

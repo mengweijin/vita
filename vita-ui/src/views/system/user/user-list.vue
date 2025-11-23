@@ -9,7 +9,7 @@ import utils from '@/utils/utils.js';
 
 const loading = ref(false);
 
-const treeRef = ref(null);
+const treeRef = useTemplateRef('treeRef');
 
 const treeProps = reactive({
   children: 'children',
@@ -33,7 +33,7 @@ const handleTreeNodeClick = (data, node) => {
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -46,7 +46,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -65,7 +65,7 @@ const loadTableData = () => {
   });
 };
 
-const userEditRef = ref(null);
+const userEditRef = useTemplateRef('userEditRef');
 
 const handleAdd = () => {
   userEditRef.value.data = {};
@@ -95,14 +95,14 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 }
 
-const userSetRolesRef = ref(null);
+const userSetRolesRef = useTemplateRef('userSetRolesRef');
 
 const handleSetRoles = (row) => {
   userSetRolesRef.value.data = { ...row };
   userSetRolesRef.value.visible = true;
 };
 
-const userResetPasswordRef = ref(null);
+const userResetPasswordRef = useTemplateRef('userResetPasswordRef');
 
 const handleResetPassword = (row) => {
   userResetPasswordRef.value.data = { ...row };

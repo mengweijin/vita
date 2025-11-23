@@ -9,7 +9,7 @@ const loading = ref(true);
 const size = ref('default');
 
 /** table */
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const treeProps = reactive({
   // 父子节点默认联动
@@ -27,7 +27,7 @@ const queryParams = reactive({
   disabled: undefined,
 })
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -42,7 +42,7 @@ const loadTableData = () => {
   });
 };
 
-const menuEditRef = ref(null);
+const menuEditRef = useTemplateRef('menuEditRef');
 
 const handleAdd = (id) => {
   menuEditRef.value.data = {

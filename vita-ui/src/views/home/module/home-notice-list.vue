@@ -31,7 +31,7 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 }
 
-const noticeDetailRef = ref(null);
+const noticeDetailRef = useTemplateRef('noticeDetailRef');
 
 const handleViewDetail = (row) => {
   noticeDetailRef.value.data = { ...row };

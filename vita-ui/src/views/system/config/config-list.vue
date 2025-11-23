@@ -7,7 +7,7 @@ const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -21,7 +21,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -37,7 +37,7 @@ const loadTableData = () => {
   });
 };
 
-const configEditRef = ref(null);
+const configEditRef = useTemplateRef('configEditRef');
 
 const handleAdd = () => {
   configEditRef.value.data = {};

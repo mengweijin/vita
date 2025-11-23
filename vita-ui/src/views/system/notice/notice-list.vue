@@ -3,13 +3,12 @@ import { noticeApi } from "@/api/system/notice-api";
 import { columns } from './notice-hook.js';
 import NoticeEdit from './notice-edit.vue';
 import NoticeDetail from './notice-detail.vue';
-import { template } from "xe-utils";
 
 const loading = ref(true);
 
 const size = ref('default');
 
-const tableRef = ref({});
+const tableRef = useTemplateRef('tableRef');
 
 const tableData = ref([]);
 
@@ -24,7 +23,7 @@ const queryParams = reactive({
   total: 0,
 });
 
-const queryFormRef = ref(null);
+const queryFormRef = useTemplateRef('queryFormRef');
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
@@ -40,7 +39,7 @@ const loadTableData = () => {
   });
 };
 
-const noticeEditRef = ref(null);
+const noticeEditRef = useTemplateRef('noticeEditRef');
 
 const handleAdd = () => {
   noticeEditRef.value.data = {};
@@ -65,7 +64,7 @@ const handleRevoke = (id) => {
   });
 }
 
-const noticeDetailRef = ref(null);
+const noticeDetailRef = useTemplateRef('noticeDetailRef');
 
 const handleViewDetail = (row) => {
   noticeDetailRef.value.data = { ...row };
