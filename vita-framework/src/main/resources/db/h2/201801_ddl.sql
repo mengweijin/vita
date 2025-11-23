@@ -209,6 +209,8 @@ create TABLE VT_MENU (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+create unique index UIDX_VT_MENU_ROUTE_NAME on VT_MENU(ROUTE_NAME);
+create unique index UIDX_VT_MENU_ROUTE_PATH on VT_MENU(ROUTE_PATH);
 
 
 drop table IF EXISTS VT_DEPT;
