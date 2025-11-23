@@ -53,8 +53,8 @@ export default defineConfig(({ mode }) => {
       open: false,
       proxy: {
         [env.VITE_BASE_API]: {
-          target: 'http://localhost:8080',
-          // target: 'https://vita.aday.fun',
+          // target: 'http://localhost:8080',
+          target: 'https://vita.aday.fun',
           changeOrigin: true,
           rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ''),
         },
