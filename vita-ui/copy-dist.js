@@ -1,11 +1,13 @@
 import { pathExists, emptyDir, ensureDir, copy } from 'fs-extra';
-import { join } from 'path';
+import { fileURLToPath, URL } from 'node:url';
 
 // 可以根据实际情况修改这个相对路径
 // 源目录：项目下的 dist
-const sourceDir = join(__dirname, './dist');
+// const sourceDir = join(__dirname, './dist');
+const sourceDir = fileURLToPath(new URL('./dist', import.meta.url));
 // 目标目录
-const targetDir = join(__dirname, '../vita-admin/src/main/resources/static');
+// const targetDir = join(__dirname, '../vita-admin/src/main/resources/static');
+const targetDir = fileURLToPath(new URL('../vita-admin/src/main/resources/static', import.meta.url));
 (async () => {
   try {
     // 如果目标目录存在，先清空
@@ -20,7 +22,7 @@ const targetDir = join(__dirname, '../vita-admin/src/main/resources/static');
 
     // 复制目录
     await copy(sourceDir, targetDir);
-    console.log(`📋 成功复制 ${sourceDir} 到 ${targetDir}`);
+    console.log(`📋 成功复制 ${sourceDir} 下的所有文件到 ${targetDir}`);
   } catch (err) {
     console.error('❌ 复制过程中发生错误:', err);
     process.exit(1);

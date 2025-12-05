@@ -53,6 +53,9 @@ importers:
       qs:
         specifier: ^6.14.0
         version: 6.14.0
+      sse.js:
+        specifier: ^2.7.2
+        version: 2.7.2
       vue:
         specifier: ^3.5.25
         version: 3.5.25
@@ -3144,6 +3147,9 @@ packages:
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
+
+  sse.js@2.7.2:
+    resolution: {integrity: sha512-EDu2kt+A+HIagwUOCrDbKfsUrKxNWdoeKQVKfpruRSO34yL2xwS142Ad3AYhjCY81oWySeCsPs0wSu+c2QG14g==}
 
   ssr-window@4.0.2:
     resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
@@ -6828,6 +6834,8 @@ snapshots:
   speakingurl@14.0.1: {}
 
   sprintf-js@1.0.3: {}
+
+  sse.js@2.7.2: {}
 
   ssr-window@4.0.2: {}
 
