@@ -7,7 +7,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "vite build",
-    "deploy": "vite build --mode staging && node copy-dist.js",
+    "build-to-jar": "vite build --mode staging && node copy-dist.js",
     "build:staging": "vite build --mode staging",
     "copy-dist": "node copy-dist.js",
     "lint": "eslint . --fix",
