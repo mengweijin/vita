@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       host: '0.0.0.0',
       // 开发服务器启动时，自动在浏览器中打开应用程序。
-      open: false,
+      open: true,
       proxy: {
         [env.VITE_BASE_API]: {
           target: 'http://localhost:8080',

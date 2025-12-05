@@ -13,6 +13,17 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ## Project Setup
 
 ```sh
+# 自行安装好 nodejs
+node -v
+
+npm -v
+
+# 设置源
+npm config set registry https://registry.npmmirror.com
+
+# 全局安装 pnpm
+npm install -g pnpm
+
 pnpm install
 ```
 

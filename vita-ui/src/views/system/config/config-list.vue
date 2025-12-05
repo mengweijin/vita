@@ -135,6 +135,23 @@ onMounted(() => {
         </template>
       </el-popconfirm>
     </el-col>
+    <el-col :span="1.5">
+      <el-tooltip effect="dark" placement="top-start">
+      <template #content>
+        1. 此处配置和 spring boot 中的 application.yml 配置类似，但是使用的优先级最低。<br></br>
+        2. 即：当一个配置即不在命令行中，也不在 application.yml 中时，这里的配置才会生效。<br></br>
+        3. 此处配置支持动态刷新（类似 @RefreshScope），使用 @ConfigurationProperties 配置类来使用，也无需重启后台服务。
+      </template>
+      <el-button type="info">
+        <template #icon>
+          <el-icon>
+            <Icon icon="ep:info-filled"></Icon>
+          </el-icon>
+        </template>
+        配置说明
+      </el-button>
+      </el-tooltip>
+    </el-col>
     <!-- 右侧 -->
     <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
   </el-row>

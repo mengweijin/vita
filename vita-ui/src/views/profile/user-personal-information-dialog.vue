@@ -33,7 +33,7 @@ defineExpose({ visible })
     <div v-loading="loading">
       <el-container>
         <el-aside width="350px">
-          <el-descriptions title="" :column="1" :size="size" border>
+          <el-descriptions title="" :column="1" :label-width="70" :size="size" border>
             <el-descriptions-item label="头像" label-align="right" width="50" span="2">
               <el-avatar :src="userInfo?.avatar" size="large" v-if="userInfo?.avatar" />
               <el-avatar src="/avatar.jpg" size="large" v-else />
@@ -81,7 +81,12 @@ defineExpose({ visible })
           </el-descriptions>
         </el-aside>
         <el-main>
-
+          <el-tabs type="border-card">
+            <el-tab-pane label="基本资料">头像，昵称，电话，邮箱，性别</el-tab-pane>
+            <el-tab-pane label="修改密码">修改密码</el-tab-pane>
+            <el-tab-pane label="绑定动态口令">TOTP</el-tab-pane>
+            <el-tab-pane label="在线设备">在线设备</el-tab-pane>
+          </el-tabs>
         </el-main>
       </el-container>
 

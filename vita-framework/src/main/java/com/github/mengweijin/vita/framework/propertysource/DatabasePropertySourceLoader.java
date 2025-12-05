@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +31,10 @@ public class DatabasePropertySourceLoader implements ApplicationListener<Applica
     @Override
     public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         // 将数据库配置源添加到环境属性源中，优先级高于 application.yml 但低于命令行参数
-        environment.getPropertySources().addAfter(
-                StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
-                databasePropertySource
-        );
+        // environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, databasePropertySource);
+
+        // 最低优先级
+        environment.getPropertySources().addLast(databasePropertySource);
 
         // 初始化后，发布更新事件，动态刷新一次配置值
         configService.publishEnvironmentChangeEvent();

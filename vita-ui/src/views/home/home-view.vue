@@ -12,7 +12,7 @@ import HomeLink from './module/home-link.vue';
         <HomeStatistic />
         <HomeOperationChart />
       </el-main>
-      <el-aside width="350px">
+      <el-aside width="400px">
         <HomeNoticeList />
         <HomeLink />
       </el-aside>

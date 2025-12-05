@@ -48,12 +48,12 @@ public class VitaAutoConfiguration {
     }
 
     @Bean
-    public VitaBeanDefinitionRegistryPostProcessor vitaBeanDefinitionRegistryPostProcessor() {
+    public static VitaBeanDefinitionRegistryPostProcessor vitaBeanDefinitionRegistryPostProcessor() {
         return new VitaBeanDefinitionRegistryPostProcessor();
     }
 
     @Bean
-    public VitaMapperBeanDefinitionRegistryPostProcessor vitaMapperBeanDefinitionRegistryPostProcessor() {
+    public static VitaMapperBeanDefinitionRegistryPostProcessor vitaMapperBeanDefinitionRegistryPostProcessor() {
         return new VitaMapperBeanDefinitionRegistryPostProcessor();
     }
 

@@ -1,0 +1,28 @@
+import { pathExists, emptyDir, ensureDir, copy } from 'fs-extra';
+import { join } from 'path';
+
+// 可以根据实际情况修改这个相对路径
+// 源目录：项目下的 dist
+const sourceDir = join(__dirname, './dist');
+// 目标目录
+const targetDir = join(__dirname, '../vita-admin/src/main/resources/static');
+(async () => {
+  try {
+    // 如果目标目录存在，先清空
+    if (await pathExists(targetDir)) {
+      await emptyDir(targetDir);
+      console.log(`✅ 已清空目标目录: ${targetDir}`);
+    } else {
+      // 如果目标目录不存在，则创建
+      await ensureDir(targetDir);
+      console.log(`📁 已创建目标目录: ${targetDir}`);
+    }
+
+    // 复制目录
+    await copy(sourceDir, targetDir);
+    console.log(`📋 成功复制 ${sourceDir} 到 ${targetDir}`);
+  } catch (err) {
+    console.error('❌ 复制过程中发生错误:', err);
+    process.exit(1);
+  }
+})();
