@@ -7,28 +7,18 @@ export const useUserStore = defineStore(
   () => {
     const user = ref(null);
 
-    const initUser = async (token) => {
-      // 先保存 token
-      user.value = { token: token };
+    const initUser = async () => {
       // 这个请求就需要 token
-      let loginUser = await loginApi.getLoginUser();
-      // 重新赋值 user
-      user.value = loginUser;
+      user.value = await loginApi.getLoginUser();
     };
-
-    const getToken = () => user.value?.token;
-
-    const getBearerToken = () => `Bearer ${getToken()}`;
 
     const getRoles = () => user.value?.roles;
 
     const getPermissions = () => user.value?.permissions;
 
-    const isLogin = () => (user.value?.token ? true : false);
-
     const clear = () => (user.value = null);
 
-    return { user, initUser, getToken, getBearerToken, getRoles, getPermissions, isLogin, clear };
+    return { user, initUser, getRoles, getPermissions, clear };
   },
   {
     persist: {

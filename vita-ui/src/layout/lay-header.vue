@@ -3,6 +3,9 @@ import { useFullscreen } from '@vueuse/core';
 const router = useRouter();
 import { loginApi } from '@/api/login-api';
 
+import { useLoginStore } from '@/store/login-store';
+const loginStore = useLoginStore();
+
 import { useUserStore } from '@/store/user-store';
 const userStore = useUserStore();
 
@@ -31,9 +34,10 @@ const onUserSecurityLog = () => {
 };
 
 const onLogout = () => {
+  // 后端登出
   loginApi.logout().finally(() => {
-    // 清理前端登录信息
-    userStore.clear();
+    // 前端登出
+    loginStore.logout();
     // 跳转登录页
     router.push('/login');
   });
@@ -48,7 +52,6 @@ const notViewedMessageCount = ref('');
 onMounted(async () => {
   notViewedMessageCount.value = await messageApi.selectNotViewedCount();
 });
-
 </script>
 
 <template>

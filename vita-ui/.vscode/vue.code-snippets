@@ -1,0 +1,23 @@
+{
+  "Vue3 Setup JS": {
+    "prefix": "vue",
+    "body": [
+      "<script setup>",
+      "$0",
+      "const loading = ref(false);",
+      "",
+      "onMounted(() => { });",
+      "",
+      "</script>",
+      "",
+      "<template>",
+      "\t<div></div>",
+      "</template>",
+      "",
+      "<style scoped>",
+      "</style>",
+      "",
+    ],
+    "description": "Vue3 + JS 单文件组件模板（prefix 配置的值为触发词）",
+  },
+}

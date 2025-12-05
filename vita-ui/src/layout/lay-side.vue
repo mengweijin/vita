@@ -7,6 +7,7 @@ import MenuTree from "./components/menu-tree.vue";
 
 import { useMenuStore } from '@/store/menu-store';
 const menuStore = useMenuStore();
+const { menus } = storeToRefs(menuStore);
 
 import { useAppStore } from '@/store/app-store';
 const appStore = useAppStore();
@@ -20,9 +21,8 @@ const activeMenu = computed(() => {
 const menuTreeList = ref([]);
 
 onMounted(() => {
-  let menuList = menuStore.get();
   // 转为树状
-  menuTreeList.value = utils.toArrayTree(menuList, { sortKey: 'seq' });
+  menuTreeList.value = utils.toArrayTree(menus.value, { sortKey: 'seq' });
 });
 
 </script>

@@ -14,6 +14,24 @@ const extendUtils = {
   pascalCase: (str) => extendUtils.upperFirst(XEUtils.camelCase(str)),
 
   /**
+   * 判断是否为空白值
+   * @param {String} val
+   * @returns {Boolean}
+   */
+  isBlank: (val) => {
+    return val == null || XEUtils.toString(val)?.trim() === '';
+  },
+
+  /**
+   * 判断是否不为空白值
+   * @param {String} val
+   * @returns {Boolean}
+   */
+  isNotBlank: (val) => {
+    return !extendUtils.isBlank(val);
+  },
+
+  /**
    * 判断一个字符串是否为 json
    * @param {any} val
    */

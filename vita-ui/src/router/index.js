@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { useUserStore } from '@/store/user-store';
+import { useLoginStore } from '@/store/login-store';
 import { useMenuStore } from '@/store/menu-store';
 import NProgress from '@/utils/nprogress';
 
@@ -55,7 +55,7 @@ const addDynamicRoutes = (menuList = [], parentRouteName = 'Layout') => {
 
 export const initDynamicRoutes = () => {
   const menuStore = useMenuStore();
-  let menus = menuStore.get();
+  const menus = menuStore.get();
   addDynamicRoutes(menus);
 };
 
@@ -74,10 +74,8 @@ const router = createRouter({
   },
 });
 
-let isDynamicRoutesAdded = false;
-
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   NProgress.start();
   // 设置标题
   let title = to?.meta?.title;
@@ -87,24 +85,29 @@ router.beforeEach((to, from) => {
     document.title = `${VITE_APP_TITLE}`;
   }
 
-  const userStore = useUserStore();
-  const { isLogin } = userStore;
+  const loginStore = useLoginStore();
+  let isLogin = await loginStore.isLogin();
+  const menuStore = useMenuStore();
+  const { isDynamicRoutesAdded, setDynamicRoutesAdded } = menuStore;
 
-  // 未登录且访问受保护路由，强制跳转登录页，并携带访问路径。（ to.fullPath = '/login?redirect=/home' ）
-  if (!isLogin() && !to.fullPath.startsWith('/login')) {
-    return { path: '/login', query: { redirect: to.fullPath.endsWith('/404') ? '/' : to.fullPath } };
-  }
+  if (isLogin) {
+    // 增加动态路由
+    if (!isDynamicRoutesAdded()) {
+      initDynamicRoutes();
+      setDynamicRoutesAdded(true);
+      // 保持在当前页面，需要返回一个与 to 完全相同的路由对象，以确保 addRoute 之后，新的路由规则生效
+      return { ...to, replace: true };
+    }
 
-  // 已登录但访问登录页。强制跳转到参数页或首页
-  if (isLogin() && to.fullPath.startsWith('/login')) {
-    return { path: to.query.redirect || '/' };
-  }
-
-  // 增加动态路由
-  if (!isDynamicRoutesAdded && isLogin()) {
-    // 还需要在 main.js 中调用一下，以免刷新页面时，页面空白或404
-    initDynamicRoutes();
-    isDynamicRoutesAdded = true;
+    // 已登录但访问登录页。强制跳转到参数页或首页
+    if (to.fullPath.startsWith('/login')) {
+      return { path: to.query.redirect || '/' };
+    }
+  } else {
+    // 未登录且访问受保护路由，强制跳转登录页，并携带访问路径。（ to.fullPath = '/login?redirect=/home' ）
+    if (!to.fullPath.startsWith('/login')) {
+      return { path: '/login', query: { redirect: to.fullPath.startsWith('/error') ? '/' : to.fullPath } };
+    }
   }
 
   // 其它情况默认放行路由

@@ -1,8 +1,7 @@
 <script setup>
 import { fileApi } from "@/api/system/file-api";
 import { columns } from './file-hook.js';
-import { useUserStore } from '@/store/user-store';
-const userStore = useUserStore();
+import { useLoginStore } from "@/store/login-store.js";
 
 const loading = ref(true);
 
@@ -117,7 +116,7 @@ onMounted(() => {
     <!-- 左侧 -->
     <el-col :span="1.5">
       <el-upload multiple :show-file-list="false" :action="uploadUrl" :on-success="handleUpload"
-        :headers="{ Authorization: `${userStore.getBearerToken()}` }">
+        :headers="{ Authorization: `${loginStore.getBearerToken()}` }">
         <el-button type="primary">
           <template #icon>
             <el-icon>

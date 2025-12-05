@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { stringify } from 'qs';
 
-const router = useRouter();
+// 这里不要使用 const router = useRouter(); 否则登出后无法自动跳转到登录页，暂时不知道为啥
+import router from '@/router/index.js';
 
-import { useUserStore } from '@/store/user-store';
-import { useDictStore } from '@/store/dict-store';
+import { useLoginStore } from '@/store/login-store';
 import utils from '@/utils/utils.js';
 
 const { VITE_BASE_API } = import.meta.env;
@@ -42,9 +42,10 @@ axiosInstance.interceptors.request.use(
       loadingInstance = ElLoading.service({ fullscreen: true });
     }
 
-    const token = useUserStore().getToken();
+    const loginStore = useLoginStore();
+    const token = loginStore.getToken();
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = loginStore.getBearerToken();
     }
 
     return config;
@@ -70,15 +71,17 @@ axiosInstance.interceptors.response.use(
 
   (error) => {
     if (error.response.status) {
-      console.error(error.response.data);
+      if (error.response.status != 401) {
+        console.error(error.response.data);
+      }
+
       switch (error.response.status) {
         case 400:
           ElMessage.error({ message: error.response.data?.msg, showClose: true });
           break;
         case 401:
           // 清理前端登录信息残留
-          useDictStore().clear();
-          useUserStore().clear();
+          useLoginStore().logout();
           // 跳转时携带当前页面路径，登录后可返回
           router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } });
           break;
@@ -122,10 +125,10 @@ let downloadInstance = axios.create(axiosConfig);
  * @returns
  */
 axiosInstance.download = function (url, fileName = undefined) {
-  const token = useUserStore().getToken();
+  const loginStore = useLoginStore();
   // 这里要用 downloadInstance 实例单独实现下载功能，而不用公共的 axiosInstance 实例。
   downloadInstance
-    .get(url, { responseType: 'blob', headers: { Authorization: `Bearer ${token}` } })
+    .get(url, { responseType: 'blob', headers: { Authorization: loginStore.getBearerToken() } })
     .then((response) => {
       // attachment;fileName=%E6%A8%AA%E5%9B%BE_%E4%BA%91%E6%9B%A6_1.jpg
       const contentDisposition = response.headers['content-disposition'];

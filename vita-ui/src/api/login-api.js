@@ -14,4 +14,6 @@ export const loginApi = {
   logout: () => http.post(`${URL_PREFIX}/logout`),
 
   getLoginUser: () => http.get(`${URL_PREFIX}/get/login-user`, { params: {} }),
+
+  tokenValid: (tokenValue) => http.get(`${URL_PREFIX}/token-valid`, { params: { token: tokenValue } }),
 };

@@ -46,23 +46,28 @@ public class SseConnector implements InitializingBean {
      * @return SseEmitter
      */
     public SseEmitter connect(String username) {
-        // 设置超时时间，0表示不过期。默认30秒
-        SseEmitter sseEmitter = new SseEmitter(30_000L);
+        // 移除旧的连接（如果存在）
+        if(cache.containsKey(username)) {
+            cache.get(username).complete();
+        }
+
+        // 设置超时时间，0表示用不过期。
+        SseEmitter sseEmitter = new SseEmitter(0L);
+        sseEmitter.onCompletion(() -> cache.remove(username));
+        sseEmitter.onTimeout(() -> cache.remove(username));
         sseEmitter.onError(onError(username));
-        sseEmitter.onTimeout(onTimeout(username));
+
+        // 保存新连接
         cache.put(username, sseEmitter);
         return sseEmitter;
     }
 
-    private Runnable onTimeout(String username) {
-        return () -> cache.remove(username);
-    }
-
-    private Consumer<Throwable> onError(String username) {
-        return throwable -> {
+    public void disconnect(String username) {
+        SseEmitter sseEmitter = cache.get(username);
+        if (sseEmitter != null) {
+            sseEmitter.complete();
             cache.remove(username);
-            log.error(throwable.getMessage(), throwable);
-        };
+        }
     }
 
     public void sendMessage(String message, String... usernames) {
@@ -86,6 +91,13 @@ public class SseConnector implements InitializingBean {
                 }
             }, executorService);
         }
+    }
+
+    private Consumer<Throwable> onError(String username) {
+        return throwable -> {
+            cache.remove(username);
+            log.error(throwable.getMessage(), throwable);
+        };
     }
 
 }

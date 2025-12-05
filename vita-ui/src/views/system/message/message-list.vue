@@ -106,7 +106,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-container style="padding: 10px 0px;">
+  <el-container>
     <el-aside width="140px">
       <el-scrollbar max-height="100%">
         <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current

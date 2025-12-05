@@ -19,7 +19,7 @@ const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
       <el-aside :width="asideWidth" style="transition: width 0.3s;">
         <LaySide />
       </el-aside>
-      <el-container class="vt-main">
+      <el-container>
         <el-main>
           <RouterView />
         </el-main>

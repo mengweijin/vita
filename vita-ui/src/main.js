@@ -33,7 +33,7 @@ import components from '@/components/index';
 // 会自动调用 components 中的 install 方法
 app.use(components);
 
-import { default as router, initDynamicRoutes } from './router/index';
+import { default as router, initDynamicRoutes } from '@/router/index';
 // 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
 initDynamicRoutes();
 app.use(router);

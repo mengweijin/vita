@@ -6,14 +6,8 @@ import { loginApi } from '@/api/login-api';
 const router = useRouter();
 const route = useRoute();
 
-import { useUserStore } from '@/store/user-store';
-const userStore = useUserStore();
-
-import { useDictStore } from "@/store/dict-store";
-const dictStore = useDictStore();
-
-import { useMenuStore } from '@/store/menu-store';
-const menuStore = useMenuStore();
+import { useLoginStore } from "@/store/login-store";
+const loginStore = useLoginStore();
 
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
@@ -66,14 +60,21 @@ const onSubmit = () => {
     if (valid) {
       // loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
       loginApi.login(form).then(async (r) => {
-        // 先保存 token 到 userStore，并初始化用户基本信息、角色、权限等
-        await userStore.initUser(r.data.token);
-        // 加载菜单动态路由
-        await menuStore.refresh();
-        // 加载字典
-        await dictStore.refresh();
+        // 保存 token
+        loginStore.setToken(r.data.token);
+        if (form.remember) {
+          // 记住我，后端默认保存 7 天
+          loginStore.setLocalStorageToken(r.data.token);
+        } else {
+          // 不记住我，关闭浏览器即失效。并清理掉 localStorage 中之前存储的 token
+          loginStore.removeLocalStorageToken();
+        }
+        // 初始化用户数据
+        await loginStore.initData();
+
         // 跳转到访问页或首页
         router.push(route.query.redirect || '/');
+
         loading?.close();
       }).catch(() => {
         loading?.close();

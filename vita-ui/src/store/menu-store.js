@@ -12,9 +12,21 @@ export const useMenuStore = defineStore(
 
     const get = () => menus.value;
 
-    const clear = () => (menus.value = []);
+    const clear = () => {
+      menus.value = [];
+      dynamicRoutesAdded.value = false;
+    };
 
-    return { menus, refresh, get, clear };
+    // 是否已添加动态路由
+    const dynamicRoutesAdded = ref(false);
+
+    const setDynamicRoutesAdded = (value) => {
+      dynamicRoutesAdded.value = value;
+    };
+
+    const isDynamicRoutesAdded = () => dynamicRoutesAdded.value;
+
+    return { menus, refresh, get, clear, dynamicRoutesAdded, setDynamicRoutesAdded, isDynamicRoutesAdded };
   },
   {
     persist: {

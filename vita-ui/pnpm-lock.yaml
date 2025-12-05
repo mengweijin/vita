@@ -53,6 +53,9 @@ importers:
       qs:
         specifier: ^6.14.0
         version: 6.14.0
+      sse.js:
+        specifier: ^2.7.2
+        version: 2.7.2
       vue:
         specifier: ^3.5.24
         version: 3.5.24
@@ -2314,6 +2317,9 @@ packages:
   speakingurl@14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
+
+  sse.js@2.7.2:
+    resolution: {integrity: sha512-EDu2kt+A+HIagwUOCrDbKfsUrKxNWdoeKQVKfpruRSO34yL2xwS142Ad3AYhjCY81oWySeCsPs0wSu+c2QG14g==}
 
   ssr-window@4.0.2:
     resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
@@ -4923,6 +4929,8 @@ snapshots:
   source-map@0.6.1: {}
 
   speakingurl@14.0.1: {}
+
+  sse.js@2.7.2: {}
 
   ssr-window@4.0.2: {}
 
