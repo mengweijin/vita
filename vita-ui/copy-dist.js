@@ -3,10 +3,8 @@ import { fileURLToPath, URL } from 'node:url';
 
 // 可以根据实际情况修改这个相对路径
 // 源目录：项目下的 dist
-// const sourceDir = join(__dirname, './dist');
 const sourceDir = fileURLToPath(new URL('./dist', import.meta.url));
 // 目标目录
-// const targetDir = join(__dirname, '../vita-admin/src/main/resources/static');
 const targetDir = fileURLToPath(new URL('../vita-admin/src/main/resources/static', import.meta.url));
 (async () => {
   try {
