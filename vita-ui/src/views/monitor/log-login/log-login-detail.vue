@@ -1,24 +1,23 @@
 <script setup>
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
 const visible = ref(false);
 
 const data = ref({});
 
 const onOpened = () => {
-  loading.value = false;
-}
+	loading.value = false;
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-
-}
+	visible.value = false;
+	data.value = {};
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

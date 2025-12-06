@@ -4,87 +4,86 @@ import LogSystemDetail from "./log-system-detail.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const columns = reactive({
-  selection: { label: '选择列', visible: false },
-  index: { label: '序号列', visible: false },
-  id: { label: 'ID', visible: false },
-  loggerLevel: { label: '日志级别', visible: true },
-  threadName: { label: '线程名称', visible: false },
-  loggerName: { label: '日志名称', visible: false },
-  formattedMessage: { label: '日志内容', visible: true },
-  stackTrace: { label: '堆栈信息', visible: false },
-  createByName: { label: '创建者', visible: false },
-  createTime: { label: '创建时间', visible: true },
-  updateByName: { label: '更新者', visible: false },
-  updateTime: { label: '更新时间', visible: false },
-  operation: { label: '操作', visible: true },
+	selection: { label: "选择列", visible: false },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: false },
+	loggerLevel: { label: "日志级别", visible: true },
+	threadName: { label: "线程名称", visible: false },
+	loggerName: { label: "日志名称", visible: false },
+	formattedMessage: { label: "日志内容", visible: true },
+	stackTrace: { label: "堆栈信息", visible: false },
+	createByName: { label: "创建者", visible: false },
+	createTime: { label: "创建时间", visible: true },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  loggerLevel: undefined,
-  current: 1,
-  size: 100,
-  total: 0,
+	keywords: undefined,
+	loggerLevel: undefined,
+	current: 1,
+	size: 100,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  logSystemApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	logSystemApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  logSystemApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	logSystemApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
-const logSystemDetailRef = useTemplateRef('logSystemDetailRef');
+const logSystemDetailRef = useTemplateRef("logSystemDetailRef");
 const handleDetail = (row) => {
-  logSystemDetailRef.value.data = { ...row };
-  logSystemDetailRef.value.visible = true;
+	logSystemDetailRef.value.data = { ...row };
+	logSystemDetailRef.value.visible = true;
 };
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

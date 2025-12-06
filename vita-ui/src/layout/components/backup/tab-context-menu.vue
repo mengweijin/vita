@@ -1,75 +1,71 @@
 <script setup>
-import { computed } from 'vue'
-import { useTabsStore } from '@/stores/tabs-store.js'
+import { computed } from "vue";
+import { useTabsStore } from "@/stores/tabs-store.js";
 
 const props = defineProps({
-  visible: Boolean,
-  menuStyle: Object,
-  currentTab: Object
-})
+	visible: Boolean,
+	menuStyle: Object,
+	currentTab: Object,
+});
 
-const emit = defineEmits([
-  'close-current',
-  'close-others',
-  'close-all',
-  'close-left',
-  'close-right'
-])
+const emit = defineEmits(["close-current", "close-others", "close-all", "close-left", "close-right"]);
 
-const tabsStore = useTabsStore()
+const tabsStore = useTabsStore();
 
 // 计算属性
 const isOnlyHome = computed(() => {
-  return tabsStore.tabsList.length === 1 // 只有首页
-})
+	return tabsStore.tabsList.length === 1; // 只有首页
+});
 
 const isOnlyHomeAndCurrent = computed(() => {
-  return tabsStore.tabsList.length <= 2 && // 只有首页和当前页签
-    props.currentTab?.name !== 'Home'
-})
+	return (
+		tabsStore.tabsList.length <= 2 && // 只有首页和当前页签
+		props.currentTab?.name !== "Home"
+	);
+});
 
 const isFirstTab = computed(() => {
-  if (!props.currentTab) return true
-  const index = tabsStore.tabsList.findIndex(tab => tab.name === props.currentTab.name)
-  return index <= 1 // 首页(0)或第一个可关闭页签(1)
-})
+	if (!props.currentTab) return true;
+	const index = tabsStore.tabsList.findIndex((tab) => tab.name === props.currentTab.name);
+	return index <= 1; // 首页(0)或第一个可关闭页签(1)
+});
 
 const isLastTab = computed(() => {
-  if (!props.currentTab) return true
-  const index = tabsStore.tabsList.findIndex(tab => tab.name === props.currentTab.name)
-  return index === tabsStore.tabsList.length - 1
-})
+	if (!props.currentTab) return true;
+	const index = tabsStore.tabsList.findIndex((tab) => tab.name === props.currentTab.name);
+	return index === tabsStore.tabsList.length - 1;
+});
 
 // 事件处理
 const handleCloseCurrent = () => {
-  if (props.currentTab?.closable) {
-    emit('close-current')
-  }
-}
+	if (props.currentTab?.closable) {
+		emit("close-current");
+	}
+};
 
 const handleCloseOthers = () => {
-  if (!isOnlyHomeAndCurrent.value) {
-    emit('close-others')
-  }
-}
+	if (!isOnlyHomeAndCurrent.value) {
+		emit("close-others");
+	}
+};
 
 const handleCloseAll = () => {
-  if (!isOnlyHome.value) {
-    emit('close-all')
-  }
-}
+	if (!isOnlyHome.value) {
+		emit("close-all");
+	}
+};
 
 const handleCloseLeft = () => {
-  if (!isFirstTab.value && props.currentTab?.closable) {
-    emit('close-left')
-  }
-}
+	if (!isFirstTab.value && props.currentTab?.closable) {
+		emit("close-left");
+	}
+};
 
 const handleCloseRight = () => {
-  if (!isLastTab.value && props.currentTab?.closable) {
-    emit('close-right')
-  }
-}
+	if (!isLastTab.value && props.currentTab?.closable) {
+		emit("close-right");
+	}
+};
 </script>
 
 <template>

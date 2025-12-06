@@ -1,24 +1,24 @@
 <script setup>
 // 引入 css
-import '@wangeditor-next/editor/dist/css/style.css';
-import { Editor, Toolbar } from '@wangeditor-next/editor-for-vue';
+import "@wangeditor-next/editor/dist/css/style.css";
+import { Editor, Toolbar } from "@wangeditor-next/editor-for-vue";
 
 const props = defineProps({
-  // 'default' 或 'simple'
-  mode: {
-    type: String,
-    default: 'default'
-  },
-  toolbarConfig: {
-    type: Object,
-    default: {},
-  },
-  editorConfig: {
-    type: Object,
-    default: {
-      placeholder: '请输入内容...',
-    },
-  },
+	// 'default' 或 'simple'
+	mode: {
+		type: String,
+		default: "default",
+	},
+	toolbarConfig: {
+		type: Object,
+		default: {},
+	},
+	editorConfig: {
+		type: Object,
+		default: {
+			placeholder: "请输入内容...",
+		},
+	},
 });
 
 const modelValue = defineModel({ type: String });
@@ -27,14 +27,14 @@ const modelValue = defineModel({ type: String });
 const editorRef = shallowRef();
 
 onBeforeUnmount(() => {
-  // 组件销毁时，也及时销毁编辑器
-  editorRef.value?.destroy();
-})
+	// 组件销毁时，也及时销毁编辑器
+	editorRef.value?.destroy();
+});
 
 const handleCreated = (editor) => {
-  // 记录 editor 实例，重要！
-  editorRef.value = editor;
-}
+	// 记录 editor 实例，重要！
+	editorRef.value = editor;
+};
 </script>
 
 <template>

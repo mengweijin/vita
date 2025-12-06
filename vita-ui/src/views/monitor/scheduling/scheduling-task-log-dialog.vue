@@ -11,98 +11,98 @@ const data = ref({});
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  schedulingTaskId: undefined,
-  status: undefined,
-  success: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	schedulingTaskId: undefined,
+	status: undefined,
+	success: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const columns = reactive({
-  selection: { label: '选择列', visible: true },
-  index: { label: '序号列', visible: false },
-  id: { label: 'ID', visible: true },
-  schedulingTaskId: { label: '调度任务ID', visible: false },
-  args: { label: '实际执行参数', visible: true },
-  status: { label: '执行状态', visible: true },
-  success: { label: '执行结果', visible: true },
-  costTime: { label: '消耗时间（毫秒）', visible: true },
-  message: { label: '附加信息', visible: true },
-  createByName: { label: '创建者', visible: false },
-  createTime: { label: '创建时间', visible: true },
-  updateByName: { label: '更新者', visible: false },
-  updateTime: { label: '更新时间', visible: true },
-  operation: { label: '操作', visible: true },
+	selection: { label: "选择列", visible: true },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: true },
+	schedulingTaskId: { label: "调度任务ID", visible: false },
+	args: { label: "实际执行参数", visible: true },
+	status: { label: "执行状态", visible: true },
+	success: { label: "执行结果", visible: true },
+	costTime: { label: "消耗时间（毫秒）", visible: true },
+	message: { label: "附加信息", visible: true },
+	createByName: { label: "创建者", visible: false },
+	createTime: { label: "创建时间", visible: true },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: true },
+	operation: { label: "操作", visible: true },
 });
 
 const loadTableData = () => {
-  loading.value = true;
-  schedulingTaskLogApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	schedulingTaskLogApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const handleGoBack = () => {
-  onClosed();
+	onClosed();
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  schedulingTaskLogApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	schedulingTaskLogApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 const init = () => {
-  queryParams.schedulingTaskId = data.value.id ?? undefined;
+	queryParams.schedulingTaskId = data.value.id ?? undefined;
 };
 
 const onOpened = () => {
-  loading.value = true;
-  init();
-  loadTableData();
-}
+	loading.value = true;
+	init();
+	loadTableData();
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
-}
+	visible.value = false;
+	data.value = {};
+	init();
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

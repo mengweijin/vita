@@ -1,13 +1,13 @@
 <script setup>
 import { postApi } from "@/api/system/post-api";
-import { columns } from './post-hook.js';
-import PostEdit from './post-edit.vue';
+import { columns } from "./post-hook.js";
+import PostEdit from "./post-edit.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
@@ -15,68 +15,67 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  disabled: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	disabled: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  postApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	postApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
-const postEditRef = useTemplateRef('postEditRef');
+const postEditRef = useTemplateRef("postEditRef");
 
 const handleAdd = () => {
-  postEditRef.value.data = {};
-  postEditRef.value.visible = true;
-}
+	postEditRef.value.data = {};
+	postEditRef.value.visible = true;
+};
 
 const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  postEditRef.value.data = { ...row };
-  postEditRef.value.visible = true;
-}
+	// 使用展开运算符，避免数据污染
+	postEditRef.value.data = { ...row };
+	postEditRef.value.visible = true;
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	postApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

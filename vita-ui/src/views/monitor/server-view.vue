@@ -4,7 +4,7 @@ import utils from "@/utils/utils.js";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
 const data = ref(null);
 
@@ -19,18 +19,17 @@ const jvmInfo = ref(null);
 const diskInfo = ref([]);
 
 onMounted(() => {
-  serverApi.serverInfo().then((res) => {
-    data.value = res;
-    serverInfo.value = res.server;
-    cpuInfo.value = res.cpu;
-    memoryInfo.value = res.memory;
-    jvmInfo.value = res.jvm;
-    diskInfo.value = res.disk;
+	serverApi.serverInfo().then((res) => {
+		data.value = res;
+		serverInfo.value = res.server;
+		cpuInfo.value = res.cpu;
+		memoryInfo.value = res.memory;
+		jvmInfo.value = res.jvm;
+		diskInfo.value = res.disk;
 
-    loading.value = false;
-  });
+		loading.value = false;
+	});
 });
-
 </script>
 
 <template>

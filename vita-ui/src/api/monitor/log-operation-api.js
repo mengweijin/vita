@@ -1,15 +1,15 @@
-import http from '@/utils/http';
+import http from "@/utils/http";
 
-const URL_PREFIX = '/monitor/log-operation';
+const URL_PREFIX = "/monitor/log-operation";
 
 export const logOperationApi = {
-  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-  create: (data) => http.post(`${URL_PREFIX}/create`, data),
+	create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-  update: (data) => http.post(`${URL_PREFIX}/update`, data),
+	update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
-  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+	remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 };

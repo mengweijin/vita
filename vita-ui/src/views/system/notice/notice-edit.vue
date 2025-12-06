@@ -10,56 +10,56 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  id: undefined,
-  title: undefined,
-  description: undefined,
+	id: undefined,
+	title: undefined,
+	description: undefined,
 });
 
 const init = () => {
-  form.id = data.value.id ?? undefined;
-  form.title = data.value.title ?? undefined;
-  form.description = data.value.description ?? undefined;
+	form.id = data.value.id ?? undefined;
+	form.title = data.value.title ?? undefined;
+	form.description = data.value.description ?? undefined;
 };
 
-const formRef = useTemplateRef('formRef');
+const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields)
-      return;
-    }
-    if (form.id) {
-      noticeApi.update(form).then((r) => {
-        emit('refresh-table');
-        onClosed();
-      });
-    } else {
-      noticeApi.create(form).then((r) => {
-        emit('refresh-table');
-        onClosed();
-      });
-    }
-  });
-}
+	formRef.value.validate((valid, fields) => {
+		if (!valid) {
+			// fields 只有在验证失败的情况下才有值
+			console.log(fields);
+			return;
+		}
+		if (form.id) {
+			noticeApi.update(form).then((r) => {
+				emit("refresh-table");
+				onClosed();
+			});
+		} else {
+			noticeApi.create(form).then((r) => {
+				emit("refresh-table");
+				onClosed();
+			});
+		}
+	});
+};
 
-const emit = defineEmits(['refresh-table']);
+const emit = defineEmits(["refresh-table"]);
 
 const onOpened = () => {
-  loading.value = true;
-  init();
-  loading.value = false;
-}
+	loading.value = true;
+	init();
+	loading.value = false;
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
-}
+	visible.value = false;
+	data.value = {};
+	init();
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

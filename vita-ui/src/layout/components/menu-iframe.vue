@@ -1,17 +1,14 @@
 <script setup>
 const { src } = defineProps({
-  src: {
-    type: String,
-    default: '',
-  },
+	src: {
+		type: String,
+		default: "",
+	},
 });
 
 const loading = ref(false);
 
-onMounted(() => {
-
-});
-
+onMounted(() => {});
 </script>
 
 <template>

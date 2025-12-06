@@ -1,39 +1,41 @@
 <script setup>
 import { messageApi } from "@/api/system/message-api";
-import { columns } from './message-hook.js';
+import { columns } from "./message-hook.js";
 import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
 
 const loading = ref(true);
 
-const treeRef = useTemplateRef('treeRef');
+const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-  children: 'children',
-  label: 'label',
-  disabled: 'disabled',
-})
+	children: "children",
+	label: "label",
+	disabled: "disabled",
+});
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-  let dictData = dictStore.get('vt_message_category');
-  treeData.value = [{
-    label: '消息分类',
-    val: null,
-    disabled: false,
-    children: dictData,
-  }];
+	let dictData = dictStore.get("vt_message_category");
+	treeData.value = [
+		{
+			label: "消息分类",
+			val: null,
+			disabled: false,
+			children: dictData,
+		},
+	];
 };
 
 const handleTreeNodeClick = (data, node) => {
-  queryParams.category = data.val;
-  loadTableData();
+	queryParams.category = data.val;
+	loadTableData();
 };
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
@@ -41,68 +43,66 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  category: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	category: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  queryParams.category = null;
-  // 清除选中状态及背景颜色
-  treeRef.value.setCurrentKey(null);
-  loadTableData();
+	queryFormRef.value.resetFields();
+	queryParams.category = null;
+	// 清除选中状态及背景颜色
+	treeRef.value.setCurrentKey(null);
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  messageApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	messageApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 /** selected rows */
 const selected = ref([]);
 
-
 const handleSetViewed = (messageReceiverIds) => {
-  messageApi.setViewed(messageReceiverIds).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	messageApi.setViewed(messageReceiverIds).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchSetViewed = () => {
-  let messageReceiverIds = selected.value.map(item => item.id).join();
-  handleSetViewed(messageReceiverIds);
-}
+	let messageReceiverIds = selected.value.map((item) => item.id).join();
+	handleSetViewed(messageReceiverIds);
+};
 
 const handleSetNotViewed = (messageReceiverIds) => {
-  messageApi.setNotViewed(messageReceiverIds).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
+	messageApi.setNotViewed(messageReceiverIds).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 onMounted(() => {
-  loadTreeData();
-  loadTableData();
+	loadTreeData();
+	loadTableData();
 });
-
 </script>
 
 <template>

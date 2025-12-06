@@ -1,59 +1,59 @@
-import http from '@/utils/http.js';
+import http from "@/utils/http.js";
 
-const URL_PREFIX = '/system/user';
+const URL_PREFIX = "/system/user";
 
 export const userApi = {
-  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  pageByRole: (roleId, args) => http.get(`${URL_PREFIX}/pageByRole/${roleId}`, { params: args }),
+	pageByRole: (roleId, args) => http.get(`${URL_PREFIX}/pageByRole/${roleId}`, { params: args }),
 
-  pageByPost: (postId, args) => http.get(`${URL_PREFIX}/pageByPost/${postId}`, { params: args }),
+	pageByPost: (postId, args) => http.get(`${URL_PREFIX}/pageByPost/${postId}`, { params: args }),
 
-  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-  create: (data) => http.post(`${URL_PREFIX}/create`, data),
+	create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-  update: (data) => http.post(`${URL_PREFIX}/update`, data),
+	update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
-  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+	remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
-  getSensitiveUserById: (id) => http.get(`${URL_PREFIX}/get-sensitive-info/${id}`),
+	getSensitiveUserById: (id) => http.get(`${URL_PREFIX}/get-sensitive-info/${id}`),
 
-  getLoginUserInfo: () => http.get(`${URL_PREFIX}/get-login-user-info`),
+	getLoginUserInfo: () => http.get(`${URL_PREFIX}/get-login-user-info`),
 
-  /**
-   *
-   * @param {UserRoleBO} data
-   * @returns
-   */
-  setRoles: (data) => http.post(`${URL_PREFIX}/set-roles`, data),
+	/**
+	 *
+	 * @param {UserRoleBO} data
+	 * @returns
+	 */
+	setRoles: (data) => http.post(`${URL_PREFIX}/set-roles`, data),
 
-  /**
-   *
-   * @param {PasswordChangeBO} data
-   * @returns
-   */
-  changePassword: (data) => http.post(`${URL_PREFIX}/change-password`, data),
+	/**
+	 *
+	 * @param {PasswordChangeBO} data
+	 * @returns
+	 */
+	changePassword: (data) => http.post(`${URL_PREFIX}/change-password`, data),
 
-  /**
-   *
-   * @param {PasswordResetBO} data
-   * @returns
-   */
-  resetPassword: (data) => http.post(`${URL_PREFIX}/reset-password`, data),
+	/**
+	 *
+	 * @param {PasswordResetBO} data
+	 * @returns
+	 */
+	resetPassword: (data) => http.post(`${URL_PREFIX}/reset-password`, data),
 };
 
 class UserRoleBO {
-  userId = null;
-  roleIds = [];
+	userId = null;
+	roleIds = [];
 }
 
 class PasswordChangeBO {
-  password = null;
-  newPassword = null;
+	password = null;
+	newPassword = null;
 }
 
 class PasswordResetBO {
-  username = null;
-  password = null;
+	username = null;
+	password = null;
 }

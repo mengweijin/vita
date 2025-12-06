@@ -1,8 +1,8 @@
 <script setup>
-import HomeStatistic from './module/home-statistic.vue';
-import HomeOperationChart from './module/home-operation-chart.vue';
-import HomeNoticeList from './module/home-notice-list.vue';
-import HomeLink from './module/home-link.vue';
+import HomeStatistic from "./module/home-statistic.vue";
+import HomeOperationChart from "./module/home-operation-chart.vue";
+import HomeNoticeList from "./module/home-notice-list.vue";
+import HomeLink from "./module/home-link.vue";
 </script>
 
 <template>

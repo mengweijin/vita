@@ -1,6 +1,6 @@
 <script setup>
 const router = useRouter();
-const goHome = () => router.push('/');
+const goHome = () => router.push("/");
 </script>
 
 <template>

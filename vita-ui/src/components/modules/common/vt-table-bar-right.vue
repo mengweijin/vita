@@ -1,40 +1,40 @@
 <script setup>
-import { useFullscreen } from '@vueuse/core';
+import { useFullscreen } from "@vueuse/core";
 
 const props = defineProps({
-  tableRef: {
-    type: Object,
-  },
-  shows: {
-    type: Array,
-    default: ['print', 'size', 'fullscreen', 'columns'],
-  },
-  columns: {
-    type: Object,
-    default: {},
-  },
+	tableRef: {
+		type: Object,
+	},
+	shows: {
+		type: Array,
+		default: ["print", "size", "fullscreen", "columns"],
+	},
+	columns: {
+		type: Object,
+		default: {},
+	},
 });
 
-const emit = defineEmits(['update-size'])
+const emit = defineEmits(["update-size"]);
 
 const handleSizeCommand = (command) => {
-  emit('update-size', command);
-}
+	emit("update-size", command);
+};
 
 const onToggleFullscreen = async () => {
-  await nextTick();
-  await props.tableRef.$nextTick();
-  const { toggle: toggleFullscreen } = useFullscreen(props.tableRef);
-  toggleFullscreen();
-}
+	await nextTick();
+	await props.tableRef.$nextTick();
+	const { toggle: toggleFullscreen } = useFullscreen(props.tableRef);
+	toggleFullscreen();
+};
 
 const onPrint = () => {
-  // 通过 CSS 选择器定位元素
-  const element = document.querySelector('.el-table');
+	// 通过 CSS 选择器定位元素
+	const element = document.querySelector(".el-table");
 
-  if (element) {
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
+	if (element) {
+		const printWindow = window.open("", "_blank");
+		printWindow.document.write(`
       <html>
         <head>
           <title></title>
@@ -56,59 +56,59 @@ const onPrint = () => {
         </body>
       </html>
     `);
-    // 停止加载，否则页签一直是 loading 状态
-    printWindow.document.close();
+		// 停止加载，否则页签一直是 loading 状态
+		printWindow.document.close();
 
-    // 监听打印后操作
-    printWindow.onafterprint = function () {
-      // 关闭当前页
-      printWindow.close();
-    };
+		// 监听打印后操作
+		printWindow.onafterprint = function () {
+			// 关闭当前页
+			printWindow.close();
+		};
 
-    // 调用打印
-    printWindow.print();
-  } else {
-    console.error(`No element was found by selector=${props.selector}`);
-  }
+		// 调用打印
+		printWindow.print();
+	} else {
+		console.error(`No element was found by selector=${props.selector}`);
+	}
 };
 
 const columnList = computed(() => {
-  let list = [];
-  for (const [key, value] of Object.entries(props.columns)) {
-    list.push({ key: key, label: value.label, visible: value.visible });
-  }
-  return list;
+	let list = [];
+	for (const [key, value] of Object.entries(props.columns)) {
+		list.push({ key: key, label: value.label, visible: value.visible });
+	}
+	return list;
 });
 
 const columnCheckedList = ref([]);
 
 const columnChange = () => {
-  for (const [key, value] of Object.entries(props.columns)) {
-    value.visible = columnCheckedList.value.includes(key);
-  }
-}
+	for (const [key, value] of Object.entries(props.columns)) {
+		value.visible = columnCheckedList.value.includes(key);
+	}
+};
 
 const columnGroupChange = (checkedKeys) => {
-  columnCheckedList.value = checkedKeys;
-  columnChange();
-}
+	columnCheckedList.value = checkedKeys;
+	columnChange();
+};
 
 const columnCheckAllChange = (isChecked) => {
-  columnCheckedList.value = isChecked ? Object.keys(props.columns) : [];
-  columnChange();
-}
+	columnCheckedList.value = isChecked ? Object.keys(props.columns) : [];
+	columnChange();
+};
 
 const defaultColumnCheckedList = ref([]);
 
 const columnReset = () => {
-  columnGroupChange(defaultColumnCheckedList.value);
-}
+	columnGroupChange(defaultColumnCheckedList.value);
+};
 
 onMounted(() => {
-  columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key);
+	columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key);
 
-  defaultColumnCheckedList.value = [...columnCheckedList.value];
-})
+	defaultColumnCheckedList.value = [...columnCheckedList.value];
+});
 </script>
 
 <template>

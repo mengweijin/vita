@@ -1,45 +1,45 @@
 <script setup>
-import { deptApi } from '@/api/system/dept-api.js';
-import { userApi } from '@/api/system/user-api.js';
-import utils from '@/utils/utils.js';
+import { deptApi } from "@/api/system/dept-api.js";
+import { userApi } from "@/api/system/user-api.js";
+import utils from "@/utils/utils.js";
 
 const props = defineProps({
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  size: {
-    type: String,
-    default: 'default',
-  },
-  style: {
-    type: String,
-    default: 'min-width: 200px; width: 100%;',
-  },
+	multiple: {
+		type: Boolean,
+		default: false,
+	},
+	size: {
+		type: String,
+		default: "default",
+	},
+	style: {
+		type: String,
+		default: "min-width: 200px; width: 100%;",
+	},
 });
 
 const selectValue = defineModel({ type: Array, default: [] });
 
-const treeRef = useTemplateRef('treeRef');
+const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-  children: 'children',
-  label: 'name',
-  disabled: (data, node) => data.disabled === 'Y',
+	children: "children",
+	label: "name",
+	disabled: (data, node) => data.disabled === "Y",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-  deptApi.list({ disabled: 'N' }).then((res) => {
-    // 转为树状
-    treeData.value = utils.toArrayTree(res, { sortKey: 'seq' });
-  });
+	deptApi.list({ disabled: "N" }).then((res) => {
+		// 转为树状
+		treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
+	});
 };
 
 const handleTreeNodeClick = (data, node) => {
-  queryParams.deptId = data.id;
-  loadTableData();
+	queryParams.deptId = data.id;
+	loadTableData();
 };
 
 const loading = ref(false);
@@ -47,85 +47,85 @@ const loading = ref(false);
 const tableData = ref([]);
 
 const queryParams = reactive({
-  keywords: undefined,
-  deptId: undefined,
-  disabled: 'N',
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	deptId: undefined,
+	disabled: "N",
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  queryParams.deptId = null;
-  // 清除选中状态及背景颜色
-  treeRef.value.setCurrentKey(null);
-  loadTableData();
+	queryFormRef.value.resetFields();
+	queryParams.deptId = null;
+	// 清除选中状态及背景颜色
+	treeRef.value.setCurrentKey(null);
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  userApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	userApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
-const dropdownRef = useTemplateRef('dropdownRef');
+const dropdownRef = useTemplateRef("dropdownRef");
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
 
-  // 手动保持下拉展开
-  setTimeout(() => {
-    // 调用内部方法重新展开
-    dropdownRef.value?.handleOpen();
-  }, 10);
+	// 手动保持下拉展开
+	setTimeout(() => {
+		// 调用内部方法重新展开
+		dropdownRef.value?.handleOpen();
+	}, 10);
 };
 
 const selected = ref([]);
 
 const handleTableRowClick = (row) => {
-  if (props.multiple) {
-    if (!utils.find(selected.value, (item) => item.id === row.id)) {
-      selected.value.push(row);
-    }
-    if (!utils.includes(selectValue.value, row.id)) {
-      selectValue.value.push(row.id);
-    }
-    return;
-  }
+	if (props.multiple) {
+		if (!utils.find(selected.value, (item) => item.id === row.id)) {
+			selected.value.push(row);
+		}
+		if (!utils.includes(selectValue.value, row.id)) {
+			selectValue.value.push(row.id);
+		}
+		return;
+	}
 
-  if (selectValue.value.length) {
-    if (!utils.find(selected.value, (item) => item.id === row.id)) {
-      selected.value.push(row);
-    }
-    // 清空数组
-    selectValue.value.splice(0, selectValue.value.length);
-    selectValue.value.push(row.id);
-  } else {
-    selected.value.push(row);
-    selectValue.value.push(row.id);
-  }
+	if (selectValue.value.length) {
+		if (!utils.find(selected.value, (item) => item.id === row.id)) {
+			selected.value.push(row);
+		}
+		// 清空数组
+		selectValue.value.splice(0, selectValue.value.length);
+		selectValue.value.push(row.id);
+	} else {
+		selected.value.push(row);
+		selectValue.value.push(row.id);
+	}
 };
 
 const handleRemoveTag = (value) => {
-  utils.remove(selected.value, (item) => item.id === value);
+	utils.remove(selected.value, (item) => item.id === value);
 };
 
 const getLabelValue = (userId) => {
-  let user = utils.find(selected.value, (item) => item.id === userId);
-  return user?.nickname + '(' + user?.username + ')';
+	let user = utils.find(selected.value, (item) => item.id === userId);
+	return user?.nickname + "(" + user?.username + ")";
 };
 
 onMounted(() => {
-  loadTreeData();
-  loadTableData();
+	loadTreeData();
+	loadTableData();
 });
 </script>
 

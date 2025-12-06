@@ -2,7 +2,7 @@
 import { cacheApi } from "@/api/monitor/cache-api";
 import "vue-json-pretty/lib/styles.css";
 import VueJsonPretty from "vue-json-pretty";
-import utils from '@/utils/utils.js';
+import utils from "@/utils/utils.js";
 
 const loading = ref(false);
 
@@ -14,21 +14,21 @@ const cacheName = ref(null);
 
 const activeIndex = ref(-1);
 
-const cacheValue = ref('');
+const cacheValue = ref("");
 
 const handleCacheNameChange = async (name) => {
-  cacheName.value = name;
-  dataList.value = [];
-  filteredDataList.value = [];
-  cacheValue.value = "";
-  activeIndex.value = -1;
+	cacheName.value = name;
+	dataList.value = [];
+	filteredDataList.value = [];
+	cacheValue.value = "";
+	activeIndex.value = -1;
 
-  if (!utils.isEmpty(name)) {
-    loading.value = true;
-    dataList.value = await cacheApi.query(name);
-    handleFilterDataList(keywords.value);
-    loading.value = false;
-  }
+	if (!utils.isEmpty(name)) {
+		loading.value = true;
+		dataList.value = await cacheApi.query(name);
+		handleFilterDataList(keywords.value);
+		loading.value = false;
+	}
 };
 
 const keywords = ref(null);
@@ -36,47 +36,46 @@ const keywords = ref(null);
 const filteredDataList = ref([]);
 
 const handleFilterDataList = utils.debounce((name) => {
-  if (utils.isEmpty(name)) {
-    filteredDataList.value = dataList.value;
-  } else {
-    filteredDataList.value = dataList.value.filter(item => item.name.includes(name));
-  }
+	if (utils.isEmpty(name)) {
+		filteredDataList.value = dataList.value;
+	} else {
+		filteredDataList.value = dataList.value.filter((item) => item.name.includes(name));
+	}
 }, 1000);
 
 const refreshByCacheName = (name) => {
-  handleCacheNameChange(name);
+	handleCacheNameChange(name);
 };
 
 const clearByCacheName = (name) => {
-  cacheApi.clearByName(name).then(() => {
-    handleCacheNameChange(name);
-  });
+	cacheApi.clearByName(name).then(() => {
+		handleCacheNameChange(name);
+	});
 };
 
 const viewCacheValue = (val, index) => {
-  cacheValue.value = val;
-  activeIndex.value = index;
+	cacheValue.value = val;
+	activeIndex.value = index;
 };
 
 const removeCache = (name, key) => {
-  cacheApi.remove(name, key).then(async () => {
-    await handleCacheNameChange(name);
-    handleFilterDataList(name);
-  });
+	cacheApi.remove(name, key).then(async () => {
+		await handleCacheNameChange(name);
+		handleFilterDataList(name);
+	});
 };
 
 const refreshCacheByNameAndKey = (name, key) => {
-  cacheApi.queryCacheByNameAndKey(name, key).then((res) => {
-    cacheValue.value = res.value;
-  });
+	cacheApi.queryCacheByNameAndKey(name, key).then((res) => {
+		cacheValue.value = res.value;
+	});
 };
 
 onMounted(async () => {
-  loading.value = true;
-  cacheNameList.value = await cacheApi.names();
-  loading.value = false;
+	loading.value = true;
+	cacheNameList.value = await cacheApi.names();
+	loading.value = false;
 });
-
 </script>
 
 <template>

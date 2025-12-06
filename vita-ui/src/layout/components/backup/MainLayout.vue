@@ -55,13 +55,13 @@
 </template>
 
 <script setup>
-import { House, User, Setting, Menu } from '@element-plus/icons-vue'
-import TabsView from '@/components/TabsView.vue'
+import { House, User, Setting, Menu } from "@element-plus/icons-vue";
+import TabsView from "@/components/TabsView.vue";
 
-const route = useRoute()
+const route = useRoute();
 
 // 当前激活的菜单
-const activeMenu = computed(() => route.path)
+const activeMenu = computed(() => route.path);
 </script>
 
 <style scoped>

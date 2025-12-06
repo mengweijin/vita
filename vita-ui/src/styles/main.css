@@ -1,9 +1,9 @@
 /* 导入其它样式文件 */
-@import './modules/vita.css';
+@import "./modules/vita.css";
 
 /* --：定义全局变量，可在文档任意位置通过 var() 调用。比如引用变量：color: var(--vt-primary-color); */
 :root {
-  --vt-primary-color: #1e9fff;
+	--vt-primary-color: #1e9fff;
 }
 
 /* 1. 统一盒模型计算方式，宽度/高度计算方式变为：内容区 + 内边距 + 边框。这能避免传统模式下因添加 padding/border 导致元素实际尺寸超出预期的问题。
@@ -13,45 +13,45 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
+	box-sizing: border-box;
+	margin: 0;
 }
 
 html,
 body {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 #app {
-  /* 占满视口高度，内容超出时自动扩展 */
-  min-height: 100vh;
-  /* color: var(--color-text);
+	/* 占满视口高度，内容超出时自动扩展 */
+	min-height: 100vh;
+	/* color: var(--color-text);
   background: var(--color-background); */
 }
 
 img {
-  max-width: 100%;
-  max-height: 100%;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 a {
-  text-decoration: none;
-  color: var(--vt-primary-color);
-  transition: 0.4s;
-  padding: 3px;
+	text-decoration: none;
+	color: var(--vt-primary-color);
+	transition: 0.4s;
+	padding: 3px;
 }
 
 /** 常用于保留 PC 端的 :hover 效果（如按钮悬停变色、下拉菜单），同时避免移动端点击后样式滞留问题。 */
 @media (hover: hover) {
-  a:hover {
-    /* 兼容旧版浏览器 */
-    color: var(--vt-primary-color);
-    /*
+	a:hover {
+		/* 兼容旧版浏览器 */
+		color: var(--vt-primary-color);
+		/*
     hsl(from #1e9fff h s l): 提取颜色中的 h s l 的值（色相，饱和度，亮度）。
     hsl() 语法：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#syntax
     浏览器兼容性：https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl#browser_compatibility
   */
-    color: hsl(from var(--vt-primary-color) h calc(s - 40) l);
-    text-decoration: underline;
-  }
+		color: hsl(from var(--vt-primary-color) h calc(s - 40) l);
+		text-decoration: underline;
+	}
 }

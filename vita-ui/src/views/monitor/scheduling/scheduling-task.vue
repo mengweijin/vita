@@ -5,101 +5,99 @@ import SchedulingTaskEdit from "./scheduling-task-edit.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const columns = reactive({
-  selection: { label: '选择列', visible: false },
-  index: { label: '序号列', visible: false },
-  id: { label: 'ID', visible: false },
-  name: { label: '任务名称', visible: true },
-  cron: { label: 'CRON 表达式', visible: true },
-  beanName: { label: '执行 Bean 名称', visible: true },
-  args: { label: '执行参数', visible: true },
-  disabled: { label: '状态', visible: true },
-  remark: { label: '备注', visible: true },
-  createByName: { label: '创建者', visible: false },
-  createTime: { label: '创建时间', visible: false },
-  updateByName: { label: '更新者', visible: false },
-  updateTime: { label: '更新时间', visible: false },
-  operation: { label: '操作', visible: true },
+	selection: { label: "选择列", visible: false },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: false },
+	name: { label: "任务名称", visible: true },
+	cron: { label: "CRON 表达式", visible: true },
+	beanName: { label: "执行 Bean 名称", visible: true },
+	args: { label: "执行参数", visible: true },
+	disabled: { label: "状态", visible: true },
+	remark: { label: "备注", visible: true },
+	createByName: { label: "创建者", visible: false },
+	createTime: { label: "创建时间", visible: false },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  disabled: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	disabled: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  schedulingTaskApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	schedulingTaskApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
-const schedulingTaskLogDialogRef = useTemplateRef('schedulingTaskLogDialogRef');
+const schedulingTaskLogDialogRef = useTemplateRef("schedulingTaskLogDialogRef");
 
 const handleViewTaskLog = (row) => {
-  schedulingTaskLogDialogRef.value.data = { ...row };
-  schedulingTaskLogDialogRef.value.visible = true;
+	schedulingTaskLogDialogRef.value.data = { ...row };
+	schedulingTaskLogDialogRef.value.visible = true;
 };
 
 const handleRunTask = (row) => {
-  schedulingTaskApi.run(row.id);
-}
-
-const schedulingTaskEditRef = useTemplateRef('schedulingTaskEditRef');
-
-const handleEdit = (row) => {
-  schedulingTaskEditRef.value.data = { ...row };
-  schedulingTaskEditRef.value.visible = true;
+	schedulingTaskApi.run(row.id);
 };
 
+const schedulingTaskEditRef = useTemplateRef("schedulingTaskEditRef");
+
+const handleEdit = (row) => {
+	schedulingTaskEditRef.value.data = { ...row };
+	schedulingTaskEditRef.value.visible = true;
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  schedulingTaskApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	schedulingTaskApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

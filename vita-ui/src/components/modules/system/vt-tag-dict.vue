@@ -1,43 +1,43 @@
 <script setup>
-import utils from '@/utils/utils.js';
-import { useDictStore } from '@/store/dict-store.js';
+import utils from "@/utils/utils.js";
+import { useDictStore } from "@/store/dict-store.js";
 
 const dictStore = useDictStore();
 
 const props = defineProps({
-  code: {
-    type: String,
-    required: true,
-  },
-  value: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: String,
-    default: 'default',
-  },
-  separator: {
-    type: String,
-    default: ',',
-  },
+	code: {
+		type: String,
+		required: true,
+	},
+	value: {
+		type: String,
+		required: true,
+	},
+	size: {
+		type: String,
+		default: "default",
+	},
+	separator: {
+		type: String,
+		default: ",",
+	},
 });
 
 const options = ref([]);
 
 const values = computed(() => {
-  if (!props.value || utils.isEmpty(props.value)) {
-    return [];
-  }
-  if (Array.isArray(props.value)) {
-    return props.value;
-  } else {
-    return String(props.value).split(props.separator);
-  }
+	if (!props.value || utils.isEmpty(props.value)) {
+		return [];
+	}
+	if (Array.isArray(props.value)) {
+		return props.value;
+	} else {
+		return String(props.value).split(props.separator);
+	}
 });
 
 onMounted(() => {
-  options.value = dictStore.get(props.code);
+	options.value = dictStore.get(props.code);
 });
 </script>
 <template>

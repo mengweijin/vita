@@ -1,13 +1,13 @@
 <script setup>
 import { fileApi } from "@/api/system/file-api";
-import { columns } from './file-hook.js';
+import { columns } from "./file-hook.js";
 import { useLoginStore } from "@/store/login-store.js";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
@@ -15,27 +15,27 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  md5: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	md5: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  fileApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	fileApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const { VITE_BASE_API } = import.meta.env;
@@ -43,40 +43,39 @@ const { VITE_BASE_API } = import.meta.env;
 const uploadUrl = `${window.location.origin}${VITE_BASE_API}/system/file/upload`;
 
 const handleUpload = (res) => {
-  ElMessage.success({ message: `【${res[0]?.name}】上传成功!`, duration: 3000, showClose: true });
-  loadTableData();
-}
+	ElMessage.success({ message: `【${res[0]?.name}】上传成功!`, duration: 3000, showClose: true });
+	loadTableData();
+};
 
 const handleDownload = (row) => {
-  fileApi.download(row.id);
-}
+	fileApi.download(row.id);
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  fileApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	fileApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

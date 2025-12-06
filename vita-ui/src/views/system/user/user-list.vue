@@ -1,117 +1,117 @@
 <script setup>
-import { deptApi } from '@/api/system/dept-api';
+import { deptApi } from "@/api/system/dept-api";
 import { userApi } from "@/api/system/user-api";
-import { columns } from './user-hook.js';
-import UserEdit from './user-edit.vue';
-import UserSetRoles from './user-set-roles.vue';
-import UserResetPassword from './user-reset-password.vue';
-import utils from '@/utils/utils.js';
+import { columns } from "./user-hook.js";
+import UserEdit from "./user-edit.vue";
+import UserSetRoles from "./user-set-roles.vue";
+import UserResetPassword from "./user-reset-password.vue";
+import utils from "@/utils/utils.js";
 
 const loading = ref(false);
 
-const treeRef = useTemplateRef('treeRef');
+const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-  children: 'children',
-  label: 'name',
-  disabled: (data, node) => data.disabled === 'Y',
-})
+	children: "children",
+	label: "name",
+	disabled: (data, node) => data.disabled === "Y",
+});
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-  deptApi.list({ disabled: 'N' }).then((res) => {
-    // 转为树状
-    treeData.value = utils.toArrayTree(res, { sortKey: 'seq' });
-  });
+	deptApi.list({ disabled: "N" }).then((res) => {
+		// 转为树状
+		treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
+	});
 };
 
 const handleTreeNodeClick = (data, node) => {
-  queryParams.deptId = data.id;
-  loadTableData();
+	queryParams.deptId = data.id;
+	loadTableData();
 };
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const queryParams = reactive({
-  keywords: undefined,
-  deptId: undefined,
-  disabled: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	deptId: undefined,
+	disabled: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  queryParams.deptId = null;
-  // 清除选中状态及背景颜色
-  treeRef.value.setCurrentKey(null);
-  loadTableData();
+	queryFormRef.value.resetFields();
+	queryParams.deptId = null;
+	// 清除选中状态及背景颜色
+	treeRef.value.setCurrentKey(null);
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  userApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	userApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
-const userEditRef = useTemplateRef('userEditRef');
+const userEditRef = useTemplateRef("userEditRef");
 
 const handleAdd = () => {
-  userEditRef.value.data = {};
-  userEditRef.value.visible = true;
-}
+	userEditRef.value.data = {};
+	userEditRef.value.visible = true;
+};
 
 const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  userEditRef.value.data = { ...row };
-  userEditRef.value.visible = true;
-}
+	// 使用展开运算符，避免数据污染
+	userEditRef.value.data = { ...row };
+	userEditRef.value.visible = true;
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  userApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
-
-const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
-
-const userSetRolesRef = useTemplateRef('userSetRolesRef');
-
-const handleSetRoles = (row) => {
-  userSetRolesRef.value.data = { ...row };
-  userSetRolesRef.value.visible = true;
+	userApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
 };
 
-const userResetPasswordRef = useTemplateRef('userResetPasswordRef');
+const handlePageChange = (currentPage, pageSize) => {
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
+
+const userSetRolesRef = useTemplateRef("userSetRolesRef");
+
+const handleSetRoles = (row) => {
+	userSetRolesRef.value.data = { ...row };
+	userSetRolesRef.value.visible = true;
+};
+
+const userResetPasswordRef = useTemplateRef("userResetPasswordRef");
 
 const handleResetPassword = (row) => {
-  userResetPasswordRef.value.data = { ...row };
-  userResetPasswordRef.value.visible = true;
+	userResetPasswordRef.value.data = { ...row };
+	userResetPasswordRef.value.visible = true;
 };
 
 onMounted(() => {
-  loadTreeData();
-  loadTableData();
+	loadTreeData();
+	loadTableData();
 });
 </script>
 

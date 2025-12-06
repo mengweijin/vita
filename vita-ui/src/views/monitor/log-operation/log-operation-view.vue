@@ -4,93 +4,92 @@ import LogOperationDetail from "./log-operation-detail.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const columns = reactive({
-  selection: { label: '选择列', visible: false },
-  index: { label: '序号列', visible: false },
-  id: { label: 'ID', visible: false },
-  title: { label: '模块标题', visible: true },
-  operationType: { label: '操作类型', visible: true },
-  httpMethod: { label: '请求方式', visible: true },
-  url: { label: 'URL', visible: true },
-  methodName: { label: '方法名称', visible: true },
-  costTime: { label: '执行时间（ms）', visible: true },
-  success: { label: '操作状态', visible: true },
-  requestData: { label: '请求数据', visible: false },
-  responseData: { label: '响应数据', visible: false },
-  errorMsg: { label: '失败信息', visible: false },
-  createByName: { label: '操作者', visible: true },
-  createTime: { label: '操作时间', visible: true },
-  updateByName: { label: '更新者', visible: false },
-  updateTime: { label: '更新时间', visible: false },
-  operation: { label: '操作', visible: true },
+	selection: { label: "选择列", visible: false },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: false },
+	title: { label: "模块标题", visible: true },
+	operationType: { label: "操作类型", visible: true },
+	httpMethod: { label: "请求方式", visible: true },
+	url: { label: "URL", visible: true },
+	methodName: { label: "方法名称", visible: true },
+	costTime: { label: "执行时间（ms）", visible: true },
+	success: { label: "操作状态", visible: true },
+	requestData: { label: "请求数据", visible: false },
+	responseData: { label: "响应数据", visible: false },
+	errorMsg: { label: "失败信息", visible: false },
+	createByName: { label: "操作者", visible: true },
+	createTime: { label: "操作时间", visible: true },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  operationType: undefined,
-  httpMethod: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	operationType: undefined,
+	httpMethod: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  logOperationApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	logOperationApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  logOperationApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	logOperationApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
-const logOperationDetailRef = useTemplateRef('logOperationDetailRef');
+const logOperationDetailRef = useTemplateRef("logOperationDetailRef");
 const handleDetail = (row) => {
-  logOperationDetailRef.value.data = { ...row };
-  logOperationDetailRef.value.visible = true;
+	logOperationDetailRef.value.data = { ...row };
+	logOperationDetailRef.value.visible = true;
 };
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

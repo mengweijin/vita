@@ -1,6 +1,6 @@
 <script setup>
-import { useTabsStore } from '@/store/tabs-store.js'
-import TabContextMenu from './backup/tab-context-menu.vue'
+import { useTabsStore } from "@/store/tabs-store.js";
+import TabContextMenu from "./backup/tab-context-menu.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -10,119 +10,121 @@ const tabsStore = useTabsStore();
 const tabsList = computed(() => tabsStore.tabsList);
 
 const activeTab = computed({
-  get: () => tabsStore.activeTab,
-  set: (val) => tabsStore.setActiveTab(val)
+	get: () => tabsStore.activeTab,
+	set: (val) => tabsStore.setActiveTab(val),
 });
 
 const cachedViews = computed(() => tabsStore.getCachedViews());
 
 // 右键菜单相关
 const contextMenuVisible = ref(false);
-const contextMenuStyle = ref({ left: '0px', top: '0px' });
+const contextMenuStyle = ref({ left: "0px", top: "0px" });
 const currentContextTab = ref(null);
 
 // 监听路由变化，添加标签页
-watch(() => route, (newRoute) => {
-  if (newRoute.name) {
-    tabsStore.addTab(newRoute);
-  }
-},
-  { immediate: true, deep: true }
-)
+watch(
+	() => route,
+	(newRoute) => {
+		if (newRoute.name) {
+			tabsStore.addTab(newRoute);
+		}
+	},
+	{ immediate: true, deep: true },
+);
 
 // 标签页点击事件
 const handleTabClick = (tab) => {
-  const targetTab = tabsList.value.find(item => item.name === tab.paneName)
-  if (targetTab) {
-    router.push(targetTab.path)
-  }
-}
+	const targetTab = tabsList.value.find((item) => item.name === tab.paneName);
+	if (targetTab) {
+		router.push(targetTab.path);
+	}
+};
 
 // 标签页关闭事件
 const handleTabRemove = (targetName) => {
-  const tab = tabsList.value.find(item => item.name === targetName)
-  if (tab && !tab.closable) {
-    ElMessage.warning('该页签不可关闭')
-    return
-  }
+	const tab = tabsList.value.find((item) => item.name === targetName);
+	if (tab && !tab.closable) {
+		ElMessage.warning("该页签不可关闭");
+		return;
+	}
 
-  tabsStore.removeTab(targetName)
+	tabsStore.removeTab(targetName);
 
-  // 如果关闭的是当前激活的标签页，需要跳转到新的激活标签页
-  if (targetName === activeTab.value) {
-    const currentTab = tabsList.value.find(tab => tab.name === activeTab.value)
-    if (currentTab) {
-      router.push(currentTab.path)
-    } else {
-      // 如果没有其他页签，跳转到首页
-      router.push('/')
-    }
-  }
-}
+	// 如果关闭的是当前激活的标签页，需要跳转到新的激活标签页
+	if (targetName === activeTab.value) {
+		const currentTab = tabsList.value.find((tab) => tab.name === activeTab.value);
+		if (currentTab) {
+			router.push(currentTab.path);
+		} else {
+			// 如果没有其他页签，跳转到首页
+			router.push("/");
+		}
+	}
+};
 
 // 右键菜单事件
 const handleContextMenu = (event, tab) => {
-  event.preventDefault()
+	event.preventDefault();
 
-  const targetTab = tabsList.value.find(item => item.name === tab.paneName)
-  if (!targetTab) return
+	const targetTab = tabsList.value.find((item) => item.name === tab.paneName);
+	if (!targetTab) return;
 
-  currentContextTab.value = targetTab
+	currentContextTab.value = targetTab;
 
-  // 设置菜单位置
-  contextMenuStyle.value = {
-    left: event.clientX + 'px',
-    top: event.clientY + 'px'
-  }
+	// 设置菜单位置
+	contextMenuStyle.value = {
+		left: event.clientX + "px",
+		top: event.clientY + "px",
+	};
 
-  contextMenuVisible.value = true
-}
+	contextMenuVisible.value = true;
+};
 
 // 关闭右键菜单
 const closeContextMenu = () => {
-  contextMenuVisible.value = false
-}
+	contextMenuVisible.value = false;
+};
 
 // 右键菜单操作
 const handleCloseCurrent = () => {
-  if (currentContextTab.value) {
-    handleTabRemove(currentContextTab.value.name)
-  }
-  closeContextMenu()
-}
+	if (currentContextTab.value) {
+		handleTabRemove(currentContextTab.value.name);
+	}
+	closeContextMenu();
+};
 
 const handleCloseOthers = () => {
-  if (currentContextTab.value) {
-    tabsStore.closeOtherTabs(currentContextTab.value)
-    router.push(currentContextTab.value.path)
-  }
-  closeContextMenu()
-}
+	if (currentContextTab.value) {
+		tabsStore.closeOtherTabs(currentContextTab.value);
+		router.push(currentContextTab.value.path);
+	}
+	closeContextMenu();
+};
 
 const handleCloseAll = () => {
-  tabsStore.closeAllTabs()
-  router.push('/')
-  closeContextMenu()
-}
+	tabsStore.closeAllTabs();
+	router.push("/");
+	closeContextMenu();
+};
 
 const handleCloseLeft = () => {
-  if (currentContextTab.value) {
-    tabsStore.closeLeftTabs(currentContextTab.value)
-    router.push(currentContextTab.value.path)
-  }
-  closeContextMenu()
-}
+	if (currentContextTab.value) {
+		tabsStore.closeLeftTabs(currentContextTab.value);
+		router.push(currentContextTab.value.path);
+	}
+	closeContextMenu();
+};
 
 const handleCloseRight = () => {
-  if (currentContextTab.value) {
-    tabsStore.closeRightTabs(currentContextTab.value)
-    router.push(currentContextTab.value.path)
-  }
-  closeContextMenu()
-}
+	if (currentContextTab.value) {
+		tabsStore.closeRightTabs(currentContextTab.value);
+		router.push(currentContextTab.value.path);
+	}
+	closeContextMenu();
+};
 
 // 点击页面其他区域关闭右键菜单
-document.addEventListener('click', closeContextMenu)
+document.addEventListener("click", closeContextMenu);
 </script>
 
 

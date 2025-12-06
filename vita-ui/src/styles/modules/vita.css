@@ -4,42 +4,42 @@
 
 /* semantic color variables for this project */
 :root {
-  --vt-header-height: 60px;
+	--vt-header-height: 60px;
 }
 
 /* 移动端样式 */
 @media screen and (max-width: 768px) {
-  :root {
-    --vt-footer-height: 110px;
-  }
+	:root {
+		--vt-footer-height: 110px;
+	}
 }
 
 /* PC端样式 */
 @media screen and (min-width: 768px) {
-  :root {
-    --vt-footer-height: 60px;
-  }
+	:root {
+		--vt-footer-height: 60px;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-  }
+	:root {
+	}
 }
 
 .vt-search-container {
-  padding: 20px 0px 0px 0px;
+	padding: 20px 0px 0px 0px;
 }
 
 .vt-table-container {
-  flex: 1;
-  /* 查询表单：70px; 表格头：63px；分页组件：50px */
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px - 50px);
+	flex: 1;
+	/* 查询表单：70px; 表格头：63px；分页组件：50px */
+	height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px - 50px);
 }
 
 .el-pagination {
-  margin-top: 10px;
+	margin-top: 10px;
 }
 
 .el-dialog__footer {
-  padding-top: 0px !important;
+	padding-top: 0px !important;
 }

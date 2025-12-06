@@ -1,20 +1,19 @@
 <script setup>
 import { categoryApi } from "@/api/system/category-api";
-import utils from '@/utils/utils.js';
-import { columns } from './category-hook.js';
-import CategoryEdit from './category-edit.vue';
+import utils from "@/utils/utils.js";
+import { columns } from "./category-hook.js";
+import CategoryEdit from "./category-edit.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
-
+const tableRef = useTemplateRef("tableRef");
 
 const treeProps = reactive({
-  // 父子节点默认联动
-  checkStrictly: false,
-})
+	// 父子节点默认联动
+	checkStrictly: false,
+});
 
 const tableData = ref([]);
 
@@ -22,60 +21,59 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  disabled: undefined,
+	keywords: undefined,
+	disabled: undefined,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  categoryApi.list(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res, { sortKey: 'seq' });
-    loading.value = false;
-  });
+	loading.value = true;
+	categoryApi.list(queryParams).then((res) => {
+		tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
+		loading.value = false;
+	});
 };
 
-const categoryEditRef = useTemplateRef('categoryEditRef');
+const categoryEditRef = useTemplateRef("categoryEditRef");
 
 const handleAdd = (id) => {
-  categoryEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
-  categoryEditRef.value.visible = true;
-}
+	categoryEditRef.value.data = {
+		parentId: id ?? undefined,
+	};
+	categoryEditRef.value.visible = true;
+};
 
 const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  categoryEditRef.value.data = { ...row };
-  categoryEditRef.value.visible = true;
-}
+	// 使用展开运算符，避免数据污染
+	categoryEditRef.value.data = { ...row };
+	categoryEditRef.value.visible = true;
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  categoryApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	categoryApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

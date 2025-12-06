@@ -1,12 +1,12 @@
 <script setup>
-import { homeApi } from '@/api/home-api';
+import { homeApi } from "@/api/home-api";
 
 const data = ref({});
 
 onMounted(() => {
-  homeApi.getConsoleStatistic().then((res) => {
-    data.value = res;
-  });
+	homeApi.getConsoleStatistic().then((res) => {
+		data.value = res;
+	});
 });
 </script>
 

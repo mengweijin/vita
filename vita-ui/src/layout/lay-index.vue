@@ -3,11 +3,11 @@ import LayHeader from "./lay-header.vue";
 import LaySide from "./lay-side.vue";
 import LayFooter from "./lay-footer.vue";
 
-import { useAppStore } from '@/store/app-store';
+import { useAppStore } from "@/store/app-store";
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
-const asideWidth = computed(() => sideMenuOpened.value ? '200px' : '64px');
+const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
 </script>
 
 <template>

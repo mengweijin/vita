@@ -1,56 +1,57 @@
 <script setup>
-import { useFullscreen } from '@vueuse/core';
+import { useFullscreen } from "@vueuse/core";
 const router = useRouter();
-import { loginApi } from '@/api/login-api';
+import { loginApi } from "@/api/login-api";
 
-import { useLoginStore } from '@/store/login-store';
+import { useLoginStore } from "@/store/login-store";
 const loginStore = useLoginStore();
 
-import { useUserStore } from '@/store/user-store';
+import { useUserStore } from "@/store/user-store";
 const userStore = useUserStore();
 
-import { useAppStore } from '@/store/app-store';
+import { useAppStore } from "@/store/app-store";
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
-import { messageApi } from '@/api/system/message-api';
+import { messageApi } from "@/api/system/message-api";
 
 // 强制刷新（适合更新静态资源）
-const refresh = () => { top.location.reload(true); };
-
+const refresh = () => {
+	top.location.reload(true);
+};
 
 // 打开个人信息对话框
-import UserPersonalInformationDialog from '@/views/profile/user-personal-information-dialog.vue';
-const userPersonalInfoDialogRef = useTemplateRef('userPersonalInfoDialogRef');
+import UserPersonalInformationDialog from "@/views/profile/user-personal-information-dialog.vue";
+const userPersonalInfoDialogRef = useTemplateRef("userPersonalInfoDialogRef");
 const onUserPersonalInformation = () => {
-  userPersonalInfoDialogRef.value.visible = true;
+	userPersonalInfoDialogRef.value.visible = true;
 };
 
 // 打开安全日志对话框
-import UserSecurityLogDialog from '@/views/profile/user-security-log-dialog.vue';
-const userSecurityLogDialogRef = useTemplateRef('userSecurityLogDialogRef');
+import UserSecurityLogDialog from "@/views/profile/user-security-log-dialog.vue";
+const userSecurityLogDialogRef = useTemplateRef("userSecurityLogDialogRef");
 const onUserSecurityLog = () => {
-  userSecurityLogDialogRef.value.visible = true;
+	userSecurityLogDialogRef.value.visible = true;
 };
 
 const onLogout = () => {
-  // 后端登出
-  loginApi.logout().finally(() => {
-    // 前端登出
-    loginStore.logout();
-    // 跳转登录页
-    router.push('/login');
-  });
+	// 后端登出
+	loginApi.logout().finally(() => {
+		// 前端登出
+		loginStore.logout();
+		// 跳转登录页
+		router.push("/login");
+	});
 };
 
 // 绑定目标元素（不传则默认全屏整个页面）
 const target = ref(null);
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
-const notViewedMessageCount = ref('');
+const notViewedMessageCount = ref("");
 
 onMounted(async () => {
-  notViewedMessageCount.value = await messageApi.selectNotViewedCount();
+	notViewedMessageCount.value = await messageApi.selectNotViewedCount();
 });
 </script>
 

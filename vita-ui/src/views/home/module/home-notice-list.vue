@@ -1,46 +1,45 @@
 <script setup>
-import { noticeApi } from '@/api/system/notice-api';
-import NoticeDetail from '@/views/system/notice/notice-detail.vue';
-import utils from '@/utils/utils.js';
+import { noticeApi } from "@/api/system/notice-api";
+import NoticeDetail from "@/views/system/notice/notice-detail.vue";
+import utils from "@/utils/utils.js";
 
 const loading = ref(false);
 
-const size = ref('small');
+const size = ref("small");
 
 const tableData = ref([]);
 
 const queryParams = reactive({
-  released: 'Y',
-  total: 0,
-  size: 5,
-  current: 1,
+	released: "Y",
+	total: 0,
+	size: 5,
+	current: 1,
 });
 
 const loadTableData = () => {
-  loading.value = true;
-  noticeApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	noticeApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
-
-const noticeDetailRef = useTemplateRef('noticeDetailRef');
-
-const handleViewDetail = (row) => {
-  noticeDetailRef.value.data = { ...row };
-  noticeDetailRef.value.visible = true;
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
 };
 
+const noticeDetailRef = useTemplateRef("noticeDetailRef");
+
+const handleViewDetail = (row) => {
+	noticeDetailRef.value.data = { ...row };
+	noticeDetailRef.value.visible = true;
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
 </script>
 

@@ -1,18 +1,18 @@
-import http from '@/utils/http';
+import http from "@/utils/http";
 
-const URL_PREFIX = '/monitor/cache';
+const URL_PREFIX = "/monitor/cache";
 
 export const cacheApi = {
-  names: () => http.get(`${URL_PREFIX}/names`),
+	names: () => http.get(`${URL_PREFIX}/names`),
 
-  query: (cacheName) => http.get(`${URL_PREFIX}/query?cacheName=${cacheName}`),
+	query: (cacheName) => http.get(`${URL_PREFIX}/query?cacheName=${cacheName}`),
 
-  queryCacheByNameAndKey: (cacheName, cacheKey) =>
-    http.get(`${URL_PREFIX}/queryCacheByNameAndKey?cacheName=${cacheName}&cacheKey=${cacheKey}`),
+	queryCacheByNameAndKey: (cacheName, cacheKey) =>
+		http.get(`${URL_PREFIX}/queryCacheByNameAndKey?cacheName=${cacheName}&cacheKey=${cacheKey}`),
 
-  remove: (cacheName, cacheKey) => http.post(`${URL_PREFIX}/remove?cacheName=${cacheName}&cacheKey=${cacheKey}`),
+	remove: (cacheName, cacheKey) => http.post(`${URL_PREFIX}/remove?cacheName=${cacheName}&cacheKey=${cacheKey}`),
 
-  clearByName: (cacheName) => http.post(`${URL_PREFIX}/clear-by-name/${cacheName}`),
+	clearByName: (cacheName) => http.post(`${URL_PREFIX}/clear-by-name/${cacheName}`),
 
-  clear: () => http.post(`${URL_PREFIX}/clear`),
+	clear: () => http.post(`${URL_PREFIX}/clear`),
 };

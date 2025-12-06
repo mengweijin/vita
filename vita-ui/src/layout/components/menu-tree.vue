@@ -1,17 +1,17 @@
 <script setup>
 const { menuList } = defineProps({
-  menuList: {
-    type: Array,
-    default: () => [],
-  },
+	menuList: {
+		type: Array,
+		default: () => [],
+	},
 });
 
 const handleClick = (menu) => {
-  if ('IFRAME' === menu.type) {
-    console.log(menu);
-  } else if ('URL' === menu.type) {
-    window.open(menu.url, '_blank');
-  }
+	if ("IFRAME" === menu.type) {
+		console.log(menu);
+	} else if ("URL" === menu.type) {
+		window.open(menu.url, "_blank");
+	}
 };
 </script>
 

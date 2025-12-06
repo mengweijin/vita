@@ -1,5 +1,5 @@
 <script setup>
-import { roleApi } from '@/api/system/role-api';
+import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
 
 const loading = ref(true);
@@ -10,58 +10,57 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  userId: undefined,
-  roleIds: [],
+	userId: undefined,
+	roleIds: [],
 });
 
 const init = () => {
-  form.userId = data.value.id ?? undefined;
-  form.roleIds = data.value?.roleIds ?? [];
+	form.userId = data.value.id ?? undefined;
+	form.roleIds = data.value?.roleIds ?? [];
 };
 
-const formRef = useTemplateRef('formRef');
+const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields)
-      return;
-    }
-    userApi.setRoles(form).then((r) => {
-      onClosed();
-    });
-  });
-}
+	formRef.value.validate((valid, fields) => {
+		if (!valid) {
+			// fields 只有在验证失败的情况下才有值
+			console.log(fields);
+			return;
+		}
+		userApi.setRoles(form).then((r) => {
+			onClosed();
+		});
+	});
+};
 
 const roleList = ref([]);
 
 const initRoleList = async () => {
-  roleList.value = await roleApi.list({ disabled: 'N' });
-}
-
+	roleList.value = await roleApi.list({ disabled: "N" });
+};
 
 const initSensitiveInfo = async () => {
-  let user = await userApi.getSensitiveUserById(data.value.id);
-  form.roleIds = user.roleIds;
+	let user = await userApi.getSensitiveUserById(data.value.id);
+	form.roleIds = user.roleIds;
 };
 
 const onOpened = async () => {
-  loading.value = true;
-  await initRoleList();
-  init();
-  await initSensitiveInfo();
-  loading.value = false;
-}
+	loading.value = true;
+	await initRoleList();
+	init();
+	await initSensitiveInfo();
+	loading.value = false;
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
-}
+	visible.value = false;
+	data.value = {};
+	init();
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

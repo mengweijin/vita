@@ -1,23 +1,23 @@
 <script setup>
-import { roleApi } from '@/api/system/role-api.js';
+import { roleApi } from "@/api/system/role-api.js";
 
 const props = defineProps({
-  filterable: {
-    type: Boolean,
-    default: true,
-  },
-  multiple: {
-    type: Boolean,
-    default: true,
-  },
-  size: {
-    type: String,
-    default: 'default',
-  },
-  style: {
-    type: String,
-    default: 'min-width: 200px;',
-  },
+	filterable: {
+		type: Boolean,
+		default: true,
+	},
+	multiple: {
+		type: Boolean,
+		default: true,
+	},
+	size: {
+		type: String,
+		default: "default",
+	},
+	style: {
+		type: String,
+		default: "min-width: 200px;",
+	},
 });
 
 const selectValue = defineModel({ type: String || Array });
@@ -25,13 +25,13 @@ const selectValue = defineModel({ type: String || Array });
 const roleList = ref([]);
 
 const initRoleList = () => {
-  roleApi.list({ disabled: 'N' }).then((res) => {
-    roleList.value = res;
-  });
+	roleApi.list({ disabled: "N" }).then((res) => {
+		roleList.value = res;
+	});
 };
 
 onMounted(() => {
-  initRoleList();
+	initRoleList();
 });
 </script>
 

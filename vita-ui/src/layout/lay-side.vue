@@ -1,30 +1,29 @@
 <script setup>
-import utils from '@/utils/utils.js';
+import utils from "@/utils/utils.js";
 
 const route = useRoute();
 
 import MenuTree from "./components/menu-tree.vue";
 
-import { useMenuStore } from '@/store/menu-store';
+import { useMenuStore } from "@/store/menu-store";
 const menuStore = useMenuStore();
 const { menus } = storeToRefs(menuStore);
 
-import { useAppStore } from '@/store/app-store';
+import { useAppStore } from "@/store/app-store";
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
 const activeMenu = computed(() => {
-  const { meta, path } = route
-  return path || '/'
+	const { meta, path } = route;
+	return path || "/";
 });
 
 const menuTreeList = ref([]);
 
 onMounted(() => {
-  // 转为树状
-  menuTreeList.value = utils.toArrayTree(menus.value, { sortKey: 'seq' });
+	// 转为树状
+	menuTreeList.value = utils.toArrayTree(menus.value, { sortKey: "seq" });
 });
-
 </script>
 
 <template>

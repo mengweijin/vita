@@ -5,26 +5,29 @@ const loading = ref(true);
 
 const visible = ref(false);
 
-const size = ref('default');
+const size = ref("default");
 
 const userInfo = ref({});
 
 const onOpened = () => {
-  loading.value = true;
-  userApi.getLoginUserInfo().then(res => {
-    userInfo.value = res;
-    loading.value = false;
-  }).catch(() => {
-    loading.value = false;
-  });
-}
+	loading.value = true;
+	userApi
+		.getLoginUserInfo()
+		.then((res) => {
+			userInfo.value = res;
+			loading.value = false;
+		})
+		.catch(() => {
+			loading.value = false;
+		});
+};
 
 const onClosed = () => {
-  visible.value = false;
-  userInfo.value = {};
-}
+	visible.value = false;
+	userInfo.value = {};
+};
 
-defineExpose({ visible })
+defineExpose({ visible });
 </script>
 
 <template>

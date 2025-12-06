@@ -12,101 +12,101 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  id: undefined,
-  parentId: undefined,
-  type: undefined,
-  title: undefined,
-  icon: undefined,
-  permission: undefined,
-  component: undefined,
-  routeName: undefined,
-  routePath: undefined,
-  url: undefined,
-  seq: undefined,
-  disabled: undefined,
+	id: undefined,
+	parentId: undefined,
+	type: undefined,
+	title: undefined,
+	icon: undefined,
+	permission: undefined,
+	component: undefined,
+	routeName: undefined,
+	routePath: undefined,
+	url: undefined,
+	seq: undefined,
+	disabled: undefined,
 });
 
 const init = () => {
-  form.id = data.value.id ?? undefined;
-  form.parentId = data.value.parentId ?? undefined;
-  form.type = data.value.type ?? 'BTN';
-  form.title = data.value.title ?? undefined;
-  form.icon = data.value.icon ?? undefined;
-  form.permission = data.value.permission ?? undefined;
-  form.component = data.value.component ?? undefined;
-  form.routeName = data.value.routeName ?? undefined;
-  form.routePath = data.value.routePath ?? undefined;
-  form.url = data.value.url ?? undefined;
-  form.seq = data.value.seq ?? 1;
-  form.disabled = data.value.disabled ?? 'N';
+	form.id = data.value.id ?? undefined;
+	form.parentId = data.value.parentId ?? undefined;
+	form.type = data.value.type ?? "BTN";
+	form.title = data.value.title ?? undefined;
+	form.icon = data.value.icon ?? undefined;
+	form.permission = data.value.permission ?? undefined;
+	form.component = data.value.component ?? undefined;
+	form.routeName = data.value.routeName ?? undefined;
+	form.routePath = data.value.routePath ?? undefined;
+	form.url = data.value.url ?? undefined;
+	form.seq = data.value.seq ?? 1;
+	form.disabled = data.value.disabled ?? "N";
 };
 
-const formRef = useTemplateRef('formRef');
+const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields)
-      return;
-    }
-    if (form.id) {
-      menuApi.update(form).then((r) => {
-        emit('refresh-table');
-        onClosed();
-      });
-    } else {
-      menuApi.create(form).then((r) => {
-        emit('refresh-table');
-        onClosed();
-      });
-    }
-  });
-}
+	formRef.value.validate((valid, fields) => {
+		if (!valid) {
+			// fields 只有在验证失败的情况下才有值
+			console.log(fields);
+			return;
+		}
+		if (form.id) {
+			menuApi.update(form).then((r) => {
+				emit("refresh-table");
+				onClosed();
+			});
+		} else {
+			menuApi.create(form).then((r) => {
+				emit("refresh-table");
+				onClosed();
+			});
+		}
+	});
+};
 
-const emit = defineEmits(['refresh-table']);
+const emit = defineEmits(["refresh-table"]);
 
 const menuTypeOptions = computed(() => {
-  const menuTypes = dictStore.get('vt_menu_type');
-  return menuTypes.map(item => {
-    item.disabled = (item.disabled === 'Y' ? true : false);
-    return item;
-  });
+	const menuTypes = dictStore.get("vt_menu_type");
+	return menuTypes.map((item) => {
+		item.disabled = item.disabled === "Y" ? true : false;
+		return item;
+	});
 });
 
 const menuList = ref([]);
 
 const menuTreeSelectOptions = computed(() => {
-  menuList.value.forEach((item) => {
-    if (data.value.id && item.id === data.value.id) {
-      item.disabled = true;
-    } else {
-      item.disabled = false;
-    }
-  });
-  utils.addFullPath(menuList.value, { pathKey: 'title' })
-  return utils.toArrayTree(menuList.value, { sortKey: 'seq' });
+	menuList.value.forEach((item) => {
+		if (data.value.id && item.id === data.value.id) {
+			item.disabled = true;
+		} else {
+			item.disabled = false;
+		}
+	});
+	utils.addFullPath(menuList.value, { pathKey: "title" });
+	return utils.toArrayTree(menuList.value, { sortKey: "seq" });
 });
 
 const onOpened = () => {
-  loading.value = true;
-  menuApi.list().then((res) => {
-    menuList.value = res;
-    init();
-    nextTick(() => {
-      loading.value = false;
-    });
-  });
-}
+	loading.value = true;
+	menuApi.list().then((res) => {
+		menuList.value = res;
+		init();
+		nextTick(() => {
+			loading.value = false;
+		});
+	});
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
-}
+	visible.value = false;
+	data.value = {};
+	init();
+};
 
 /** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

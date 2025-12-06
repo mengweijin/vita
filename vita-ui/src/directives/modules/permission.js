@@ -1,5 +1,5 @@
-import utils from '@/utils/utils.js';
-import { useUserStore } from '@/store/user-store.js';
+import utils from "@/utils/utils.js";
+import { useUserStore } from "@/store/user-store.js";
 
 /**
  * 使用（在元素上增加指令）：
@@ -18,33 +18,33 @@ import { useUserStore } from '@/store/user-store.js';
  * </template>
  */
 export default {
-  mounted(el, binding) {
-    // 这里使用 modifiers，则使用时应为：v-permission.all（需要拥有所有） 或者：v-permission.any（拥有任意一个即可）
-    const modifiers = binding.modifiers;
-    const { value } = binding;
+	mounted(el, binding) {
+		// 这里使用 modifiers，则使用时应为：v-permission.all（需要拥有所有） 或者：v-permission.any（拥有任意一个即可）
+		const modifiers = binding.modifiers;
+		const { value } = binding;
 
-    const userStore = useUserStore();
+		const userStore = useUserStore();
 
-    const hasPermission = () => {
-      const permissionList = userStore.getPermissions() || [];
+		const hasPermission = () => {
+			const permissionList = userStore.getPermissions() || [];
 
-      const valueArray = Array.isArray(value) ? value : [value];
+			const valueArray = Array.isArray(value) ? value : [value];
 
-      if (utils.isEmpty(modifiers) || modifiers.all) {
-        return valueArray.every((perm) => permissionList.includes(perm));
-      } else if (modifiers.any) {
-        return valueArray.some((perm) => permissionList.includes(perm));
-      }
+			if (utils.isEmpty(modifiers) || modifiers.all) {
+				return valueArray.every((perm) => permissionList.includes(perm));
+			} else if (modifiers.any) {
+				return valueArray.some((perm) => permissionList.includes(perm));
+			}
 
-      return false;
-    };
+			return false;
+		};
 
-    if (value) {
-      !hasPermission(value) && el.parentNode?.removeChild(el);
-    } else {
-      throw new Error(
-        "[Directive: v-permission]: need permission! Like v-permission=\"['system:user:create','system:user:update']\"",
-      );
-    }
-  },
+		if (value) {
+			!hasPermission(value) && el.parentNode?.removeChild(el);
+		} else {
+			throw new Error(
+				"[Directive: v-permission]: need permission! Like v-permission=\"['system:user:create','system:user:update']\"",
+			);
+		}
+	},
 };

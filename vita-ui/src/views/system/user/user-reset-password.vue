@@ -1,5 +1,5 @@
 <script setup>
-import { configApi } from '@/api/system/config-api';
+import { configApi } from "@/api/system/config-api";
 import { userApi } from "@/api/system/user-api";
 
 const loading = ref(true);
@@ -10,65 +10,65 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  username: undefined,
-  password: undefined,
+	username: undefined,
+	password: undefined,
 });
 
 const init = () => {
-  form.username = data.value.username ?? undefined;
+	form.username = data.value.username ?? undefined;
 };
 
-const formRef = useTemplateRef('formRef');
+const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields)
-      return;
-    }
-    userApi.resetPassword(form).then((r) => {
-      onClosed();
-    });
-  });
-}
+	formRef.value.validate((valid, fields) => {
+		if (!valid) {
+			// fields 只有在验证失败的情况下才有值
+			console.log(fields);
+			return;
+		}
+		userApi.resetPassword(form).then((r) => {
+			onClosed();
+		});
+	});
+};
 
 const isResetToDefaultPassword = ref(true);
 
 watch(isResetToDefaultPassword, (newData) => {
-  if (newData) {
-    form.password = defaultPassword.value;
-  } else {
-    form.password = null;
-  }
+	if (newData) {
+		form.password = defaultPassword.value;
+	} else {
+		form.password = null;
+	}
 });
 
 const defaultPassword = ref(null);
 
 const initDefaultPassword = () => {
-  configApi.getByCode('vita.user.default-password').then((res) => {
-    defaultPassword.value = res?.configValue ?? undefined;
-    if (isResetToDefaultPassword.value) {
-      form.password = defaultPassword.value;
-    }
-  });
+	configApi.getByCode("vita.user.default-password").then((res) => {
+		defaultPassword.value = res?.configValue ?? undefined;
+		if (isResetToDefaultPassword.value) {
+			form.password = defaultPassword.value;
+		}
+	});
 };
 
 const onOpened = () => {
-  loading.value = true;
-  init();
-  initDefaultPassword();
-  loading.value = false;
-}
+	loading.value = true;
+	init();
+	initDefaultPassword();
+	loading.value = false;
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
-}
+	visible.value = false;
+	data.value = {};
+	init();
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

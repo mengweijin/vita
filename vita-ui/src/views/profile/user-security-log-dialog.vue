@@ -5,44 +5,43 @@ const loading = ref(true);
 
 const visible = ref(false);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const queryParams = reactive({
-  current: 1,
-  size: 10,
-  total: 0,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
 const loadTableData = () => {
-  loading.value = true;
-  logLoginApi.pageByLoginUser(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	logLoginApi.pageByLoginUser(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
-
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 const onOpened = () => {
-  loadTableData();
-}
+	loadTableData();
+};
 
 const onClosed = () => {
-  visible.value = false;
-  tableData.value = [];
-}
+	visible.value = false;
+	tableData.value = [];
+};
 
-defineExpose({ visible })
+defineExpose({ visible });
 </script>
 
 <template>

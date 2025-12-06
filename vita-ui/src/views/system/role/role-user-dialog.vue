@@ -7,78 +7,77 @@ const loading = ref(false);
 
 const visible = ref(false);
 
-const size = ref('default');
+const size = ref("default");
 
 const data = ref({});
 
 const queryParams = reactive({
-  keywords: undefined,
-  disabled: 'N',
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	disabled: "N",
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const loadTableData = () => {
-  loading.value = true;
-  userApi.pageByRole(data.value.id, queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	userApi.pageByRole(data.value.id, queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 const selected = ref([]);
 
-
-const roleUsersSelectDialogRef = useTemplateRef('roleUsersSelectDialogRef');
+const roleUsersSelectDialogRef = useTemplateRef("roleUsersSelectDialogRef");
 
 const handleRoleAddUser = () => {
-  roleUsersSelectDialogRef.value.data = { ...data.value };
-  roleUsersSelectDialogRef.value.visible = true;
+	roleUsersSelectDialogRef.value.data = { ...data.value };
+	roleUsersSelectDialogRef.value.visible = true;
 };
 
 const handleRoleRemoveUser = (userId) => {
-  roleApi.removeByRoleIdInUserIds(data.value.id, userId).then(() => {
-    loadTableData();
-  });
+	roleApi.removeByRoleIdInUserIds(data.value.id, userId).then(() => {
+		loadTableData();
+	});
 };
 
 const handleRoleRemoveUserBatch = () => {
-  let userIds = selected.value.map(item => item.id).join();
-  roleApi.removeByRoleIdInUserIds(data.value.id, userIds).then(() => {
-    loadTableData();
-  });
+	let userIds = selected.value.map((item) => item.id).join();
+	roleApi.removeByRoleIdInUserIds(data.value.id, userIds).then(() => {
+		loadTableData();
+	});
 };
 
 const onOpened = () => {
-  loadTableData();
-}
+	loadTableData();
+};
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-}
+	visible.value = false;
+	data.value = {};
+};
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data })
+defineExpose({ visible, data });
 </script>
 
 <template>

@@ -179,9 +179,7 @@ axiosInstance.download = (url, fileName = undefined) => {
 				fileName = decodedFileName;
 			}
 
-			const url = window.URL.createObjectURL(
-				new Blob([response.data], { type: response.data.type }),
-			);
+			const url = window.URL.createObjectURL(new Blob([response.data], { type: response.data.type }));
 			const link = document.createElement("a");
 			link.href = url;
 			link.setAttribute("download", fileName);

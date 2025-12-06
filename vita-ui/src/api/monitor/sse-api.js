@@ -1,7 +1,7 @@
-import http from '@/utils/http';
+import http from "@/utils/http";
 
-const URL_PREFIX = '/monitor/sse';
+const URL_PREFIX = "/monitor/sse";
 
 export const sseApi = {
-  close: () => http.post(`${URL_PREFIX}/close`),
+	close: () => http.post(`${URL_PREFIX}/close`),
 };

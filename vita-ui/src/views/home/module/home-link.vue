@@ -1,11 +1,9 @@
 <script setup>
 const openBlankUrl = (url) => {
-  window.open(url, '_blank');
+	window.open(url, "_blank");
 };
 
-onMounted(() => {
-
-});
+onMounted(() => {});
 </script>
 
 <template>

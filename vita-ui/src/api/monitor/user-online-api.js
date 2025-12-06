@@ -1,11 +1,11 @@
-import http from '@/utils/http';
+import http from "@/utils/http";
 
-const URL_PREFIX = '/monitor/user-online';
+const URL_PREFIX = "/monitor/user-online";
 
 export const userOnlineApi = {
-  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  kickOutByUsername: (username) => http.post(`${URL_PREFIX}/kick-out-by-username/${username}`),
+	kickOutByUsername: (username) => http.post(`${URL_PREFIX}/kick-out-by-username/${username}`),
 
-  kickOutByToken: (token) => http.post(`${URL_PREFIX}/kick-out-by-token`, { encryptTokenValue: token }),
+	kickOutByToken: (token) => http.post(`${URL_PREFIX}/kick-out-by-token`, { encryptTokenValue: token }),
 };

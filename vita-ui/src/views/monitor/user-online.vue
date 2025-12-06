@@ -1,87 +1,85 @@
 <script setup>
 import { userOnlineApi } from "@/api/monitor/user-online-api";
-import utils from '@/utils/utils.js';
+import utils from "@/utils/utils.js";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
+const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
 const columns = reactive({
-  index: { label: '序号列', visible: false },
-  id: { label: 'ID', visible: true },
-  loginId: { label: '账号', visible: true },
-  type: { label: '会话类型', visible: true },
-  loginType: { label: '登录类型', visible: true },
-  terminalInfoCount: { label: '最近登录终端数', visible: true },
-  createTime: { label: 'Session 创建时间', visible: false },
-  operation: { label: '操作', visible: true },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: true },
+	loginId: { label: "账号", visible: true },
+	type: { label: "会话类型", visible: true },
+	loginType: { label: "登录类型", visible: true },
+	terminalInfoCount: { label: "最近登录终端数", visible: true },
+	createTime: { label: "Session 创建时间", visible: false },
+	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  loginType: undefined,
-  current: 1,
-  size: 10,
-  total: 0,
+	keywords: undefined,
+	loginType: undefined,
+	current: 1,
+	size: 10,
+	total: 0,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  userOnlineApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
-    loading.value = false;
-  });
+	loading.value = true;
+	userOnlineApi.page(queryParams).then((res) => {
+		tableData.value = res.records;
+		queryParams.total = res.total;
+		loading.value = false;
+	});
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
-  loadTableData();
-}
+	queryParams.current = currentPage;
+	queryParams.size = pageSize;
+	loadTableData();
+};
 
 const handleKickOutByUsername = (username) => {
-  userOnlineApi.kickOutByUsername(username).then(() => {
-    loadTableData();
-  });
-}
+	userOnlineApi.kickOutByUsername(username).then(() => {
+		loadTableData();
+	});
+};
 
 const handleKickOutByToken = (row) => {
-  userOnlineApi.kickOutByToken(row.encryptTokenValue).then(() => {
-    utils.remove(dialog.data.terminalInfoList, item => item.index === row.index);
-    loadTableData();
-  });
-}
-
+	userOnlineApi.kickOutByToken(row.encryptTokenValue).then(() => {
+		utils.remove(dialog.data.terminalInfoList, (item) => item.index === row.index);
+		loadTableData();
+	});
+};
 
 const dialog = reactive({
-  visible: false,
-  data: {},
+	visible: false,
+	data: {},
 });
 
 const handleDetail = (row) => {
-  dialog.data = { ...row };
-  dialog.visible = true;
+	dialog.data = { ...row };
+	dialog.visible = true;
 };
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>

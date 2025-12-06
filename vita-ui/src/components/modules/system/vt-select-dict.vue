@@ -3,26 +3,26 @@ import { useDictStore } from "@/store/dict-store.js";
 const dictStore = useDictStore();
 
 const props = defineProps({
-  code: {
-    type: String,
-    required: true,
-  },
-  filterable: {
-    type: Boolean,
-    default: false,
-  },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  size: {
-    type: String,
-    default: 'default'
-  },
-  style: {
-    type: String,
-    default: 'min-width: 200px;',
-  },
+	code: {
+		type: String,
+		required: true,
+	},
+	filterable: {
+		type: Boolean,
+		default: false,
+	},
+	multiple: {
+		type: Boolean,
+		default: false,
+	},
+	size: {
+		type: String,
+		default: "default",
+	},
+	style: {
+		type: String,
+		default: "min-width: 200px;",
+	},
 });
 
 const selectValue = defineModel({ type: String || Array });
@@ -30,9 +30,8 @@ const selectValue = defineModel({ type: String || Array });
 const options = ref([]);
 
 onMounted(() => {
-  options.value = dictStore.get(props.code);
+	options.value = dictStore.get(props.code);
 });
-
 </script>
 
 <template>

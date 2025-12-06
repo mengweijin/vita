@@ -1,20 +1,19 @@
 <script setup>
 import { deptApi } from "@/api/system/dept-api";
-import utils from '@/utils/utils.js';
-import { columns } from './dept-hook.js';
-import DeptEdit from './dept-edit.vue';
+import utils from "@/utils/utils.js";
+import { columns } from "./dept-hook.js";
+import DeptEdit from "./dept-edit.vue";
 
 const loading = ref(true);
 
-const size = ref('default');
+const size = ref("default");
 
-const tableRef = useTemplateRef('tableRef');
-
+const tableRef = useTemplateRef("tableRef");
 
 const treeProps = reactive({
-  // 父子节点默认联动
-  checkStrictly: false,
-})
+	// 父子节点默认联动
+	checkStrictly: false,
+});
 
 const tableData = ref([]);
 
@@ -22,60 +21,59 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  keywords: undefined,
-  disabled: undefined,
+	keywords: undefined,
+	disabled: undefined,
 });
 
-const queryFormRef = useTemplateRef('queryFormRef');
+const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-  queryFormRef.value.resetFields();
-  loadTableData();
+	queryFormRef.value.resetFields();
+	loadTableData();
 };
 
 const loadTableData = () => {
-  loading.value = true;
-  deptApi.list(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res, { sortKey: 'seq' });
-    loading.value = false;
-  });
+	loading.value = true;
+	deptApi.list(queryParams).then((res) => {
+		tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
+		loading.value = false;
+	});
 };
 
-const deptEditRef = useTemplateRef('deptEditRef');
+const deptEditRef = useTemplateRef("deptEditRef");
 
 const handleAdd = (id) => {
-  deptEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
-  deptEditRef.value.visible = true;
-}
+	deptEditRef.value.data = {
+		parentId: id ?? undefined,
+	};
+	deptEditRef.value.visible = true;
+};
 
 const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  deptEditRef.value.data = { ...row };
-  deptEditRef.value.visible = true;
-}
+	// 使用展开运算符，避免数据污染
+	deptEditRef.value.data = { ...row };
+	deptEditRef.value.visible = true;
+};
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  deptApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-}
+	deptApi.remove(ids).then(() => {
+		// 清空已选择
+		selected.value = [];
+		loadTableData();
+	});
+};
 
 const handleBatchDelete = () => {
-  let ids = selected.value.map(item => item.id).join();
-  handleDelete(ids);
-}
+	let ids = selected.value.map((item) => item.id).join();
+	handleDelete(ids);
+};
 
 onMounted(() => {
-  loadTableData();
+	loadTableData();
 });
-
 </script>
 
 <template>
