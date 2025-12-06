@@ -1,7 +1,7 @@
 <script setup>
 import { fileApi } from "@/api/system/file-api";
-import { columns } from "./file-hook.js";
 import { useLoginStore } from "@/store/login-store.js";
+import { columns } from "./file-hook.js";
 
 const loading = ref(true);
 
@@ -15,9 +15,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
 	keywords: undefined,
 	md5: undefined,
-	current: 1,
 	size: 10,
 	total: 0,
 });
@@ -43,7 +43,7 @@ const { VITE_BASE_API } = import.meta.env;
 const uploadUrl = `${window.location.origin}${VITE_BASE_API}/system/file/upload`;
 
 const handleUpload = (res) => {
-	ElMessage.success({ message: `【${res[0]?.name}】上传成功!`, duration: 3000, showClose: true });
+	ElMessage.success({ duration: 3000, message: `【${res[0]?.name}】上传成功!`, showClose: true });
 	loadTableData();
 };
 
@@ -63,7 +63,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

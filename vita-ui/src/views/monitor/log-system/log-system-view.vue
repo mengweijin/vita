@@ -11,28 +11,28 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const columns = reactive({
-	selection: { label: "选择列", visible: false },
-	index: { label: "序号列", visible: false },
-	id: { label: "ID", visible: false },
-	loggerLevel: { label: "日志级别", visible: true },
-	threadName: { label: "线程名称", visible: false },
-	loggerName: { label: "日志名称", visible: false },
-	formattedMessage: { label: "日志内容", visible: true },
-	stackTrace: { label: "堆栈信息", visible: false },
 	createByName: { label: "创建者", visible: false },
 	createTime: { label: "创建时间", visible: true },
+	formattedMessage: { label: "日志内容", visible: true },
+	id: { label: "ID", visible: false },
+	index: { label: "序号列", visible: false },
+	loggerLevel: { label: "日志级别", visible: true },
+	loggerName: { label: "日志名称", visible: false },
+	operation: { label: "操作", visible: true },
+	selection: { label: "选择列", visible: false },
+	stackTrace: { label: "堆栈信息", visible: false },
+	threadName: { label: "线程名称", visible: false },
 	updateByName: { label: "更新者", visible: false },
 	updateTime: { label: "更新时间", visible: false },
-	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
 	keywords: undefined,
 	loggerLevel: undefined,
-	current: 1,
 	size: 100,
 	total: 0,
 });
@@ -65,7 +65,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

@@ -1,7 +1,8 @@
 <script setup>
 import { messageApi } from "@/api/system/message-api";
-import { columns } from "./message-hook.js";
 import { useDictStore } from "@/store/dict-store.js";
+import { columns } from "./message-hook.js";
+
 const dictStore = useDictStore();
 
 const loading = ref(true);
@@ -10,20 +11,20 @@ const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
 	children: "children",
-	label: "label",
 	disabled: "disabled",
+	label: "label",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-	let dictData = dictStore.get("vt_message_category");
+	const dictData = dictStore.get("vt_message_category");
 	treeData.value = [
 		{
+			children: dictData,
+			disabled: false,
 			label: "消息分类",
 			val: null,
-			disabled: false,
-			children: dictData,
 		},
 	];
 };
@@ -43,9 +44,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
 	category: undefined,
 	current: 1,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -81,7 +82,7 @@ const handleSetViewed = (messageReceiverIds) => {
 };
 
 const handleBatchSetViewed = () => {
-	let messageReceiverIds = selected.value.map((item) => item.id).join();
+	const messageReceiverIds = selected.value.map((item) => item.id).join();
 	handleSetViewed(messageReceiverIds);
 };
 

@@ -1,25 +1,25 @@
 <script setup>
-import utils from "@/utils/utils.js";
 import { useDictStore } from "@/store/dict-store.js";
+import utils from "@/utils/utils.js";
 
 const dictStore = useDictStore();
 
 const props = defineProps({
 	code: {
-		type: String,
 		required: true,
-	},
-	value: {
 		type: String,
-		required: true,
-	},
-	size: {
-		type: String,
-		default: "default",
 	},
 	separator: {
-		type: String,
 		default: ",",
+		type: String,
+	},
+	size: {
+		default: "default",
+		type: String,
+	},
+	value: {
+		required: true,
+		type: String,
 	},
 });
 

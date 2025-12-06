@@ -1,5 +1,5 @@
-import { pathExists, emptyDir, ensureDir, copy } from "fs-extra";
 import { fileURLToPath, URL } from "node:url";
+import { copy, emptyDir, ensureDir, pathExists } from "fs-extra";
 
 // 可以根据实际情况修改这个相对路径
 // 源目录：项目下的 dist

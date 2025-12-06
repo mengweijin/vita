@@ -4,20 +4,20 @@ import utils from "@/utils/utils.js";
 
 const props = defineProps({
 	filterable: {
-		type: Boolean,
 		default: false,
+		type: Boolean,
 	},
 	multiple: {
-		type: Boolean,
 		default: false,
+		type: Boolean,
 	},
 	size: {
-		type: String,
 		default: "default",
+		type: String,
 	},
 	style: {
-		type: String,
 		default: "min-width: 200px;",
+		type: String,
 	},
 });
 
@@ -32,7 +32,9 @@ const initDeptList = () => {
 };
 
 const deptTreeSelectOptions = computed(() => {
-	deptList.value.forEach((item) => (item.disabled = false));
+	deptList.value.forEach((item) => {
+		item.disabled = false;
+	});
 	utils.addFullPath(deptList.value, { pathKey: "name" });
 	return utils.toArrayTree(deptList.value, { sortKey: "seq" });
 });

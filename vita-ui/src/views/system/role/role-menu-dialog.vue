@@ -16,14 +16,14 @@ const checkStrictly = ref(true);
 
 const treeProps = reactive({
 	children: "children",
-	label: "title",
 	disabled: (data, node) => data.disabled === "Y",
+	label: "title",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = async () => {
-	let menuList = await menuApi.list();
+	const menuList = await menuApi.list();
 	treeData.value = utils.toArrayTree(menuList, { sortKey: "seq" });
 };
 
@@ -75,7 +75,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

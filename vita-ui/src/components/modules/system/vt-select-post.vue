@@ -3,20 +3,20 @@ import { postApi } from "@/api/system/post-api.js";
 
 const props = defineProps({
 	filterable: {
-		type: Boolean,
 		default: true,
+		type: Boolean,
 	},
 	multiple: {
-		type: Boolean,
 		default: true,
+		type: Boolean,
 	},
 	size: {
-		type: String,
 		default: "default",
+		type: String,
 	},
 	style: {
-		type: String,
 		default: "min-width: 200px;",
+		type: String,
 	},
 });
 

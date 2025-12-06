@@ -1,14 +1,12 @@
 import { fileURLToPath, URL } from "node:url";
-
-import { defineConfig, loadEnv } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueDevTools from "vite-plugin-vue-devtools";
 import legacy from "@vitejs/plugin-legacy";
-import svgLoader from "vite-svg-loader";
-
+import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import Components from "unplugin-vue-components/vite";
+import { defineConfig, loadEnv } from "vite";
+import vueDevTools from "vite-plugin-vue-devtools";
+import svgLoader from "vite-svg-loader";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -30,36 +28,36 @@ export default defineConfig(({ mode }) => {
 		 * 缓存问题：修改 base 后需清理浏览器缓存，避免旧路径资源被强缓存影响加载
 		 */
 		base: env.VITE_PUBLIC_PATH,
-		resolve: {
-			// 导入时可以省略的后缀名，可根据需求扩展。若同一目录下存在同名 `.js` 和 `.vue` 文件，按照配置的顺序优先加载。
-			// extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'], // 默认值
-			extensions: [".js"],
-			alias: {
-				/**
-				 * import.meta.url 表示当前模块的 URL。
-				 * new URL(file, import.meta.url) ：创建一个基于 import.meta.url 的绝对 URL 对象。
-				 * fileURLToPath(...)：将 URL 对象转换为文件系统路径，这个绝对路径将作为对象的值。
-				 */
-				"@": fileURLToPath(new URL("./src", import.meta.url)),
+		build: {
+			// 会先使用 legacy 中的 targets
+			// https://cn.vitejs.dev/guide/build.html#browser-compatibility
+			//target: 'es2015',
+			// https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
+			// 小于此阈值的导入或引用资源将内联为 base64 编码，以避免额外的 http 请求。设置为 0 可以完全禁用此项。
+			assetsInlineLimit: 0,
+			// 消除打包大小超过500kb警告
+			chunkSizeWarningLimit: 4000,
+			// https://rollupjs.org/configuration-options/
+			rollupOptions: {
+				// Rollup 打包配置选项
+				output: {
+					// 静态资源文件命名规则（图片、字体、CSS等）
+					// [name]: 资源文件名称
+					// [hash]: 基于文件内容生成的哈希值
+					// [ext]: 文件扩展名（如: png, jpg, css, svg）
+					assetFileNames: "src/[ext]/[name]-[hash].[ext]",
+					// 代码分割产生的 chunk 文件命名规则。例如: src/js/vendor-abc123.js
+					// [name]: 模块名称
+					// [hash]: 基于文件内容生成的哈希值（用于缓存控制）
+					chunkFileNames: "src/js/[name]-[hash].js",
+					// 入口文件命名规则。例如: src/js/main-def456.js
+					entryFileNames: "src/js/[name]-[hash].js",
+				},
 			},
+			sourcemap: false,
 		},
 		// 设为 false 可以避免 Vite 清屏而错过在终端中打印某些关键信息。
 		clearScreen: false,
-		server: {
-			// 端口号
-			port: 5173,
-			host: "0.0.0.0",
-			// 开发服务器启动时，自动在浏览器中打开应用程序。
-			open: true,
-			proxy: {
-				[env.VITE_BASE_API]: {
-					target: "http://localhost:8080",
-					// target: 'https://vita.aday.fun',
-					changeOrigin: true,
-					rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ""),
-				},
-			},
-		},
 		plugins: [
 			vue(),
 			vueDevTools(),
@@ -68,12 +66,12 @@ export default defineConfig(({ mode }) => {
 				targets: ["defaults", "not IE 11"],
 			}),
 			AutoImport({
+				// 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
+				dts: true,
 				// 自动导入 vue, pinia 等相关函数，如：ref, reactive, toRef, storeToRefs 等
 				imports: ["vue", "vue-router", "pinia"],
 				// 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
 				resolvers: [ElementPlusResolver()],
-				// 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
-				dts: true,
 			}),
 			Components({
 				resolvers: [
@@ -82,31 +80,31 @@ export default defineConfig(({ mode }) => {
 				],
 			}),
 		],
-		build: {
-			// 会先使用 legacy 中的 targets
-			// https://cn.vitejs.dev/guide/build.html#browser-compatibility
-			//target: 'es2015',
-			// https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
-			// 小于此阈值的导入或引用资源将内联为 base64 编码，以避免额外的 http 请求。设置为 0 可以完全禁用此项。
-			assetsInlineLimit: 0,
-			sourcemap: false,
-			// 消除打包大小超过500kb警告
-			chunkSizeWarningLimit: 4000,
-			// https://rollupjs.org/configuration-options/
-			rollupOptions: {
-				// Rollup 打包配置选项
-				output: {
-					// 代码分割产生的 chunk 文件命名规则。例如: src/js/vendor-abc123.js
-					// [name]: 模块名称
-					// [hash]: 基于文件内容生成的哈希值（用于缓存控制）
-					chunkFileNames: "src/js/[name]-[hash].js",
-					// 入口文件命名规则。例如: src/js/main-def456.js
-					entryFileNames: "src/js/[name]-[hash].js",
-					// 静态资源文件命名规则（图片、字体、CSS等）
-					// [name]: 资源文件名称
-					// [hash]: 基于文件内容生成的哈希值
-					// [ext]: 文件扩展名（如: png, jpg, css, svg）
-					assetFileNames: "src/[ext]/[name]-[hash].[ext]",
+		resolve: {
+			alias: {
+				/**
+				 * import.meta.url 表示当前模块的 URL。
+				 * new URL(file, import.meta.url) ：创建一个基于 import.meta.url 的绝对 URL 对象。
+				 * fileURLToPath(...)：将 URL 对象转换为文件系统路径，这个绝对路径将作为对象的值。
+				 */
+				"@": fileURLToPath(new URL("./src", import.meta.url)),
+			},
+			// 导入时可以省略的后缀名，可根据需求扩展。若同一目录下存在同名 `.js` 和 `.vue` 文件，按照配置的顺序优先加载。
+			// extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'], // 默认值
+			extensions: [".js"],
+		},
+		server: {
+			host: "0.0.0.0",
+			// 开发服务器启动时，自动在浏览器中打开应用程序。
+			open: true,
+			// 端口号
+			port: 5173,
+			proxy: {
+				[env.VITE_BASE_API]: {
+					// target: 'https://vita.aday.fun',
+					changeOrigin: true,
+					rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ""),
+					target: "http://localhost:8080",
 				},
 			},
 		},

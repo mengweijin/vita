@@ -1,5 +1,5 @@
-import utils from "@/utils/utils.js";
 import { dictDataApi } from "@/api/system/dict-api.js";
+import utils from "@/utils/utils.js";
 
 const { VITE_APP_PREFIX } = import.meta.env;
 
@@ -14,13 +14,15 @@ export const useDictStore = defineStore(
 		};
 
 		const get = (code) => {
-			let list = code ? dicts.value[code] : dicts.value;
+			const list = code ? dicts.value[code] : dicts.value;
 			return utils.orderBy(list, ["seq", "asc"]);
 		};
 
-		const clear = () => (dicts.value = null);
+		const clear = () => {
+			dicts.value = null;
+		};
 
-		return { dicts, refresh, get, clear };
+		return { clear, dicts, get, refresh };
 	},
 	{
 		persist: {

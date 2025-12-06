@@ -1,4 +1,5 @@
 const { VITE_APP_PREFIX } = import.meta.env;
+
 import { menuApi } from "@/api/system/menu-api.js";
 
 export const useMenuStore = defineStore(
@@ -26,7 +27,7 @@ export const useMenuStore = defineStore(
 
 		const isDynamicRoutesAdded = () => dynamicRoutesAdded.value;
 
-		return { menus, refresh, get, clear, dynamicRoutesAdded, setDynamicRoutesAdded, isDynamicRoutesAdded };
+		return { clear, dynamicRoutesAdded, get, isDynamicRoutesAdded, menus, refresh, setDynamicRoutesAdded };
 	},
 	{
 		persist: {

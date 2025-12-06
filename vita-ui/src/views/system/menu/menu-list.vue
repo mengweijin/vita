@@ -1,8 +1,8 @@
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
 import utils from "@/utils/utils.js";
-import { columns } from "./menu-hook.js";
 import MenuEdit from "./menu-edit.vue";
+import { columns } from "./menu-hook.js";
 
 const loading = ref(true);
 
@@ -22,9 +22,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	disabled: undefined,
 	keywords: undefined,
 	type: undefined,
-	disabled: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -69,7 +69,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

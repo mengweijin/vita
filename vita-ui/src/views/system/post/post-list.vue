@@ -1,7 +1,7 @@
 <script setup>
 import { postApi } from "@/api/system/post-api";
-import { columns } from "./post-hook.js";
 import PostEdit from "./post-edit.vue";
+import { columns } from "./post-hook.js";
 
 const loading = ref(true);
 
@@ -15,9 +15,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
-	disabled: undefined,
 	current: 1,
+	disabled: undefined,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -63,7 +63,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

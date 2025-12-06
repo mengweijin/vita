@@ -1,8 +1,8 @@
 <script setup>
 const { menuList } = defineProps({
 	menuList: {
-		type: Array,
 		default: () => [],
+		type: Array,
 	},
 });
 

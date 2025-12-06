@@ -37,13 +37,13 @@ const addDynamicRoutes = (menuList = [], parentRouteName = "Layout") => {
 		.filter((menu) => "DIR" === menu.type || "MENU" === menu.type)
 		.forEach((menu) => {
 			const config = {
-				name: menu.routeName,
-				path: menu.routePath,
+				children: () => (menu.children ? addDynamicRoutes(menu.children, menu.routeName) : []),
 				component: components[`../views/${menu.component}`],
 				meta: {
 					title: menu.title,
 				},
-				children: () => (menu.children ? addDynamicRoutes(menu.children, menu.routeName) : []),
+				name: menu.routeName,
+				path: menu.routePath,
 			};
 
 			if (!router.hasRoute(menu.routeName)) {
@@ -63,22 +63,22 @@ export const initDynamicRoutes = () => {
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes: routes,
-	// 严格匹配模式
-	strict: true,
 	// 刷新时，还原滚动条位置
-	scrollBehavior(to, from, savedPosition) {
+	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;
 		}
 		return { top: 0 };
 	},
+	// 严格匹配模式
+	strict: true,
 });
 
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, _from) => {
 	NProgress.start();
 	// 设置标题
-	let title = to?.meta?.title;
+	const title = to?.meta?.title;
 	if (title) {
 		document.title = `${title} | ${VITE_APP_TITLE}`;
 	} else {
@@ -86,7 +86,7 @@ router.beforeEach(async (to, from) => {
 	}
 
 	const loginStore = useLoginStore();
-	let isLogin = await loginStore.isLogin();
+	const isLogin = await loginStore.isLogin();
 	const menuStore = useMenuStore();
 	const { isDynamicRoutesAdded, setDynamicRoutesAdded } = menuStore;
 

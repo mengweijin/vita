@@ -1,9 +1,9 @@
 <script setup>
+import { useAppStore } from "@/store/app-store";
+import LayFooter from "./lay-footer.vue";
 import LayHeader from "./lay-header.vue";
 import LaySide from "./lay-side.vue";
-import LayFooter from "./lay-footer.vue";
 
-import { useAppStore } from "@/store/app-store";
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 

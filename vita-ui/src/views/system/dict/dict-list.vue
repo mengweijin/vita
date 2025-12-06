@@ -1,7 +1,7 @@
 <script setup>
 import { dictTypeApi } from "@/api/system/dict-api";
-import DictTypeEdit from "./dict-type-edit.vue";
 import DictDataTable from "./dict-data-table.vue";
+import DictTypeEdit from "./dict-type-edit.vue";
 
 const loading = ref(true);
 
@@ -12,25 +12,25 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const columns = reactive({
-	selection: { label: "选择列", visible: false },
-	index: { label: "序号列", visible: false },
-	id: { label: "ID", visible: false },
-	name: { label: "字典名称", visible: true },
 	code: { label: "字典编码", visible: true },
-	remark: { label: "备注", visible: true },
 	createByName: { label: "创建者", visible: false },
 	createTime: { label: "创建时间", visible: false },
+	id: { label: "ID", visible: false },
+	index: { label: "序号列", visible: false },
+	name: { label: "字典名称", visible: true },
+	operation: { label: "操作", visible: true },
+	remark: { label: "备注", visible: true },
+	selection: { label: "选择列", visible: false },
 	updateByName: { label: "更新者", visible: true },
 	updateTime: { label: "更新时间", visible: true },
-	operation: { label: "操作", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
 	current: 1,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -76,7 +76,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

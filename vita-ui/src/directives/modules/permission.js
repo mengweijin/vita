@@ -1,5 +1,5 @@
-import utils from "@/utils/utils.js";
 import { useUserStore } from "@/store/user-store.js";
+import utils from "@/utils/utils.js";
 
 /**
  * 使用（在元素上增加指令）：

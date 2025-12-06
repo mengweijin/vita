@@ -20,37 +20,37 @@ export const useSseStore = defineStore(
 			disconnect();
 
 			// SSE URL
-			let url = `${window.location.origin}${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`;
+			const url = `${window.location.origin}${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`;
 
 			// 创建SSE连接，关键步骤：在 headers 中传递 Token
-			let eventSource = new SSE(url, {
-				start: true,
+			const eventSource = new SSE(url, {
 				autoReconnect: false,
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
+				start: true,
 			});
 
-			eventSource.addEventListener("open", function (event) {
+			eventSource.addEventListener("open", (event) => {
 				// 连接成功建立
 				console.log("SSE连接已打开");
 				sseConnected.value = true;
 			});
 
-			eventSource.addEventListener("error", function (event) {
+			eventSource.addEventListener("error", (event) => {
 				// 连接发生错误
 				console.error("SSE连接错误:", event);
 			});
 
-			eventSource.addEventListener("message", function (event) {
+			eventSource.addEventListener("message", (event) => {
 				// 服务器发送的消息会在这里触发
 				ElMessage.primary({
-					message: `您有新的消息，请注意查看！<br> ${event.data}`,
 					dangerouslyUseHTMLString: true,
 					duration: 5000,
-					showClose: true,
-					placement: "top-right",
 					icon: '<Icon icon="ep:chat-line-round" width="24" height="24" />',
+					message: `您有新的消息，请注意查看！<br> ${event.data}`,
+					placement: "top-right",
+					showClose: true,
 				});
 			});
 
@@ -72,10 +72,10 @@ export const useSseStore = defineStore(
 		};
 
 		return {
-			sseConnected,
-			eventSourceRef,
 			connect,
 			disconnect,
+			eventSourceRef,
+			sseConnected,
 		};
 	},
 	{

@@ -1,8 +1,8 @@
 <script setup>
 import { noticeApi } from "@/api/system/notice-api";
-import { columns } from "./notice-hook.js";
-import NoticeEdit from "./notice-edit.vue";
 import NoticeDetail from "./notice-detail.vue";
+import NoticeEdit from "./notice-edit.vue";
+import { columns } from "./notice-hook.js";
 
 const loading = ref(true);
 
@@ -16,9 +16,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
 	keywords: undefined,
 	released: undefined,
-	current: 1,
 	size: 10,
 	total: 0,
 });
@@ -83,7 +83,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

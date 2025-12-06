@@ -16,9 +16,11 @@ export const useUserStore = defineStore(
 
 		const getPermissions = () => user.value?.permissions;
 
-		const clear = () => (user.value = null);
+		const clear = () => {
+			user.value = null;
+		};
 
-		return { user, initUser, getRoles, getPermissions, clear };
+		return { clear, getPermissions, getRoles, initUser, user };
 	},
 	{
 		persist: {

@@ -11,12 +11,12 @@ const data = ref({});
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
 	keywords: undefined,
 	schedulingTaskId: undefined,
+	size: 10,
 	status: undefined,
 	success: undefined,
-	current: 1,
-	size: 10,
 	total: 0,
 });
 
@@ -34,20 +34,20 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const columns = reactive({
-	selection: { label: "选择列", visible: true },
-	index: { label: "序号列", visible: false },
-	id: { label: "ID", visible: true },
-	schedulingTaskId: { label: "调度任务ID", visible: false },
 	args: { label: "实际执行参数", visible: true },
-	status: { label: "执行状态", visible: true },
-	success: { label: "执行结果", visible: true },
 	costTime: { label: "消耗时间（毫秒）", visible: true },
-	message: { label: "附加信息", visible: true },
 	createByName: { label: "创建者", visible: false },
 	createTime: { label: "创建时间", visible: true },
+	id: { label: "ID", visible: true },
+	index: { label: "序号列", visible: false },
+	message: { label: "附加信息", visible: true },
+	operation: { label: "操作", visible: true },
+	schedulingTaskId: { label: "调度任务ID", visible: false },
+	selection: { label: "选择列", visible: true },
+	status: { label: "执行状态", visible: true },
+	success: { label: "执行结果", visible: true },
 	updateByName: { label: "更新者", visible: false },
 	updateTime: { label: "更新时间", visible: true },
-	operation: { label: "操作", visible: true },
 });
 
 const loadTableData = () => {
@@ -75,7 +75,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 
@@ -102,7 +102,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

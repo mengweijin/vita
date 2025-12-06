@@ -12,15 +12,11 @@ const { VITE_BASE_API } = import.meta.env;
 let loadingInstance;
 
 const axiosConfig = {
-	// 自定义属性，是否启用全屏 loading
-	loading: true,
 	// axios中请求配置有baseURL选项，表示请求URL公共部分。参考文档 https://cn.vitejs.dev/guide/env-and-mode.html
 	baseURL: VITE_BASE_API,
-	// 超时，单位：毫秒
-	timeout: 50000,
-	// 允许携带cookie请求
-	withCredentials: true,
 	headers: { "Content-Type": "application/json;charset=utf-8" },
+	// 自定义属性，是否启用全屏 loading
+	loading: true,
 	paramsSerializer: (params) => {
 		return stringify(params, {
 			// repeat：数组序列化为重复键名（ids=1&ids=2&ids=3）
@@ -30,6 +26,10 @@ const axiosConfig = {
 			skipNulls: true, // 跳过空值参数
 		});
 	},
+	// 超时，单位：毫秒
+	timeout: 50000,
+	// 允许携带cookie请求
+	withCredentials: true,
 };
 
 // 创建axios实例
@@ -45,7 +45,7 @@ axiosInstance.interceptors.request.use(
 		const loginStore = useLoginStore();
 		const token = loginStore.getToken();
 		if (token) {
-			config.headers["Authorization"] = loginStore.getBearerToken();
+			config.headers.Authorization = loginStore.getBearerToken();
 		}
 
 		return config;
@@ -65,8 +65,8 @@ axiosInstance.interceptors.response.use(
 				loadingInstance?.close();
 			}
 			ElMessage.success({
-				message: "操作成功!",
 				duration: 3000,
+				message: "操作成功!",
 				showClose: true,
 			});
 		}
@@ -97,37 +97,37 @@ axiosInstance.interceptors.response.use(
 					break;
 				case 403:
 					ElMessage.error({
-						message: error.response.status + " Forbidden",
+						message: `${error.response.status} Forbidden`,
 						showClose: true,
 					});
 					break;
 				case 404:
 					ElMessage.error({
-						message: error.response.status + " Not Found",
+						message: `${error.response.status} Not Found`,
 						showClose: true,
 					});
 					break;
 				case 405:
 					ElMessage.error({
-						message: error.response.status + " Method Not Allowed",
+						message: `${error.response.status} Method Not Allowed`,
 						showClose: true,
 					});
 					break;
 				case 406:
 					ElMessage.error({
-						message: error.response.status + " Not Acceptable",
+						message: `${error.response.status} Not Acceptable`,
 						showClose: true,
 					});
 					break;
 				case 408:
 					ElMessage.error({
-						message: error.response.status + " Request Timeout",
+						message: `${error.response.status} Request Timeout`,
 						showClose: true,
 					});
 					break;
 				case 500:
 					ElMessage.error({
-						message: error.response.status + " Server Error",
+						message: `${error.response.status} Server Error`,
 						showClose: true,
 					});
 					break;
@@ -160,8 +160,8 @@ axiosInstance.download = (url, fileName = undefined) => {
 	// 这里要用 downloadInstance 实例单独实现下载功能，而不用公共的 axiosInstance 实例。
 	downloadInstance
 		.get(url, {
-			responseType: "blob",
 			headers: { Authorization: loginStore.getBearerToken() },
+			responseType: "blob",
 		})
 		.then((response) => {
 			// attachment;fileName=%E6%A8%AA%E5%9B%BE_%E4%BA%91%E6%9B%A6_1.jpg

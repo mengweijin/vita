@@ -11,23 +11,23 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const columns = reactive({
-	index: { label: "序号列", visible: false },
-	id: { label: "ID", visible: true },
-	loginId: { label: "账号", visible: true },
-	type: { label: "会话类型", visible: true },
-	loginType: { label: "登录类型", visible: true },
-	terminalInfoCount: { label: "最近登录终端数", visible: true },
 	createTime: { label: "Session 创建时间", visible: false },
+	id: { label: "ID", visible: true },
+	index: { label: "序号列", visible: false },
+	loginId: { label: "账号", visible: true },
+	loginType: { label: "登录类型", visible: true },
 	operation: { label: "操作", visible: true },
+	terminalInfoCount: { label: "最近登录终端数", visible: true },
+	type: { label: "会话类型", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
 	keywords: undefined,
 	loginType: undefined,
-	current: 1,
 	size: 10,
 	total: 0,
 });
@@ -68,8 +68,8 @@ const handleKickOutByToken = (row) => {
 };
 
 const dialog = reactive({
-	visible: false,
 	data: {},
+	visible: false,
 });
 
 const handleDetail = (row) => {

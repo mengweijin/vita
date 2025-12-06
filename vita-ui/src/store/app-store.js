@@ -9,7 +9,9 @@ export const useAppStore = defineStore(
 		const sideMenuOpened = ref(utils.browse().isPC);
 
 		// method 可直接解构
-		const toggleSideMenuOpened = () => (sideMenuOpened.value = !sideMenuOpened.value);
+		const toggleSideMenuOpened = () => {
+			sideMenuOpened.value = !sideMenuOpened.value;
+		};
 
 		return { sideMenuOpened, toggleSideMenuOpened };
 	},

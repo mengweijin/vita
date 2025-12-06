@@ -1,12 +1,12 @@
 <script setup>
-import LayFooter from "@/layout/lay-footer.vue";
-
 import { loginApi } from "@/api/login-api";
+import LayFooter from "@/layout/lay-footer.vue";
 
 const router = useRouter();
 const route = useRoute();
 
 import { useLoginStore } from "@/store/login-store";
+
 const loginStore = useLoginStore();
 
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
@@ -16,20 +16,20 @@ const loading = ref(false);
 const visible = ref(false);
 
 const form = reactive({
-	username: "admin",
-	password: "aday.fun",
-	otp: "",
 	captcha: "",
-	remember: false,
 	deviceId: undefined,
+	otp: "",
+	password: "aday.fun",
+	remember: false,
+	username: "admin",
 });
 
 const formRef = useTemplateRef("formRef");
 
 const rules = reactive({
 	username: [
-		{ required: true, message: "必填", trigger: "blur" },
-		{ min: 3, max: 30, message: "长度需要在 3-30 个字符之间" },
+		{ message: "必填", required: true, trigger: "blur" },
+		{ max: 30, message: "长度需要在 3-30 个字符之间", min: 3 },
 	],
 });
 
@@ -55,7 +55,7 @@ const onForgetPassword = () => {
 
 const onSubmit = () => {
 	// 这里手动 loading
-	let loading = ElLoading.service({ fullscreen: true });
+	const loading = ElLoading.service({ fullscreen: true });
 	formRef.value.validate((valid, fields) => {
 		if (valid) {
 			// loginApi.login() 方法中已经关闭了 http.js 中的全局 loading

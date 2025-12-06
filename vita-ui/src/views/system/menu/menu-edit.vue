@@ -1,7 +1,8 @@
 <script setup>
-import utils from "@/utils/utils.js";
 import { menuApi } from "@/api/system/menu-api";
 import { useDictStore } from "@/store/dict-store.js";
+import utils from "@/utils/utils.js";
+
 const dictStore = useDictStore();
 
 const loading = ref(true);
@@ -12,18 +13,18 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
+	component: undefined,
+	disabled: undefined,
+	icon: undefined,
 	id: undefined,
 	parentId: undefined,
-	type: undefined,
-	title: undefined,
-	icon: undefined,
 	permission: undefined,
-	component: undefined,
 	routeName: undefined,
 	routePath: undefined,
-	url: undefined,
 	seq: undefined,
-	disabled: undefined,
+	title: undefined,
+	type: undefined,
+	url: undefined,
 });
 
 const init = () => {
@@ -106,7 +107,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 menuEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

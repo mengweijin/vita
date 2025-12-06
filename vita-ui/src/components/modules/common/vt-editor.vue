@@ -4,20 +4,20 @@ import "@wangeditor-next/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor-next/editor-for-vue";
 
 const props = defineProps({
-	// 'default' 或 'simple'
-	mode: {
-		type: String,
-		default: "default",
-	},
-	toolbarConfig: {
-		type: Object,
-		default: {},
-	},
 	editorConfig: {
-		type: Object,
 		default: {
 			placeholder: "请输入内容...",
 		},
+		type: Object,
+	},
+	// 'default' 或 'simple'
+	mode: {
+		default: "default",
+		type: String,
+	},
+	toolbarConfig: {
+		default: {},
+		type: Object,
 	},
 });
 

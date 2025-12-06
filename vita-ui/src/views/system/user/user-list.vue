@@ -1,11 +1,11 @@
 <script setup>
 import { deptApi } from "@/api/system/dept-api";
 import { userApi } from "@/api/system/user-api";
-import { columns } from "./user-hook.js";
-import UserEdit from "./user-edit.vue";
-import UserSetRoles from "./user-set-roles.vue";
-import UserResetPassword from "./user-reset-password.vue";
 import utils from "@/utils/utils.js";
+import UserEdit from "./user-edit.vue";
+import { columns } from "./user-hook.js";
+import UserResetPassword from "./user-reset-password.vue";
+import UserSetRoles from "./user-set-roles.vue";
 
 const loading = ref(false);
 
@@ -13,8 +13,8 @@ const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
 	children: "children",
-	label: "name",
 	disabled: (data, node) => data.disabled === "Y",
+	label: "name",
 });
 
 const treeData = ref([]);
@@ -38,10 +38,10 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const queryParams = reactive({
-	keywords: undefined,
+	current: 1,
 	deptId: undefined,
 	disabled: undefined,
-	current: 1,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });

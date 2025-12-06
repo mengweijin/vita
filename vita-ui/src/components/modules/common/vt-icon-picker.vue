@@ -1,8 +1,8 @@
 <script setup>
-import { debounce, isEmpty } from "xe-utils";
 import { listIcons } from "@iconify/vue";
+import { debounce, isEmpty } from "xe-utils";
 
-const inputValue = defineModel({ type: String, default: "" });
+const inputValue = defineModel({ default: "", type: String });
 
 const iconPreview = ref("ep:search");
 
@@ -25,8 +25,8 @@ const allIconList = computed(() => {
 const currentIconList = ref([]);
 
 const pageIconList = (list) => {
-	let start = (currentPage.value - 1) * pageSize.value;
-	let end = currentPage.value * pageSize.value;
+	const start = (currentPage.value - 1) * pageSize.value;
+	const end = currentPage.value * pageSize.value;
 	return list.slice(start, end);
 };
 
@@ -44,7 +44,7 @@ const search = ref(null);
 
 const handleSearch = debounce(() => {
 	if (search.value) {
-		let filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
+		const filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
 		currentIconList.value = pageIconList(filteredList);
 	} else {
 		currentIconList.value = pageIconList(allIconList.value);

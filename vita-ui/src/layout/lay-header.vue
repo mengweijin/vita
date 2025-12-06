@@ -1,15 +1,20 @@
 <script setup>
 import { useFullscreen } from "@vueuse/core";
+
 const router = useRouter();
+
 import { loginApi } from "@/api/login-api";
 
 import { useLoginStore } from "@/store/login-store";
+
 const loginStore = useLoginStore();
 
 import { useUserStore } from "@/store/user-store";
+
 const userStore = useUserStore();
 
 import { useAppStore } from "@/store/app-store";
+
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
@@ -22,6 +27,7 @@ const refresh = () => {
 
 // 打开个人信息对话框
 import UserPersonalInformationDialog from "@/views/profile/user-personal-information-dialog.vue";
+
 const userPersonalInfoDialogRef = useTemplateRef("userPersonalInfoDialogRef");
 const onUserPersonalInformation = () => {
 	userPersonalInfoDialogRef.value.visible = true;
@@ -29,6 +35,7 @@ const onUserPersonalInformation = () => {
 
 // 打开安全日志对话框
 import UserSecurityLogDialog from "@/views/profile/user-security-log-dialog.vue";
+
 const userSecurityLogDialogRef = useTemplateRef("userSecurityLogDialogRef");
 const onUserSecurityLog = () => {
 	userSecurityLogDialogRef.value.visible = true;

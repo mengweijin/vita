@@ -1,7 +1,7 @@
 <script setup>
 import { roleApi } from "@/api/system/role-api";
-import { columns } from "./role-hook.js";
 import RoleEdit from "./role-edit.vue";
+import { columns } from "./role-hook.js";
 import RoleMenuDialog from "./role-menu-dialog.vue";
 import RoleUserDialog from "./role-user-dialog.vue";
 
@@ -17,9 +17,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
-	disabled: undefined,
 	current: 1,
+	disabled: undefined,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -79,7 +79,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

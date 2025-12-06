@@ -11,14 +11,14 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	id: undefined,
 	code: undefined,
-	label: undefined,
-	val: undefined,
-	tag: undefined,
-	seq: undefined,
 	disabled: undefined,
+	id: undefined,
+	label: undefined,
 	remark: undefined,
+	seq: undefined,
+	tag: undefined,
+	val: undefined,
 });
 
 const init = () => {
@@ -70,7 +70,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

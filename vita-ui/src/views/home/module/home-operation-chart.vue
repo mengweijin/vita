@@ -9,37 +9,37 @@ let chart = null;
 const initChart = (category, activeUsers, userOperations) => {
 	chart = echarts.init(chartDomRef.value);
 
-	let options = {
+	const options = {
 		legend: {
 			orient: "horizontal",
 		},
+		series: [
+			{
+				data: activeUsers ?? [],
+				name: "日用户登录数",
+				type: "bar",
+			},
+			{
+				data: userOperations ?? [],
+				name: "日用户操作数",
+				type: "bar",
+			},
+		],
 		tooltip: {
-			// 悬浮触发类型（'item'：数据项触发）
-			trigger: "item",
 			// 背景色
 			backgroundColor: "rgba(50,50,50,0.7)",
 			borderWidth: 0,
 			textStyle: { color: "#FFF" },
+			// 悬浮触发类型（'item'：数据项触发）
+			trigger: "item",
 		},
 		xAxis: {
-			type: "category",
 			data: category ?? [],
+			type: "category",
 		},
 		yAxis: {
 			type: "value",
 		},
-		series: [
-			{
-				type: "bar",
-				name: "日用户登录数",
-				data: activeUsers ?? [],
-			},
-			{
-				type: "bar",
-				name: "日用户操作数",
-				data: userOperations ?? [],
-			},
-		],
 	};
 	chart.setOption(options);
 };

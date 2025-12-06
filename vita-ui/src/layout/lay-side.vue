@@ -3,13 +3,14 @@ import utils from "@/utils/utils.js";
 
 const route = useRoute();
 
+import { useMenuStore } from "@/store/menu-store";
 import MenuTree from "./components/menu-tree.vue";
 
-import { useMenuStore } from "@/store/menu-store";
 const menuStore = useMenuStore();
 const { menus } = storeToRefs(menuStore);
 
 import { useAppStore } from "@/store/app-store";
+
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 

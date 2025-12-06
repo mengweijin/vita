@@ -5,27 +5,27 @@ import utils from "@/utils/utils.js";
 
 const props = defineProps({
 	multiple: {
-		type: Boolean,
 		default: false,
+		type: Boolean,
 	},
 	size: {
-		type: String,
 		default: "default",
+		type: String,
 	},
 	style: {
-		type: String,
 		default: "min-width: 200px; width: 100%;",
+		type: String,
 	},
 });
 
-const selectValue = defineModel({ type: Array, default: [] });
+const selectValue = defineModel({ default: [], type: Array });
 
 const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
 	children: "children",
-	label: "name",
 	disabled: (data, node) => data.disabled === "Y",
+	label: "name",
 });
 
 const treeData = ref([]);
@@ -47,10 +47,10 @@ const loading = ref(false);
 const tableData = ref([]);
 
 const queryParams = reactive({
-	keywords: undefined,
+	current: 1,
 	deptId: undefined,
 	disabled: "N",
-	current: 1,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -119,7 +119,7 @@ const handleRemoveTag = (value) => {
 };
 
 const getLabelValue = (userId) => {
-	let user = utils.find(selected.value, (item) => item.id === userId);
+	const user = utils.find(selected.value, (item) => item.id === userId);
 	return user?.nickname + "(" + user?.username + ")";
 };
 

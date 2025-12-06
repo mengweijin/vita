@@ -1,7 +1,7 @@
 <script setup>
 import { configApi } from "@/api/system/config-api";
-import { columns } from "./config-hook.js";
 import ConfigEdit from "./config-edit.vue";
+import { columns } from "./config-hook.js";
 
 const loading = ref(true);
 
@@ -15,8 +15,8 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
 	current: 1,
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -62,7 +62,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

@@ -1,9 +1,9 @@
 <script setup>
+import { configApi } from "@/api/system/config-api";
 import { roleApi } from "@/api/system/role-api";
 import { userApi } from "@/api/system/user-api";
-import { configApi } from "@/api/system/config-api";
-import VtSelectDict from "@/components/modules/system/vt-select-dict.vue";
 import VtSelectDept from "@/components/modules/system/vt-select-dept.vue";
+import VtSelectDict from "@/components/modules/system/vt-select-dict.vue";
 import VtSelectPost from "@/components/modules/system/vt-select-post.vue";
 import VtSelectRole from "@/components/modules/system/vt-select-role.vue";
 
@@ -15,19 +15,19 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	id: undefined,
-	deptId: undefined,
-	username: undefined,
-	password: undefined,
-	nickname: undefined,
-	mobile: undefined,
-	email: undefined,
 	citizenId: undefined,
-	gender: undefined,
+	deptId: undefined,
 	disabled: "N",
+	email: undefined,
+	gender: undefined,
+	id: undefined,
+	mobile: undefined,
+	nickname: undefined,
+	password: undefined,
+	postIds: [],
 	remark: undefined,
 	roleIds: [],
-	postIds: [],
+	username: undefined,
 });
 
 const init = () => {
@@ -110,7 +110,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

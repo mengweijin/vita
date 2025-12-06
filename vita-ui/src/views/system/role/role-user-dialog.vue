@@ -12,9 +12,9 @@ const size = ref("default");
 const data = ref({});
 
 const queryParams = reactive({
-	keywords: undefined,
-	disabled: "N",
 	current: 1,
+	disabled: "N",
+	keywords: undefined,
 	size: 10,
 	total: 0,
 });
@@ -61,7 +61,7 @@ const handleRoleRemoveUser = (userId) => {
 };
 
 const handleRoleRemoveUserBatch = () => {
-	let userIds = selected.value.map((item) => item.id).join();
+	const userIds = selected.value.map((item) => item.id).join();
 	roleApi.removeByRoleIdInUserIds(data.value.id, userIds).then(() => {
 		loadTableData();
 	});
@@ -77,7 +77,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

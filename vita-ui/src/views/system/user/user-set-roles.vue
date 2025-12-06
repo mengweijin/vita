@@ -10,8 +10,8 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	userId: undefined,
 	roleIds: [],
+	userId: undefined,
 });
 
 const init = () => {
@@ -41,7 +41,7 @@ const initRoleList = async () => {
 };
 
 const initSensitiveInfo = async () => {
-	let user = await userApi.getSensitiveUserById(data.value.id);
+	const user = await userApi.getSensitiveUserById(data.value.id);
 	form.roleIds = user.roleIds;
 };
 
@@ -60,7 +60,7 @@ const onClosed = () => {
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ visible, data });
+defineExpose({ data, visible });
 </script>
 
 <template>

@@ -9,10 +9,10 @@ export const useTabsStore = defineStore(
 		// 标签页列表
 		const tabsList = ref([
 			{
+				closable: false, // 首页不可关闭
 				name: "HomeView",
 				path: "/",
 				title: "首页",
-				closable: false, // 首页不可关闭
 			},
 		]);
 
@@ -45,10 +45,10 @@ export const useTabsStore = defineStore(
 		const addTab = (route) => {
 			const { name, path, meta } = route;
 			const tab = {
+				closable: true, // 默认可关闭
 				name,
 				path,
 				title: meta.title || "",
-				closable: true, // 默认可关闭
 			};
 
 			// 检查是否已存在
@@ -73,7 +73,7 @@ export const useTabsStore = defineStore(
 
 			const tabs = tabsList.value;
 
-			let closeTabIndex = utils.findIndexOf(tabs, (tab) => tab.name === name);
+			const closeTabIndex = utils.findIndexOf(tabs, (tab) => tab.name === name);
 			// 未找到标签页，直接返回
 			if (closeTabIndex === -1) {
 				return;
@@ -114,16 +114,16 @@ export const useTabsStore = defineStore(
 		};
 
 		return {
-			tabsList,
 			activeTab,
+			addTab,
+			closeAllTabs,
+			closeLeftTabs,
+			closeOtherTabs,
+			closeRightTabs,
+			closeTab,
 			getCachedViews,
 			setActiveTab,
-			addTab,
-			closeTab,
-			closeAllTabs,
-			closeOtherTabs,
-			closeLeftTabs,
-			closeRightTabs,
+			tabsList,
 		};
 	},
 	{

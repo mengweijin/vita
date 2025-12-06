@@ -2,16 +2,16 @@
 import { useFullscreen } from "@vueuse/core";
 
 const props = defineProps({
-	tableRef: {
+	columns: {
+		default: {},
 		type: Object,
 	},
 	shows: {
-		type: Array,
 		default: ["print", "size", "fullscreen", "columns"],
+		type: Array,
 	},
-	columns: {
+	tableRef: {
 		type: Object,
-		default: {},
 	},
 });
 
@@ -60,7 +60,7 @@ const onPrint = () => {
 		printWindow.document.close();
 
 		// 监听打印后操作
-		printWindow.onafterprint = function () {
+		printWindow.onafterprint = () => {
 			// 关闭当前页
 			printWindow.close();
 		};
@@ -73,7 +73,7 @@ const onPrint = () => {
 };
 
 const columnList = computed(() => {
-	let list = [];
+	const list = [];
 	for (const [key, value] of Object.entries(props.columns)) {
 		list.push({ key: key, label: value.label, visible: value.visible });
 	}

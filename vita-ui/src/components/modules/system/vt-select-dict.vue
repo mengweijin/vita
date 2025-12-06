@@ -1,27 +1,28 @@
 <script setup>
 import { useDictStore } from "@/store/dict-store.js";
+
 const dictStore = useDictStore();
 
 const props = defineProps({
 	code: {
-		type: String,
 		required: true,
+		type: String,
 	},
 	filterable: {
-		type: Boolean,
 		default: false,
+		type: Boolean,
 	},
 	multiple: {
-		type: Boolean,
 		default: false,
+		type: Boolean,
 	},
 	size: {
-		type: String,
 		default: "default",
+		type: String,
 	},
 	style: {
-		type: String,
 		default: "min-width: 200px;",
+		type: String,
 	},
 });
 

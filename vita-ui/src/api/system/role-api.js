@@ -3,23 +3,22 @@ import http from "@/utils/http.js";
 const URL_PREFIX = "/system/role";
 
 export const roleApi = {
-	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
-
-	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+	addUsers: (roleId, userIds) => http.post(`${URL_PREFIX}/add-users/${roleId}/${userIds}`),
 
 	create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-	update: (data) => http.post(`${URL_PREFIX}/update`, data),
+	getDefaultRole: () => http.get(`${URL_PREFIX}/get-default-role`, {}),
+
+	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
 	remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
-
-	addUsers: (roleId, userIds) => http.post(`${URL_PREFIX}/add-users/${roleId}/${userIds}`),
 
 	removeByRoleIdInUserIds: (roleId, userIds) =>
 		http.post(`${URL_PREFIX}/removeByRoleIdInUserIds/${roleId}/${userIds}`, null, { loading: false }),
 
 	setPermission: (id, menuIdList = []) =>
-		http.post(`${URL_PREFIX}/set-permission`, { roleId: id, menuIds: menuIdList }),
+		http.post(`${URL_PREFIX}/set-permission`, { menuIds: menuIdList, roleId: id }),
 
-	getDefaultRole: () => http.get(`${URL_PREFIX}/get-default-role`, {}),
+	update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

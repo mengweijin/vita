@@ -1,7 +1,7 @@
 <script setup>
 import { noticeApi } from "@/api/system/notice-api";
-import NoticeDetail from "@/views/system/notice/notice-detail.vue";
 import utils from "@/utils/utils.js";
+import NoticeDetail from "@/views/system/notice/notice-detail.vue";
 
 const loading = ref(false);
 
@@ -10,10 +10,10 @@ const size = ref("small");
 const tableData = ref([]);
 
 const queryParams = reactive({
-	released: "Y",
-	total: 0,
-	size: 5,
 	current: 1,
+	released: "Y",
+	size: 5,
+	total: 0,
 });
 
 const loadTableData = () => {

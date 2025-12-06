@@ -1,8 +1,8 @@
 <script setup>
 const { src } = defineProps({
 	src: {
-		type: String,
 		default: "",
+		type: String,
 	},
 });
 

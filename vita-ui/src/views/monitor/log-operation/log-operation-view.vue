@@ -11,34 +11,34 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const columns = reactive({
-	selection: { label: "选择列", visible: false },
-	index: { label: "序号列", visible: false },
-	id: { label: "ID", visible: false },
-	title: { label: "模块标题", visible: true },
-	operationType: { label: "操作类型", visible: true },
-	httpMethod: { label: "请求方式", visible: true },
-	url: { label: "URL", visible: true },
-	methodName: { label: "方法名称", visible: true },
 	costTime: { label: "执行时间（ms）", visible: true },
-	success: { label: "操作状态", visible: true },
-	requestData: { label: "请求数据", visible: false },
-	responseData: { label: "响应数据", visible: false },
-	errorMsg: { label: "失败信息", visible: false },
 	createByName: { label: "操作者", visible: true },
 	createTime: { label: "操作时间", visible: true },
+	errorMsg: { label: "失败信息", visible: false },
+	httpMethod: { label: "请求方式", visible: true },
+	id: { label: "ID", visible: false },
+	index: { label: "序号列", visible: false },
+	methodName: { label: "方法名称", visible: true },
+	operation: { label: "操作", visible: true },
+	operationType: { label: "操作类型", visible: true },
+	requestData: { label: "请求数据", visible: false },
+	responseData: { label: "响应数据", visible: false },
+	selection: { label: "选择列", visible: false },
+	success: { label: "操作状态", visible: true },
+	title: { label: "模块标题", visible: true },
 	updateByName: { label: "更新者", visible: false },
 	updateTime: { label: "更新时间", visible: false },
-	operation: { label: "操作", visible: true },
+	url: { label: "URL", visible: true },
 });
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+	current: 1,
+	httpMethod: undefined,
 	keywords: undefined,
 	operationType: undefined,
-	httpMethod: undefined,
-	current: 1,
 	size: 10,
 	total: 0,
 });
@@ -71,7 +71,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 

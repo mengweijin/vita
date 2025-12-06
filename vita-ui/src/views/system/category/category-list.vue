@@ -1,8 +1,8 @@
 <script setup>
 import { categoryApi } from "@/api/system/category-api";
 import utils from "@/utils/utils.js";
-import { columns } from "./category-hook.js";
 import CategoryEdit from "./category-edit.vue";
+import { columns } from "./category-hook.js";
 
 const loading = ref(true);
 
@@ -21,8 +21,8 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	keywords: undefined,
 	disabled: undefined,
+	keywords: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -67,7 +67,7 @@ const handleDelete = (ids) => {
 };
 
 const handleBatchDelete = () => {
-	let ids = selected.value.map((item) => item.id).join();
+	const ids = selected.value.map((item) => item.id).join();
 	handleDelete(ids);
 };
 
