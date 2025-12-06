@@ -3,6 +3,9 @@
   "explorer.fileNesting.enabled": false,
   // 保存时的代码修复操作
   "editor.codeActionsOnSave": {
+    // 删除代码中已声明但从未被使用的导入项。
+    // 将来自同一模块的多个import语句合并为一条。
+    "source.organizeImports": "always",
     // 显式启用所有自动修复功能
     "source.fixAll": "explicit"
   },

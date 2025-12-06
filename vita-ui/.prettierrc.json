@@ -1,8 +1,31 @@
 {
+  // 使用 Prettier 官方 JSON schema 提供配置验证和智能提示
   "$schema": "https://json.schemastore.org/prettierrc",
+  // 语句末尾添加分号
   "semi": true,
+  // 使用单引号而不是双引号
   "singleQuote": true,
+  // 每行最大字符数，超过会自动换行
   "printWidth": 120,
+  // 对象/数组最后一个元素后也添加逗号
+  // - "all": 尽可能添加尾随逗号
+  // - "es5": 在ES5兼容的地方添加（对象/数组）
+  // - "none": 不添加
   "trailingComma": "all",
-  "bracketSpacing": true
+  // 对象字面量中花括号内的空格，如 { foo: bar }
+  "bracketSpacing": true,
+  // 使用的插件列表
+  // - @ianvs/prettier-plugin-sort-imports: 自动排序和格式化import语句
+  "plugins": ["./node_modules/@ianvs/prettier-plugin-sort-imports"],
+  // import语句的分组排序规则（正则表达式匹配顺序）
+  // 1. 'vue' 框架导入
+  // 2. 第三方模块（@开头的或普通模块名）
+  // 3. 本地相对路径导入（./或../）
+  "importOrder": ["^vue$", "^@?\\w", "^[./]"],
+  // 在不同分组之间添加空行进行分隔
+  "importOrderSeparation": true,
+  // 在每个导入分组内对导入的模块进行字母排序
+  "importOrderSortSpecifiers": true,
+  // 排序时忽略大小写
+  "importOrderCaseInsensitive": true
 }

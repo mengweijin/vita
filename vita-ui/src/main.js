@@ -1,14 +1,14 @@
-import './styles/main.css';
-import App from './App.vue';
 import { createApp } from 'vue';
+import App from './App.vue';
+import './styles/main.css';
 
 const app = createApp(App);
 
 // 预加载全部 ep、ri、ant-design 图标，以实现离线使用 iconify
-import { addCollection, Icon } from '@iconify/vue';
+import antDesignIcons from '@iconify-json/ant-design/icons.json';
 import epIcons from '@iconify-json/ep/icons.json';
 import riIcons from '@iconify-json/ri/icons.json';
-import antDesignIcons from '@iconify-json/ant-design/icons.json';
+import { addCollection, Icon } from '@iconify/vue';
 addCollection(epIcons);
 addCollection(riIcons);
 addCollection(antDesignIcons);
@@ -33,7 +33,7 @@ import components from '@/components/index.js';
 // 会自动调用 components 中的 install 方法
 app.use(components);
 
-import { default as router, initDynamicRoutes } from '@/router/index.js';
+import { initDynamicRoutes, default as router } from '@/router/index.js';
 // 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
 initDynamicRoutes();
 app.use(router);
