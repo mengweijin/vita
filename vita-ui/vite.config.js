@@ -72,11 +72,6 @@ export default defineConfig(({ mode }) => {
         imports: ['vue', 'vue-router', 'pinia'],
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
-        eslintrc: {
-          // 自动生成 ESLint 全局变量声明文件
-          enabled: true,
-          filepath: './eslintrc-auto-import.json',
-        },
         // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
         dts: true,
       }),

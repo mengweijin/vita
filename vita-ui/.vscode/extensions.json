@@ -1,8 +1,5 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "esbenp.prettier-vscode",
     "vue.volar",
     "christian-kohler.path-intellisense",
     "warmthsea.vscode-custom-code-color",
@@ -17,6 +14,7 @@
     "antfu.iconify",
     "lokalise.i18n-ally",
     "redhat.vscode-yaml",
-    "csstools.postcss"
+    "csstools.postcss",
+    "biomejs.biome"
   ]
 }
