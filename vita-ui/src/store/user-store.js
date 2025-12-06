@@ -1,4 +1,4 @@
-import { loginApi } from '@/api/login-api';
+import { loginApi } from '@/api/login-api.js';
 
 const { VITE_APP_PREFIX } = import.meta.env;
 

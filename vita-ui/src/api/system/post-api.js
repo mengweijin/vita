@@ -1,4 +1,4 @@
-import http from '@/utils/http';
+import http from '@/utils/http.js';
 
 const URL_PREFIX = '/system/post';
 

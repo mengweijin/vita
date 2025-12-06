@@ -1,5 +1,5 @@
 <script setup>
-import { postApi } from '@/api/system/post-api';
+import { postApi } from '@/api/system/post-api.js';
 
 const props = defineProps({
   filterable: {
@@ -12,7 +12,7 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'default'
+    default: 'default',
   },
   style: {
     type: String,
@@ -28,19 +28,30 @@ const initPostList = () => {
   postApi.list({ disabled: 'N' }).then((res) => {
     postList.value = res;
   });
-}
+};
 
 onMounted(() => {
   initPostList();
 });
-
 </script>
 
 <template>
-  <el-select v-model="selectValue" clearable :filterable="props.filterable" :multiple="props.multiple"
-    :size="props.size" :style="props.style" placeholder="请选择">
-    <el-option v-for="item in postList" :key="item.id" :label="`${item.name}`" :value="item.id"
-      :disabled="item.disabled === 'Y'" />
+  <el-select
+    v-model="selectValue"
+    clearable
+    :filterable="props.filterable"
+    :multiple="props.multiple"
+    :size="props.size"
+    :style="props.style"
+    placeholder="请选择"
+  >
+    <el-option
+      v-for="item in postList"
+      :key="item.id"
+      :label="`${item.name}`"
+      :value="item.id"
+      :disabled="item.disabled === 'Y'"
+    />
   </el-select>
 </template>
 

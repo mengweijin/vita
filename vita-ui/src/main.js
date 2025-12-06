@@ -24,16 +24,16 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 
 // 自定义指令（有些指令依赖 pinia，需要放到 pinia 后面）
-import directives from '@/directives/index';
+import directives from '@/directives/index.js';
 // 会自动调用 directives 中的 install 方法
 app.use(directives);
 
 // 自定义组件全局注册（有些组件依赖 pinia，需要放到 pinia 后面）
-import components from '@/components/index';
+import components from '@/components/index.js';
 // 会自动调用 components 中的 install 方法
 app.use(components);
 
-import { default as router, initDynamicRoutes } from '@/router/index';
+import { default as router, initDynamicRoutes } from '@/router/index.js';
 // 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
 initDynamicRoutes();
 app.use(router);

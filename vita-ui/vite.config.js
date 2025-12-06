@@ -73,10 +73,12 @@ export default defineConfig(({ mode }) => {
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
         eslintrc: {
-          enabled: true, // 自动生成 ESLint 全局变量声明文件
-          filepath: './.eslintrc-auto-import.json',
+          // 自动生成 ESLint 全局变量声明文件
+          enabled: true,
+          filepath: './eslintrc-auto-import.json',
         },
-        dts: true, // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
+        // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
+        dts: true,
       }),
       Components({
         resolvers: [
@@ -97,11 +99,19 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 4000,
       // https://rollupjs.org/configuration-options/
       rollupOptions: {
-        // 静态资源分类打包
+        // Rollup 打包配置选项
         output: {
-          chunkFileNames: 'src/static/js/[name]-[hash].js',
-          entryFileNames: 'src/static/js/[name]-[hash].js',
-          assetFileNames: 'src/static/[ext]/[name]-[hash].[ext]',
+          // 代码分割产生的 chunk 文件命名规则。例如: src/js/vendor-abc123.js
+          // [name]: 模块名称
+          // [hash]: 基于文件内容生成的哈希值（用于缓存控制）
+          chunkFileNames: 'src/js/[name]-[hash].js',
+          // 入口文件命名规则。例如: src/js/main-def456.js
+          entryFileNames: 'src/js/[name]-[hash].js',
+          // 静态资源文件命名规则（图片、字体、CSS等）
+          // [name]: 资源文件名称
+          // [hash]: 基于文件内容生成的哈希值
+          // [ext]: 文件扩展名（如: png, jpg, css, svg）
+          assetFileNames: 'src/[ext]/[name]-[hash].[ext]',
         },
       },
     },

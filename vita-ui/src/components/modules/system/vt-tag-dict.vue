@@ -1,6 +1,6 @@
 <script setup>
 import utils from '@/utils/utils.js';
-import { useDictStore } from '@/store/dict-store';
+import { useDictStore } from '@/store/dict-store.js';
 
 const dictStore = useDictStore();
 
@@ -15,12 +15,12 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'default'
+    default: 'default',
   },
   separator: {
     type: String,
-    default: ','
-  }
+    default: ',',
+  },
 });
 
 const options = ref([]);
@@ -45,14 +45,14 @@ onMounted(() => {
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.val)">
         <el-tag :key="item.val + ''" :size="props.size" :index="index" :type="item.tag" effect="dark">
-          {{ item.label + "" }}
+          {{ item.label + '' }}
         </el-tag>
       </template>
     </template>
   </div>
 </template>
 <style scoped>
-.el-tag+.el-tag {
+.el-tag + .el-tag {
   margin-left: 10px;
 }
 </style>

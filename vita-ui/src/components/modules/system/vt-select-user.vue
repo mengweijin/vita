@@ -1,6 +1,6 @@
 <script setup>
-import { deptApi } from '@/api/system/dept-api';
-import { userApi } from '@/api/system/user-api';
+import { deptApi } from '@/api/system/dept-api.js';
+import { userApi } from '@/api/system/user-api.js';
 import utils from '@/utils/utils.js';
 
 const props = defineProps({
@@ -10,7 +10,7 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'default'
+    default: 'default',
   },
   style: {
     type: String,
@@ -26,7 +26,7 @@ const treeProps = reactive({
   children: 'children',
   label: 'name',
   disabled: (data, node) => data.disabled === 'Y',
-})
+});
 
 const treeData = ref([]);
 
@@ -41,7 +41,6 @@ const handleTreeNodeClick = (data, node) => {
   queryParams.deptId = data.id;
   loadTableData();
 };
-
 
 const loading = ref(false);
 
@@ -87,13 +86,13 @@ const handlePageChange = (currentPage, pageSize) => {
     // 调用内部方法重新展开
     dropdownRef.value?.handleOpen();
   }, 10);
-}
+};
 
 const selected = ref([]);
 
 const handleTableRowClick = (row) => {
   if (props.multiple) {
-    if (!utils.find(selected.value, item => item.id === row.id)) {
+    if (!utils.find(selected.value, (item) => item.id === row.id)) {
       selected.value.push(row);
     }
     if (!utils.includes(selectValue.value, row.id)) {
@@ -103,7 +102,7 @@ const handleTableRowClick = (row) => {
   }
 
   if (selectValue.value.length) {
-    if (!utils.find(selected.value, item => item.id === row.id)) {
+    if (!utils.find(selected.value, (item) => item.id === row.id)) {
       selected.value.push(row);
     }
     // 清空数组
@@ -116,43 +115,75 @@ const handleTableRowClick = (row) => {
 };
 
 const handleRemoveTag = (value) => {
-  utils.remove(selected.value, item => item.id === value);
+  utils.remove(selected.value, (item) => item.id === value);
 };
 
 const getLabelValue = (userId) => {
-  let user = utils.find(selected.value, item => item.id === userId);
-  return user?.nickname + '(' + user?.username + ')'
+  let user = utils.find(selected.value, (item) => item.id === userId);
+  return user?.nickname + '(' + user?.username + ')';
 };
 
 onMounted(() => {
   loadTreeData();
   loadTableData();
 });
-
 </script>
 
 <template>
-  <el-dropdown ref="dropdownRef" trigger="click" placement="bottom" :size="props.size" :hide-on-click="false"
-    :max-height="500" :style="props.style" :popper-append-to-body="false">
-    <el-input-tag v-model="selectValue" draggable clearable :save-on-blur="false" :trigger="''" :tag-type="'primary'"
-      :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户"
-      @remove-tag="handleRemoveTag">
+  <el-dropdown
+    ref="dropdownRef"
+    trigger="click"
+    placement="bottom"
+    :size="props.size"
+    :hide-on-click="false"
+    :max-height="500"
+    :style="props.style"
+    :popper-append-to-body="false"
+  >
+    <el-input-tag
+      v-model="selectValue"
+      draggable
+      clearable
+      :save-on-blur="false"
+      :trigger="''"
+      :tag-type="'primary'"
+      :tag-effect="'dark'"
+      :max="props.multiple ? 999 : 1"
+      :size="props.size"
+      placeholder="请选择用户"
+      @remove-tag="handleRemoveTag"
+    >
       <template #tag="{ value }">
         <span>{{ getLabelValue(value) }}</span>
       </template>
     </el-input-tag>
     <template #dropdown>
       <el-container>
-        <el-aside width="160px" style="padding: 15px 0px 0px 10px;">
+        <el-aside width="160px" style="padding: 15px 0px 0px 10px">
           <el-scrollbar max-height="100%">
-            <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" :size="'small'"
-              default-expand-all highlight-current :expand-on-click-node="false" @node-click="handleTreeNodeClick" />
+            <el-tree
+              ref="treeRef"
+              :node-key="'id'"
+              :props="treeProps"
+              :data="treeData"
+              :size="'small'"
+              default-expand-all
+              highlight-current
+              :expand-on-click-node="false"
+              @node-click="handleTreeNodeClick"
+            />
           </el-scrollbar>
         </el-aside>
         <el-main class="vt-user-table-border">
           <!-- 查询表单 -->
-          <el-form ref="queryFormRef" :model="queryParams" :inline="true" :size="'small'"
-            @submit.prevent="loadTableData" class="vt-search-container">
+          <el-form
+            ref="queryFormRef"
+            :model="queryParams"
+            :inline="true"
+            :size="'small'"
+            @submit.prevent="loadTableData"
+            class="vt-search-container"
+          >
             <el-form-item prop="keywords" label="关键字">
               <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
             </el-form-item>
@@ -177,8 +208,18 @@ onMounted(() => {
           </el-form>
 
           <!-- 表格 -->
-          <el-table v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px" stripe border
-            show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
+          <el-table
+            v-loading="loading"
+            :data="tableData"
+            :size="'small'"
+            row-key="id"
+            height="191px"
+            stripe
+            border
+            show-overflow-tooltip
+            highlight-current-row
+            @row-click="handleTableRowClick"
+          >
             <el-table-column prop="username" label="用户名" min-width="100" align="center" />
             <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
             <el-table-column prop="gender" label="性别" min-width="80" align="center">
@@ -190,12 +231,17 @@ onMounted(() => {
           </el-table>
 
           <!--  @click.native.stop：阻止事件冒泡 -->
-          <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-            v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-            @change="handlePageChange" :size="'small'" />
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            v-model:current-page="queryParams.current"
+            v-model:page-size="queryParams.size"
+            :total="queryParams.total"
+            @change="handlePageChange"
+            :size="'small'"
+          />
         </el-main>
       </el-container>
-
     </template>
   </el-dropdown>
 </template>

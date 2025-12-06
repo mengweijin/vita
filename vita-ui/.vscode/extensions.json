@@ -14,6 +14,9 @@
     "csstools.postcss",
     "mikestead.dotenv",
     "eamodio.gitlens",
-    "antfu.iconify"
+    "antfu.iconify",
+    "lokalise.i18n-ally",
+    "redhat.vscode-yaml",
+    "csstools.postcss"
   ]
 }

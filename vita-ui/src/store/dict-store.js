@@ -1,5 +1,5 @@
 import utils from '@/utils/utils.js';
-import { dictDataApi } from '@/api/system/dict-api';
+import { dictDataApi } from '@/api/system/dict-api.js';
 
 const { VITE_APP_PREFIX } = import.meta.env;
 

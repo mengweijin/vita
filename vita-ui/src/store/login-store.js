@@ -1,7 +1,7 @@
-import utils from '@/utils/utils';
-import { useUserStore } from '@/store/user-store';
-import { useDictStore } from '@/store/dict-store';
-import { useMenuStore } from '@/store/menu-store';
+import utils from '@/utils/utils.js';
+import { useUserStore } from '@/store/user-store.js';
+import { useDictStore } from '@/store/dict-store.js';
+import { useMenuStore } from '@/store/menu-store.js';
 
 const { VITE_APP_PREFIX } = import.meta.env;
 

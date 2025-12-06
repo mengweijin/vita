@@ -1,5 +1,5 @@
 const { VITE_APP_PREFIX } = import.meta.env;
-import { menuApi } from '@/api/system/menu-api';
+import { menuApi } from '@/api/system/menu-api.js';
 
 export const useMenuStore = defineStore(
   `${VITE_APP_PREFIX}-menu`,

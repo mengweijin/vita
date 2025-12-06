@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { useLoginStore } from '@/store/login-store';
-import { useMenuStore } from '@/store/menu-store';
-import NProgress from '@/utils/nprogress';
+import { useLoginStore } from '@/store/login-store.js';
+import { useMenuStore } from '@/store/menu-store.js';
+import NProgress from '@/utils/nprogress.js';
 
 const { VITE_APP_TITLE } = import.meta.env;
 

@@ -4,7 +4,7 @@ import { stringify } from 'qs';
 // 这里不要使用 const router = useRouter(); 否则登出后无法自动跳转到登录页，暂时不知道为啥
 import router from '@/router/index.js';
 
-import { useLoginStore } from '@/store/login-store';
+import { useLoginStore } from '@/store/login-store.js';
 import utils from '@/utils/utils.js';
 
 const { VITE_BASE_API } = import.meta.env;

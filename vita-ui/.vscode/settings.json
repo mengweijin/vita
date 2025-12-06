@@ -1,13 +1,35 @@
 {
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.patterns": {
-    "tsconfig.json": "tsconfig.*.json, env.d.ts",
-    "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
-    "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig"
-  },
+  // 是否启用文件嵌套功能，将相关文件分组显示
+  "explorer.fileNesting.enabled": false,
+  // 保存时的代码修复操作
   "editor.codeActionsOnSave": {
+    // 显式启用所有自动修复功能
     "source.fixAll": "explicit"
   },
+  // 输入时自动格式化
+  "editor.formatOnType": true,
+  // 保存时自动格式化
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // 粘贴时自动格式化
+  "editor.formatOnPaste": true,
+  // 括号配对引导线显示
+  "editor.guides.bracketPairs": "active",
+  // 文件自动保存设置：延迟后保存
+  "files.autoSave": "afterDelay",
+  // 默认格式化工具：Prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 路径智能感知设置：强制在导入语句中包含文件扩展名
+  "path-intellisense.extensionOnImport": true,
+  // 显示隐藏文件（以.开头的文件）
+  "path-intellisense.showHiddenFiles": true,
+  // 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
+  "javascript.suggest.paths": false,
+  "typescript.suggest.paths": false,
+  // 配置路径别名映射（适用于使用了路径别名的项目）
+  "path-intellisense.mappings": {
+    // 根路径映射
+    "/": "${workspaceFolder}",
+    // @ 别名映射到 src 目录（常见于Vue/React项目）
+    "@": "${workspaceFolder}/src"
+  }
 }
