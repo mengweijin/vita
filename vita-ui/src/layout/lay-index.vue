@@ -1,5 +1,6 @@
 <script setup>
 import { useAppStore } from "@/store/app-store";
+import TabsView from "./components/tabs-view.vue";
 import LayFooter from "./lay-footer.vue";
 import LayHeader from "./lay-header.vue";
 import LaySide from "./lay-side.vue";
@@ -21,7 +22,7 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
       </el-aside>
       <el-container>
         <el-main>
-          <RouterView />
+          <TabsView />
         </el-main>
         <el-footer>
           <LayFooter />
@@ -33,13 +34,14 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
 
 <style scoped>
 :deep(.el-main) {
-  min-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
-  padding: 0 15px;
+  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
+  padding: 0px;
   background-color: #f7f7f7;
 }
 
+
 :deep(.el-header) {
-  --el-header-padding: 0px 0px;
+  --el-header-padding: 0px 0px 0px 0px;
 }
 
 :deep(.el-footer) {

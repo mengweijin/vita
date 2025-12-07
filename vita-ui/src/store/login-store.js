@@ -1,5 +1,6 @@
 import { useDictStore } from "@/store/dict-store.js";
 import { useMenuStore } from "@/store/menu-store.js";
+import { useTabsStore } from "@/store/tabs-store.js";
 import { useUserStore } from "@/store/user-store.js";
 import utils from "@/utils/utils.js";
 
@@ -76,6 +77,7 @@ export const useLoginStore = defineStore(
 			useUserStore().clear();
 			useDictStore().clear();
 			useMenuStore().clear();
+			useTabsStore().clear();
 		};
 
 		return {

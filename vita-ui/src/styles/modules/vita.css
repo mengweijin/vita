@@ -5,6 +5,8 @@
 /* semantic color variables for this project */
 :root {
 	--vt-header-height: 60px;
+	/* tabs 页签：40px; 查询表单：70px; 表格头：63px；分页组件：50px */
+	--vt-table-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 40px - 70px - 63px - 50px);
 }
 
 /* 移动端样式 */
@@ -32,8 +34,8 @@
 
 .vt-table-container {
 	flex: 1;
-	/* 查询表单：70px; 表格头：63px；分页组件：50px */
-	height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px - 50px);
+	/* tabs 页签：40px; 查询表单：70px; 表格头：63px；分页组件：50px */
+	height: var(--vt-table-height);
 }
 
 .el-pagination {

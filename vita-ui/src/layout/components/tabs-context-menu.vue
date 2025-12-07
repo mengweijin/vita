@@ -1,11 +1,11 @@
 <script setup>
 import { computed } from "vue";
-import { useTabsStore } from "@/stores/tabs-store.js";
+import { useTabsStore } from "@/store/tabs-store.js";
 
 const props = defineProps({
-	visible: Boolean,
-	menuStyle: Object,
 	currentTab: Object,
+	menuStyle: Object,
+	visible: Boolean,
 });
 
 const emit = defineEmits(["close-current", "close-others", "close-all", "close-left", "close-right"]);

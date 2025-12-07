@@ -11,8 +11,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="padding-top: 15px;">
-    <el-row :gutter="20">
+  <el-row :gutter="15">
       <el-col :span="6">
         <el-statistic :value="data?.dailyUserLoginCount" class="vt-statistic-item">
           <template #title>
@@ -63,35 +62,8 @@ onMounted(() => {
           <template #suffix>次</template>
         </el-statistic>
       </el-col>
-
-      <el-col :span="6" v-if="false">
-        <el-statistic :value="data?.dailyScheduledTaskExecutedCount" class="vt-statistic-item">
-          <template #title>
-            <div style="display: inline-flex; align-items: center">
-              <el-icon style="margin-right: 4px" :size="24">
-                <Icon icon="ep:clock"></Icon>
-              </el-icon>
-              日执行定时任务数
-            </div>
-          </template>
-        </el-statistic>
-      </el-col>
-      <el-col :span="6" v-if="false">
-        <el-statistic :value="data?.totalScheduledTaskExecutedCount" class="vt-statistic-item">
-          <template #title>
-            <div style="display: inline-flex; align-items: center">
-              <el-icon style="margin-right: 4px" :size="24">
-                <Icon icon="ep:clock"></Icon>
-              </el-icon>
-              总计执行定时任务数
-            </div>
-          </template>
-        </el-statistic>
-      </el-col>
     </el-row>
-  </div>
 </template>
-
 
 <style lang="css" scoped>
 .vt-statistic-item {

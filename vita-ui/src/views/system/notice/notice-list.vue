@@ -100,8 +100,7 @@ onMounted(() => {
 
 <template>
   <!-- 查询表单 -->
-  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-    class="vt-search-container">
+  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="标题、内容" clearable />
     </el-form-item>

@@ -64,7 +64,7 @@ onMounted(async () => {
 
 <template>
   <el-menu mode="horizontal" :ellipsis="false">
-    <el-menu-item index="0" style="width: 200px;">
+    <el-menu-item index="0" style="width: 200px; ">
       <img src="/logo.svg" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="appStore.toggleSideMenuOpened" class="vt-icon-padding">

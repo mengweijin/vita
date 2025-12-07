@@ -11,11 +11,11 @@
 	// 默认格式化工具：Biome
 	"editor.defaultFormatter": "biomejs.biome",
 	// 粘贴时自动格式化
-	"editor.formatOnPaste": true,
+	"editor.formatOnPaste": false,
 	// 保存时自动格式化
 	"editor.formatOnSave": true,
 	// 输入时自动格式化
-	"editor.formatOnType": true,
+	"editor.formatOnType": false,
 	// 括号配对引导线显示
 	"editor.guides.bracketPairs": "active",
 	// 是否启用文件嵌套功能，将相关文件分组显示

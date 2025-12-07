@@ -3,6 +3,8 @@ export default {
 		{
 			component: () => import("@/views/home/home-view.vue"),
 			meta: {
+				// 首页标签页不可关闭
+				closable: false,
 				title: "首页",
 			},
 			name: "HomeView",

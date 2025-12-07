@@ -59,8 +59,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="vt-chart-title">用户活跃度统计</div>
-  <div ref="chartDomRef" class="vt-chart"></div>
+  <div>
+	<div class="vt-chart-title">用户活跃度统计</div>
+	<div ref="chartDomRef" class="vt-chart"></div>
+  </div>
+	
 </template>
 
 <style lang="css" scoped>
@@ -72,7 +75,8 @@ onUnmounted(() => {
 
 .vt-chart {
   width: 100%;
-  height: 450px;
+  height: 100%;
+  min-height: 450px;
   background-color: white;
 }
 </style>

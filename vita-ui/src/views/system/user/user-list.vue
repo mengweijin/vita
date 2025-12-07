@@ -116,17 +116,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-container style="padding: 10px 0px;">
+  <el-container>
     <el-aside width="200px">
-      <el-scrollbar max-height="100%">
+      <el-scrollbar>
         <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
-          :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-user-dept-tree" />
+          :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
       </el-scrollbar>
     </el-aside>
-    <el-main>
+    <el-main class="vt-main vt-height">
       <!-- 查询表单 -->
-      <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-        class="vt-search-container">
+      <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
         <el-form-item prop="keywords" label="关键字">
           <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
         </el-form-item>
@@ -282,12 +281,19 @@ onMounted(() => {
   vertical-align: middle;
 }
 
-.vt-user-dept-tree {
-  border-right: 1px solid #dddddd;
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
+.vt-tree {
+  margin-right: 20px;
 }
 
-.vt-search-container {
-  padding: 10px 0px 0px 0px;
+.vt-main {
+  overflow-x: hidden;
+}
+
+.vt-height {
+  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 40px - 30px) !important;
+}
+
+.vt-table-container {
+	height: calc(var(--vt-table-height) - 5px);
 }
 </style>

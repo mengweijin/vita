@@ -3,6 +3,8 @@ import { fileApi } from "@/api/system/file-api";
 import { useLoginStore } from "@/store/login-store.js";
 import { columns } from "./file-hook.js";
 
+const loginStore = useLoginStore();
+
 const loading = ref(true);
 
 const size = ref("default");
@@ -80,8 +82,7 @@ onMounted(() => {
 
 <template>
   <!-- 查询表单 -->
-  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-    class="vt-search-container">
+  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="文件名称、后缀" clearable />
     </el-form-item>

@@ -78,8 +78,7 @@ onMounted(() => {
 
 <template>
   <!-- 查询表单 -->
-  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-    class="vt-search-container">
+  <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
     </el-form-item>
@@ -214,8 +213,6 @@ onMounted(() => {
 
 <style scoped>
 .vt-table-container {
-  flex: 1;
-  /* 查询表单：70px; 表格头：63px； */
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px - 63px);
+  height: calc(var(--vt-table-height) + 50px);
 }
 </style>

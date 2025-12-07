@@ -6,24 +6,33 @@ import HomeStatistic from "./module/home-statistic.vue";
 </script>
 
 <template>
-  <el-scrollbar class="vt-home">
-    <el-container>
-      <el-main>
-        <HomeStatistic />
-        <HomeOperationChart />
-      </el-main>
-      <el-aside width="400px">
-        <HomeNoticeList />
-        <HomeLink />
-      </el-aside>
-    </el-container>
-  </el-scrollbar>
+  <el-container>
+    <el-main>
+      <HomeStatistic />
+      <HomeOperationChart />
+    </el-main>
+    <el-aside width="380px">
+      <HomeNoticeList />
+      <HomeLink />
+    </el-aside>
+  </el-container>
 </template>
 
 
 <style lang="css" scoped>
+
+:deep(.el-main) {
+  padding: 0 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+aside.el-aside {
+  padding: 0px 0px 0px 15px;
+}
+
 /* 隐藏垂直滚动条 */
-:deep(.el-scrollbar__bar.is-vertical) {
+/* :deep(.el-scrollbar__bar.is-vertical) {
   display: none !important;
 }
 
@@ -37,5 +46,5 @@ import HomeStatistic from "./module/home-statistic.vue";
 
 :deep(.el-aside) {
   padding: 15px 0px 15px 10px;
-}
+} */
 </style>

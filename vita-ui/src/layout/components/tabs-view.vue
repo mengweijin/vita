@@ -1,25 +1,10 @@
 <script setup>
 import { useTabsStore } from "@/store/tabs-store.js";
-import TabContextMenu from "./backup/tab-context-menu.vue";
 
 const route = useRoute();
 const router = useRouter();
 const tabsStore = useTabsStore();
-
-// 计算属性
-const tabsList = computed(() => tabsStore.tabsList);
-
-const activeTab = computed({
-	get: () => tabsStore.activeTab,
-	set: (val) => tabsStore.setActiveTab(val),
-});
-
-const cachedViews = computed(() => tabsStore.getCachedViews());
-
-// 右键菜单相关
-const contextMenuVisible = ref(false);
-const contextMenuStyle = ref({ left: "0px", top: "0px" });
-const currentContextTab = ref(null);
+const { tabsList, activeTab } = storeToRefs(tabsStore);
 
 // 监听路由变化，添加标签页
 watch(
@@ -42,43 +27,24 @@ const handleTabClick = (tab) => {
 
 // 标签页关闭事件
 const handleTabRemove = (targetName) => {
-	const tab = tabsList.value.find((item) => item.name === targetName);
-	if (tab && !tab.closable) {
-		ElMessage.warning("该页签不可关闭");
-		return;
-	}
+	// 先判断是否关闭的是当前激活的标签页（顺序很重要）
+	const isRemoveCurrent = targetName === activeTab.value;
 
+	// 再移除标签页，并切换到新的活动页签
 	tabsStore.removeTab(targetName);
 
 	// 如果关闭的是当前激活的标签页，需要跳转到新的激活标签页
-	if (targetName === activeTab.value) {
+	if (isRemoveCurrent) {
 		const currentTab = tabsList.value.find((tab) => tab.name === activeTab.value);
 		if (currentTab) {
 			router.push(currentTab.path);
-		} else {
-			// 如果没有其他页签，跳转到首页
-			router.push("/");
 		}
 	}
 };
 
 // 右键菜单事件
 const handleContextMenu = (event, tab) => {
-	event.preventDefault();
-
-	const targetTab = tabsList.value.find((item) => item.name === tab.paneName);
-	if (!targetTab) {
-		return;
-	}
-
-	currentContextTab.value = targetTab;
-	// 设置菜单位置
-	contextMenuStyle.value = {
-		left: `${event.clientX}px`,
-		top: `${event.clientY}px`,
-	};
-
-	contextMenuVisible.value = true;
+	const targetTab = tabsList.value.find((item) => item.name === tab.name);
 };
 
 // 关闭右键菜单
@@ -123,32 +89,29 @@ const handleCloseRight = () => {
 	}
 	closeContextMenu();
 };
-
-// 点击页面其他区域关闭右键菜单
-document.addEventListener("click", closeContextMenu);
 </script>
 
 
 <template>
   <div class="tabs-view">
-    <el-tabs v-model="activeTab" type="card" closable @tab-click="handleTabClick" @tab-remove="handleTabRemove"
-      @contextmenu="handleContextMenu">
+    <el-tabs v-model="activeTab" closable @tab-click="handleTabClick" @tab-remove="handleTabRemove">
       <el-tab-pane v-for="tab in tabsList" :key="tab.name" :name="tab.name" :label="tab.title" :closable="tab.closable">
-      </el-tab-pane>
+      <!-- 核心：使用label插槽自定义标题区域 -->
+      <template #label>
+        <span @contextmenu.prevent="handleContextMenu($event, tab)">
+          {{ tab.title }}
+        </span>
+      </template>
+		</el-tab-pane>
     </el-tabs>
 
-    <div class="tabs-content">
+	<el-scrollbar class="vt-tab-content">	
       <router-view v-slot="{ Component }">
-        <keep-alive :include="cachedViews">
+        <keep-alive :include="tabsStore.getCachedViews()">
           <component :is="Component" :key="$route.fullPath" />
         </keep-alive>
       </router-view>
-    </div>
-
-    <!-- 右键菜单 -->
-    <TabContextMenu v-if="contextMenuVisible" :style="contextMenuStyle" :current-tab="currentContextTab"
-      @close-current="handleCloseCurrent" @close-others="handleCloseOthers" @close-all="handleCloseAll"
-      @close-left="handleCloseLeft" @close-right="handleCloseRight" />
+	</el-scrollbar>
   </div>
 </template>
 
@@ -161,25 +124,16 @@ document.addEventListener("click", closeContextMenu);
   position: relative;
 }
 
-.tabs-content {
-  flex: 1;
-  padding: 16px;
-  overflow: auto;
-  background: #f0f2f5;
+:deep(.el-tabs__nav-scroll) {
+  padding-left: 20px;
 }
 
-:deep(.el-tabs__header) {
-  margin: 0;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
+/* 隐藏水平滚动条 */
+:deep(.el-scrollbar__bar.is-horizontal) {
+  display: none !important;
 }
 
-:deep(.el-tabs__content) {
-  display: none;
-}
-
-/* 首页标签页特殊样式 */
-:deep(.el-tabs__item[id^="tab-Home"]) .el-icon-close {
-  display: none;
+.vt-tab-content {
+	padding: 0px 20px;
 }
 </style>
