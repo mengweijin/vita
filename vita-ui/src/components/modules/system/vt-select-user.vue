@@ -182,7 +182,6 @@ onMounted(() => {
             :inline="true"
             :size="'small'"
             @submit.prevent="loadTableData"
-            class="vt-search-container"
           >
             <el-form-item prop="keywords" label="关键字">
               <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
@@ -247,10 +246,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.vt-search-container {
-  padding: 0px;
-}
-
 .vt-user-table-border {
   border-left: 1px solid #dddddd;
 }

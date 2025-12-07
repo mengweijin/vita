@@ -145,7 +145,7 @@ onMounted(() => {
   </el-row>
 
   <!-- 表格 -->
-  <div class="vt-table-container">
+  <div class="vt-table">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :tree-props="treeProps" :size="size" row-key="id"
       height="100%" stripe border show-overflow-tooltip highlight-current-row default-expand-all
       @selection-change="(val) => selected = val">
@@ -213,7 +213,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.vt-table-container {
+.vt-table {
   height: calc(var(--vt-table-height) + 50px);
 }
 </style>

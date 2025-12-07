@@ -84,8 +84,7 @@ defineExpose({ data, visible });
   <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close :align-center="false" @opened="onOpened"
     @closed="onClosed" width="70%" style="max-height: 90%;">
     <!-- 查询表单 -->
-    <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-      class="vt-search-container">
+    <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData" style="margin-top: 5px;">
       <el-form-item prop="keywords" label="关键字">
         <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
       </el-form-item>
@@ -144,7 +143,7 @@ defineExpose({ data, visible });
     </el-row>
 
     <!-- 表格 -->
-    <div class="vt-table-container">
+    <div class="vt-table">
       <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe
         border show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
         <el-table-column type="selection" width="55" />
@@ -198,11 +197,7 @@ defineExpose({ data, visible });
 </template>
 
 <style scoped>
-.vt-search-container {
-  padding: 5px 0 0 0;
-}
-
-.vt-table-container {
+.vt-table {
   /* 查询表单：70px; 表格头：63px；分页组件：50px */
   height: calc(100% - 70px - 63px - 50px);
 }

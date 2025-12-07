@@ -119,7 +119,7 @@ onMounted(() => {
   </el-row>
 
   <!-- 表格 -->
-  <div class="vt-table-container">
+  <div class="vt-table">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
       show-overflow-tooltip highlight-current-row>
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
