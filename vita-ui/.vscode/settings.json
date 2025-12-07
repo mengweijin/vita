@@ -24,8 +24,6 @@
 	"files.autoSave": "off",
 	// 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
 	"javascript.suggest.paths": false,
-	// 关闭VSCode对 TypeScript 的内置验证，使用 Biome 进行验证
-	"typescript.validate.enable": false,
 	// 关闭VSCode对 JavaScript 的内置验证，使用 Biome 进行验证
 	"javascript.validate.enable": false,
 	// 路径智能感知设置：强制在导入语句中包含文件扩展名
@@ -39,5 +37,8 @@
 	},
 	// 显示隐藏文件（以.开头的文件）
 	"path-intellisense.showHiddenFiles": true,
-	"typescript.suggest.paths": false
+	// 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
+	"typescript.suggest.paths": false,
+	// 关闭VSCode对 TypeScript 的内置验证，使用 Biome 进行验证
+	"typescript.validate.enable": false
 }
