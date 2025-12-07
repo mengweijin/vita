@@ -29,7 +29,7 @@ watch(
 			tabsStore.addTab(newRoute);
 		}
 	},
-	{ immediate: true, deep: true },
+	{ deep: true, immediate: true },
 );
 
 // 标签页点击事件
@@ -67,14 +67,15 @@ const handleContextMenu = (event, tab) => {
 	event.preventDefault();
 
 	const targetTab = tabsList.value.find((item) => item.name === tab.paneName);
-	if (!targetTab) return;
+	if (!targetTab) {
+		return;
+	}
 
 	currentContextTab.value = targetTab;
-
 	// 设置菜单位置
 	contextMenuStyle.value = {
-		left: event.clientX + "px",
-		top: event.clientY + "px",
+		left: `${event.clientX}px`,
+		top: `${event.clientY}px`,
 	};
 
 	contextMenuVisible.value = true;
