@@ -1,6 +1,6 @@
 import utils from "@/utils/utils.js";
 
-const { VITE_APP_PREFIX } = import.meta.env;
+const { VITE_APP_PREFIX, VITE_TABS_MAX_NUMBER } = import.meta.env;
 
 export const useTabsStore = defineStore(
 	`${VITE_APP_PREFIX}-tabs`,
@@ -42,6 +42,14 @@ export const useTabsStore = defineStore(
 		 * @param {Object} route
 		 */
 		const addTab = (route) => {
+			// 超出最大数量，移除最早添加且可关闭的标签页
+			if (tabsList.value.length >= VITE_TABS_MAX_NUMBER) {
+				const firstClosableTab = tabsList.value.find((tab) => tab.closable);
+				if (firstClosableTab) {
+					utils.remove(tabsList.value, (tab) => tab.name === firstClosableTab.name);
+				}
+			}
+
 			const { name, path, meta } = route;
 			const tab = {
 				closable: meta.closable ?? true, // 默认可关闭

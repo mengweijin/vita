@@ -136,27 +136,4 @@ const handleCloseRight = () => {
 .vt-tab-content {
 	padding: 0px 20px;
 }
-/* .tabs-view {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.tabs-content {
-  flex: 1;
-  padding: 16px;
-  overflow: auto;
-  background: #f0f2f5;
-}
-
-:deep(.el-tabs__header) {
-  margin: 0;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-:deep(.el-tabs__content) {
-  display: none;
-} */
 </style>
