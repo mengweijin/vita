@@ -74,6 +74,8 @@ export default defineConfig(({ mode }) => {
 				resolvers: [ElementPlusResolver()],
 			}),
 			Components({
+				// 是否生成组件的 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
+				dts: true,
 				resolvers: [
 					// 自动注册 Element Plus 组件
 					ElementPlusResolver(),
@@ -101,10 +103,11 @@ export default defineConfig(({ mode }) => {
 			port: 5173,
 			proxy: {
 				[env.VITE_BASE_API]: {
-					// target: 'https://vita.aday.fun',
 					changeOrigin: true,
-					rewrite: (path) => path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ""),
-					target: "http://localhost:8080",
+					rewrite: (path) =>
+						path.replace(new RegExp(`^\\${env.VITE_BASE_API}`), ""),
+					target: "https://vita.aday.fun",
+					// target: "http://localhost:8080",
 				},
 			},
 		},
