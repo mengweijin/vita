@@ -33,7 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-scrollbar v-loading="loading" style="height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));">
+  <el-scrollbar v-loading="loading">
     <el-descriptions title="服务器信息" :column="2" :size="size" border style="margin-top: 15px;">
       <el-descriptions-item label="厂商" label-align="right" min-width="200">
         {{ serverInfo?.manufacturer }}

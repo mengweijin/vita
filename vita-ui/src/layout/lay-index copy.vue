@@ -22,6 +22,7 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
       </el-aside>
       <el-container>
         <el-main>
+          <!-- <RouterView /> -->
           <TabsView />
         </el-main>
         <el-footer>
@@ -34,14 +35,13 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
 
 <style scoped>
 :deep(.el-main) {
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
-  padding: 0px;
+  min-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 200px);
+  padding: 0 15px;
   background-color: #f7f7f7;
 }
 
-
 :deep(.el-header) {
-  --el-header-padding: 0px 0px 0px 0px;
+  --el-header-padding: 0px 0px;
 }
 
 :deep(.el-footer) {
