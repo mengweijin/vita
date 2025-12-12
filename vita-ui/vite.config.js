@@ -1,7 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 import legacy from "@vitejs/plugin-legacy";
 import vue from "@vitejs/plugin-vue";
-import { es } from "element-plus/es/locale";
 import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
