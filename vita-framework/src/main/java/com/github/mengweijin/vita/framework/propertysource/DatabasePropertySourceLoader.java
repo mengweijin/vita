@@ -25,15 +25,14 @@ public class DatabasePropertySourceLoader implements ApplicationListener<Applica
 
     /**
      * 也可以添加 DatabasePropertySource 到最优先位置：
-     * environment.getPropertySources().addFirst(databasePropertySource);
+     *      environment.getPropertySources().addFirst(databasePropertySource);
+     * 或者优先级高于 application.yml 但低于命令行参数：
+     *      environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, databasePropertySource);
      * @param event ApplicationReadyEvent
      */
     @Override
     public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
-        // 将数据库配置源添加到环境属性源中，优先级高于 application.yml 但低于命令行参数
-        // environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, databasePropertySource);
-
-        // 最低优先级
+        // 将数据库配置源添加到环境属性源中，最低优先级
         environment.getPropertySources().addLast(databasePropertySource);
 
         // 初始化后，发布更新事件，动态刷新一次配置值

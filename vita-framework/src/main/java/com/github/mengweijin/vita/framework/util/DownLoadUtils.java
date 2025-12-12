@@ -67,9 +67,9 @@ public class DownLoadUtils {
     /**
      * 在深入 {@link HttpRange} 之前，有必要了解其背后的 HTTP 协议标准（RFC 7233）。
      * 客户端请求： 客户端通过 Range 头来指定请求的范围。
-     * 格式： Range: <unit>=<range-start>-<range-end>
-     * <unit>： 通常是 bytes（字节）。
-     * <range-start> 和 <range-end>： 指定范围的起始和结束位置（从0开始计数）。结束位置可以省略，表示直到资源末尾。
+     * 格式： Range: {unit}={range-start}-{range-end}
+     * {unit}： 通常是 bytes（字节）。
+     * {range-start} 和 {range-end}： 指定范围的起始和结束位置（从0开始计数）。结束位置可以省略，表示直到资源末尾。
      * 示例：
      * Range: bytes=0-499 -> 请求前500个字节。
      * Range: bytes=500-999 -> 请求第500到第999个字节。
@@ -79,7 +79,7 @@ public class DownLoadUtils {
      * Range: bytes=0-499, 1000-1499 -> 请求多个范围（第一个500字节和第二个500字节）。
      * 服务端响应：
      * 如果支持范围请求，服务端会返回状态码 206 Partial Content。
-     * 响应头中包含 Content-Range，告知客户端返回的是哪个范围以及资源的总大小。格式：Content-Range: bytes <start>-<end>/<total-size>
+     * 响应头中包含 Content-Range，告知客户端返回的是哪个范围以及资源的总大小。格式：Content-Range: bytes {start}-{end}/{total-size}
      * 如果请求的范围无效（例如超出资源大小），服务端会返回状态码 416 Range Not Satisfiable。
      * <p>
      * 前端请求方式：

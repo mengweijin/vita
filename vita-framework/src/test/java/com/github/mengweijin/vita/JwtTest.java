@@ -13,10 +13,10 @@ import java.nio.charset.StandardCharsets;
  * @since 2025/11/9
  */
 @Slf4j
-public class JwtTest {
+class JwtTest {
 
     @Test
-    public void generateJwt() {
+    void generateJwt() {
         String key = "AfpqdFEUpOzBQkwFWBW8lWiC9D33wRXycKBKOAh6wvM=";
         String token = JWTUtil.createToken(null, key.getBytes(StandardCharsets.UTF_8));
         log.info(token);
