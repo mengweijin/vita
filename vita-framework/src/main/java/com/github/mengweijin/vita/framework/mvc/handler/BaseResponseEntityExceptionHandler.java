@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.MethodValidationException;
@@ -91,11 +92,13 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
@@ -106,56 +109,67 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorBindingResultResponseEntity(ex, ex.getBindingResult(), status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorMethodValidationResponseEntity(ex, ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleErrorResponseException(ErrorResponseException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
@@ -166,6 +180,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorTypeMismatchResponseEntity(ex, status);
     }
@@ -181,6 +196,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
     }
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleMethodValidationException(MethodValidationException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return errorMethodValidationResponseEntity(ex, ex, status);
     }

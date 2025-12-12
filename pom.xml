@@ -214,50 +214,22 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-source-plugin</artifactId>
-                <executions> 
-                    <execution> 
-                        <phase>package</phase>  
-                        <goals> 
-                            <goal>jar-no-fork</goal> 
-                        </goals> 
-                    </execution> 
-                </executions> 
             </plugin>  
             <!-- Javadoc -->  
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <!-- 可选：减少严格检查 -->
-                    <doclint>none</doclint>  
                     <charset>UTF-8</charset>
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
-                    <!-- 可选：显示私有成员 -->
-                    <show>private</show>
-                </configuration>  
-                <executions> 
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals> 
-                            <goal>jar</goal> 
-                        </goals> 
-                    </execution> 
-                </executions> 
+                </configuration>
             </plugin>  
             <!-- GPG -->  
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-gpg-plugin</artifactId>  
                 <version>${maven-gpg-plugin.version}</version>
-                <executions> 
-                    <execution> 
-                        <phase>verify</phase>  
-                        <goals> 
-                            <goal>sign</goal> 
-                        </goals> 
-                    </execution> 
-                </executions> 
             </plugin>
             <!-- 统一更新 pom.xml 中的版本 -->
             <plugin>
