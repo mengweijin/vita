@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 import legacy from "@vitejs/plugin-legacy";
 import vue from "@vitejs/plugin-vue";
+import { es } from "element-plus/es/locale";
 import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
@@ -72,6 +73,8 @@ export default defineConfig(({ mode }) => {
 				imports: ["vue", "vue-router", "pinia"],
 				// 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
 				resolvers: [ElementPlusResolver()],
+				// 启用 Vue 3 的模板自动导入功能
+				vueTemplate: true,
 			}),
 			Components({
 				// 是否生成组件的 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
