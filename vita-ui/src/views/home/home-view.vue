@@ -6,21 +6,29 @@ import HomeStatistic from "./module/home-statistic.vue";
 </script>
 
 <template>
-  <el-container>
-    <el-main>
-      <HomeStatistic />
-      <HomeOperationChart />
-    </el-main>
-    <el-aside width="380px">
-      <HomeNoticeList />
-      <HomeLink />
-    </el-aside>
-  </el-container>
+  <div class="vt-height">
+    <el-scrollbar>
+      <el-container>
+        <el-main>
+          <HomeStatistic />
+          <HomeOperationChart />
+        </el-main>
+        <el-aside width="380px">
+          <HomeNoticeList />
+          <HomeLink />
+        </el-aside>
+      </el-container>
+    </el-scrollbar>
+  </div>
+
 </template>
 
 
 <style lang="css" scoped>
-.el-main{
+.vt-height {
+  height: calc(var(--vt-content-aside-height));
+}
+.el-main {
   padding: 0px 15px 15px 0px;
 }
 </style>

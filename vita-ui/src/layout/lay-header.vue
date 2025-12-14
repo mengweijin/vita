@@ -25,20 +25,8 @@ const refresh = () => {
 	top.location.reload(true);
 };
 
-// 打开个人信息对话框
-import UserPersonalInformationDialog from "@/views/profile/user-personal-information-dialog.vue";
-
-const userPersonalInfoDialogRef = useTemplateRef("userPersonalInfoDialogRef");
 const onUserPersonalInformation = () => {
-	userPersonalInfoDialogRef.value.visible = true;
-};
-
-// 打开安全日志对话框
-import UserSecurityLogDialog from "@/views/profile/user-security-log-dialog.vue";
-
-const userSecurityLogDialogRef = useTemplateRef("userSecurityLogDialogRef");
-const onUserSecurityLog = () => {
-	userSecurityLogDialogRef.value.visible = true;
+	router.push("/profile/personal-information");
 };
 
 const onLogout = () => {
@@ -56,6 +44,10 @@ const target = ref(null);
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
 const notViewedMessageCount = ref("");
+
+const onOpenMessage = () => {
+	router.push("/system/message");
+};
 
 onMounted(async () => {
 	notViewedMessageCount.value = await messageApi.selectNotViewedCount();
@@ -79,12 +71,12 @@ onMounted(async () => {
       <Icon icon="ri:fullscreen-exit-fill" width="24" height="24" v-if="isFullscreen" />
       <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
-    <el-menu-item index="6" class="vt-icon-padding">
-      <Icon v-if="notViewedMessageCount === 0" icon="ep:bell-filled" width="24" height="24" />
+    <el-menu-item index="6" class="vt-icon-padding" @click="onOpenMessage()">
+      <Icon v-if="notViewedMessageCount === 0" icon="ep:chat-dot-round" width="24" height="24" />
       <el-icon v-else>
         <el-badge :value="notViewedMessageCount" :max="99">
           <el-icon :size="24">
-            <Icon icon="ep:bell-filled" width="24" height="24" />
+            <Icon icon="ep:chat-dot-round" width="24" height="24" />
           </el-icon>
         </el-badge>
       </el-icon>
@@ -108,10 +100,6 @@ onMounted(async () => {
         <Icon icon="ri:user-settings-line" width="16" height="16" />
         <span>偏好设置</span>
       </el-menu-item>
-      <el-menu-item index="8-97" @click="onUserSecurityLog()">
-        <Icon icon="ri:secure-payment-line" width="16" height="16" />
-        <span>安全日志</span>
-      </el-menu-item>
       <el-divider style="margin: 5px 0;" />
       <el-menu-item index="8-99" @click="onLogout()">
         <Icon icon="ri:logout-box-line" width="16" height="16" />
@@ -119,9 +107,6 @@ onMounted(async () => {
       </el-menu-item>
     </el-sub-menu>
   </el-menu>
-
-  <UserPersonalInformationDialog ref="userPersonalInfoDialogRef" />
-  <UserSecurityLogDialog ref="userSecurityLogDialogRef" />
 </template>
 
 <style scoped>

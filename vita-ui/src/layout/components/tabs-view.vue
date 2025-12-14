@@ -110,7 +110,7 @@ const handleCloseRight = () => {
 		<el-scrollbar>	
 			<router-view v-slot="{ Component }">
 				<keep-alive :include="tabsStore.getCachedViews()">
-				<component :is="Component" :key="$route.fullPath" />
+					<component :is="Component" :key="$route.fullPath" />
 				</keep-alive>
 			</router-view>	
 		</el-scrollbar>
@@ -125,7 +125,8 @@ const handleCloseRight = () => {
   overflow: hidden;
 }
 
-.vt-tabs :deep(.el-tabs__nav-scroll) {
+/* 明确选择第一个 el-tabs */
+.vt-tabs > :deep(.el-tabs:nth-child(1)) .el-tabs__nav-scroll:first-child {
 	padding-left: 20px;
 }
 

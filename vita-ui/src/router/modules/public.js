@@ -10,6 +10,15 @@ export default {
 			name: "HomeView",
 			path: "/home",
 		},
+		{
+			component: () => import("@/views/profile/personal-information.vue"),
+			meta: {
+				closable: true,
+				title: "个人信息",
+			},
+			name: "ProfilePersonalInformationView",
+			path: "/profile/personal-information",
+		},
 	],
 	component: () => import("@/layout/lay-index.vue"),
 	name: "Layout",

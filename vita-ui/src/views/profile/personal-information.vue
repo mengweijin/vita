@@ -1,15 +1,14 @@
 <script setup>
 import { userApi } from "@/api/system/user-api";
+import UserSecurityLog from "./module/user-security-log.vue";
 
 const loading = ref(true);
-
-const visible = ref(false);
 
 const size = ref("default");
 
 const userInfo = ref({});
 
-const onOpened = () => {
+onMounted(() => {
 	loading.value = true;
 	userApi
 		.getLoginUserInfo()
@@ -20,23 +19,15 @@ const onOpened = () => {
 		.catch(() => {
 			loading.value = false;
 		});
-};
-
-const onClosed = () => {
-	visible.value = false;
-	userInfo.value = {};
-};
-
-defineExpose({ visible });
+});
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="'个人信息'" destroy-on-close fullscreen :align-center="false" @opened="onOpened"
-    @closed="onClosed">
-    <div v-loading="loading">
+  <div v-loading="loading" class="vt-height">
+    <el-scrollbar>
       <el-container>
-        <el-aside width="350px">
-          <el-descriptions title="" :column="1" :label-width="70" :size="size" border>
+        <el-aside width="260px">
+          <el-descriptions title="" :column="1" :label-width="80" :size="size" border>
             <el-descriptions-item label="头像" label-align="right" width="50" span="2">
               <el-avatar :src="userInfo?.avatar" size="large" v-if="userInfo?.avatar" />
               <el-avatar src="/avatar.jpg" size="large" v-else />
@@ -89,19 +80,22 @@ defineExpose({ visible });
             <el-tab-pane label="修改密码">修改密码</el-tab-pane>
             <el-tab-pane label="绑定动态口令">TOTP</el-tab-pane>
             <el-tab-pane label="在线设备">在线设备</el-tab-pane>
+            <el-tab-pane label="安全日志"><UserSecurityLog></UserSecurityLog></el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
-
-
-
-    </div>
-
-  </el-dialog>
+    </el-scrollbar>
+  </div>
 </template>
 
 <style scoped>
 .el-tag+.el-tag {
   margin-left: 5px;
+}
+.vt-height {
+  height: calc(var(--vt-content-aside-height));
+}
+.el-main{
+  padding: 0px 0px 0px 15px;
 }
 </style>

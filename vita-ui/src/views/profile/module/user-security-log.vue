@@ -3,8 +3,6 @@ import { logLoginApi } from "@/api/monitor/log-login-api";
 
 const loading = ref(true);
 
-const visible = ref(false);
-
 const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
@@ -32,22 +30,13 @@ const handlePageChange = (currentPage, pageSize) => {
 	loadTableData();
 };
 
-const onOpened = () => {
+onMounted(() => {
 	loadTableData();
-};
-
-const onClosed = () => {
-	visible.value = false;
-	tableData.value = [];
-};
-
-defineExpose({ visible });
+});
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="'安全日志'" destroy-on-close :align-center="false" @opened="onOpened"
-    @closed="onClosed" width="90%">
-    <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
+  <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
       show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
       <el-table-column v-if="false" prop="id" label="ID" min-width="180" />
       <el-table-column v-if="false" prop="username" label="登录账号" min-width="100" fixed="left" />
@@ -75,7 +64,6 @@ defineExpose({ visible });
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
       @change="handlePageChange" />
-  </el-dialog>
 </template>
 
 <style scoped></style>
