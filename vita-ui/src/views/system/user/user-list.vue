@@ -285,15 +285,12 @@ onMounted(() => {
   margin-right: 20px;
 }
 
-.vt-main {
-  overflow-x: hidden;
-}
-
 .vt-height {
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 40px - 30px) !important;
+  height: calc(var(--vt-content-aside-height)) !important;
 }
 
-.vt-table {
-	height: calc(var(--vt-table-height) - 5px);
+.el-main {
+  padding: 0px;
+  overflow: hidden;
 }
 </style>

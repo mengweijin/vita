@@ -147,7 +147,7 @@ onMounted(async () => {
         </el-tooltip>
       </div>
     </el-aside>
-    <el-main style="background-color: #f7f7f7; margin-left: 10px; padding: 5px 10px;">
+    <el-main>
       <el-scrollbar>
         <template v-if="cacheValue != null">
           <vue-json-pretty v-if="utils.isJSON(cacheValue)" :data="JSON.parse(cacheValue)" />
@@ -179,5 +179,12 @@ onMounted(async () => {
 
 .cache-item a:hover {
   background-color: var(--vt-primary-color);
+}
+
+.el-main {
+  background-color: white; 
+  margin-left: 10px; 
+  padding: 5px 10px;
+  height: calc(var(--vt-content-aside-height));
 }
 </style>

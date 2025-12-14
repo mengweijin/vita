@@ -100,7 +100,7 @@ defineExpose({ data, visible });
       </el-form-item>
 
       <el-form-item prop="code" label="编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
+        <el-input v-model="form.code" :disabled="data?.id" clearable maxlength="64" autocomplete="off" />
       </el-form-item>
 
       <el-row :gutter="20">
