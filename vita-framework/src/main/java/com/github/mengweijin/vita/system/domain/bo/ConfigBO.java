@@ -5,7 +5,6 @@ import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.validator.rule.ConfigKeyDuplicateCheckRule;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
@@ -28,8 +27,7 @@ public class ConfigBO extends ConfigDO {
      */
     @NotBlank(groups = {Group.Create.class, Group.Update.class})
     @Length(max = 255)
-    @Pattern(regexp = "^vita\\..+$", message = "{config.key.pattern}")
-    @BusinessCheck(groups = {Group.Create.class, Group.Update.class}, checkRule = ConfigKeyDuplicateCheckRule.class)
+    @BusinessCheck(groups = {Group.Create.class}, checkRule = ConfigKeyDuplicateCheckRule.class)
     private String configKey;
 
     @NotBlank(groups = {Group.Create.class, Group.Update.class})

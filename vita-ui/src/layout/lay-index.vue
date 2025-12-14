@@ -33,24 +33,11 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
 </template>
 
 <style scoped>
-:deep(.el-main) {
-  height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height));
-  padding: 0px;
-  background-color: #f7f7f7;
-}
-
-
-:deep(.el-header) {
+.el-header {
   --el-header-padding: 0px 0px 0px 0px;
 }
-
-:deep(.el-footer) {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background-color: transparent;
-  height: var(--vt-footer-height);
+.el-main {
+  padding: 0px;
+  background-color: var(--vt-content-background-color);
 }
 </style>

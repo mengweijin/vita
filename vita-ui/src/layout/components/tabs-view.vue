@@ -93,7 +93,8 @@ const handleCloseRight = () => {
 
 
 <template>
-  <div class="tabs-view">
+  <div class="vt-tabs">
+	<!-- 标签页区域 -->
     <el-tabs v-model="activeTab" closable @tab-click="handleTabClick" @tab-remove="handleTabRemove">
       <el-tab-pane v-for="tab in tabsList" :key="tab.name" :name="tab.name" :label="tab.title" :closable="tab.closable">
       <!-- 核心：使用label插槽自定义标题区域 -->
@@ -104,36 +105,33 @@ const handleCloseRight = () => {
       </template>
 		</el-tab-pane>
     </el-tabs>
-
-	<el-scrollbar class="vt-tab-content">	
-      <router-view v-slot="{ Component }">
-        <keep-alive :include="tabsStore.getCachedViews()">
-          <component :is="Component" :key="$route.fullPath" />
-        </keep-alive>
-      </router-view>
-	</el-scrollbar>
+	<!-- 内容区域 -->
+	<div class="vt-tab-content">
+		<el-scrollbar>	
+			<router-view v-slot="{ Component }">
+				<keep-alive :include="tabsStore.getCachedViews()">
+				<component :is="Component" :key="$route.fullPath" />
+				</keep-alive>
+			</router-view>	
+		</el-scrollbar>
+	</div>
   </div>
 </template>
 
 
 <style scoped>
-.tabs-view {
+.vt-tabs {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  overflow: hidden;
 }
 
-:deep(.el-tabs__nav-scroll) {
-  padding-left: 20px;
-}
-
-/* 隐藏水平滚动条 */
-:deep(.el-scrollbar__bar.is-horizontal) {
-  display: none !important;
+.vt-tabs :deep(.el-tabs__nav-scroll) {
+	padding-left: 20px;
 }
 
 .vt-tab-content {
-	padding: 0px 20px;
+  /* 减去标签页高度 */
+  height: calc(100% - 40px);
+  padding: 0px 15px;
 }
 </style>

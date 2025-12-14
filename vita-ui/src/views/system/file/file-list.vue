@@ -202,7 +202,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-:deep(.el-upload-list) {
-  margin: 0px;
-}
 </style>

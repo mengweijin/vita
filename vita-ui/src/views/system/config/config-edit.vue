@@ -72,7 +72,7 @@ defineExpose({ data, visible });
         { required: true, message: '必填', trigger: 'blur' },
         { pattern: /^vita\./, message: '配置键必须以 “vita.” 开头', trigger: 'blur' }
       ]">
-        <el-input v-model="form.configKey" clearable maxlength="128" autocomplete="off" />
+        <el-input v-model="form.configKey" :disabled="data?.id" clearable maxlength="128" autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="configValue" label="配置值" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">

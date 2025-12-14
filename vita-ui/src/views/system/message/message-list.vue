@@ -229,7 +229,11 @@ onMounted(() => {
   margin-right: 20px;
 }
 
-.vt-main {
+.el-main {
+  padding: 0px;
+}
+
+/* .vt-main {
   overflow-x: hidden;
 }
 
@@ -239,5 +243,5 @@ onMounted(() => {
 
 .vt-table {
 	height: calc(var(--vt-table-height) - 5px);
-}
+} */
 </style>

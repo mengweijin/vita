@@ -173,13 +173,13 @@ onBeforeUnmount(() => {
           { pattern: /^\d+$/, message: '验证码应为数字' }
         ]">
           <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
+            <template #prepend>
+              <a href="javascript:;" class="vt-login-captcha" @click="onRefreshCaptcha"><img :src="captchaImg" /></a>
+            </template>
             <template #prefix>
               <el-icon :size="22">
                 <Icon icon="ri:shield-keyhole-line" />
               </el-icon>
-            </template>
-            <template #append>
-              <a href="javascript:;" class="vt-login-captcha" @click="onRefreshCaptcha"><img :src="captchaImg" /></a>
             </template>
           </el-input>
         </el-form-item>
@@ -227,13 +227,10 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   align-content: center;
-  padding: 3px;
+  padding: 2px;
+  margin-left: -20px;
+  margin-right: -20px;
   width: 140px;
-}
-
-:deep(.el-input-group__append:has(.vt-login-captcha)) {
-  padding: 0;
-  background-color: white;
 }
 
 .el-form-item+.el-form-item {
@@ -244,7 +241,7 @@ onBeforeUnmount(() => {
   margin-bottom: 0px;
 }
 
-:deep(.el-main) {
+.el-main {
   padding: 0;
   display: flex;
   justify-content: center;
@@ -254,7 +251,12 @@ onBeforeUnmount(() => {
   background-color: #f7f7f7;
 }
 
-:deep(.el-footer) {
+.el-form {
+  width: 340px;
+  max-width: 90%;
+}
+
+.el-footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
