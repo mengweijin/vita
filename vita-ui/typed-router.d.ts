@@ -51,8 +51,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/monitor/cache-local': RouteRecordInfo<
-      '/monitor/cache-local',
+    '/monitor/cache-local/': RouteRecordInfo<
+      '/monitor/cache-local/',
       '/monitor/cache-local',
       Record<never, never>,
       Record<never, never>,
@@ -86,15 +86,15 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/monitor/server': RouteRecordInfo<
-      '/monitor/server',
+    '/monitor/server/': RouteRecordInfo<
+      '/monitor/server/',
       '/monitor/server',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/user-online': RouteRecordInfo<
-      '/monitor/user-online',
+    '/monitor/user-online/': RouteRecordInfo<
+      '/monitor/user-online/',
       '/monitor/user-online',
       Record<never, never>,
       Record<never, never>,
@@ -228,9 +228,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/monitor/cache-local.vue': {
+    'src/pages/monitor/cache-local/index.vue': {
       routes:
-        | '/monitor/cache-local'
+        | '/monitor/cache-local/'
       views:
         | never
     }
@@ -258,15 +258,15 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/monitor/server.vue': {
+    'src/pages/monitor/server/index.vue': {
       routes:
-        | '/monitor/server'
+        | '/monitor/server/'
       views:
         | never
     }
-    'src/pages/monitor/user-online.vue': {
+    'src/pages/monitor/user-online/index.vue': {
       routes:
-        | '/monitor/user-online'
+        | '/monitor/user-online/'
       views:
         | never
     }

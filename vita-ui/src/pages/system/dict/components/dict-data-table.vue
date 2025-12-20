@@ -1,5 +1,6 @@
 <script setup>
 import { dictDataApi } from "@/api/system/dict-api";
+import columns from "./dict-data-columns.js";
 import DictDataEdit from "./dict-data-edit.vue";
 
 const loading = ref(true);
@@ -13,24 +14,6 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
-
-const columns = reactive({
-	code: { label: "字典编码", visible: false },
-	createByName: { label: "创建者", visible: false },
-	createTime: { label: "创建时间", visible: false },
-	disabled: { label: "字典状态", visible: true },
-	id: { label: "ID", visible: false },
-	index: { label: "序号列", visible: false },
-	label: { label: "字典标签", visible: true },
-	operation: { label: "操作", visible: true },
-	remark: { label: "备注", visible: true },
-	selection: { label: "选择列", visible: false },
-	seq: { label: "排序", visible: true },
-	tag: { label: "标签样式", visible: true },
-	updateByName: { label: "更新者", visible: true },
-	updateTime: { label: "更新时间", visible: true },
-	val: { label: "字典值", visible: true },
-});
 
 const loadTableData = () => {
 	dictDataApi.list({ code: dictType.value.code }).then((res) => {

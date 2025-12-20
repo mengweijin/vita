@@ -6,8 +6,8 @@ meta:
 <script setup>
 import { menuApi } from "@/api/system/menu-api";
 import utils from "@/utils/utils.js";
+import columns from "./columns.js";
 import MenuEdit from "./components/menu-edit.vue";
-import { columns } from "./menu-hook.js";
 
 const loading = ref(true);
 

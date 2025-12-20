@@ -6,7 +6,7 @@ meta:
 <script setup>
 import { fileApi } from "@/api/system/file-api";
 import { useLoginStore } from "@/store/login-store.js";
-import { columns } from "./file-hook.js";
+import columns from "./columns.js";
 
 const loginStore = useLoginStore();
 

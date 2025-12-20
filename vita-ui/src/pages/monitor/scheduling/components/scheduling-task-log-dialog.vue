@@ -1,5 +1,6 @@
 <script setup>
-import { schedulingTaskLogApi } from "@/api/monitor/scheduling-task-api";
+import { schedulingTaskLogApi } from "@/api/monitor/scheduling-task-api.js";
+import columns from "./task-log-columns.js";
 
 const loading = ref(true);
 
@@ -32,23 +33,6 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
-
-const columns = reactive({
-	args: { label: "实际执行参数", visible: true },
-	costTime: { label: "消耗时间（毫秒）", visible: true },
-	createByName: { label: "创建者", visible: false },
-	createTime: { label: "创建时间", visible: true },
-	id: { label: "ID", visible: true },
-	index: { label: "序号列", visible: false },
-	message: { label: "附加信息", visible: true },
-	operation: { label: "操作", visible: true },
-	schedulingTaskId: { label: "调度任务ID", visible: false },
-	selection: { label: "选择列", visible: true },
-	status: { label: "执行状态", visible: true },
-	success: { label: "执行结果", visible: true },
-	updateByName: { label: "更新者", visible: false },
-	updateTime: { label: "更新时间", visible: true },
-});
 
 const loadTableData = () => {
 	loading.value = true;

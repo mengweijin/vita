@@ -6,9 +6,9 @@ meta:
 
 <script setup>
 import { noticeApi } from "@/api/system/notice-api";
+import columns from "./columns.js";
 import NoticeDetail from "./components/notice-detail.vue";
 import NoticeEdit from "./components/notice-edit.vue";
-import { columns } from "./notice-hook.js";
 
 const loading = ref(true);
 

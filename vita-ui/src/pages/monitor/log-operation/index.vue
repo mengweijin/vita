@@ -5,6 +5,7 @@ meta:
 
 <script setup>
 import { logOperationApi } from "@/api/monitor/log-operation-api";
+import columns from "./columns.js";
 import LogOperationDetail from "./components/log-operation-detail.vue";
 
 const loading = ref(true);
@@ -14,27 +15,6 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
-
-const columns = reactive({
-	costTime: { label: "执行时间（ms）", visible: true },
-	createByName: { label: "操作者", visible: true },
-	createTime: { label: "操作时间", visible: true },
-	errorMsg: { label: "失败信息", visible: false },
-	httpMethod: { label: "请求方式", visible: true },
-	id: { label: "ID", visible: false },
-	index: { label: "序号列", visible: false },
-	methodName: { label: "方法名称", visible: true },
-	operation: { label: "操作", visible: true },
-	operationType: { label: "操作类型", visible: true },
-	requestData: { label: "请求数据", visible: false },
-	responseData: { label: "响应数据", visible: false },
-	selection: { label: "选择列", visible: false },
-	success: { label: "操作状态", visible: true },
-	title: { label: "模块标题", visible: true },
-	updateByName: { label: "更新者", visible: false },
-	updateTime: { label: "更新时间", visible: false },
-	url: { label: "URL", visible: true },
-});
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效

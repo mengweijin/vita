@@ -5,6 +5,7 @@ meta:
 
 <script setup>
 import { dictTypeApi } from "@/api/system/dict-api";
+import columns from "./columns.js";
 import DictDataTable from "./components/dict-data-table.vue";
 import DictTypeEdit from "./components/dict-type-edit.vue";
 
@@ -15,20 +16,6 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
-
-const columns = reactive({
-	code: { label: "字典编码", visible: true },
-	createByName: { label: "创建者", visible: false },
-	createTime: { label: "创建时间", visible: false },
-	id: { label: "ID", visible: false },
-	index: { label: "序号列", visible: false },
-	name: { label: "字典名称", visible: true },
-	operation: { label: "操作", visible: true },
-	remark: { label: "备注", visible: true },
-	selection: { label: "选择列", visible: false },
-	updateByName: { label: "更新者", visible: true },
-	updateTime: { label: "更新时间", visible: true },
-});
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效

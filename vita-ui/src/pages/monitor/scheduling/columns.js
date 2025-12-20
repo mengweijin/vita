@@ -1,0 +1,16 @@
+export default reactive({
+	selection: { label: "选择列", visible: false },
+	index: { label: "序号列", visible: false },
+	id: { label: "ID", visible: false },
+	name: { label: "任务名称", visible: true },
+	cron: { label: "CRON 表达式", visible: true },
+	beanName: { label: "执行 Bean 名称", visible: true },
+	args: { label: "执行参数", visible: true },
+	disabled: { label: "状态", visible: true },
+	remark: { label: "备注", visible: true },
+	createByName: { label: "创建者", visible: false },
+	createTime: { label: "创建时间", visible: false },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+	operation: { label: "操作", visible: true },
+});

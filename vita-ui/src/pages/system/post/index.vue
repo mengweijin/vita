@@ -4,9 +4,9 @@ meta:
 </route>
 
 <script setup>
-import { postApi } from "@/api/system/post-api";
+import { postApi } from "@/api/system/post-api.js";
+import columns from "./columns.js";
 import PostEdit from "./components/post-edit.vue";
-import { columns } from "./post-hook.js";
 
 const loading = ref(true);
 

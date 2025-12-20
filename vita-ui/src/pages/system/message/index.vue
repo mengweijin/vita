@@ -6,7 +6,7 @@ meta:
 <script setup>
 import { messageApi } from "@/api/system/message-api";
 import { useDictStore } from "@/store/dict-store.js";
-import { columns } from "./message-hook.js";
+import columns from "./columns.js";
 
 const dictStore = useDictStore();
 
