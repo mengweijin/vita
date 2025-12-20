@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @since 2022/5/17
  * @deprecated
  */
+@SuppressWarnings({"java:S1133"})
 @Slf4j
 @Deprecated(since = "2.0", forRemoval = true)
 //@RestControllerAdvice

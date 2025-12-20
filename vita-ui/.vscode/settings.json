@@ -31,9 +31,7 @@
 	// 配置路径别名映射（适用于使用了路径别名的项目）
 	"path-intellisense.mappings": {
 		// @ 别名映射到 src 目录（常见于Vue/React项目）
-		"@": "${workspaceFolder}/src",
-		// 根路径映射
-		"/": "${workspaceFolder}"
+		"@": "${workspaceFolder}/src"
 	},
 	// 显示隐藏文件（以.开头的文件）
 	"path-intellisense.showHiddenFiles": true,

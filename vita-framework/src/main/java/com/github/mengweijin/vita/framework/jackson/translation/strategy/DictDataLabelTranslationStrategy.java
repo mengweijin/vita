@@ -8,7 +8,7 @@ import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 /**
- * 用户名翻译
+ * 字典翻译
  * @author mengweijin
  * @since 2023/5/20
  */

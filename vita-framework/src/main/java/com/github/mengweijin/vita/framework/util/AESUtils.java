@@ -121,7 +121,8 @@ public class AESUtils {
      * 使用 generateSecretKey 方法来代替。这里仅做原生的写法展示。
      * @deprecated
      */
-    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"java:S1133"})
+    @Deprecated(since = "1.1", forRemoval = true)
     private static byte[] generateSecretKeyByKeyGenerator(String key, int keySize) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(SymmetricAlgorithm.AES.getValue());
         SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");

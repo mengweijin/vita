@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.repeatsubmit;
 
+import cn.hutool.v7.core.array.ArrayUtil;
+import cn.hutool.v7.crypto.SecureUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.P;
@@ -12,13 +14,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import cn.hutool.v7.core.array.ArrayUtil;
-import cn.hutool.v7.crypto.SecureUtil;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.cache.Cache;
 import java.util.Collection;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -53,8 +53,8 @@ public class RepeatSubmitAspect {
         // 唯一标识（指定key + url + args MD5）
         String key = String.join(Const.COLON, sessionId, url, SecureUtil.md5(args));
 
-        Cache<String, Long> cache = CacheFactory.getRepeatSubmitCache();
-        Long cachedTimeMillis = cache.get(key);
+        Cache cache = CacheFactory.getRepeatSubmitCache();
+        Long cachedTimeMillis = cache.get(key, Long.class);
 
         // 缓存中不存在，继续执行方法，然后加入缓存。或者缓存中存在，但超过了时间间隔，则这个 url 不为重复提交。
         if (cachedTimeMillis == null || ((System.currentTimeMillis() - cachedTimeMillis) > interval)) {

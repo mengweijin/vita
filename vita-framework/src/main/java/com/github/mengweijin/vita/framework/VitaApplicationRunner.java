@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework;
 
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,12 +10,14 @@ import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * @author mengweijin
@@ -31,8 +34,16 @@ public class VitaApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        log.info("***********************************************************************");
         this.printDatabaseProductName();
+        this.printCacheManagerNames();
         this.initMultipartTempLocation();
+        log.info("***********************************************************************");
+    }
+
+    private void printCacheManagerNames() {
+        String[] names = SpringUtil.getBeanNamesForType(CacheManager.class);
+        Arrays.stream(names).forEach(i -> log.info("Loaded {}", i));
     }
 
     private void printDatabaseProductName() throws SQLException {

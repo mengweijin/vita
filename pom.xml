@@ -214,25 +214,51 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>  
             <!-- Javadoc -->  
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <charset>UTF-8</charset>
-                    <encoding>UTF-8</encoding>
-                    <docencoding>UTF-8</docencoding>
+                    <!-- 禁用严格的文档检查 -->
+                    <doclint>none</doclint>
                 </configuration>
             </plugin>  
             <!-- GPG
-                1. 需要安装 gpg4win-4.4.1.exe，并创建要给 OpenPGP 密钥对证书，并右键【在服务器上发布】。
+                1. 需要安装 gpg4win-4.4.1.exe，并创建要给 OpenPGP 密钥对证书（邮箱填写中央仓库账号的邮箱），并右键【在服务器上发布】。
                 2. 配置系统环境变量：MAVEN_GPG_PASSPHRASE=<证书的 passphrase>
             -->
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-gpg-plugin</artifactId>  
                 <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <!-- 在 Maven 生命周期的 verify 阶段触发签名操作。该阶段位于 package 之后、install 之前，适合进行签名验证。 -->
+                        <phase>verify</phase>
+                        <goals>
+                            <!-- 调用插件的 sign 目标，对已打包的 artifacts（如主 JAR、源码 JAR、POM 文件等）进行签名。 -->
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- 统一更新 pom.xml 中的版本 -->
             <plugin>

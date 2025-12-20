@@ -1,13 +1,16 @@
 package com.github.mengweijin.vita.monitor.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.github.mengweijin.vita.framework.cache.CacheFactory;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import com.github.mengweijin.vita.framework.cache.CacheConfig;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.vo.CacheVO;
-import lombok.AllArgsConstructor;
-import cn.hutool.v7.core.text.CharSequenceUtil;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,55 +18,64 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.cache.Cache;
-import javax.cache.CacheManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mengweijin
  * @since 2022/10/30
  */
-@AllArgsConstructor
 @RestController
 @RequestMapping("/monitor/cache")
 public class CacheController {
 
-    private static final String LOG_TITLE = "缓存监控";
+    private static final String LOG_TITLE = "本地缓存";
 
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
+
+    public CacheController(@Qualifier(CacheConfig.LOCAL_CACHE_MANAGER) CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
 
     @SaCheckPermission("monitor:cache:view")
     @GetMapping("/names")
     public Collection<String> getCacheNames() {
-        return CacheFactory.getCacheNames();
+        Iterable<String> iterable = cacheManager.getCacheNames();
+        return CollUtil.sortByPinyin(CollUtil.toCollection(iterable));
     }
 
     @SaCheckPermission("monitor:cache:view")
     @GetMapping("/query")
     public List<CacheVO> getCacheByName(@RequestParam("cacheName") String cacheName) {
         List<CacheVO> list = new ArrayList<>();
-        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+
+        Map<Object, Object> cacheMap = new HashMap<>(16);
+        Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
-            for (Cache.Entry<Object, Object> next : cache) {
-                if(next != null) {
-                    String key = CharSequenceUtil.toString(next.getKey());
-                    list.add(new CacheVO(key, key, next.getValue()));
-                }
+            // 获取 Caffeine Cache 底层的 Native Cache，并调用 asMap()
+            Object object = cache.getNativeCache();
+            if(object instanceof com.github.benmanes.caffeine.cache.Cache<?, ?> nativeCache) {
+                cacheMap = new HashMap<>(nativeCache.asMap());
             }
         }
+        cacheMap.forEach((k, v) -> {
+            String key = CharSequenceUtil.toString(k);
+            list.add(new CacheVO(cacheName, key, v));
+        });
         return list;
     }
 
     @SaCheckPermission("monitor:cache:view")
     @GetMapping("/queryCacheByNameAndKey")
     public CacheVO getCacheByNameAndKey(@RequestParam("cacheName") String cacheName, @RequestParam("cacheKey") String cacheKey) {
-        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+        Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
             Object value = cache.get(cacheKey);
-            return new CacheVO(cacheKey, cacheKey, value);
+            return new CacheVO(cacheName, cacheKey, value);
         }
         return null;
     }
@@ -71,17 +83,22 @@ public class CacheController {
     @SaCheckPermission("monitor:cache:remove")
     @PostMapping("/remove")
     public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey") Serializable cacheKey) {
-        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-        boolean removed = cache.remove(cacheKey);
-        return R.result(removed);
+        Cache cache = cacheManager.getCache(cacheName);
+        if (cache != null) {
+            boolean removed = cache.evictIfPresent(cacheKey);
+            return R.result(removed);
+        }
+        return R.ok();
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:cache:remove")
     @PostMapping("/clear-by-name/{cacheName}")
     public R<Void> clearByName(@PathVariable("cacheName") String cacheName) {
-        Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-        cache.clear();
+        Cache cache = cacheManager.getCache(cacheName);
+        if (cache != null) {
+            cache.clear();
+        }
         return R.ok();
     }
 
@@ -91,8 +108,10 @@ public class CacheController {
     public R<Void> clear() {
         Collection<String> cacheNames = this.getCacheNames();
         for (String cacheName : cacheNames) {
-            Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-            cache.clear();
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache != null) {
+                cache.clear();
+            }
         }
         return R.ok();
     }

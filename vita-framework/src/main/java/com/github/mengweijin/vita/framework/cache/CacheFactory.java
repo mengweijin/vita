@@ -1,69 +1,36 @@
 package com.github.mengweijin.vita.framework.cache;
 
+import cn.hutool.v7.extra.spring.SpringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.extra.spring.SpringUtil;
-import cn.hutool.v7.swing.captcha.AbstractCaptcha;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 /**
  * @author mengweijin
  */
-@SuppressWarnings({"unused"})
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CacheFactory {
-
+    
     private static final CacheManager CACHE_MANAGER = SpringUtil.getBean(CacheManager.class);
 
-    public static Collection<String> getCacheNames() {
-        Iterable<String> iterable = CACHE_MANAGER.getCacheNames();
-        return CollUtil.sortByPinyin(CollUtil.toCollection(iterable));
-    }
+    private static final CacheManager LOCAL_CACHE_MANAGER = SpringUtil.getBean(CacheConfig.LOCAL_CACHE_MANAGER, CacheManager.class);
 
-    public static <K, V> Cache<K, V> createCache(String cacheName, DynamicCache<K, V> dynamicCache) {
-        return CACHE_MANAGER.createCache(cacheName, CacheConfig.config(dynamicCache));
-    }
+    private static final CacheManager REDIS_CACHE_MANAGER = SpringUtil.getBean(CacheConfig.REDIS_CACHE_MANAGER, CacheManager.class);
 
-    public static <K, V> Cache<K, V> getCache(String cacheName) {
-        return CACHE_MANAGER.getCache(cacheName);
-    }
-
-    public static Cache<String, String> getDictDataLabelCache() {
-        return CACHE_MANAGER.getCache(CacheNames.DICT_VAL_TO_LABEL);
-    }
-
-    public static Cache<String, String> getDeptIdNameCache() {
-        return CACHE_MANAGER.getCache(CacheNames.DEPT_ID_TO_NAME);
-    }
-
-    public static Cache<String, String> getUserIdUsernameCache() {
-        return CACHE_MANAGER.getCache(CacheNames.USER_ID_TO_USERNAME);
-    }
-
-    public static Cache<String, String> getUserIdNicknameCache() {
-        return CACHE_MANAGER.getCache(CacheNames.USER_ID_TO_NICKNAME);
-    }
-
-    public static Cache<String, Long> getRepeatSubmitCache() {
+    public static Cache getRepeatSubmitCache() {
         return CACHE_MANAGER.getCache(CacheNames.REPEAT_SUBMIT);
     }
 
-    public static Cache<String, SseEmitter> getSseEmitterMessageCache() {
+    public static Cache getSseEmitterMessageCache() {
         return CACHE_MANAGER.getCache(CacheNames.SSE_EMITTER_MESSAGE);
     }
 
-    public static Cache<String, List<LocalDateTime>> getRateLimitCache() {
+    public static Cache getRateLimitCache() {
         return CACHE_MANAGER.getCache(CacheNames.RATE_LIMIT);
     }
 
-    public static Cache<String, AbstractCaptcha> getCaptchaCache() {
-        return CACHE_MANAGER.getCache(CacheNames.CAPTCHA);
+    public static Cache getCaptchaCache() {
+        return LOCAL_CACHE_MANAGER.getCache(CacheNames.CAPTCHA);
     }
 }

@@ -7,10 +7,10 @@ import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.cache.Cache;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 @Component
 public class SseConnector implements InitializingBean {
 
-    private Cache<String, SseEmitter> cache;
+    private Cache cache;
 
     private ExecutorService executorService;
 
@@ -47,14 +47,16 @@ public class SseConnector implements InitializingBean {
      */
     public SseEmitter connect(String username) {
         // 移除旧的连接（如果存在）
-        if(cache.containsKey(username)) {
-            cache.get(username).complete();
+        SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
+        if(sseEmitter != null) {
+            sseEmitter.complete();
+            cache.evictIfPresent(username);
         }
 
         // 设置超时时间，0表示用不过期。
-        SseEmitter sseEmitter = new SseEmitter(0L);
-        sseEmitter.onCompletion(() -> cache.remove(username));
-        sseEmitter.onTimeout(() -> cache.remove(username));
+        sseEmitter = new SseEmitter(0L);
+        sseEmitter.onCompletion(() -> cache.evictIfPresent(username));
+        sseEmitter.onTimeout(() -> cache.evictIfPresent(username));
         sseEmitter.onError(onError(username));
 
         // 保存新连接
@@ -63,10 +65,10 @@ public class SseConnector implements InitializingBean {
     }
 
     public void disconnect(String username) {
-        SseEmitter sseEmitter = cache.get(username);
+        SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
         if (sseEmitter != null) {
             sseEmitter.complete();
-            cache.remove(username);
+            cache.evictIfPresent(username);
         }
     }
 
@@ -78,15 +80,15 @@ public class SseConnector implements InitializingBean {
         for (String username : usernames) {
             CompletableFuture.runAsync(() -> {
                 try {
-                    SseEmitter sseEmitter = cache.get(username);
+                    SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
                     if (sseEmitter == null) {
-                        cache.remove(username);
+                        cache.evictIfPresent(username);
                     } else {
                         sseEmitter.send(message);
                     }
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
-                    cache.remove(username);
+                    cache.evictIfPresent(username);
                     throw new ServerException(e);
                 }
             }, executorService);
@@ -95,7 +97,7 @@ public class SseConnector implements InitializingBean {
 
     private Consumer<Throwable> onError(String username) {
         return throwable -> {
-            cache.remove(username);
+            cache.evictIfPresent(username);
             log.error(throwable.getMessage(), throwable);
         };
     }

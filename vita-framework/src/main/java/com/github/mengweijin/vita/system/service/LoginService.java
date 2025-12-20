@@ -26,9 +26,9 @@ import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
-import javax.cache.Cache;
 import java.util.Optional;
 
 /**
@@ -133,10 +133,10 @@ public class LoginService {
 
     public String getCaptcha() {
         String ip = ServletUtil.getClientIP(ServletUtils.getRequest());
-        Cache<String, AbstractCaptcha> captchaCache = CacheFactory.getCaptchaCache();
+        Cache captchaCache = CacheFactory.getCaptchaCache();
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 50);
+        AbstractCaptcha captcha = CaptchaUtil.ofLineCaptcha(140, 40, 4, 40);
         // 自定义验证码内容为四则运算方式，每个数字的长度为 1 位
         captcha.setGenerator(mathGenerator);
 
@@ -147,9 +147,9 @@ public class LoginService {
     }
 
     private boolean checkCaptcha(HttpServletRequest request, @NotBlank String captcha) {
-        Cache<String, AbstractCaptcha> captchaCache = CacheFactory.getCaptchaCache();
+        Cache captchaCache = CacheFactory.getCaptchaCache();
         String ip = ServletUtil.getClientIP(request);
-        AbstractCaptcha abstractCaptcha = captchaCache.get(ip);
+        AbstractCaptcha abstractCaptcha = captchaCache.get(ip, AbstractCaptcha.class);
         return abstractCaptcha != null && abstractCaptcha.verify(captcha);
     }
 

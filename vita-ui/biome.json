@@ -9,7 +9,12 @@
 		"enabled": true
 	},
 	"files": {
-		"includes": ["**", "!!**/dist"]
+		"includes": [
+			"**",
+			"!!**/dist",
+			"!!**/node_modules",
+			"!**/.vscode/vue.code-snippets"
+		]
 	},
 	"formatter": {
 		"attributePosition": "auto",
@@ -30,7 +35,9 @@
 	},
 	"overrides": [
 		{
-			"includes": ["**/*.vue"],
+			"includes": [
+				"**/*.vue"
+			],
 			"linter": {
 				"rules": {
 					"correctness": {

@@ -1,74 +1,129 @@
 package com.github.mengweijin.vita.framework.cache;
 
-import com.github.mengweijin.vita.framework.cache.listener.DefaultCacheEventListener;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheEventListenerConfigurationBuilder;
-import org.ehcache.config.builders.ExpiryPolicyBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.core.events.CacheEventListenerConfiguration;
-import org.ehcache.event.EventType;
-import org.ehcache.jsr107.Eh107Configuration;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.github.mengweijin.vita.framework.cache.manager.VitaCaffeineCacheManager;
+import com.github.mengweijin.vita.framework.cache.manager.VitaRedisCacheManager;
+import com.github.mengweijin.vita.framework.jackson.JacksonConfig;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.text.SimpleDateFormat;
 
 /**
- * 原理说明：
- * <p>
- * echahe2.x与springboot整合时，springcache已经提供了EhCacheCacheManager（org.springframework.cache.ehcache）
- * 做为@Cacheable的CacheManager（org.springframework.cache），因此只要提供一个EhCacheCacheManager即可
- * <p>
- * echahe3.x与springboot整合时，因为EhCacheCacheManager中的CacheManager还是net.sf.ehcache.CacheManager
- * （也就是ecache2.x），所以必须借助JCacheCacheManager（org.springframework.cache.jcache）实现@Cacheable缓存。
- * 注意：JCache(JSR-107)是一种标准规范，在springboot中需要引入javax.cache.cache-api.jar包。
- * <p>
- * ehcache和jcache结合参考：<a href="https://www.ehcache.org/documentation/3.8/107.html">https://www.ehcache.org/documentation/3.8/107.html</a>
- * <p>
  * Spring Cache Documents 参考：<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Spring Cache Documents</a>
  * <p>
  * 1、使用注解
  * KEY_EXPRESSION 为 @Cacheable 中的 key 值，默认使用 SPEL 表达式，若要拼接普通文本，需要用单引号包裹起来。
  * <p>
- * Example 1: @Cacheable(value = CacheNames.USER, key = CacheConst.KEY_CLASS_METHOD, unless = "#result?.size() == 0")
- * Example 2: @Cacheable(value = CacheNames.USER, key = CacheConst.KEY_CLASS + "+#username + 'zhangsan'", unless = "#result == null")
+ * Example 1: @Cacheable(cacheNames = CacheNames.USER, key = CacheConst.KEY_CLASS_METHOD, unless = "#result?.size() == 0")
+ * Example 2: @Cacheable(cacheNames = CacheNames.USER, key = CacheConst.KEY_CLASS + "+#username + 'zhangsan'", unless = "#result == null")
+ * Example 3（指定缓存管理器）: @Cacheable(cacheManager = "redisCacheManager", cacheNames = CacheNames.User, key = CacheConst.KEY_CLASS_METHOD)
  * <p>
  * 2、使用 {@link CacheFactory}
- *
+ * 3、指定缓存管理器。不指定默认为 @Primary 注解的默认缓存管理器。
+ *     - @Cacheable(cacheManager = "caffeineCacheManager")
+ *     - @Cacheable(cacheManager = "redisCacheManager")
  * @author mengweijin
- * @since 2022/10/29
+ * @since 2025/12/14
  */
 @EnableCaching
 @Configuration
-@SuppressWarnings({"rawtypes", "unchecked", "java:S1118"})
+@AllArgsConstructor
+@EnableConfigurationProperties({CacheProperties.class})
 public class CacheConfig {
 
+    public static final String LOCAL_CACHE_MANAGER = "localCacheManager";
+
+    public static final String REDIS_CACHE_MANAGER = "redisCacheManager";
+
+    private CacheProperties cacheProperties;
+
+    @Primary
+    @Bean(name = LOCAL_CACHE_MANAGER)
+    public CacheManager localCacheManager() {
+        VitaCaffeineCacheManager cacheManager = new VitaCaffeineCacheManager();
+        cacheManager.setDefaultExpireAfterWrite(cacheProperties.getRedis().getTimeToLive());
+        return cacheManager;
+    }
+
     /**
-     * 默认缓存配置属性
+     * {@link GenericJackson2JsonRedisSerializer}：可以保存序列化对象的包名和类名，反序列化时可以根据这些信息将 JSON 数据转换回指定的 Java 对象。它适合需要保留类型信息的场景，但从 Redis 获取数据时需要将结果转为字符串后再解析为对象。
+     * {@link Jackson2JsonRedisSerializer}：则直接将 Java 对象序列化为 JSON 字符串，反序列化时不需要额外的类型信息，使用更为简单。适合不需要保留类型信息的场景。
      */
-    public static <K, V> javax.cache.configuration.Configuration<K, V> config(DynamicCache options) {
-        ResourcePoolsBuilder poolsBuilder = ResourcePoolsBuilder
-                // 设置缓存堆容纳元素个数(JVM内存空间)超出个数后会存到 offheap 中
-                // 基于堆大小的缓存需要打开：--add-opens=java.base/java.util=ALL-UNNAMED
-                //.heap(30, MemoryUnit.MB)
-                .heap(options.getHeapEntries())
-                // 设置堆外内存大小(直接内存) 超出 offheap 的大小会根据淘汰规则被淘汰，数值大小必须小于磁盘大小
-                //.offheap(10, MemoryUnit.MB)
-                ;
-        // 缓存数据K和V的数值类型，在ehcache3.3中必须指定缓存键值类型,如果使用中类型与配置的不同,会报类转换异常
-        CacheConfigurationBuilder<K, V> builder = CacheConfigurationBuilder.newCacheConfigurationBuilder(options.getKeyType(), options.getValueType(), poolsBuilder)
-                // 缓存监听器
-                .withService(cacheEventListener());
-
-        // 数据最大存活时间 TTL
-        builder.withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(options.getExpiry()));
-        return Eh107Configuration.fromEhcacheCacheConfiguration(builder.build());
+    @Bean(name = REDIS_CACHE_MANAGER)
+    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+        CacheProperties.Redis redis = cacheProperties.getRedis();
+        // 创建默认配置
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()))
+                .entryTtl(redis.getTimeToLive());
+        if(!redis.isCacheNullValues()) {
+            config.disableCachingNullValues();
+        }
+        if(redis.isUseKeyPrefix()) {
+            config.computePrefixWith(cacheName -> redis.getKeyPrefix() + cacheName + "::");
+        }
+        // 创建自定义 Redis 缓存管理器
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
+        return new VitaRedisCacheManager(redisCacheWriter, config);
     }
 
-    private static CacheEventListenerConfiguration<?> cacheEventListener() {
-        return CacheEventListenerConfigurationBuilder
-                .newEventListenerConfiguration(
-                        new DefaultCacheEventListener(), EventType.EVICTED, EventType.EXPIRED, EventType.REMOVED, EventType.CREATED, EventType.UPDATED)
-                .asynchronous()
-                .unordered()
-                .build();
+    @Bean
+    public Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        //序列化对象值为 null 的属性
+        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        //反序列化的时候如果多了其他属性,不抛出异常
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //如果是空对象的时候,不抛异常
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        //取消时间的转化格式,默认是时间戳,可以取消,同时需要设置要表现的时间格式
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+        mapper.registerModule(JacksonConfig.javaTimeModule());
+        return new Jackson2JsonRedisSerializer<>(mapper, Object.class);
     }
+
+    @Bean
+    public KeyGenerator keyGenerator() {
+        return (target, method, params) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(target.getClass().getName());
+            sb.append(".");
+            sb.append(method.getName());
+            for (Object param : params) {
+                if (param != null) {
+                    sb.append(":");
+                    sb.append(param);
+                }
+            }
+            return sb.toString();
+        };
+    }
+
 }

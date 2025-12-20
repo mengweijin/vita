@@ -14,9 +14,7 @@
 		"antfu.iconify",
 		"lokalise.i18n-ally",
 		"redhat.vscode-yaml",
-		"csstools.postcss",
 		"biomejs.biome",
-		"markosth09.color-picker",
-		"vscode-icons-team.vscode-icons"
+		"markosth09.color-picker"
 	]
 }

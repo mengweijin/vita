@@ -26,10 +26,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.cache.Cache;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.cache.Cache;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -70,21 +70,21 @@ public class RateLimitAspect {
         String cacheKey;
         try {
             cacheKey = getCacheKey(rateLimit.strategy(), joinPoint);
-            Cache<String, List<LocalDateTime>> cache = CacheFactory.getRateLimitCache();
+            Cache cache = CacheFactory.getRateLimitCache();
 
-            List<LocalDateTime> list = cache.get(cacheKey);
-            if (list == null) {
-                list = new ArrayList<>();
+            RatelimitCacheObject cacheObject = cache.get(cacheKey, RatelimitCacheObject.class);
+            if (cacheObject == null) {
+                cacheObject = new RatelimitCacheObject();
             }
             LocalDateTime current = LocalDateTime.now();
             // 移除掉已经超过统计时间区间的值
-            list = list.stream().filter(item -> TimeUtil.between(item, current, ChronoUnit.SECONDS) < rateLimit.duration()).toList();
-
+            List<LocalDateTime> list = cacheObject.getList().stream().filter(item -> TimeUtil.between(item, current, ChronoUnit.SECONDS) < rateLimit.duration()).toList();
             // 未超过最大限制，覆盖更新缓存
             if (list.size() < rateLimit.max()) {
                 List<LocalDateTime> cacheList = new ArrayList<>(list);
                 cacheList.add(current);
-                cache.put(cacheKey, cacheList);
+                cacheObject.setList(cacheList);
+                cache.put(cacheKey, cacheObject);
                 return joinPoint.proceed();
             }
         } catch (Throwable e) {
