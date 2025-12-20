@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,6 +17,7 @@ import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
+import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRoleBO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -27,8 +30,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.math.NumberUtil;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -171,6 +172,14 @@ public class UserController {
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody UserBO userBO) {
         userService.saveOrUpdate(userBO);
         return R.ok();
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
+    @PostMapping("/updateBasicInformation")
+    public R<Void> updateBasicInformation(@RequestBody UserBasicInformationBO bo) {
+        UserDO userDO = BeanCopyUtils.copyBean(bo, new UserDO());
+        boolean bool = userService.updateById(userDO);
+        return R.result(bool);
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)

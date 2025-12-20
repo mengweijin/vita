@@ -40,6 +40,8 @@ export const userApi = {
 	setRoles: (data) => http.post(`${URL_PREFIX}/set-roles`, data),
 
 	update: (data) => http.post(`${URL_PREFIX}/update`, data),
+
+	updateBasicInformation: (data) => http.post(`${URL_PREFIX}/updateBasicInformation`, data),
 };
 
 class _UserRoleBO {

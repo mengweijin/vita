@@ -60,6 +60,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VtCropper: typeof import('./src/components/modules/common/vt-cropper.vue')['default']
     VtEditor: typeof import('./src/components/modules/common/vt-editor.vue')['default']
     VtIconPicker: typeof import('./src/components/modules/common/vt-icon-picker.vue')['default']
     VtSelectDept: typeof import('./src/components/modules/system/vt-select-dept.vue')['default']

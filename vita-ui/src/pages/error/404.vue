@@ -3,10 +3,7 @@ meta:
   title: 404
 </route>
 
-<script setup>
-const router = useRouter();
-const goHome = () => router.push("/");
-</script>
+<script setup></script>
 
 <template>
   <div class="graphic-container">
@@ -20,19 +17,12 @@ const goHome = () => router.push("/");
     <!-- 文案区 -->
     <h1 class="title">页面消失在数字宇宙</h1>
     <p class="subtitle">您访问的路径已迷失</p>
-
-    <!-- 交互区 -->
-    <div class="actions">
-      <button @click="goHome" class="home-btn">
-        <span>返回地球基地</span>
-      </button>
-    </div>
   </div>
 </template>
 
 <style scoped>
 .graphic-container {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

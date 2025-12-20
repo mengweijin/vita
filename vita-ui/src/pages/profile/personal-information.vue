@@ -5,6 +5,7 @@ meta:
 
 <script setup>
 import { userApi } from "@/api/system/user-api";
+import BasicInformation from "./components/basic-information.vue";
 import UserSecurityLog from "./components/user-security-log.vue";
 
 const loading = ref(true);
@@ -81,7 +82,7 @@ onMounted(() => {
         </el-aside>
         <el-main>
           <el-tabs type="border-card">
-            <el-tab-pane label="基本资料" :lazy="true">头像，昵称，电话，邮箱，性别</el-tab-pane>
+            <el-tab-pane label="基本资料" :lazy="true"><BasicInformation></BasicInformation></el-tab-pane>
             <el-tab-pane label="修改密码" :lazy="true">修改密码</el-tab-pane>
             <el-tab-pane label="绑定动态口令" :lazy="true">TOTP</el-tab-pane>
             <el-tab-pane label="在线设备" :lazy="true">在线设备</el-tab-pane>

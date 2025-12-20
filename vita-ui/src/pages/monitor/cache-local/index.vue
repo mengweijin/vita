@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup>
-import { cacheApi } from "@/api/monitor/cache-api";
+import { cacheLocalApi } from "@/api/monitor/cache-local-api.js";
 import "vue-json-pretty/lib/styles.css";
 import VueJsonPretty from "vue-json-pretty";
 import utils from "@/utils/utils.js";
@@ -30,7 +30,7 @@ const handleCacheNameChange = async (name) => {
 
 	if (!utils.isEmpty(name)) {
 		loading.value = true;
-		dataList.value = await cacheApi.query(name);
+		dataList.value = await cacheLocalApi.query(name);
 		handleFilterDataList(keywords.value);
 		loading.value = false;
 	}
@@ -53,7 +53,7 @@ const refreshByCacheName = (name) => {
 };
 
 const clearByCacheName = (name) => {
-	cacheApi.clearByName(name).then(() => {
+	cacheLocalApi.clearByName(name).then(() => {
 		handleCacheNameChange(name);
 	});
 };
@@ -64,21 +64,21 @@ const viewCacheValue = (val, index) => {
 };
 
 const removeCache = (name, key) => {
-	cacheApi.remove(name, key).then(async () => {
+	cacheLocalApi.remove(name, key).then(async () => {
 		await handleCacheNameChange(name);
 		handleFilterDataList(name);
 	});
 };
 
 const refreshCacheByNameAndKey = (name, key) => {
-	cacheApi.queryCacheByNameAndKey(name, key).then((res) => {
+	cacheLocalApi.queryCacheByNameAndKey(name, key).then((res) => {
 		cacheValue.value = res.value;
 	});
 };
 
 onMounted(async () => {
 	loading.value = true;
-	cacheNameList.value = await cacheApi.names();
+	cacheNameList.value = await cacheLocalApi.names();
 	loading.value = false;
 });
 </script>

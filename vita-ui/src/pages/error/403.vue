@@ -4,8 +4,6 @@ meta:
 </route>
 
 <script setup>
-const router = useRouter();
-const goHome = () => router.push("/");
 </script>
 
 <template>
@@ -20,19 +18,12 @@ const goHome = () => router.push("/");
     <!-- 文案区 -->
     <h1 class="title">页面封锁在数字宇宙</h1>
     <p class="subtitle">您未被授予访问此星系的通行证</p>
-
-    <!-- 交互区 -->
-    <div class="actions">
-      <button @click="goHome" class="home-btn">
-        <span>返回地球基地</span>
-      </button>
-    </div>
   </div>
 </template>
 
 <style scoped>
 .graphic-container {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

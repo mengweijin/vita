@@ -30,14 +30,14 @@ import java.util.Map;
  * @since 2022/10/30
  */
 @RestController
-@RequestMapping("/monitor/cache")
-public class CacheController {
+@RequestMapping("/monitor/cache-local")
+public class CacheLocalController {
 
     private static final String LOG_TITLE = "本地缓存";
 
     private final CacheManager cacheManager;
 
-    public CacheController(@Qualifier(CacheConfig.LOCAL_CACHE_MANAGER) CacheManager cacheManager) {
+    public CacheLocalController(@Qualifier(CacheConfig.LOCAL_CACHE_MANAGER) CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 

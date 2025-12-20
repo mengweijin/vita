@@ -1,8 +1,8 @@
 import http from "@/utils/http";
 
-const URL_PREFIX = "/monitor/cache";
+const URL_PREFIX = "/monitor/cache-local";
 
-export const cacheApi = {
+export const cacheLocalApi = {
 	clear: () => http.post(`${URL_PREFIX}/clear`),
 
 	clearByName: (cacheName) => http.post(`${URL_PREFIX}/clear-by-name/${cacheName}`),
