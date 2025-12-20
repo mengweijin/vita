@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 首页
+  closable: false
 </route>
 
 <script setup>

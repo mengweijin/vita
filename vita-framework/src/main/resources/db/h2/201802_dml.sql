@@ -200,6 +200,8 @@ insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_T
 
 
 -- 菜单
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100,null,'MENU','首页', null,'/home/','/home','system/notice/notice-list.vue',null,0,'ant-design:home-filled','N',1,current_timestamp(),1,current_timestamp());
+
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,null,'MENU','系统公告','system:notice:view','SystemNotice','/system/notice','system/notice/notice-list.vue',null,1,'ep:bell-filled','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001001,1001,'BTN','系统公告-查询','system:notice:select',null,null,null,null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,ROUTE_NAME,ROUTE_PATH,COMPONENT,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001002,1001,'BTN','系统公告-创建','system:notice:create',null,null,null,null,2,null,'N',1,current_timestamp(),1,current_timestamp());

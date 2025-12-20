@@ -7,14 +7,7 @@ export const useTabsStore = defineStore(
 	() => {
 		// state 直接解构会丢失响应性，需要通过 storeToRefs 保留响应式
 		// 标签页列表
-		const tabsList = ref([
-			{
-				closable: false,
-				name: "HomeView",
-				path: "/home",
-				title: "首页",
-			},
-		]);
+		const tabsList = ref([]);
 
 		// 当前激活的标签页
 		const activeTab = ref("");
@@ -49,6 +42,15 @@ export const useTabsStore = defineStore(
 		 * @param {Object} route
 		 */
 		const addTab = (route) => {
+			if (tabsList.value.length === 0) {
+				const homeTab = {
+					closable: false,
+					name: "/home/",
+					path: "/home",
+					title: "首页",
+				};
+				tabsList.value.push(homeTab);
+			}
 			// 超出最大数量，移除最早添加且可关闭的标签页
 			if (tabsList.value.length >= VITE_TABS_MAX_NUMBER) {
 				const firstClosableTab = tabsList.value.find((tab) => tab.closable);
@@ -59,7 +61,7 @@ export const useTabsStore = defineStore(
 
 			const { name, path, meta } = route;
 			const tab = {
-				closable: meta.closable ?? true, // 默认可关闭
+				closable: meta.closable ?? true, // 默认可关闭。这里不能用 || 来判断。
 				name,
 				path,
 				title: meta.title || "",
