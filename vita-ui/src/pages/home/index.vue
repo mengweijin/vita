@@ -4,10 +4,10 @@ meta:
 </route>
 
 <script setup>
-import HomeLink from "./module/home-link.vue";
-import HomeNoticeList from "./module/home-notice-list.vue";
-import HomeOperationChart from "./module/home-operation-chart.vue";
-import HomeStatistic from "./module/home-statistic.vue";
+import HomeLink from "./components/home-link.vue";
+import HomeNoticeList from "./components/home-notice-list.vue";
+import HomeOperationChart from "./components/home-operation-chart.vue";
+import HomeStatistic from "./components/home-statistic.vue";
 </script>
 
 <template>

@@ -1,14 +1,12 @@
 <route lang="yaml">
 meta:
-  title: 角色管理
+  title: 调度任务
 </route>
 
 <script setup>
-import { roleApi } from "@/api/system/role-api";
-import RoleEdit from "./role-edit.vue";
-import { columns } from "./role-hook.js";
-import RoleMenuDialog from "./role-menu-dialog.vue";
-import RoleUserDialog from "./role-user-dialog.vue";
+import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api";
+import SchedulingTaskEdit from "./components/scheduling-task-edit.vue";
+import SchedulingTaskLogDialog from "./components/scheduling-task-log-dialog.vue";
 
 const loading = ref(true);
 
@@ -17,6 +15,23 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
+
+const columns = reactive({
+	args: { label: "执行参数", visible: true },
+	beanName: { label: "执行 Bean 名称", visible: true },
+	createByName: { label: "创建者", visible: false },
+	createTime: { label: "创建时间", visible: false },
+	cron: { label: "CRON 表达式", visible: true },
+	disabled: { label: "状态", visible: true },
+	id: { label: "ID", visible: false },
+	index: { label: "序号列", visible: false },
+	name: { label: "任务名称", visible: true },
+	operation: { label: "操作", visible: true },
+	remark: { label: "备注", visible: true },
+	selection: { label: "选择列", visible: false },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+});
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
@@ -38,45 +53,36 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
 	loading.value = true;
-	roleApi.page(queryParams).then((res) => {
+	schedulingTaskApi.page(queryParams).then((res) => {
 		tableData.value = res.records;
 		queryParams.total = res.total;
 		loading.value = false;
 	});
 };
 
-const roleMenuDialogRef = useTemplateRef("roleMenuDialogRef");
+const schedulingTaskLogDialogRef = useTemplateRef("schedulingTaskLogDialogRef");
 
-const handleAuthorization = (row) => {
-	roleMenuDialogRef.value.data = { ...row };
-	roleMenuDialogRef.value.visible = true;
+const handleViewTaskLog = (row) => {
+	schedulingTaskLogDialogRef.value.data = { ...row };
+	schedulingTaskLogDialogRef.value.visible = true;
 };
 
-const roleUserDialogRef = useTemplateRef("roleUserDialogRef");
-
-const handleAssigningUsers = (row) => {
-	roleUserDialogRef.value.data = { ...row };
-	roleUserDialogRef.value.visible = true;
+const handleRunTask = (row) => {
+	schedulingTaskApi.run(row.id);
 };
 
-const roleEditRef = useTemplateRef("roleEditRef");
-
-const handleAdd = () => {
-	roleEditRef.value.data = {};
-	roleEditRef.value.visible = true;
-};
+const schedulingTaskEditRef = useTemplateRef("schedulingTaskEditRef");
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	roleEditRef.value.data = { ...row };
-	roleEditRef.value.visible = true;
+	schedulingTaskEditRef.value.data = { ...row };
+	schedulingTaskEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	roleApi.remove(ids).then(() => {
+	schedulingTaskApi.remove(ids).then(() => {
 		// 清空已选择
 		selected.value = [];
 		loadTableData();
@@ -103,7 +109,7 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="任务名称、Bean 名称" clearable />
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
       <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
@@ -133,18 +139,8 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5">
-      <el-button type="primary" @click="handleAdd(null)">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:plus"></Icon>
-          </el-icon>
-        </template>
-        新增
-      </el-button>
-    </el-col>
-    <el-col :span="1.5" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+    <el-col :span="1.5" v-if="false" v-show="selected.length">
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -169,15 +165,16 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="角色名称" min-width="200" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="200" />
-      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
+      <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="140" />
+      <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 表达式" width="120" />
+      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="200" />
+      <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="100" />
+      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" width="80" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
@@ -185,30 +182,20 @@ onMounted(() => {
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
-            <el-tooltip content="授权" placement="top">
-              <el-button type="primary" text :size="size" @click="handleAuthorization(scope.row)">
+            <el-tooltip content="执行日志" placement="top">
+              <el-button type="primary" text :size="size" @click="handleViewTaskLog(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ri:shield-user-fill"></Icon>
+                    <Icon icon="ep:tickets"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="分配用户" placement="top">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;"
-                @click="handleAssigningUsers(scope.row)">
+            <el-tooltip content="立即执行" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleRunTask(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:user-filled"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleAdd(scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
+                    <Icon icon="ep:video-play"></Icon>
                   </el-icon>
                 </template>
               </el-button>
@@ -224,7 +211,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
@@ -248,11 +235,8 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
-
-  <RoleMenuDialog ref="roleMenuDialogRef"></RoleMenuDialog>
-
-  <RoleUserDialog ref="roleUserDialogRef"></RoleUserDialog>
+  <SchedulingTaskLogDialog ref="schedulingTaskLogDialogRef"></SchedulingTaskLogDialog>
+  <SchedulingTaskEdit ref="schedulingTaskEditRef" @refresh-table="loadTableData"></SchedulingTaskEdit>
 </template>
 
 <style scoped></style>

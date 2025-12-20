@@ -1,12 +1,11 @@
 <route lang="yaml">
 meta:
-  title: 岗位管理
+  title: 操作日志
 </route>
 
 <script setup>
-import { postApi } from "@/api/system/post-api";
-import PostEdit from "./post-edit.vue";
-import { columns } from "./post-hook.js";
+import { logOperationApi } from "@/api/monitor/log-operation-api";
+import LogOperationDetail from "./components/log-operation-detail.vue";
 
 const loading = ref(true);
 
@@ -16,13 +15,35 @@ const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
+const columns = reactive({
+	costTime: { label: "执行时间（ms）", visible: true },
+	createByName: { label: "操作者", visible: true },
+	createTime: { label: "操作时间", visible: true },
+	errorMsg: { label: "失败信息", visible: false },
+	httpMethod: { label: "请求方式", visible: true },
+	id: { label: "ID", visible: false },
+	index: { label: "序号列", visible: false },
+	methodName: { label: "方法名称", visible: true },
+	operation: { label: "操作", visible: true },
+	operationType: { label: "操作类型", visible: true },
+	requestData: { label: "请求数据", visible: false },
+	responseData: { label: "响应数据", visible: false },
+	selection: { label: "选择列", visible: false },
+	success: { label: "操作状态", visible: true },
+	title: { label: "模块标题", visible: true },
+	updateByName: { label: "更新者", visible: false },
+	updateTime: { label: "更新时间", visible: false },
+	url: { label: "URL", visible: true },
+});
+
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
 	current: 1,
-	disabled: undefined,
+	httpMethod: undefined,
 	keywords: undefined,
+	operationType: undefined,
 	size: 10,
 	total: 0,
 });
@@ -36,31 +57,18 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
 	loading.value = true;
-	postApi.page(queryParams).then((res) => {
+	logOperationApi.page(queryParams).then((res) => {
 		tableData.value = res.records;
 		queryParams.total = res.total;
 		loading.value = false;
 	});
 };
 
-const postEditRef = useTemplateRef("postEditRef");
-
-const handleAdd = () => {
-	postEditRef.value.data = {};
-	postEditRef.value.visible = true;
-};
-
-const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	postEditRef.value.data = { ...row };
-	postEditRef.value.visible = true;
-};
-
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	postApi.remove(ids).then(() => {
+	logOperationApi.remove(ids).then(() => {
 		// 清空已选择
 		selected.value = [];
 		loadTableData();
@@ -78,6 +86,12 @@ const handlePageChange = (currentPage, pageSize) => {
 	loadTableData();
 };
 
+const logOperationDetailRef = useTemplateRef("logOperationDetailRef");
+const handleDetail = (row) => {
+	logOperationDetailRef.value.data = { ...row };
+	logOperationDetailRef.value.visible = true;
+};
+
 onMounted(() => {
 	loadTableData();
 });
@@ -87,10 +101,13 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="模块标题、URL、方法名称" clearable />
     </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
+    <el-form-item prop="operationType" label="操作类型">
+      <VtSelectDict v-model="queryParams.operationType" :code="'vt_operation_log_type'"></VtSelectDict>
+    </el-form-item>
+    <el-form-item prop="httpMethod" label="请求方式">
+      <VtSelectDict v-model="queryParams.httpMethod" :code="'vt_http_request_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -117,18 +134,8 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5">
-      <el-button type="primary" @click="handleAdd(null)">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:plus"></Icon>
-          </el-icon>
-        </template>
-        新增
-      </el-button>
-    </el-col>
     <el-col :span="1.5" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -153,43 +160,52 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="岗位名称" min-width="200" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="200" />
-      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
+      <el-table-column v-if="columns.title.visible" prop="title" label="模块标题" min-width="100" fixed="left" />
+      <el-table-column v-if="columns.operationType.visible" prop="operationType" label="操作类型" min-width="100"
+        align="center">
         <template #default="{ row }">
-          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
+          <VtTagDict :code="'vt_operation_log_type'" :value="row.operationType" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
+      <el-table-column v-if="columns.httpMethod.visible" prop="httpMethod" label="请求方式" min-width="100" align="center">
+        <template #default="{ row }">
+          <VtTagDict :code="'vt_http_request_type'" :value="row.httpMethod" :size="size"></VtTagDict>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="220" />
+      <el-table-column v-if="columns.methodName.visible" prop="methodName" label="方法名称" min-width="190" />
+      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间" min-width="100" align="center">
+        <template #default="{ row }">
+          {{ row.costTime }} 毫秒
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
+        <template #default="{ row }">
+          <VtTagDict :code="'vt_succeeded'" :value="row.success" :size="size"></VtTagDict>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.requestData.visible" prop="requestData" label="请求数据" min-width="260" />
+      <el-table-column v-if="columns.responseData.visible" prop="responseData" label="响应数据" min-width="260" />
+      <el-table-column v-if="columns.errorMsg.visible" prop="errorMsg" label="失败信息" min-width="260" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="操作者" align="center" width="100" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="操作时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
+            <el-tooltip content="详情" placement="top">
+              <el-button type="primary" text :size="size" @click="handleDetail(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:edit"></Icon>
+                    <Icon icon="ep:view"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
@@ -213,7 +229,7 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>
+  <LogOperationDetail ref="logOperationDetailRef"></LogOperationDetail>
 </template>
 
 <style scoped></style>

@@ -1,12 +1,14 @@
 <route lang="yaml">
 meta:
-  title: 字典管理
+  title: 角色管理
 </route>
 
 <script setup>
-import { dictTypeApi } from "@/api/system/dict-api";
-import DictDataTable from "./dict-data-table.vue";
-import DictTypeEdit from "./dict-type-edit.vue";
+import { roleApi } from "@/api/system/role-api";
+import RoleEdit from "./components/role-edit.vue";
+import RoleMenuDialog from "./components/role-menu-dialog.vue";
+import RoleUserDialog from "./components/role-user-dialog.vue";
+import { columns } from "./role-hook.js";
 
 const loading = ref(true);
 
@@ -16,25 +18,12 @@ const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
-const columns = reactive({
-	code: { label: "字典编码", visible: true },
-	createByName: { label: "创建者", visible: false },
-	createTime: { label: "创建时间", visible: false },
-	id: { label: "ID", visible: false },
-	index: { label: "序号列", visible: false },
-	name: { label: "字典名称", visible: true },
-	operation: { label: "操作", visible: true },
-	remark: { label: "备注", visible: true },
-	selection: { label: "选择列", visible: false },
-	updateByName: { label: "更新者", visible: true },
-	updateTime: { label: "更新时间", visible: true },
-});
-
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
 	current: 1,
+	disabled: undefined,
 	keywords: undefined,
 	size: 10,
 	total: 0,
@@ -49,31 +38,45 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
 	loading.value = true;
-	dictTypeApi.page(queryParams).then((res) => {
+	roleApi.page(queryParams).then((res) => {
 		tableData.value = res.records;
 		queryParams.total = res.total;
 		loading.value = false;
 	});
 };
 
-const dictTypeEditRef = useTemplateRef("dictTypeEditRef");
+const roleMenuDialogRef = useTemplateRef("roleMenuDialogRef");
+
+const handleAuthorization = (row) => {
+	roleMenuDialogRef.value.data = { ...row };
+	roleMenuDialogRef.value.visible = true;
+};
+
+const roleUserDialogRef = useTemplateRef("roleUserDialogRef");
+
+const handleAssigningUsers = (row) => {
+	roleUserDialogRef.value.data = { ...row };
+	roleUserDialogRef.value.visible = true;
+};
+
+const roleEditRef = useTemplateRef("roleEditRef");
 
 const handleAdd = () => {
-	dictTypeEditRef.value.data = {};
-	dictTypeEditRef.value.visible = true;
+	roleEditRef.value.data = {};
+	roleEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
 	// 使用展开运算符，避免数据污染
-	dictTypeEditRef.value.data = { ...row };
-	dictTypeEditRef.value.visible = true;
+	roleEditRef.value.data = { ...row };
+	roleEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	dictTypeApi.remove(ids).then(() => {
+	roleApi.remove(ids).then(() => {
 		// 清空已选择
 		selected.value = [];
 		loadTableData();
@@ -91,13 +94,6 @@ const handlePageChange = (currentPage, pageSize) => {
 	loadTableData();
 };
 
-const dictDataTableRef = useTemplateRef("dictDataTableRef");
-
-const openDictDataTableListDialog = (row) => {
-	dictDataTableRef.value.dictType = row;
-	dictDataTableRef.value.visible = true;
-};
-
 onMounted(() => {
 	loadTableData();
 });
@@ -108,6 +104,9 @@ onMounted(() => {
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
       <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+    </el-form-item>
+    <el-form-item prop="disabled" label="状态">
+      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -166,26 +165,47 @@ onMounted(() => {
   <!-- 表格 -->
   <div class="vt-table">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-      highlight-current-row @selection-change="(val) => selected = val">
+      show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
-      <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" show-overflow-tooltip />
-      <el-table-column v-if="columns.name.visible" prop="name" label="字典名称" min-width="220" align="center" fixed="left">
+      <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="角色名称" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="200" />
+      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
-          <a href="javascript:" @click="openDictDataTableListDialog(row)">{{ row.name }}</a>
+          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.code.visible" prop="code" label="字典编码" min-width="220" show-overflow-tooltip />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" show-overflow-tooltip />
+      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
+            <el-tooltip content="授权" placement="top">
+              <el-button type="primary" text :size="size" @click="handleAuthorization(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:shield-user-fill"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="分配用户" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                @click="handleAssigningUsers(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:user-filled"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleAdd(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:plus"></Icon>
@@ -228,9 +248,11 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <DictTypeEdit ref="dictTypeEditRef" @refresh-table="loadTableData"></DictTypeEdit>
+  <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
 
-  <DictDataTable ref="dictDataTableRef"></DictDataTable>
+  <RoleMenuDialog ref="roleMenuDialogRef"></RoleMenuDialog>
+
+  <RoleUserDialog ref="roleUserDialogRef"></RoleUserDialog>
 </template>
 
 <style scoped></style>

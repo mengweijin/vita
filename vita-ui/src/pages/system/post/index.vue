@@ -1,11 +1,12 @@
 <route lang="yaml">
 meta:
-  title: 系统日志
+  title: 岗位管理
 </route>
 
 <script setup>
-import { logSystemApi } from "@/api/monitor/log-system-api";
-import LogSystemDetail from "./log-system-detail.vue";
+import { postApi } from "@/api/system/post-api";
+import PostEdit from "./components/post-edit.vue";
+import { columns } from "./post-hook.js";
 
 const loading = ref(true);
 
@@ -15,30 +16,14 @@ const tableRef = useTemplateRef("tableRef");
 
 const tableData = ref([]);
 
-const columns = reactive({
-	createByName: { label: "创建者", visible: false },
-	createTime: { label: "创建时间", visible: true },
-	formattedMessage: { label: "日志内容", visible: true },
-	id: { label: "ID", visible: false },
-	index: { label: "序号列", visible: false },
-	loggerLevel: { label: "日志级别", visible: true },
-	loggerName: { label: "日志名称", visible: false },
-	operation: { label: "操作", visible: true },
-	selection: { label: "选择列", visible: false },
-	stackTrace: { label: "堆栈信息", visible: false },
-	threadName: { label: "线程名称", visible: false },
-	updateByName: { label: "更新者", visible: false },
-	updateTime: { label: "更新时间", visible: false },
-});
-
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
 	current: 1,
+	disabled: undefined,
 	keywords: undefined,
-	loggerLevel: undefined,
-	size: 100,
+	size: 10,
 	total: 0,
 });
 
@@ -51,18 +36,31 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
 	loading.value = true;
-	logSystemApi.page(queryParams).then((res) => {
+	postApi.page(queryParams).then((res) => {
 		tableData.value = res.records;
 		queryParams.total = res.total;
 		loading.value = false;
 	});
 };
 
+const postEditRef = useTemplateRef("postEditRef");
+
+const handleAdd = () => {
+	postEditRef.value.data = {};
+	postEditRef.value.visible = true;
+};
+
+const handleEdit = (row) => {
+	// 使用展开运算符，避免数据污染
+	postEditRef.value.data = { ...row };
+	postEditRef.value.visible = true;
+};
+
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	logSystemApi.remove(ids).then(() => {
+	postApi.remove(ids).then(() => {
 		// 清空已选择
 		selected.value = [];
 		loadTableData();
@@ -80,12 +78,6 @@ const handlePageChange = (currentPage, pageSize) => {
 	loadTableData();
 };
 
-const logSystemDetailRef = useTemplateRef("logSystemDetailRef");
-const handleDetail = (row) => {
-	logSystemDetailRef.value.data = { ...row };
-	logSystemDetailRef.value.visible = true;
-};
-
 onMounted(() => {
 	loadTableData();
 });
@@ -95,10 +87,10 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="线程名称、日志名称、日志内容" style="width: 260px;" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
     </el-form-item>
-    <el-form-item prop="loggerLevel" label="日志级别">
-      <VtSelectDict v-model="queryParams.loggerLevel" :code="'vt_log_level'"></VtSelectDict>
+    <el-form-item prop="disabled" label="状态">
+      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -125,9 +117,19 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
+    <el-col :span="1.5">
+      <el-button type="primary" @click="handleAdd(null)">
+        <template #icon>
+          <el-icon>
+            <Icon icon="ep:plus"></Icon>
+          </el-icon>
+        </template>
+        新增
+      </el-button>
+    </el-col>
     <el-col :span="1.5" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的日志吗？`" confirm-button-text="确定"
-        cancel-button-text="取消" @confirm="handleBatchDelete">
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+        confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
             <template #icon>
@@ -151,36 +153,44 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.loggerLevel.visible" prop="loggerLevel" label="日志级别" width="100" align="center">
+      <el-table-column v-if="columns.name.visible" prop="name" label="岗位名称" min-width="200" fixed="left" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="200" />
+      <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
-          <VtTagDict :code="'vt_log_level'" :value="row.loggerLevel" :size="size"></VtTagDict>
+          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.threadName.visible" prop="threadName" label="线程名称" min-width="160" />
-      <el-table-column v-if="columns.loggerName.visible" prop="loggerName" label="日志名称" min-width="300" />
-      <el-table-column v-if="columns.formattedMessage.visible" prop="formattedMessage" label="日志内容" min-width="500" />
-      <el-table-column v-if="columns.stackTrace.visible" prop="stackTrace" label="堆栈信息" min-width="260" />
+      <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180"
-        sortable />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
-            <el-tooltip content="详情" placement="top">
-              <el-button type="primary" text :size="size" @click="handleDetail(scope.row)">
+            <el-tooltip content="新增" placement="top" v-if="false">
+              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:view"></Icon>
+                    <Icon icon="ep:plus"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="编辑" placement="top">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:edit"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除日志吗？`" confirm-button-text="确定"
-                  cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                  confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
                       <template #icon>
@@ -200,10 +210,10 @@ onMounted(() => {
 
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-      :page-sizes="[100, 200, 300, 500, 1000]" @change="handlePageChange" />
+      @change="handlePageChange" />
   </div>
 
-  <LogSystemDetail ref="logSystemDetailRef"></LogSystemDetail>
+  <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>
 </template>
 
 <style scoped></style>

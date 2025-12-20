@@ -5,7 +5,7 @@ meta:
 
 <script setup>
 import { userApi } from "@/api/system/user-api";
-import UserSecurityLog from "./module/user-security-log.vue";
+import UserSecurityLog from "./components/user-security-log.vue";
 
 const loading = ref(true);
 

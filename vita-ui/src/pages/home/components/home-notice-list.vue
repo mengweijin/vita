@@ -1,7 +1,7 @@
 <script setup>
 import { noticeApi } from "@/api/system/notice-api";
+import NoticeDetail from "@/pages/system/notice/components/notice-detail.vue";
 import utils from "@/utils/utils.js";
-import NoticeDetail from "@/views/system/notice/notice-detail.vue";
 
 const loading = ref(false);
 

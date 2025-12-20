@@ -1,18 +1,19 @@
 <route lang="yaml">
 meta:
-  title: 分类管理
+  title: 菜单管理
 </route>
 
 <script setup>
-import { categoryApi } from "@/api/system/category-api";
+import { menuApi } from "@/api/system/menu-api";
 import utils from "@/utils/utils.js";
-import CategoryEdit from "./category-edit.vue";
-import { columns } from "./category-hook.js";
+import MenuEdit from "./components/menu-edit.vue";
+import { columns } from "./menu-hook.js";
 
 const loading = ref(true);
 
 const size = ref("default");
 
+/** table */
 const tableRef = useTemplateRef("tableRef");
 
 const treeProps = reactive({
@@ -28,6 +29,7 @@ const tableData = ref([]);
 const queryParams = reactive({
 	disabled: undefined,
 	keywords: undefined,
+	type: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -39,32 +41,32 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
 	loading.value = true;
-	categoryApi.list(queryParams).then((res) => {
+	menuApi.list(queryParams).then((res) => {
 		tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
 		loading.value = false;
 	});
 };
 
-const categoryEditRef = useTemplateRef("categoryEditRef");
+const menuEditRef = useTemplateRef("menuEditRef");
 
 const handleAdd = (id) => {
-	categoryEditRef.value.data = {
+	menuEditRef.value.data = {
 		parentId: id ?? undefined,
 	};
-	categoryEditRef.value.visible = true;
+	menuEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
 	// 使用展开运算符，避免数据污染
-	categoryEditRef.value.data = { ...row };
-	categoryEditRef.value.visible = true;
+	menuEditRef.value.data = { ...row };
+	menuEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	categoryApi.remove(ids).then(() => {
+	menuApi.remove(ids).then(() => {
 		// 清空已选择
 		selected.value = [];
 		loadTableData();
@@ -85,7 +87,10 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+      <el-input v-model="queryParams.keywords" placeholder="名称、权限字符、组件" clearable />
+    </el-form-item>
+    <el-form-item prop="type" label="菜单类型">
+      <VtSelectDict v-model="queryParams.type" :code="'vt_menu_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
       <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
@@ -126,7 +131,7 @@ onMounted(() => {
       </el-button>
     </el-col>
     <el-col :span="1.5" v-if="false" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.title).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -152,26 +157,52 @@ onMounted(() => {
   <!-- 表格 -->
   <div class="vt-table">
     <el-table ref="tableRef" v-loading="loading" :data="tableData" :tree-props="treeProps" :size="size" row-key="id"
-      height="100%" stripe border show-overflow-tooltip highlight-current-row default-expand-all
+      height="100%" stripe border show-overflow-tooltip highlight-current-row
       @selection-change="(val) => selected = val">
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
-      <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
+      <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" fixed="left" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.parentId.visible" prop="parentId" label="Parent ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="分类名称" min-width="230" fixed="left" />
-      <el-table-column v-if="columns.code.visible" prop="code" label="分类编码" min-width="260" />
+      <el-table-column v-if="columns.title.visible" prop="title" label="菜单标题" fixed="left" min-width="200" />
+      <el-table-column v-if="columns.icon.visible" prop="icon" label="图标" min-width="80" align="center">
+        <template #default="{ row }">
+          <Icon :icon="row.icon" width="24" height="24" v-if="row.icon" />
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.type.visible" prop="type" label="菜单类型" min-width="120" align="center">
+        <template #default="{ row }">
+          <VtTagDict :code="'vt_menu_type'" :value="row.type" :size="size"></VtTagDict>
+        </template>
+      </el-table-column>
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" min-width="80" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+      <el-table-column v-if="columns.permission.visible" prop="permission" label="权限字符" min-width="200" />
+      <el-table-column v-if="columns.component.visible" prop="component" label="组件" min-width="260">
+        <template #default="scope">
+          <el-popover effect="light" trigger="hover" placement="top" width="auto">
+            <template #default>
+              <div>组件路径: {{ scope.row.component }}</div>
+              <div>路由名称: {{ scope.row.routeName }}</div>
+              <div>路由路径: {{ scope.row.routePath }}</div>
+            </template>
+            <template #reference>
+              <el-tag v-if="scope.row.component">{{ scope.row.component }}</el-tag>
+              <span v-else></span>
+            </template>
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.routeName.visible" prop="routeName" label="路由名称" min-width="180" />
+      <el-table-column v-if="columns.routePath.visible" prop="routePath" label="路由路径" min-width="200" />
+      <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="200" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" min-width="180">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
@@ -194,7 +225,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top" v-if="scope.row.children?.length <= 0">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.title}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
@@ -214,7 +245,7 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <CategoryEdit ref="categoryEditRef" @refresh-table="loadTableData"></CategoryEdit>
+  <MenuEdit ref="menuEditRef" @refresh-table="loadTableData"></MenuEdit>
 </template>
 
 <style scoped>

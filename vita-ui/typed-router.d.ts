@@ -44,34 +44,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/home/module/home-link': RouteRecordInfo<
-      '/home/module/home-link',
-      '/home/module/home-link',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/home/module/home-notice-list': RouteRecordInfo<
-      '/home/module/home-notice-list',
-      '/home/module/home-notice-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/home/module/home-operation-chart': RouteRecordInfo<
-      '/home/module/home-operation-chart',
-      '/home/module/home-operation-chart',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/home/module/home-statistic': RouteRecordInfo<
-      '/home/module/home-statistic',
-      '/home/module/home-statistic',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/login/': RouteRecordInfo<
       '/login/',
       '/login',
@@ -79,79 +51,44 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/monitor/cache-view': RouteRecordInfo<
-      '/monitor/cache-view',
-      '/monitor/cache-view',
+    '/monitor/cache-local': RouteRecordInfo<
+      '/monitor/cache-local',
+      '/monitor/cache-local',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/log-login/log-login-detail': RouteRecordInfo<
-      '/monitor/log-login/log-login-detail',
-      '/monitor/log-login/log-login-detail',
+    '/monitor/log-login/': RouteRecordInfo<
+      '/monitor/log-login/',
+      '/monitor/log-login',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/log-login/log-login-view': RouteRecordInfo<
-      '/monitor/log-login/log-login-view',
-      '/monitor/log-login/log-login-view',
+    '/monitor/log-operation/': RouteRecordInfo<
+      '/monitor/log-operation/',
+      '/monitor/log-operation',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/log-operation/log-operation-detail': RouteRecordInfo<
-      '/monitor/log-operation/log-operation-detail',
-      '/monitor/log-operation/log-operation-detail',
+    '/monitor/log-system/': RouteRecordInfo<
+      '/monitor/log-system/',
+      '/monitor/log-system',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/log-operation/log-operation-view': RouteRecordInfo<
-      '/monitor/log-operation/log-operation-view',
-      '/monitor/log-operation/log-operation-view',
+    '/monitor/scheduling/': RouteRecordInfo<
+      '/monitor/scheduling/',
+      '/monitor/scheduling',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/monitor/log-system/log-system-detail': RouteRecordInfo<
-      '/monitor/log-system/log-system-detail',
-      '/monitor/log-system/log-system-detail',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/monitor/log-system/log-system-view': RouteRecordInfo<
-      '/monitor/log-system/log-system-view',
-      '/monitor/log-system/log-system-view',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/monitor/scheduling/scheduling-task': RouteRecordInfo<
-      '/monitor/scheduling/scheduling-task',
-      '/monitor/scheduling/scheduling-task',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/monitor/scheduling/scheduling-task-edit': RouteRecordInfo<
-      '/monitor/scheduling/scheduling-task-edit',
-      '/monitor/scheduling/scheduling-task-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/monitor/scheduling/scheduling-task-log-dialog': RouteRecordInfo<
-      '/monitor/scheduling/scheduling-task-log-dialog',
-      '/monitor/scheduling/scheduling-task-log-dialog',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/monitor/server-view': RouteRecordInfo<
-      '/monitor/server-view',
-      '/monitor/server-view',
+    '/monitor/server': RouteRecordInfo<
+      '/monitor/server',
+      '/monitor/server',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -163,13 +100,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/profile/module/user-security-log': RouteRecordInfo<
-      '/profile/module/user-security-log',
-      '/profile/module/user-security-log',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/profile/personal-information': RouteRecordInfo<
       '/profile/personal-information',
       '/profile/personal-information',
@@ -177,198 +107,79 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/system/category/category-edit': RouteRecordInfo<
-      '/system/category/category-edit',
-      '/system/category/category-edit',
+    '/system/category/': RouteRecordInfo<
+      '/system/category/',
+      '/system/category',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/category/category-list': RouteRecordInfo<
-      '/system/category/category-list',
-      '/system/category/category-list',
+    '/system/config/': RouteRecordInfo<
+      '/system/config/',
+      '/system/config',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/config/config-edit': RouteRecordInfo<
-      '/system/config/config-edit',
-      '/system/config/config-edit',
+    '/system/dept/': RouteRecordInfo<
+      '/system/dept/',
+      '/system/dept',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/config/config-list': RouteRecordInfo<
-      '/system/config/config-list',
-      '/system/config/config-list',
+    '/system/dict/': RouteRecordInfo<
+      '/system/dict/',
+      '/system/dict',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dept/dept-edit': RouteRecordInfo<
-      '/system/dept/dept-edit',
-      '/system/dept/dept-edit',
+    '/system/file/': RouteRecordInfo<
+      '/system/file/',
+      '/system/file',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dept/dept-list': RouteRecordInfo<
-      '/system/dept/dept-list',
-      '/system/dept/dept-list',
+    '/system/menu/': RouteRecordInfo<
+      '/system/menu/',
+      '/system/menu',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dict/dict-data-edit': RouteRecordInfo<
-      '/system/dict/dict-data-edit',
-      '/system/dict/dict-data-edit',
+    '/system/message/': RouteRecordInfo<
+      '/system/message/',
+      '/system/message',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dict/dict-data-table': RouteRecordInfo<
-      '/system/dict/dict-data-table',
-      '/system/dict/dict-data-table',
+    '/system/notice/': RouteRecordInfo<
+      '/system/notice/',
+      '/system/notice',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dict/dict-list': RouteRecordInfo<
-      '/system/dict/dict-list',
-      '/system/dict/dict-list',
+    '/system/post/': RouteRecordInfo<
+      '/system/post/',
+      '/system/post',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/dict/dict-type-edit': RouteRecordInfo<
-      '/system/dict/dict-type-edit',
-      '/system/dict/dict-type-edit',
+    '/system/role/': RouteRecordInfo<
+      '/system/role/',
+      '/system/role',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/system/file/file-list': RouteRecordInfo<
-      '/system/file/file-list',
-      '/system/file/file-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/menu/menu-edit': RouteRecordInfo<
-      '/system/menu/menu-edit',
-      '/system/menu/menu-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/menu/menu-list': RouteRecordInfo<
-      '/system/menu/menu-list',
-      '/system/menu/menu-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/message/message-list': RouteRecordInfo<
-      '/system/message/message-list',
-      '/system/message/message-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/notice/notice-detail': RouteRecordInfo<
-      '/system/notice/notice-detail',
-      '/system/notice/notice-detail',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/notice/notice-edit': RouteRecordInfo<
-      '/system/notice/notice-edit',
-      '/system/notice/notice-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/notice/notice-list': RouteRecordInfo<
-      '/system/notice/notice-list',
-      '/system/notice/notice-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/post/post-edit': RouteRecordInfo<
-      '/system/post/post-edit',
-      '/system/post/post-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/post/post-list': RouteRecordInfo<
-      '/system/post/post-list',
-      '/system/post/post-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/role/role-edit': RouteRecordInfo<
-      '/system/role/role-edit',
-      '/system/role/role-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/role/role-list': RouteRecordInfo<
-      '/system/role/role-list',
-      '/system/role/role-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/role/role-menu-dialog': RouteRecordInfo<
-      '/system/role/role-menu-dialog',
-      '/system/role/role-menu-dialog',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/role/role-user-dialog': RouteRecordInfo<
-      '/system/role/role-user-dialog',
-      '/system/role/role-user-dialog',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/role/role-users-select-dialog': RouteRecordInfo<
-      '/system/role/role-users-select-dialog',
-      '/system/role/role-users-select-dialog',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/user/user-edit': RouteRecordInfo<
-      '/system/user/user-edit',
-      '/system/user/user-edit',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/user/user-list': RouteRecordInfo<
-      '/system/user/user-list',
-      '/system/user/user-list',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/user/user-reset-password': RouteRecordInfo<
-      '/system/user/user-reset-password',
-      '/system/user/user-reset-password',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/system/user/user-set-roles': RouteRecordInfo<
-      '/system/user/user-set-roles',
-      '/system/user/user-set-roles',
+    '/system/user/': RouteRecordInfo<
+      '/system/user/',
+      '/system/user',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -411,99 +222,45 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/home/module/home-link.vue': {
-      routes:
-        | '/home/module/home-link'
-      views:
-        | never
-    }
-    'src/pages/home/module/home-notice-list.vue': {
-      routes:
-        | '/home/module/home-notice-list'
-      views:
-        | never
-    }
-    'src/pages/home/module/home-operation-chart.vue': {
-      routes:
-        | '/home/module/home-operation-chart'
-      views:
-        | never
-    }
-    'src/pages/home/module/home-statistic.vue': {
-      routes:
-        | '/home/module/home-statistic'
-      views:
-        | never
-    }
     'src/pages/login/index.vue': {
       routes:
         | '/login/'
       views:
         | never
     }
-    'src/pages/monitor/cache-view.vue': {
+    'src/pages/monitor/cache-local.vue': {
       routes:
-        | '/monitor/cache-view'
+        | '/monitor/cache-local'
       views:
         | never
     }
-    'src/pages/monitor/log-login/log-login-detail.vue': {
+    'src/pages/monitor/log-login/index.vue': {
       routes:
-        | '/monitor/log-login/log-login-detail'
+        | '/monitor/log-login/'
       views:
         | never
     }
-    'src/pages/monitor/log-login/log-login-view.vue': {
+    'src/pages/monitor/log-operation/index.vue': {
       routes:
-        | '/monitor/log-login/log-login-view'
+        | '/monitor/log-operation/'
       views:
         | never
     }
-    'src/pages/monitor/log-operation/log-operation-detail.vue': {
+    'src/pages/monitor/log-system/index.vue': {
       routes:
-        | '/monitor/log-operation/log-operation-detail'
+        | '/monitor/log-system/'
       views:
         | never
     }
-    'src/pages/monitor/log-operation/log-operation-view.vue': {
+    'src/pages/monitor/scheduling/index.vue': {
       routes:
-        | '/monitor/log-operation/log-operation-view'
+        | '/monitor/scheduling/'
       views:
         | never
     }
-    'src/pages/monitor/log-system/log-system-detail.vue': {
+    'src/pages/monitor/server.vue': {
       routes:
-        | '/monitor/log-system/log-system-detail'
-      views:
-        | never
-    }
-    'src/pages/monitor/log-system/log-system-view.vue': {
-      routes:
-        | '/monitor/log-system/log-system-view'
-      views:
-        | never
-    }
-    'src/pages/monitor/scheduling/scheduling-task.vue': {
-      routes:
-        | '/monitor/scheduling/scheduling-task'
-      views:
-        | never
-    }
-    'src/pages/monitor/scheduling/scheduling-task-edit.vue': {
-      routes:
-        | '/monitor/scheduling/scheduling-task-edit'
-      views:
-        | never
-    }
-    'src/pages/monitor/scheduling/scheduling-task-log-dialog.vue': {
-      routes:
-        | '/monitor/scheduling/scheduling-task-log-dialog'
-      views:
-        | never
-    }
-    'src/pages/monitor/server-view.vue': {
-      routes:
-        | '/monitor/server-view'
+        | '/monitor/server'
       views:
         | never
     }
@@ -513,183 +270,75 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/profile/module/user-security-log.vue': {
-      routes:
-        | '/profile/module/user-security-log'
-      views:
-        | never
-    }
     'src/pages/profile/personal-information.vue': {
       routes:
         | '/profile/personal-information'
       views:
         | never
     }
-    'src/pages/system/category/category-edit.vue': {
+    'src/pages/system/category/index.vue': {
       routes:
-        | '/system/category/category-edit'
+        | '/system/category/'
       views:
         | never
     }
-    'src/pages/system/category/category-list.vue': {
+    'src/pages/system/config/index.vue': {
       routes:
-        | '/system/category/category-list'
+        | '/system/config/'
       views:
         | never
     }
-    'src/pages/system/config/config-edit.vue': {
+    'src/pages/system/dept/index.vue': {
       routes:
-        | '/system/config/config-edit'
+        | '/system/dept/'
       views:
         | never
     }
-    'src/pages/system/config/config-list.vue': {
+    'src/pages/system/dict/index.vue': {
       routes:
-        | '/system/config/config-list'
+        | '/system/dict/'
       views:
         | never
     }
-    'src/pages/system/dept/dept-edit.vue': {
+    'src/pages/system/file/index.vue': {
       routes:
-        | '/system/dept/dept-edit'
+        | '/system/file/'
       views:
         | never
     }
-    'src/pages/system/dept/dept-list.vue': {
+    'src/pages/system/menu/index.vue': {
       routes:
-        | '/system/dept/dept-list'
+        | '/system/menu/'
       views:
         | never
     }
-    'src/pages/system/dict/dict-data-edit.vue': {
+    'src/pages/system/message/index.vue': {
       routes:
-        | '/system/dict/dict-data-edit'
+        | '/system/message/'
       views:
         | never
     }
-    'src/pages/system/dict/dict-data-table.vue': {
+    'src/pages/system/notice/index.vue': {
       routes:
-        | '/system/dict/dict-data-table'
+        | '/system/notice/'
       views:
         | never
     }
-    'src/pages/system/dict/dict-list.vue': {
+    'src/pages/system/post/index.vue': {
       routes:
-        | '/system/dict/dict-list'
+        | '/system/post/'
       views:
         | never
     }
-    'src/pages/system/dict/dict-type-edit.vue': {
+    'src/pages/system/role/index.vue': {
       routes:
-        | '/system/dict/dict-type-edit'
+        | '/system/role/'
       views:
         | never
     }
-    'src/pages/system/file/file-list.vue': {
+    'src/pages/system/user/index.vue': {
       routes:
-        | '/system/file/file-list'
-      views:
-        | never
-    }
-    'src/pages/system/menu/menu-edit.vue': {
-      routes:
-        | '/system/menu/menu-edit'
-      views:
-        | never
-    }
-    'src/pages/system/menu/menu-list.vue': {
-      routes:
-        | '/system/menu/menu-list'
-      views:
-        | never
-    }
-    'src/pages/system/message/message-list.vue': {
-      routes:
-        | '/system/message/message-list'
-      views:
-        | never
-    }
-    'src/pages/system/notice/notice-detail.vue': {
-      routes:
-        | '/system/notice/notice-detail'
-      views:
-        | never
-    }
-    'src/pages/system/notice/notice-edit.vue': {
-      routes:
-        | '/system/notice/notice-edit'
-      views:
-        | never
-    }
-    'src/pages/system/notice/notice-list.vue': {
-      routes:
-        | '/system/notice/notice-list'
-      views:
-        | never
-    }
-    'src/pages/system/post/post-edit.vue': {
-      routes:
-        | '/system/post/post-edit'
-      views:
-        | never
-    }
-    'src/pages/system/post/post-list.vue': {
-      routes:
-        | '/system/post/post-list'
-      views:
-        | never
-    }
-    'src/pages/system/role/role-edit.vue': {
-      routes:
-        | '/system/role/role-edit'
-      views:
-        | never
-    }
-    'src/pages/system/role/role-list.vue': {
-      routes:
-        | '/system/role/role-list'
-      views:
-        | never
-    }
-    'src/pages/system/role/role-menu-dialog.vue': {
-      routes:
-        | '/system/role/role-menu-dialog'
-      views:
-        | never
-    }
-    'src/pages/system/role/role-user-dialog.vue': {
-      routes:
-        | '/system/role/role-user-dialog'
-      views:
-        | never
-    }
-    'src/pages/system/role/role-users-select-dialog.vue': {
-      routes:
-        | '/system/role/role-users-select-dialog'
-      views:
-        | never
-    }
-    'src/pages/system/user/user-edit.vue': {
-      routes:
-        | '/system/user/user-edit'
-      views:
-        | never
-    }
-    'src/pages/system/user/user-list.vue': {
-      routes:
-        | '/system/user/user-list'
-      views:
-        | never
-    }
-    'src/pages/system/user/user-reset-password.vue': {
-      routes:
-        | '/system/user/user-reset-password'
-      views:
-        | never
-    }
-    'src/pages/system/user/user-set-roles.vue': {
-      routes:
-        | '/system/user/user-set-roles'
+        | '/system/user/'
       views:
         | never
     }

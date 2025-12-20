@@ -7,10 +7,10 @@ meta:
 import { deptApi } from "@/api/system/dept-api";
 import { userApi } from "@/api/system/user-api";
 import utils from "@/utils/utils.js";
-import UserEdit from "./user-edit.vue";
+import UserEdit from "./components/user-edit.vue";
+import UserResetPassword from "./components/user-reset-password.vue";
+import UserSetRoles from "./components/user-set-roles.vue";
 import { columns } from "./user-hook.js";
-import UserResetPassword from "./user-reset-password.vue";
-import UserSetRoles from "./user-set-roles.vue";
 
 const loading = ref(false);
 
