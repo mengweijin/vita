@@ -33,11 +33,7 @@ spring:
       database: 0
       host: localhost
       port: 6379
-      password: 123456
-  cache:
-    redis:
-      time-to-live: 600s
-      key-prefix: 'cache::'
+      password:
 decorator:
   datasource:
     enabled: true
