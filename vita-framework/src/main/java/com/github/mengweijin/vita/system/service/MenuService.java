@@ -64,7 +64,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(MenuDO::getTitle, menu.getKeywords()));
                 w.or(w1 -> w1.like(MenuDO::getPermission, menu.getKeywords()));
-                w.or(w1 -> w1.like(MenuDO::getComponent, menu.getKeywords()));
+                w.or(w1 -> w1.like(MenuDO::getUrl, menu.getKeywords()));
             });
         }
         return wrapper;

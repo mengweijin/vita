@@ -39,8 +39,6 @@ app.use(components);
 
 import router from "@/router/index.js";
 
-// 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
-// initDynamicRoutes();
 app.use(router);
 
 app.mount("#app");

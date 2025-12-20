@@ -1,5 +1,4 @@
 import { useDictStore } from "@/store/dict-store.js";
-import { useMenuStore } from "@/store/menu-store.js";
 import { useTabsStore } from "@/store/tabs-store.js";
 import { useUserStore } from "@/store/user-store.js";
 import utils from "@/utils/utils.js";
@@ -62,8 +61,6 @@ export const useLoginStore = defineStore(
 		const initData = async () => {
 			// 初始化用户基本信息、角色、权限等
 			await useUserStore().initUser();
-			// 加载菜单
-			await useMenuStore().refresh();
 			// 加载字典
 			await useDictStore().refresh();
 		};
@@ -76,7 +73,6 @@ export const useLoginStore = defineStore(
 			removeLocalStorageToken();
 			useUserStore().clear();
 			useDictStore().clear();
-			useMenuStore().clear();
 			useTabsStore().clear();
 		};
 

@@ -13,14 +13,11 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	component: undefined,
 	disabled: undefined,
 	icon: undefined,
 	id: undefined,
 	parentId: undefined,
 	permission: undefined,
-	routeName: undefined,
-	routePath: undefined,
 	seq: undefined,
 	title: undefined,
 	type: undefined,
@@ -30,13 +27,10 @@ const form = reactive({
 const init = () => {
 	form.id = data.value.id ?? undefined;
 	form.parentId = data.value.parentId ?? undefined;
-	form.type = data.value.type ?? "BTN";
+	form.type = data.value.type ?? "MENU";
 	form.title = data.value.title ?? undefined;
 	form.icon = data.value.icon ?? undefined;
 	form.permission = data.value.permission ?? undefined;
-	form.component = data.value.component ?? undefined;
-	form.routeName = data.value.routeName ?? undefined;
-	form.routePath = data.value.routePath ?? undefined;
 	form.url = data.value.url ?? undefined;
 	form.seq = data.value.seq ?? 1;
 	form.disabled = data.value.disabled ?? "N";
@@ -151,25 +145,8 @@ defineExpose({ data, visible });
         <el-input v-model="form.permission" clearable autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="component" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'MENU'">
-        <template #label>
-          <div class="vt-question-icon-container">
-            <el-tooltip placement="top" content="*.vue 组件文件的路径。比如：src/views/system/menu/menu-list.vue">
-              <el-icon class="vt-question-icon">
-                <Icon icon="ep:question-filled" width="24" height="24" />
-              </el-icon>
-            </el-tooltip>
-            <span>组件路径</span>
-          </div>
-        </template>
-        <el-input v-model="form.component" clearable autocomplete="off">
-          <template #prepend>src/views/</template>
-        </el-input>
-      </el-form-item>
-
-      <el-form-item prop="routePath" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
+      <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+        v-if="form.type === 'MENU' || form.type === 'IFRAME' || form.type === 'URL'">
         <template #label>
           <div class="vt-question-icon-container">
             <el-tooltip placement="top" content="vue-router 路由的路径，也是浏览器地址栏访问的路径。比如：/system/menu">
@@ -177,29 +154,9 @@ defineExpose({ data, visible });
                 <Icon icon="ep:question-filled" width="24" height="24" />
               </el-icon>
             </el-tooltip>
-            <span>路由路径</span>
+            <span>路由路径/URL</span>
           </div>
         </template>
-        <el-input v-model="form.routePath" clearable autocomplete="off" />
-      </el-form-item>
-
-      <el-form-item prop="routeName" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'DIR' || form.type === 'MENU' || form.type === 'IFRAME'">
-        <template #label>
-          <div class="vt-question-icon-container">
-            <el-tooltip placement="top" content="vue-router 路由的名称。比如：SystemMenu">
-              <el-icon class="vt-question-icon">
-                <Icon icon="ep:question-filled" width="24" height="24" />
-              </el-icon>
-            </el-tooltip>
-            <span>路由名称</span>
-          </div>
-        </template>
-        <el-input v-model="form.routeName" clearable autocomplete="off" />
-      </el-form-item>
-
-      <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'IFRAME' || form.type === 'URL'">
         <el-input v-model="form.url" clearable autocomplete="off"></el-input>
       </el-form-item>
 

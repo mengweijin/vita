@@ -180,24 +180,7 @@ onMounted(() => {
       </el-table-column>
       <el-table-column v-if="columns.seq.visible" prop="seq" label="排序" min-width="80" sortable align="center" />
       <el-table-column v-if="columns.permission.visible" prop="permission" label="权限字符" min-width="200" />
-      <el-table-column v-if="columns.component.visible" prop="component" label="组件" min-width="260">
-        <template #default="scope">
-          <el-popover effect="light" trigger="hover" placement="top" width="auto">
-            <template #default>
-              <div>组件路径: {{ scope.row.component }}</div>
-              <div>路由名称: {{ scope.row.routeName }}</div>
-              <div>路由路径: {{ scope.row.routePath }}</div>
-            </template>
-            <template #reference>
-              <el-tag v-if="scope.row.component">{{ scope.row.component }}</el-tag>
-              <span v-else></span>
-            </template>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="columns.routeName.visible" prop="routeName" label="路由名称" min-width="180" />
-      <el-table-column v-if="columns.routePath.visible" prop="routePath" label="路由路径" min-width="200" />
-      <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="200" />
+      <el-table-column v-if="columns.url.visible" prop="url" label="路由路径/URL" min-width="200" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />

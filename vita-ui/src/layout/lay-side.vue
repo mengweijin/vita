@@ -1,15 +1,11 @@
 <script setup>
+import { menuApi } from "@/api/system/menu-api.js";
 import utils from "@/utils/utils.js";
 
 const route = useRoute();
 
-import { useMenuStore } from "@/store/menu-store";
+import { useAppStore } from "@/store/app-store.js";
 import MenuTree from "./components/menu-tree.vue";
-
-const menuStore = useMenuStore();
-const { menus } = storeToRefs(menuStore);
-
-import { useAppStore } from "@/store/app-store";
 
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
@@ -21,9 +17,10 @@ const activeMenu = computed(() => {
 
 const menuTreeList = ref([]);
 
-onMounted(() => {
+onMounted(async () => {
+	const menuList = await menuApi.listSideMenus();
 	// 转为树状
-	menuTreeList.value = utils.toArrayTree(menus.value, { sortKey: "seq" });
+	menuTreeList.value = utils.toArrayTree(menuList, { sortKey: "seq" });
 });
 </script>
 

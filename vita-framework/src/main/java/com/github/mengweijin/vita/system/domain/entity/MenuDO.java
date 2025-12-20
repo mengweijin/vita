@@ -39,22 +39,7 @@ public class MenuDO extends BaseEntity {
     private String permission;
 
     /**
-     * 路由名称。例如：SystemUser
-     */
-    private String routeName;
-
-    /**
-     * 路由路径。例如：/system/user
-     */
-    private String routePath;
-
-    /**
-     * 组件路径。例如：system/user/UserList.vue 或者一个外部 url
-     */
-    private String component;
-
-    /**
-     * 一个 url 地址
+     * 路由路径（如：/system/user）或者一个完整的 url 地址
      */
     private String url;
 
