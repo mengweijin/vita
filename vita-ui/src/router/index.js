@@ -1,68 +1,92 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { handleHotUpdate, routes } from "vue-router/auto-routes";
 import { useLoginStore } from "@/store/login-store.js";
-import { useMenuStore } from "@/store/menu-store.js";
 import NProgress from "@/utils/nprogress.js";
+import utils from "@/utils/utils.js";
 
 const { VITE_APP_TITLE } = import.meta.env;
 
-/** 路由数据 */
-const routes = [];
-
-/** 自动导入全部静态路由：https://cn.vitejs.dev/guide/features.html#negative-patterns */
-const modules = import.meta.glob(["./modules/**/*.js"], {
-	// 急切加载，立即导入所有匹配模块，返回模块对象而非异步函数
-	eager: true,
-});
-
-// 导入静态路由
-Object.keys(modules).forEach((key) => {
-	routes.push(modules[key].default);
-});
-
-// 捕获所有未匹配路径，跳转 404 页面。这个一定要放在路由列表的最后面！
-routes.push({
-	path: "/:pathMatch(.*)*",
-	redirect: "/error/404",
-});
-
-// 路由组件列表（只有使用 Vite 的 glob 导入才不会在打包后路径失效）
-const components = import.meta.glob("../views/**/*.vue");
-
 /**
- * 动态注册路由​（全部作为 Layout 下的二级路由）
- * 将接口数据转换为 Vue Router 可识别的路由对象，并用 router.addRoute() 动态添加
+ * 将多级嵌套路由处理成一维数组
+ * @param {Array} routeList 传入路由对象
+ * @returns 返回处理后的一维路由
  */
-const addDynamicRoutes = (menuList = [], parentRouteName = "Layout") => {
-	menuList
-		.filter((menu) => "DIR" === menu.type || "MENU" === menu.type)
-		.forEach((menu) => {
-			const config = {
-				children: () => (menu.children ? addDynamicRoutes(menu.children, menu.routeName) : []),
-				component: components[`../views/${menu.component}`],
-				meta: {
-					title: menu.title,
-				},
-				name: menu.routeName,
-				path: menu.routePath,
+const flattenRoutes = (routeList = []) => {
+	const flatRoutes = [];
+
+	routeList.forEach((route) => {
+		processRoute(route);
+	});
+
+	function processRoute(route = {}, parentPath = "", parentMeta = {}) {
+		// 处理路径
+		parentPath = utils.trimSpecified(parentPath, "/");
+		const childPath = utils.trimSpecified(route.path, "/");
+		const fullPath = `/${utils.join("/", true, parentPath, childPath)}`;
+
+		// 合并 meta 信息
+		const mergedMeta = {
+			...parentMeta,
+			...route.meta,
+		};
+		// 设置 layout 布局
+		mergedMeta.layout = mergedMeta.layout ? mergedMeta.layout : "default";
+
+		// 递归处理子路由
+		if (route.children && route.children.length > 0) {
+			route.children.forEach((child) => {
+				processRoute(child, fullPath, mergedMeta);
+			});
+		} else {
+			// 没有子路由时才添加当前路由
+			const flatRoute = {
+				...route,
+				meta: mergedMeta,
+				path: fullPath,
 			};
+			// 移除 children
+			delete flatRoute.children;
 
-			if (!router.hasRoute(menu.routeName)) {
-				// 添加到父路由或根路由
-				parentRouteName ? router.addRoute(parentRouteName, config) : router.addRoute(config);
-			}
-		});
+			flatRoutes.push(flatRoute);
+		}
+	}
+
+	return flatRoutes;
 };
 
-export const initDynamicRoutes = () => {
-	const menuStore = useMenuStore();
-	const menus = menuStore.get();
-	addDynamicRoutes(menus);
-};
+const allFlatRoutes = flattenRoutes(routes);
+
+const noneLayoutFlatRoutes = allFlatRoutes.filter((route) => {
+	return route.meta.layout === "none";
+});
+
+const defaultLayoutFlatRoutes = allFlatRoutes.filter((route) => {
+	return route.meta.layout === "default";
+});
+
+// 全部作为 Layout 下的二级路由
+const defaultLayoutRoutes = [
+	{
+		children: defaultLayoutFlatRoutes,
+		component: () => import("@/layout/lay-index.vue"),
+		name: "Layout",
+		path: "/",
+		redirect: "/home",
+	},
+];
+
+const customRoutes = [
+	// 捕获所有未匹配路径，跳转 404 页面。这个一定要放在路由列表的最后面！
+	{
+		path: "/:pathMatch(.*)*",
+		redirect: "/error/404",
+	},
+];
 
 /** 路由实例 */
 const router = createRouter({
 	history: createWebHashHistory(),
-	routes: routes,
+	routes: [...noneLayoutFlatRoutes, ...defaultLayoutRoutes, ...customRoutes],
 	// 刷新时，还原滚动条位置
 	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
@@ -73,6 +97,11 @@ const router = createRouter({
 	// 严格匹配模式
 	strict: true,
 });
+
+// This will update routes at runtime without reloading the page
+if (import.meta.hot) {
+	handleHotUpdate(router);
+}
 
 // 全局前置守卫 https://router.vuejs.org/zh/guide/advanced/navigation-guards.html
 router.beforeEach(async (to, _from) => {
@@ -87,18 +116,8 @@ router.beforeEach(async (to, _from) => {
 
 	const loginStore = useLoginStore();
 	const isLogin = await loginStore.isLogin();
-	const menuStore = useMenuStore();
-	const { isDynamicRoutesAdded, setDynamicRoutesAdded } = menuStore;
 
 	if (isLogin) {
-		// 增加动态路由
-		if (!isDynamicRoutesAdded()) {
-			initDynamicRoutes();
-			setDynamicRoutesAdded(true);
-			// 保持在当前页面，需要返回一个与 to 完全相同的路由对象，以确保 addRoute 之后，新的路由规则生效
-			return { ...to, replace: true };
-		}
-
 		// 已登录但访问登录页。强制跳转到参数页或首页
 		if (to.fullPath.startsWith("/login")) {
 			return { path: to.query.redirect || "/" };

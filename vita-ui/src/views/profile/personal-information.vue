@@ -76,11 +76,11 @@ onMounted(() => {
         </el-aside>
         <el-main>
           <el-tabs type="border-card">
-            <el-tab-pane label="基本资料">头像，昵称，电话，邮箱，性别</el-tab-pane>
-            <el-tab-pane label="修改密码">修改密码</el-tab-pane>
-            <el-tab-pane label="绑定动态口令">TOTP</el-tab-pane>
-            <el-tab-pane label="在线设备">在线设备</el-tab-pane>
-            <el-tab-pane label="安全日志"><UserSecurityLog></UserSecurityLog></el-tab-pane>
+            <el-tab-pane label="基本资料" :lazy="true">头像，昵称，电话，邮箱，性别</el-tab-pane>
+            <el-tab-pane label="修改密码" :lazy="true">修改密码</el-tab-pane>
+            <el-tab-pane label="绑定动态口令" :lazy="true">TOTP</el-tab-pane>
+            <el-tab-pane label="在线设备" :lazy="true">在线设备</el-tab-pane>
+            <el-tab-pane label="安全日志" :lazy="true"><UserSecurityLog></UserSecurityLog></el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>

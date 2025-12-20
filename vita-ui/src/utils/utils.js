@@ -98,6 +98,24 @@ const extendUtils = {
 	isNotBlank: (val) => {
 		return !extendUtils.isBlank(val);
 	},
+	/**
+	 * 使用指定分隔符拼接字符串
+	 * @param {string} separator - 分隔符，默认为'/'
+	 * @param {...any} parts - 要拼接的部分
+	 * @param {boolean} ignoreBlank - 拼接时是否忽略空白项
+	 * @returns {string} 拼接后的字符串
+	 */
+	join: (separator = ",", ignoreBlank = false, ...parts) => {
+		if (!parts) {
+			return "";
+		}
+
+		if (ignoreBlank) {
+			parts = parts.filter((i) => extendUtils.isNotBlank(i));
+		}
+
+		return parts.join(separator);
+	},
 
 	/**
 	 * kebab-case 转 camelCase 再转 PascalCase 格式
@@ -126,6 +144,30 @@ const extendUtils = {
 		} else {
 			return `${ss}秒`;
 		}
+	},
+	/**
+	 * 同时移除开头和结尾指定的字符串
+	 * @param {string} str 要处理的字符串
+	 * @param {string} toTrim 要移除的字符串
+	 * @returns
+	 */
+	trimSpecified: (str, toTrim) => {
+		if (!str || !toTrim) {
+			return str;
+		}
+
+		const pattern = String(toTrim);
+		let result = String(str);
+
+		while (result.startsWith(pattern)) {
+			result = result.slice(pattern.length);
+		}
+
+		while (result.endsWith(pattern)) {
+			result = result.slice(0, -pattern.length);
+		}
+
+		return result;
 	},
 	/**
 	 * 首字母转大写

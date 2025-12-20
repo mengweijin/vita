@@ -37,10 +37,10 @@ import components from "@/components/index.js";
 // 会自动调用 components 中的 install 方法
 app.use(components);
 
-import { initDynamicRoutes, default as router } from "@/router/index.js";
+import router from "@/router/index.js";
 
 // 刷一次动态路由，以免刷新页面时，页面空白或404。依赖 pinia，所有要放在 pinia 后面。
-initDynamicRoutes();
+// initDynamicRoutes();
 app.use(router);
 
 app.mount("#app");

@@ -4,6 +4,8 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
+import { VueRouterAutoImports } from "unplugin-vue-router";
+import VueRouter from "unplugin-vue-router/vite";
 import { defineConfig, loadEnv } from "vite";
 import vueDevTools from "vite-plugin-vue-devtools";
 import svgLoader from "vite-svg-loader";
@@ -59,6 +61,20 @@ export default defineConfig(({ mode }) => {
 		// 设为 false 可以避免 Vite 清屏而错过在终端中打印某些关键信息。
 		clearScreen: false,
 		plugins: [
+			VueRouter({
+				// 更多选项见文档
+				dts: true, // TypeScript 类型生成
+				// 排除特定文件
+				exclude: ["**/components/**", "**/test/**"],
+				extensions: [".vue"], // 文件扩展名
+				// 自动导入布局
+				importMode: "async",
+				// 启用 route 块解析
+				routeBlockLang: "yaml", // 路由块的语言
+				// 配置选项，例如：
+				routesFolder: "src/pages", // 路由文件夹，默认是 'src/pages'
+			}),
+			// ⚠️ Vue 必须放在 VueRouter() 之后
 			vue(),
 			vueDevTools(),
 			svgLoader(),
@@ -69,7 +85,7 @@ export default defineConfig(({ mode }) => {
 				// 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
 				dts: true,
 				// 自动导入 vue, pinia 等相关函数，如：ref, reactive, toRef, storeToRefs 等
-				imports: ["vue", "vue-router", "pinia"],
+				imports: ["vue", "pinia", VueRouterAutoImports],
 				// 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
 				resolvers: [ElementPlusResolver()],
 				// 启用 Vue 3 的模板自动导入功能

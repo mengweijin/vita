@@ -7,7 +7,14 @@ export const useTabsStore = defineStore(
 	() => {
 		// state 直接解构会丢失响应性，需要通过 storeToRefs 保留响应式
 		// 标签页列表
-		const tabsList = ref([]);
+		const tabsList = ref([
+			{
+				closable: false,
+				name: "HomeView",
+				path: "/home",
+				title: "首页",
+			},
+		]);
 
 		// 当前激活的标签页
 		const activeTab = ref("");
