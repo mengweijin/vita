@@ -7,13 +7,16 @@ meta:
 // https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
 import { SwaggerUIBundle } from "swagger-ui-dist";
 import "swagger-ui-dist/swagger-ui.css";
+
 const { VITE_BASE_API } = import.meta.env;
+
+let url = VITE_BASE_API === "/" ? "/v3/api-docs" : `${VITE_BASE_API}/v3/api-docs`;
 
 onMounted(() => {
 	SwaggerUIBundle({
 		dom_id: "#swagger-ui",
 		presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
-		url: `${VITE_BASE_API}/v3/api-docs`,
+		url: url,
 	});
 });
 </script>
