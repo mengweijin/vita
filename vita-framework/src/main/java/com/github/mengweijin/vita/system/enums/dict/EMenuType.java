@@ -28,11 +28,6 @@ public enum EMenuType implements IEnum<String> {
     BTN("BTN"),
 
     /**
-     * 内嵌页面
-     */
-    IFRAME("IFRAME"),
-
-    /**
      * URL
      */
     URL("URL");

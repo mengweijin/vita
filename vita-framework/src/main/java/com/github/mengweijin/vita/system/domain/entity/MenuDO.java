@@ -24,7 +24,7 @@ public class MenuDO extends BaseEntity {
     private Long parentId;
 
     /**
-     * 菜单类型。vt_menu_type: { DIR=目录；MENU=菜单; BTN=按钮; IFRAME=内嵌页面；URL=外链页面；}
+     * 菜单类型。vt_menu_type: { DIR=目录；MENU=菜单; BTN=按钮; URL=外链页面；}
      */
     private String type;
 

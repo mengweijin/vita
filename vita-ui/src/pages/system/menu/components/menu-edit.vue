@@ -146,10 +146,10 @@ defineExpose({ data, visible });
       </el-form-item>
 
       <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'MENU' || form.type === 'IFRAME' || form.type === 'URL'">
+        v-if="form.type === 'MENU' || form.type === 'URL'">
         <template #label>
           <div class="vt-question-icon-container">
-            <el-tooltip placement="top" content="vue-router 路由的路径，也是浏览器地址栏访问的路径。比如：/system/menu">
+            <el-tooltip placement="top" content="vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。比如：/system/menu">
               <el-icon class="vt-question-icon">
                 <Icon icon="ep:question-filled" width="24" height="24" />
               </el-icon>

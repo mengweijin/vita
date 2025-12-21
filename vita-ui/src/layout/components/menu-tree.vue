@@ -11,8 +11,6 @@ const router = useRouter();
 const handleClick = (menu) => {
 	if ("MENU" === menu.type) {
 		router.push(menu.url);
-	} else if ("IFRAME" === menu.type) {
-		console.log(menu);
 	} else if ("URL" === menu.type) {
 		window.open(menu.url, "_blank");
 	}

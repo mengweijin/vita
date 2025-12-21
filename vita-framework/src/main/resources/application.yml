@@ -175,12 +175,18 @@ management:
         include: refresh,health,info
 springdoc:
   swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-    # 设置默认的 OpenAPI JSON 地址
-    url: /dev-api/v3/api-docs
+    # 禁用 ui, 改为前端提供的 ui
+    enabled: false
+    # 内置 Swagger UI 的访问路径，默认值为/swagger-ui/index.html
+    path: /swagger-ui/index.html
+    # 指定OpenAPI文档的URL（注意这里一定要与 api-docs.path 保持一致，否则会请求失败）
+    url: /v3/api-docs
+    # 是否禁用Swagger UI自带的示例接口（如 Petstore 等默认接口），默认值为false，仅展示当前项目的 API
+    disable-swagger-default-url: true
   api-docs:
+    # 是否启用OpenAPI文档端点，默认为true
     enabled: true
+    # OpenAPI 3规范的文档访问路径，默认值为/v3/api-docs
     path: /v3/api-docs
   group-configs:
     - group: 'system'

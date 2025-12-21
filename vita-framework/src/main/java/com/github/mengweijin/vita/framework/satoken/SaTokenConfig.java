@@ -25,7 +25,7 @@ import java.io.IOException;
 public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
 
     private static final String[] WHITE_LIST = new String[]{
-            "/swagger-ui.html",
+            "/swagger-ui/index.html",
             "/webjars/**",
             "/v3/api-docs/**",
 
