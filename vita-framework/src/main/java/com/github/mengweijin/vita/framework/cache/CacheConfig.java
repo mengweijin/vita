@@ -1,16 +1,7 @@
 package com.github.mengweijin.vita.framework.cache;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.github.mengweijin.vita.framework.cache.manager.VitaCaffeineCacheManager;
 import com.github.mengweijin.vita.framework.cache.manager.VitaRedisCacheManager;
-import com.github.mengweijin.vita.framework.jackson.JacksonConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,8 +18,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.text.SimpleDateFormat;
 
 /**
  * Spring Cache Documents 参考：<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Spring Cache Documents</a>
@@ -72,12 +61,12 @@ public class CacheConfig {
      * {@link Jackson2JsonRedisSerializer}：则直接将 Java 对象序列化为 JSON 字符串，反序列化时不需要额外的类型信息，使用更为简单。适合不需要保留类型信息的场景。
      */
     @Bean(name = REDIS_CACHE_MANAGER)
-    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory, Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer) {
         CacheProperties.Redis redis = cacheProperties.getRedis();
         // 创建默认配置
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .entryTtl(redis.getTimeToLive());
         if(!redis.isCacheNullValues()) {
             config.disableCachingNullValues();
@@ -88,25 +77,6 @@ public class CacheConfig {
         // 创建自定义 Redis 缓存管理器
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         return new VitaRedisCacheManager(redisCacheWriter, config);
-    }
-
-    @Bean
-    public Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        //序列化对象值为 null 的属性
-        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        //反序列化的时候如果多了其他属性,不抛出异常
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //如果是空对象的时候,不抛异常
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        //取消时间的转化格式,默认是时间戳,可以取消,同时需要设置要表现的时间格式
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-
-        mapper.registerModule(JacksonConfig.javaTimeModule());
-        return new Jackson2JsonRedisSerializer<>(mapper, Object.class);
     }
 
     @Bean

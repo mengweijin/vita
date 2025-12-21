@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.ratelimit;
+package com.github.mengweijin.vita.framework.ratelimit.impl;
 
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.date.TimeUtil;
@@ -9,6 +9,9 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
+import com.github.mengweijin.vita.framework.ratelimit.ERateLimitStrategy;
+import com.github.mengweijin.vita.framework.ratelimit.RateLimit;
+import com.github.mengweijin.vita.framework.ratelimit.RatelimitCacheObject;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
@@ -48,7 +51,7 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 @SuppressWarnings({"unused"})
-public class RateLimitAspect {
+public class LocalCacheRateLimitAspect {
 
     private static final String CACHE_NAME_PREFIX = "RATE_LIMIT_";
 

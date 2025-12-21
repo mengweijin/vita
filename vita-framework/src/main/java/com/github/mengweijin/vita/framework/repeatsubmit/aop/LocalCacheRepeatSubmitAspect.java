@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.repeatsubmit;
+package com.github.mengweijin.vita.framework.repeatsubmit.aop;
 
 import cn.hutool.v7.core.array.ArrayUtil;
 import cn.hutool.v7.crypto.SecureUtil;
@@ -6,6 +6,7 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.P;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.repeatsubmit.RepeatSubmit;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +33,7 @@ import java.util.StringJoiner;
 @Aspect
 @Component
 @SuppressWarnings({"unused"})
-public class RepeatSubmitAspect {
+public class LocalCacheRepeatSubmitAspect {
 
     @Pointcut("@annotation(repeatSubmit)")
     public void pointCut(RepeatSubmit repeatSubmit) {
@@ -79,7 +80,7 @@ public class RepeatSubmitAspect {
         }
         for (Object obj : paramsArray) {
             if (obj != null && !isFilterObject(obj)) {
-                params.add(P.writeValueAsString(obj));
+                params.add(P.getObjectMapperWrapper().writeValueAsString(obj));
             }
         }
         return params.toString();

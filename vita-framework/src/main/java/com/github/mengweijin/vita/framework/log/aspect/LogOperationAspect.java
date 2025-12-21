@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.framework.log.aspect;
 
-import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
+import com.github.mengweijin.vita.framework.domain.P;
+import com.github.mengweijin.vita.framework.jackson.wrapper.AbstractObjectMapperWrapper;
+import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -110,7 +112,7 @@ public class LogOperationAspect {
                 setRequestData(request, logOperation);
             }
             if (logAnnotation.saveResponseData() && object != null) {
-                String responseData = SensitiveObjectMapper.writeValueAsString(object);
+                String responseData = P.getSensitiveObjectMapperWrapper().writeValueAsString(object);
                 logOperation.setResponseData(CharSequenceUtil.subByLength(responseData, 0, 2000));
             }
             logOperation.setSuccess(e == null ? EYesNo.Y.getValue() : EYesNo.N.getValue());
@@ -146,6 +148,7 @@ public class LogOperationAspect {
             dataMap.put(REQUEST_ARGS, parameterMap);
         }
 
+        AbstractObjectMapperWrapper objectMapperWrapper = P.getSensitiveObjectMapperWrapper();
         // 这里会从 request 中通过流的方式读取 requestBody，而默认，流只能读取一次，第二次就读不到数据了。
         // 在 SpringMVC 中，会先解析 @RequestBody 注释的参数，而触发 requestBody 数据的流读取。
         // 此时就造成日志这里因为读取不到流数据而报错。
@@ -154,10 +157,10 @@ public class LogOperationAspect {
             String body = IoUtil.read(repeatedlyRequest.getInputStream(), StandardCharsets.UTF_8);
             if (StrValidator.isNotBlank(body)) {
                 if (JSONUtil.isTypeJSONObject(body)) {
-                    Map<?, ?> map = SensitiveObjectMapper.readValue(body, Map.class);
+                    Map<?, ?> map = objectMapperWrapper.readValue(body, Map.class);
                     dataMap.put(REQUEST_BODY, map);
                 } else if (JSONUtil.isTypeJSONArray(body)) {
-                    List<?> list = SensitiveObjectMapper.readValue(body, List.class);
+                    List<?> list = objectMapperWrapper.readValue(body, List.class);
                     dataMap.put(REQUEST_BODY, list);
                 } else {
                     dataMap.put(REQUEST_BODY, body);
@@ -165,7 +168,7 @@ public class LogOperationAspect {
             }
         }
         if (!dataMap.isEmpty()) {
-            logOperation.setRequestData(SensitiveObjectMapper.writeValueAsString(dataMap));
+            logOperation.setRequestData(objectMapperWrapper.writeValueAsString(dataMap));
         }
     }
 

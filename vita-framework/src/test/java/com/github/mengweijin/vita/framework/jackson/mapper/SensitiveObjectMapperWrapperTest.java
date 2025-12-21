@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.jackson.mapper;
 
+import com.github.mengweijin.vita.framework.domain.P;
+import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +14,7 @@ import java.util.Map;
  * @author mengweijin
  * @since 2024/10/10
  */
-class SensitiveObjectMapperTest {
+class SensitiveObjectMapperWrapperTest {
 
     private static final Map<String, String> map = new HashMap<>();
 
@@ -23,7 +25,7 @@ class SensitiveObjectMapperTest {
 
     @Test
     void writeValueAsString() {
-        String value = SensitiveObjectMapper.writeValueAsString(new UserTest("123456", map));
+        String value = P.getSensitiveObjectMapperWrapper().writeValueAsString(new UserTest("123456", map));
         Assertions.assertEquals("{\"password\":\"********\",\"map\":{\"password\":\"********\",\"username\":\"admin\"}}", value);
     }
 

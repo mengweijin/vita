@@ -43,7 +43,7 @@ public interface ISchedulingTask {
         try {
             HashMap<?, ?> args = new HashMap<>();
             if(StrUtil.isNotBlank(task.getArgs())) {
-                args = P.objectMapper().readValue(task.getArgs(), HashMap.class);
+                args = P.getObjectMapperWrapper().readValue(task.getArgs(), HashMap.class);
             }
             String result = run(task, args);
 

@@ -37,35 +37,35 @@ import java.util.Enumeration;
 public class ServletUtils extends ServletUtil {
 
     /**
-     * 获取UserAgent
+     * 获取 UserAgent
      */
     public static UserAgent getUserAgent(HttpServletRequest request){
         return UserAgentUtil.parse(request.getHeader("User-Agent"));
     }
 
     /**
-     * 获取UserAgent
+     * 获取 UserAgent
      */
     public static UserAgent getUserAgent(){
         return getUserAgent(getRequest());
     }
 
     /**
-     * 获取String参数
+     * 获取 String 参数
      */
     public static String getParameter(String name) {
         return getRequest().getParameter(name);
     }
 
     /**
-     * 获取String参数
+     * 获取 String 参数
      */
     public static String getParameter(String name, String defaultValue) {
         return CharSequenceUtil.defaultIfBlank(getParameter(name), defaultValue);
     }
 
     /**
-     * 获取Integer参数
+     * 获取 Integer 参数
      */
     public static Integer getParameterToInt(String name) {
         String parameter = getParameter(name, null);
@@ -78,28 +78,28 @@ public class ServletUtils extends ServletUtil {
     }
 
     /**
-     * 获取request
+     * 获取 request
      */
     public static HttpServletRequest getRequest() {
         return getRequestAttributes().getRequest();
     }
 
     /**
-     * 获取response
+     * 获取 response
      */
     public static HttpServletResponse getResponse() {
         return getRequestAttributes().getResponse();
     }
 
     /**
-     * 获取session
+     * 获取 session
      */
     public static HttpSession getSession() {
         return getRequest().getSession();
     }
 
     /**
-     * 获取servletContext
+     * 获取 servletContext
      */
     public static ServletContext getServletContext() {
         return getSession().getServletContext();

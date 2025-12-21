@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.jackson.mapper.serializer;
+package com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
+import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
@@ -65,8 +65,8 @@ public class SensitiveMapSerializer extends MapSerializer {
     private Map<?, ?> processSensitive(Map<?, ?> map) {
         Map<Object, Object> result = new HashMap<>();
         map.forEach((k, v) -> {
-            if (v instanceof CharSequence && CharSequenceUtil.containsAnyIgnoreCase(CharSequenceUtil.toString(k), SensitiveObjectMapper.SENSITIVE_KEY)) {
-                result.put(k, SensitiveObjectMapper.HIDE_VALUE);
+            if (v instanceof CharSequence && CharSequenceUtil.containsAnyIgnoreCase(CharSequenceUtil.toString(k), SensitiveObjectMapperWrapper.SENSITIVE_KEY)) {
+                result.put(k, SensitiveObjectMapperWrapper.HIDE_VALUE);
             } else {
                 result.put(k, v);
             }

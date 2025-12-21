@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.jackson.mapper.modifier;
+package com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.modifier;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
-import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveBeanFieldSerializer;
-import com.github.mengweijin.vita.framework.jackson.mapper.serializer.SensitiveMapSerializer;
+import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
+import com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer.SensitiveBeanFieldSerializer;
+import com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer.SensitiveMapSerializer;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class SensitiveBeanSerializerModifier extends BeanSerializerModifier {
     public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,
                                                      List<BeanPropertyWriter> beanProperties) {
         for (BeanPropertyWriter writer : beanProperties) {
-            if (writer.getType().isTypeOrSubTypeOf(String.class) && CharSequenceUtil.containsAnyIgnoreCase(writer.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
+            if (writer.getType().isTypeOrSubTypeOf(String.class) && CharSequenceUtil.containsAnyIgnoreCase(writer.getName(), SensitiveObjectMapperWrapper.SENSITIVE_KEY)) {
                 // 如果是字符串，并且属性名称属于敏感字段名，则使用自定义处理
                 writer.assignSerializer(new SensitiveBeanFieldSerializer());
             }

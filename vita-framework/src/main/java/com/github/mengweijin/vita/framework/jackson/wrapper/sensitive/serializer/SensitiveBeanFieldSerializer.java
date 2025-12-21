@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.jackson.mapper.serializer;
+package com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.github.mengweijin.vita.framework.jackson.mapper.SensitiveObjectMapper;
+import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 
@@ -23,12 +23,12 @@ public class SensitiveBeanFieldSerializer extends JsonSerializer<Object> impleme
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeString(SensitiveObjectMapper.HIDE_VALUE);
+        gen.writeString(SensitiveObjectMapperWrapper.HIDE_VALUE);
     }
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        if (Objects.equals(String.class, property.getType().getRawClass()) && CharSequenceUtil.containsAnyIgnoreCase(property.getName(), SensitiveObjectMapper.SENSITIVE_KEY)) {
+        if (Objects.equals(String.class, property.getType().getRawClass()) && CharSequenceUtil.containsAnyIgnoreCase(property.getName(), SensitiveObjectMapperWrapper.SENSITIVE_KEY)) {
             return this;
         }
         return prov.findValueSerializer(property.getType(), property);
