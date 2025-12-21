@@ -149,7 +149,7 @@ defineExpose({ data, visible });
         v-if="form.type === 'MENU' || form.type === 'URL'">
         <template #label>
           <div class="vt-question-icon-container">
-            <el-tooltip placement="top" content="vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。比如：/system/menu">
+            <el-tooltip placement="top" content="vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。比如：/system/menu 或 https://aday.fun">
               <el-icon class="vt-question-icon">
                 <Icon icon="ep:question-filled" width="24" height="24" />
               </el-icon>
