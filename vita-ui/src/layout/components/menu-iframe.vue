@@ -12,8 +12,7 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div>IFRAME</div>
-  <!-- <iframe :src="src"></iframe> -->
+  <iframe :src="src"></iframe>
 </template>
 
 <style scoped></style>

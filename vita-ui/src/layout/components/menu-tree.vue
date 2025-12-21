@@ -6,8 +6,12 @@ const { menuList } = defineProps({
 	},
 });
 
+const router = useRouter();
+
 const handleClick = (menu) => {
-	if ("IFRAME" === menu.type) {
+	if ("MENU" === menu.type) {
+		router.push(menu.url);
+	} else if ("IFRAME" === menu.type) {
 		console.log(menu);
 	} else if ("URL" === menu.type) {
 		window.open(menu.url, "_blank");
@@ -18,7 +22,7 @@ const handleClick = (menu) => {
 <template>
   <template v-for="(item, index) in menuList" :key="item.id">
     <!-- 有子菜单时渲染 el-sub-menu -->
-    <el-sub-menu v-if="item.children?.length" :index="item.url || item.id">
+    <el-sub-menu v-if="item.children?.length" :index="item.url || `${item.id}`">
       <template #title>
         <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
         <span>{{ item.title }}</span>
@@ -28,7 +32,7 @@ const handleClick = (menu) => {
     </el-sub-menu>
 
     <!-- 无子菜单 el-menu-item -->
-    <el-menu-item v-else :index="item.url || item.id" @click="handleClick(item)">
+    <el-menu-item v-else :index="item.url || `${item.id}`" @click="handleClick(item)">
       <Icon v-if="item.icon" :icon="item.icon" width="24" height="24" />
       <span>{{ item.title }}</span>
     </el-menu-item>

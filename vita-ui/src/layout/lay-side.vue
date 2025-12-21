@@ -25,7 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :unique-opened="true" :router="true"
+  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :unique-opened="true" :router="false"
     :default-active="activeMenu" class="vt-menu">
     <MenuTree :menu-list="menuTreeList" />
   </el-menu>
