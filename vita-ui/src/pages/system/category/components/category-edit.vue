@@ -57,7 +57,7 @@ const emit = defineEmits(["refresh-table"]);
 const categoryList = ref([]);
 
 const categoryTreeSelectOptions = computed(() => {
-	categoryList.value.forEach((item) => (item.disabled = false));
+	categoryList.value.forEach((item) => {item.disabled = false;});
 	utils.addFullPath(categoryList.value, { pathKey: "name" });
 	return utils.toArrayTree(categoryList.value, { sortKey: "seq" });
 });

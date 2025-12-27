@@ -5,6 +5,9 @@ meta:
 
 <script setup>
 import { userApi } from "@/api/system/user-api";
+import UserChangePassword from "@/pages/profile/components/user-change-password.vue";
+import UserOnlineTerminal from "@/pages/profile/components/user-online-terminal.vue";
+import UserTotp from "@/pages/profile/components/user-totp.vue";
 import BasicInformation from "./components/basic-information.vue";
 import UserSecurityLog from "./components/user-security-log.vue";
 
@@ -85,9 +88,9 @@ onMounted(() => {
             <el-tab-pane label="基本资料" :lazy="true">
               <BasicInformation></BasicInformation>
             </el-tab-pane>
-            <el-tab-pane label="修改密码" :lazy="true">修改密码</el-tab-pane>
-            <el-tab-pane label="绑定动态口令" :lazy="true">TOTP</el-tab-pane>
-            <el-tab-pane label="在线设备" :lazy="true">在线设备</el-tab-pane>
+            <el-tab-pane label="修改密码" :lazy="true"><UserChangePassword></UserChangePassword></el-tab-pane>
+            <el-tab-pane label="绑定动态口令" :lazy="true"><UserTotp></UserTotp></el-tab-pane>
+            <el-tab-pane label="在线终端" :lazy="true"><UserOnlineTerminal></UserOnlineTerminal></el-tab-pane>
             <el-tab-pane label="安全日志" :lazy="true">
               <UserSecurityLog></UserSecurityLog>
             </el-tab-pane>

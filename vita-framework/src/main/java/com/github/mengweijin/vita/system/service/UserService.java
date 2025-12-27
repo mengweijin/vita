@@ -19,12 +19,12 @@ import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
@@ -308,8 +308,12 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     public String generateTotpQrCodeBase64() {
         LoginUserVO loginUser = LoginHelper.getLoginUser();
-        String key = TotpUtils.generateSecretKey();
-        this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, loginUser.getUserId()).update();
+        UserDO user = this.getById(loginUser.getUserId());
+        String key = user.getTotp();
+        if(StrUtil.isBlank(key)) {
+            key = TotpUtils.generateSecretKey();
+            this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, loginUser.getUserId()).update();
+        }
         String label = String.format("%s(%s)", loginUser.getNickname(), loginUser.getUsername());
         String qrCode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
         this.writeTotpQrCodeToTempPath(qrCode);
@@ -346,4 +350,13 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                 .update();
     }
 
+    public boolean getTotpEnabled() {
+        Long userId = LoginHelper.getLoginUser().getUserId();
+        String totpEnabled = this.lambdaQuery()
+                .select(UserDO::getTotpEnabled)
+                .eq(UserDO::getId, userId)
+                .one()
+                .getTotpEnabled();
+        return EYesNo.Y.getValue().equals(totpEnabled);
+    }
 }

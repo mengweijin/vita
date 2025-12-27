@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class UserDO extends BaseEntity {
 
     /**
-     * 部门ID
+     * 部门 ID
      */
     private Long deptId;
 

@@ -12,9 +12,15 @@ export const userApi = {
 
 	create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
+	enableTotp: (code) => http.post(`${URL_PREFIX}/enable-totp/${code}`, {}),
+	generateTotpQrCodeBase64: () => http.get(`${URL_PREFIX}/generate-totp-qrcode`),
+
 	getLoginUserInfo: () => http.get(`${URL_PREFIX}/get-login-user-info`),
+	getSaTerminalInfoList: () => http.get(`${URL_PREFIX}/get-sa-terminal-info-list`),
 
 	getSensitiveUserById: (id) => http.get(`${URL_PREFIX}/get-sensitive-info/${id}`),
+
+	getTotpEnabled: () => http.get(`${URL_PREFIX}/get-totp-enabled`),
 
 	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),

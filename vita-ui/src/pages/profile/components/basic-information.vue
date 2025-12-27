@@ -1,5 +1,4 @@
 <script setup>
-import { logLoginApi } from "@/api/monitor/log-login-api.js";
 import { userApi } from "@/api/system/user-api";
 
 const loading = ref(true);
@@ -55,8 +54,8 @@ onMounted(() => {
 <template>
   <div>
     <el-form-item>
-      <el-avatar :src="userInfo?.avatar" :size="150" :fit="fit" v-if="userInfo?.avatar" />
-      <el-avatar src="/avatar.jpg"  :size="150" :fit="fit" v-else />
+      <el-avatar :src="userInfo?.avatar" :size="150" v-if="userInfo?.avatar" />
+      <el-avatar src="/avatar.jpg"  :size="150" v-else />
       <el-button type="primary" style="margin-left: 20px;" v-if="false">
         <template #icon>
           <el-icon>

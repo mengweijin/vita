@@ -151,8 +151,8 @@ onMounted(() => {
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
       <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="140" />
       <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 表达式" width="120" />
-      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="200" />
-      <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="100" />
+      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="240" />
+      <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="160" />
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" width="80" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>

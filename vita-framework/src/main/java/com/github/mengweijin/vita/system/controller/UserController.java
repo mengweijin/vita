@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -10,11 +12,13 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
+import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
@@ -270,6 +274,12 @@ public class UserController {
         return R.ok();
     }
 
+    @GetMapping("/get-totp-enabled")
+    public boolean getTotpEnabled() {
+        return userService.getTotpEnabled();
+    }
+
+
     @GetMapping("/generate-totp-qrcode")
     public String generateTotpQrCodeBase64() {
         return userService.generateTotpQrCodeBase64();
@@ -287,8 +297,15 @@ public class UserController {
             boolean bool = userService.enableTotp();
             return R.result(bool);
         } else {
-            return R.fail(I18nUtils.msg("system.user.totp.code.invalid"));
+            throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
         }
+    }
+
+    @GetMapping("/get-sa-terminal-info-list")
+    public List<SaTerminalInfoVO> getSaTerminalInfoList() {
+        SaSession session = StpUtil.getSession();
+        SaSessionVO sessionVO = new SaSessionVO(session);
+        return sessionVO.getTerminalInfoList();
     }
 }
 
