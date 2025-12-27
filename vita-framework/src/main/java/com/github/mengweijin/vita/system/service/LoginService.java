@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.system.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
-import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
 import cn.hutool.v7.http.useragent.Platform;
 import cn.hutool.v7.http.useragent.UserAgent;
@@ -13,10 +12,8 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -86,19 +83,6 @@ public class LoginService {
             String msg = I18nUtils.msg("system.login.username.or.password.incorrect");
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
             throw new ClientException(msg);
-        }
-
-        // TOTP
-        if(vitaProperties.getOtpEnabled()) {
-            String totpSecretKey = user.getTotp();
-            if(StrUtil.isNotBlank(totpSecretKey)) {
-                String decrypted = AESUtils.getAES().decryptStr(totpSecretKey);
-                boolean validated = TotpUtils.validate(decrypted, loginBO.getOtp());
-                if(!validated) {
-                    String msg = I18nUtils.msg("system.login.dynamic.password.expired");
-                    throw new ClientException(msg);
-                }
-            }
         }
 
         SaLoginParameter saLoginParameter = new SaLoginParameter()

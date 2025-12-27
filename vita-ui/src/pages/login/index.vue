@@ -24,7 +24,6 @@ const visible = ref(false);
 const form = reactive({
   captcha: "",
   deviceId: undefined,
-  otp: "",
   password: "aday.fun",
   remember: false,
   username: "admin",
@@ -102,12 +101,6 @@ const onkeypress = ({ code }) => {
   }
 };
 
-const otpEnabled = ref(false);
-
-const initOtpEnabled = async () => {
-  otpEnabled.value = await loginApi.getOtpEnabled();
-};
-
 const initVisitorId = async () => {
   // 初始化指纹库
   const fp = await FingerprintJS.load();
@@ -119,7 +112,6 @@ const initVisitorId = async () => {
 onMounted(async () => {
   loading.value = true;
   await initCaptcha();
-  await initOtpEnabled();
   await initVisitorId();
   window.document.addEventListener("keypress", onkeypress);
   visible.value = true;
@@ -158,18 +150,6 @@ onBeforeUnmount(() => {
             <template #prefix>
               <el-icon :size="22">
                 <Icon icon="ep:lock" />
-              </el-icon>
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="otp" v-if="otpEnabled" :rules="[
-          { required: true, message: '必填', trigger: 'blur' },
-          { pattern: /^\d{4}$/, message: '口令应为 4 位数字' }
-        ]">
-          <el-input v-model="form.otp" maxlength="4" clearable placeholder="请输入动态口令">
-            <template #prefix>
-              <el-icon :size="22">
-                <Icon icon="ri:lock-password-line" />
               </el-icon>
             </template>
           </el-input>
