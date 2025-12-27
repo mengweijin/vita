@@ -12,28 +12,25 @@ import HomeStatistic from "./components/home-statistic.vue";
 </script>
 
 <template>
-  <div class="vt-height">
-    <el-scrollbar>
-      <el-container>
-        <el-main>
-          <HomeStatistic />
-          <HomeOperationChart />
-        </el-main>
-        <el-aside width="380px">
-          <HomeNoticeList />
-          <HomeLink />
-        </el-aside>
-      </el-container>
-    </el-scrollbar>
-  </div>
-
+  <el-scrollbar class="vt-height">
+    <el-container>
+      <el-main>
+        <HomeStatistic />
+        <HomeOperationChart />
+      </el-main>
+      <el-aside width="380px">
+        <HomeNoticeList />
+        <HomeLink />
+      </el-aside>
+    </el-container>
+  </el-scrollbar>
 </template>
-
 
 <style lang="css" scoped>
 .vt-height {
-  height: calc(var(--vt-content-aside-height));
+  height: calc(var(--vt-tab-content-height));
 }
+
 .el-main {
   padding: 0px 15px 15px 0px;
 }

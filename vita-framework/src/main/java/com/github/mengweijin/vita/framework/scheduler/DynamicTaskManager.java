@@ -38,6 +38,7 @@ public class DynamicTaskManager {
         TriggerTask triggerTask = new TriggerTask(runnable, trigger);
         ScheduledTask scheduledTask = registrar.scheduleTriggerTask(triggerTask);
         taskMap.put(task.getId(),  scheduledTask);
+        log.info("Registered task: {}", task.getBeanName());
     }
 
     public void updateTask(ScheduledTaskRegistrar registrar, SchedulingTaskDO task) {

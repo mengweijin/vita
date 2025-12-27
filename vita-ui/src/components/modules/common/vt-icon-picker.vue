@@ -9,9 +9,9 @@ const iconPreview = ref("ep:search");
 const iconCollection = ref("ep");
 
 const collectionOptions = ref([
-	{ label: "Element-Plus", value: "ep" },
-	{ label: "Remix", value: "ri" },
-	{ label: "Ant-Design", value: "ant-design" },
+  { label: "Element-Plus", value: "ep" },
+  { label: "Remix", value: "ri" },
+  { label: "Ant-Design", value: "ant-design" },
 ]);
 
 const currentPage = ref(1);
@@ -19,68 +19,68 @@ const currentPage = ref(1);
 const pageSize = ref(70);
 
 const allIconList = computed(() => {
-	return listIcons(null, iconCollection.value);
+  return listIcons(null, iconCollection.value);
 });
 
 const currentIconList = ref([]);
 
 const pageIconList = (list) => {
-	const start = (currentPage.value - 1) * pageSize.value;
-	const end = currentPage.value * pageSize.value;
-	return list.slice(start, end);
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = currentPage.value * pageSize.value;
+  return list.slice(start, end);
 };
 
 const handleIconCollectionChange = (val) => {
-	currentPage.value = 1;
-	handleSearch();
+  currentPage.value = 1;
+  handleSearch();
 };
 
 const handleCurrentChange = (current) => {
-	currentPage.value = current;
-	handleSearch();
+  currentPage.value = current;
+  handleSearch();
 };
 
 const search = ref(null);
 
 const handleSearch = debounce(() => {
-	if (search.value) {
-		const filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
-		currentIconList.value = pageIconList(filteredList);
-	} else {
-		currentIconList.value = pageIconList(allIconList.value);
-	}
+  if (search.value) {
+    const filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
+    currentIconList.value = pageIconList(filteredList);
+  } else {
+    currentIconList.value = pageIconList(allIconList.value);
+  }
 }, 1000);
 
 const popoverRef = useTemplateRef("popoverRef");
 
 const changeIcon = (value) => {
-	inputValue.value = value;
+  inputValue.value = value;
 };
 
 const clearInputValue = () => {
-	inputValue.value = "";
+  inputValue.value = "";
 };
 
 const close = () => {
-	// 手动关闭 popover
-	popoverRef.value.hide();
+  // 手动关闭 popover
+  popoverRef.value.hide();
 };
 
 watch(inputValue, (newIcon) => {
-	if (isEmpty(inputValue.value)) {
-		iconPreview.value = "ep:search";
-	} else {
-		iconPreview.value = newIcon;
-	}
+  if (isEmpty(inputValue.value)) {
+    iconPreview.value = "ep:search";
+  } else {
+    iconPreview.value = newIcon;
+  }
 });
 
 onMounted(() => {
-	handleSearch();
+  handleSearch();
 });
 </script>
 
 <template>
-  <el-input v-model="inputValue" autocomplete="off" disabled style="width: 50%;">
+  <el-input v-model="inputValue" autocomplete="off" disabled style="width: 100%;">
     <template #append>
       <el-popover ref="popoverRef" placement="bottom" width="510" trigger="click">
         <div>

@@ -14,6 +14,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -50,7 +51,7 @@ public class VitaApplicationRunner implements ApplicationRunner {
         Connection connection = SqlSessionUtils.getSqlSession(sqlSessionFactory).getConnection();
         DatabaseMetaData metaData = connection.getMetaData();
         String databaseProductName = metaData.getDatabaseProductName();
-        log.info("Product name of the database is: {}", databaseProductName);
+        log.info("The database name is: {}", databaseProductName);
     }
 
     /**
@@ -64,13 +65,13 @@ public class VitaApplicationRunner implements ApplicationRunner {
     private void initMultipartTempLocation() {
         String location = multipartProperties.getLocation();
         if(StrUtil.isNotBlank(location)) {
+            String path = Paths.get(location).toAbsolutePath().toString();
             File tempLocation = FileUtil.file(location);
             if(!tempLocation.exists()) {
                 FileUtil.mkdir(location);
-                log.info("Make multipart temp location: {}", location);
-            } else {
-                log.info("Multipart temp location already exists in location: {}", location);
+                log.info("The multipart location has been created.");
             }
+            log.info("Multipart location: {}", path);
         }
     }
 

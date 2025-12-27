@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * <p>
  *  Scheduling Task Service
@@ -50,5 +52,9 @@ public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, 
         String beanName = taskDO.getBeanName();
         ISchedulingTask schedulingTask = schedulingTaskFactory.getSchedulingTask(beanName);
         schedulingTask.execute(id);
+    }
+
+    public Set<String> getTaskBeanNames() {
+        return schedulingTaskFactory.getSchedulingTaskMap().keySet();
     }
 }

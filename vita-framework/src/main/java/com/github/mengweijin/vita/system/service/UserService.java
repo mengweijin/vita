@@ -2,11 +2,14 @@ package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.data.PasswdStrength;
+import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.core.date.TimeUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.crypto.digest.BCrypt;
 import cn.hutool.v7.crypto.digest.DigestUtil;
+import cn.hutool.v7.swing.img.ImgUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,8 +17,12 @@ import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.TotpUtils;
+import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
@@ -23,15 +30,22 @@ import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -71,6 +85,12 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     private UserPostService userPostService;
 
     private VitaProperties vitaProperties;
+
+    private MultipartProperties multipartProperties;
+
+    private ApplicationProperties applicationProperties;
+
+    private EnvironmentChecker environmentChecker;
 
     @Override
     public boolean save(UserDO user) {
@@ -285,4 +305,45 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                 .list()
                 .stream().map(UserDO::getId).collect(Collectors.toSet());
     }
+
+    public String generateTotpQrCodeBase64() {
+        LoginUserVO loginUser = LoginHelper.getLoginUser();
+        String key = TotpUtils.generateSecretKey();
+        this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, loginUser.getUserId()).update();
+        String label = String.format("%s(%s)", loginUser.getNickname(), loginUser.getUsername());
+        String qrCode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
+        this.writeTotpQrCodeToTempPath(qrCode);
+        return qrCode;
+    }
+
+    /**
+     *  这个方法只在 {@link EnvironmentChecker} isDevOrLocalOrTest() 环境下执行
+     */
+    public void writeTotpQrCodeToTempPath(String qrCode) {
+        if(environmentChecker.isDevOrLocalOrTest()) {
+            String base64Data = qrCode;
+            // 如果Base64字符串包含头信息，则分离头信息和实际数据
+            if (qrCode.contains(Const.COMMA)) {
+                base64Data = qrCode.split(Const.COMMA)[1];
+            }
+            BufferedImage image = ImgUtil.toImage(base64Data);
+            String location = multipartProperties.getLocation();
+            String fileName = IdUtil.fastSimpleUUID() + Const.DOT + ImgUtil.IMAGE_TYPE_JPG;
+            File file = FileUtil.file(String.join(File.separator, location, fileName));
+            try(FileOutputStream out = new FileOutputStream(file)) {
+                ImgUtil.writeJpg(image, out);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    public boolean enableTotp() {
+        Long userId = LoginHelper.getLoginUser().getUserId();
+        return this.lambdaUpdate()
+                .set(UserDO::getTotpEnabled, EYesNo.Y.getValue())
+                .eq(UserDO::getId, userId)
+                .update();
+    }
+
 }

@@ -5,9 +5,9 @@ meta:
 
 <script setup>
 import { cacheLocalApi } from "@/api/monitor/cache-local-api.js";
-import "vue-json-pretty/lib/styles.css";
-import VueJsonPretty from "vue-json-pretty";
 import utils from "@/utils/utils.js";
+import VueJsonPretty from "vue-json-pretty";
+import "vue-json-pretty/lib/styles.css";
 
 const loading = ref(false);
 
@@ -22,18 +22,18 @@ const activeIndex = ref(-1);
 const cacheValue = ref("");
 
 const handleCacheNameChange = async (name) => {
-	cacheName.value = name;
-	dataList.value = [];
-	filteredDataList.value = [];
-	cacheValue.value = "";
-	activeIndex.value = -1;
+  cacheName.value = name;
+  dataList.value = [];
+  filteredDataList.value = [];
+  cacheValue.value = "";
+  activeIndex.value = -1;
 
-	if (!utils.isEmpty(name)) {
-		loading.value = true;
-		dataList.value = await cacheLocalApi.query(name);
-		handleFilterDataList(keywords.value);
-		loading.value = false;
-	}
+  if (!utils.isEmpty(name)) {
+    loading.value = true;
+    dataList.value = await cacheLocalApi.query(name);
+    handleFilterDataList(keywords.value);
+    loading.value = false;
+  }
 };
 
 const keywords = ref(null);
@@ -41,45 +41,45 @@ const keywords = ref(null);
 const filteredDataList = ref([]);
 
 const handleFilterDataList = utils.debounce((name) => {
-	if (utils.isEmpty(name)) {
-		filteredDataList.value = dataList.value;
-	} else {
-		filteredDataList.value = dataList.value.filter((item) => item.name.includes(name));
-	}
+  if (utils.isEmpty(name)) {
+    filteredDataList.value = dataList.value;
+  } else {
+    filteredDataList.value = dataList.value.filter((item) => item.name.includes(name));
+  }
 }, 1000);
 
 const refreshByCacheName = (name) => {
-	handleCacheNameChange(name);
+  handleCacheNameChange(name);
 };
 
 const clearByCacheName = (name) => {
-	cacheLocalApi.clearByName(name).then(() => {
-		handleCacheNameChange(name);
-	});
+  cacheLocalApi.clearByName(name).then(() => {
+    handleCacheNameChange(name);
+  });
 };
 
 const viewCacheValue = (val, index) => {
-	cacheValue.value = val;
-	activeIndex.value = index;
+  cacheValue.value = val;
+  activeIndex.value = index;
 };
 
 const removeCache = (name, key) => {
-	cacheLocalApi.remove(name, key).then(async () => {
-		await handleCacheNameChange(name);
-		handleFilterDataList(name);
-	});
+  cacheLocalApi.remove(name, key).then(async () => {
+    await handleCacheNameChange(name);
+    handleFilterDataList(name);
+  });
 };
 
 const refreshCacheByNameAndKey = (name, key) => {
-	cacheLocalApi.queryCacheByNameAndKey(name, key).then((res) => {
-		cacheValue.value = res.value;
-	});
+  cacheLocalApi.queryCacheByNameAndKey(name, key).then((res) => {
+    cacheValue.value = res.value;
+  });
 };
 
 onMounted(async () => {
-	loading.value = true;
-	cacheNameList.value = await cacheLocalApi.names();
-	loading.value = false;
+  loading.value = true;
+  cacheNameList.value = await cacheLocalApi.names();
+  loading.value = false;
 });
 </script>
 
@@ -187,9 +187,9 @@ onMounted(async () => {
 }
 
 .el-main {
-  background-color: white; 
-  margin-left: 10px; 
+  background-color: white;
+  margin-left: 10px;
   padding: 5px 10px;
-  height: calc(var(--vt-content-aside-height));
+  height: calc(var(--vt-tab-content-height));
 }
 </style>

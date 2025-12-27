@@ -10,8 +10,10 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
@@ -266,6 +268,27 @@ public class UserController {
     public R<Void> setRoles(@Validated @RequestBody UserRoleBO bo) {
         userRoleService.setUserRoles(bo.getUserId(), bo.getRoleIds());
         return R.ok();
+    }
+
+    @GetMapping("/generate-totp-qrcode")
+    public String generateTotpQrCodeBase64() {
+        return userService.generateTotpQrCodeBase64();
+    }
+
+    /**
+     * 启用动态口令
+     * @param code validate code
+     */
+    @PostMapping("/enable-totp/{code}")
+    public R<Void> enableTotp(@Validated @PathVariable Integer code) {
+        Long userId = LoginHelper.getLoginUser().getUserId();
+        UserDO user = userService.getById(userId);
+        if(TotpUtils.validate(user.getTotp(), code)) {
+            boolean bool = userService.enableTotp();
+            return R.result(bool);
+        } else {
+            return R.fail(I18nUtils.msg("system.user.totp.code.invalid"));
+        }
     }
 }
 

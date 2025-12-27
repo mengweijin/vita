@@ -15,28 +15,28 @@ const loading = ref(true);
 const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-	children: "children",
-	disabled: "disabled",
-	label: "label",
+  children: "children",
+  disabled: "disabled",
+  label: "label",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-	const dictData = dictStore.get("vt_message_category");
-	treeData.value = [
-		{
-			children: dictData,
-			disabled: false,
-			label: "消息分类",
-			val: null,
-		},
-	];
+  const dictData = dictStore.get("vt_message_category");
+  treeData.value = [
+    {
+      children: dictData,
+      disabled: false,
+      label: "消息分类",
+      val: null,
+    },
+  ];
 };
 
 const handleTreeNodeClick = (data, node) => {
-	queryParams.category = data.val;
-	loadTableData();
+  queryParams.category = data.val;
+  loadTableData();
 };
 
 const size = ref("default");
@@ -49,65 +49,65 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	category: undefined,
-	current: 1,
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  category: undefined,
+  current: 1,
+  keywords: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	queryParams.category = null;
-	// 清除选中状态及背景颜色
-	treeRef.value.setCurrentKey(null);
-	loadTableData();
+  queryFormRef.value.resetFields();
+  queryParams.category = null;
+  // 清除选中状态及背景颜色
+  treeRef.value.setCurrentKey(null);
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	messageApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  messageApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleSetViewed = (messageReceiverIds) => {
-	messageApi.setViewed(messageReceiverIds).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  messageApi.setViewed(messageReceiverIds).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchSetViewed = () => {
-	const messageReceiverIds = selected.value.map((item) => item.id).join();
-	handleSetViewed(messageReceiverIds);
+  const messageReceiverIds = selected.value.map((item) => item.id).join();
+  handleSetViewed(messageReceiverIds);
 };
 
 const handleSetNotViewed = (messageReceiverIds) => {
-	messageApi.setNotViewed(messageReceiverIds).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  messageApi.setNotViewed(messageReceiverIds).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 onMounted(() => {
-	loadTreeData();
-	loadTableData();
+  loadTreeData();
+  loadTableData();
 });
 </script>
 
@@ -116,7 +116,7 @@ onMounted(() => {
     <el-aside width="140px">
       <el-scrollbar>
         <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
-          :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height"/>
+          :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
       </el-scrollbar>
     </el-aside>
     <el-main class="vt-height">
@@ -235,7 +235,7 @@ onMounted(() => {
 }
 
 .vt-height {
-  height: calc(var(--vt-content-aside-height)) !important;
+  height: calc(var(--vt-tab-content-height)) !important;
 }
 
 .el-main {

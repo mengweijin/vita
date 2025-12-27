@@ -22,112 +22,112 @@ const loading = ref(false);
 const visible = ref(false);
 
 const form = reactive({
-	captcha: "",
-	deviceId: undefined,
-	otp: "",
-	password: "aday.fun",
-	remember: false,
-	username: "admin",
+  captcha: "",
+  deviceId: undefined,
+  otp: "",
+  password: "aday.fun",
+  remember: false,
+  username: "admin",
 });
 
 const formRef = useTemplateRef("formRef");
 
 const rules = reactive({
-	username: [
-		{ message: "必填", required: true, trigger: "blur" },
-		{ max: 30, message: "长度需要在 3-30 个字符之间", min: 3 },
-	],
+  username: [
+    { message: "必填", required: true, trigger: "blur" },
+    { max: 30, message: "长度需要在 3-30 个字符之间", min: 3 },
+  ],
 });
 
 const captchaEnabled = ref(false);
 const captchaImg = ref(null);
 
 const initCaptcha = async () => {
-	captchaEnabled.value = await loginApi.getCaptchaEnabled();
-	if (captchaEnabled.value) {
-		await onRefreshCaptcha();
-	}
+  captchaEnabled.value = await loginApi.getCaptchaEnabled();
+  if (captchaEnabled.value) {
+    await onRefreshCaptcha();
+  }
 };
 
 const onRefreshCaptcha = async () => {
-	captchaImg.value = await loginApi.getCaptcha();
+  captchaImg.value = await loginApi.getCaptcha();
 };
 
 const onForgetPassword = () => {
-	ElMessageBox.alert("请联系管理员！", "忘记密码？", {
-		confirmButtonText: "确定",
-	});
+  ElMessageBox.alert("请联系管理员！", "忘记密码？", {
+    confirmButtonText: "确定",
+  });
 };
 
 const onSubmit = () => {
-	// 这里手动 loading
-	const loading = ElLoading.service({ fullscreen: true });
-	formRef.value.validate((valid, fields) => {
-		if (valid) {
-			// loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
-			loginApi
-				.login(form)
-				.then(async (r) => {
-					// 保存 token
-					loginStore.setToken(r.data.token);
-					if (form.remember) {
-						// 记住我，后端默认保存 7 天
-						loginStore.setLocalStorageToken(r.data.token);
-					} else {
-						// 不记住我，关闭浏览器即失效。并清理掉 localStorage 中之前存储的 token
-						loginStore.removeLocalStorageToken();
-					}
-					// 初始化用户数据
-					await loginStore.initData();
+  // 这里手动 loading
+  const loading = ElLoading.service({ fullscreen: true });
+  formRef.value.validate((valid, fields) => {
+    if (valid) {
+      // loginApi.login() 方法中已经关闭了 http.js 中的全局 loading
+      loginApi
+        .login(form)
+        .then(async (r) => {
+          // 保存 token
+          loginStore.setToken(r.data.token);
+          if (form.remember) {
+            // 记住我，后端默认保存 7 天
+            loginStore.setLocalStorageToken(r.data.token);
+          } else {
+            // 不记住我，关闭浏览器即失效。并清理掉 localStorage 中之前存储的 token
+            loginStore.removeLocalStorageToken();
+          }
+          // 初始化用户数据
+          await loginStore.initData();
 
-					// 跳转到访问页或首页
-					router.push(route.query.redirect || "/");
+          // 跳转到访问页或首页
+          router.push(route.query.redirect || "/");
 
-					loading?.close();
-				})
-				.catch(() => {
-					loading?.close();
-				});
-		} else {
-			// fields 只有在验证失败的情况下才有值
-			console.log(fields);
-			loading?.close();
-		}
-	});
+          loading?.close();
+        })
+        .catch(() => {
+          loading?.close();
+        });
+    } else {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields);
+      loading?.close();
+    }
+  });
 };
 
 const onkeypress = ({ code }) => {
-	if (["Enter", "NumpadEnter"].includes(code)) {
-		onSubmit();
-	}
+  if (["Enter", "NumpadEnter"].includes(code)) {
+    onSubmit();
+  }
 };
 
-const optEnabled = ref(false);
+const otpEnabled = ref(false);
 
-const initLoginOtpEnabled = async () => {
-	optEnabled.value = await loginApi.getLoginOtpEnabled();
+const initOtpEnabled = async () => {
+  otpEnabled.value = await loginApi.getOtpEnabled();
 };
 
 const initVisitorId = async () => {
-	// 初始化指纹库
-	const fp = await FingerprintJS.load();
-	// 生成浏览器指纹
-	const result = await fp.get();
-	form.deviceId = result.visitorId;
+  // 初始化指纹库
+  const fp = await FingerprintJS.load();
+  // 生成浏览器指纹
+  const result = await fp.get();
+  form.deviceId = result.visitorId;
 };
 
 onMounted(async () => {
-	loading.value = true;
-	await initCaptcha();
-	await initLoginOtpEnabled();
-	await initVisitorId();
-	window.document.addEventListener("keypress", onkeypress);
-	visible.value = true;
-	loading.value = false;
+  loading.value = true;
+  await initCaptcha();
+  await initOtpEnabled();
+  await initVisitorId();
+  window.document.addEventListener("keypress", onkeypress);
+  visible.value = true;
+  loading.value = false;
 });
 
 onBeforeUnmount(() => {
-	window.document.removeEventListener("keypress", onkeypress);
+  window.document.removeEventListener("keypress", onkeypress);
 });
 </script>
 
@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="otp" v-if="optEnabled" :rules="[
+        <el-form-item prop="otp" v-if="otpEnabled" :rules="[
           { required: true, message: '必填', trigger: 'blur' },
           { pattern: /^\d{4}$/, message: '口令应为 4 位数字' }
         ]">

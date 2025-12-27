@@ -93,46 +93,44 @@ const handleCloseRight = () => {
 
 
 <template>
-  <div class="vt-tabs">
-	<!-- 标签页区域 -->
-    <el-tabs v-model="activeTab" closable @tab-click="handleTabClick" @tab-remove="handleTabRemove">
-      <el-tab-pane v-for="tab in tabsList" :key="tab.name" :name="tab.name" :label="tab.title" :closable="tab.closable">
-      <!-- 核心：使用label插槽自定义标题区域 -->
-      <template #label>
-        <span @contextmenu.prevent="handleContextMenu($event, tab)">
-          {{ tab.title }}
-        </span>
-      </template>
-		</el-tab-pane>
-    </el-tabs>
-	<!-- 内容区域 -->
-	<div class="vt-tab-content">
-		<el-scrollbar>	
+	<div class="vt-tabs">
+		<!-- 标签页区域 -->
+		<el-tabs v-model="activeTab" closable @tab-click="handleTabClick" @tab-remove="handleTabRemove">
+			<el-tab-pane v-for="tab in tabsList" :key="tab.name" :name="tab.name" :label="tab.title"
+				:closable="tab.closable">
+				<!-- 核心：使用label插槽自定义标题区域 -->
+				<template #label>
+					<span @contextmenu.prevent="handleContextMenu($event, tab)">
+						{{ tab.title }}
+					</span>
+				</template>
+			</el-tab-pane>
+		</el-tabs>
+		<!-- 内容区域 -->
+		<div class="vt-tab-content">
 			<router-view v-slot="{ Component }">
 				<keep-alive :include="tabsStore.getCachedViews()">
 					<component :is="Component" :key="$route.fullPath" />
 				</keep-alive>
-			</router-view>	
-		</el-scrollbar>
+			</router-view>
+		</div>
 	</div>
-  </div>
 </template>
 
 
 <style scoped>
 .vt-tabs {
-  height: 100%;
-  overflow: hidden;
+	overflow: hidden;
 }
 
 /* 明确选择第一个 el-tabs */
-.vt-tabs > :deep(.el-tabs:nth-child(1)) .el-tabs__nav-scroll:first-child {
+.vt-tabs> :deep(.el-tabs:nth-child(1)) .el-tabs__nav-scroll:first-child {
 	padding-left: 20px;
 }
 
 .vt-tab-content {
-  /* 减去标签页高度 */
-  height: calc(100% - 40px);
-  padding: 0px 15px;
+	/* 减去标签页高度 */
+	height: calc(var(--vt-tab-content-height));
+	padding: 0px 15px 0px 15px;
 }
 </style>

@@ -191,7 +191,7 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 -- 配置
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, 'vita.log-record-level', 'INFO', '系统日志记录到数据库的最低日志级别（不区分大小写）。可选值：[ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF]。注意：请勿设置过低，否则极度影响性能！', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, 'vita.login-captcha-enabled', 'true', '用户登录是否启用验证码。可选值：[ true, false ]。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'vita.login-otp-enabled', 'false', '用户登录时是否启用动态口令二次验证。可选值：[ true, false ]。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'vita.otp-enabled', 'false', '用户登录时是否启用动态口令二次验证。可选值：[ true, false ]。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, 'vita.user.default-password', 'aday.fun', '用户初始密码。密码长度应该在 8-18 位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, 'vita.user.password-change-interval', '90', '修改密码的时间间隔。单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, 'vita.user.default-role-code', 'general', '用户默认角色编码。创建用户时，用户所拥有的默认的角色编码，用户拥有该角色，即拥有对应的菜单权限。', 1, current_timestamp(), 1, current_timestamp());
@@ -334,7 +334,8 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 
 
 -- 调度任务
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{"days": 90}','N','days：系统日志保留天数。超过该配置天数的系统日志将被调度任务清理。CRON【0 0 3 1 * ?】表示每个月 1 日 3:00 执行',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。CRON【0 0 3 1 * ?】表示每个月 1 日 3:00 执行',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。CRON【0 10 3 * * ?】表示每日 3:10 执行',1,current_timestamp(),1,current_timestamp());
 
 
 -- 用户-角色

@@ -16,7 +16,7 @@ import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.framework.util.TOTPUtils;
+import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
@@ -89,11 +89,11 @@ public class LoginService {
         }
 
         // TOTP
-        if(vitaProperties.getLoginOtpEnabled()) {
+        if(vitaProperties.getOtpEnabled()) {
             String totpSecretKey = user.getTotp();
             if(StrUtil.isNotBlank(totpSecretKey)) {
                 String decrypted = AESUtils.getAES().decryptStr(totpSecretKey);
-                boolean validated = TOTPUtils.validate(decrypted, loginBO.getOtp());
+                boolean validated = TotpUtils.validate(decrypted, loginBO.getOtp());
                 if(!validated) {
                     String msg = I18nUtils.msg("system.login.dynamic.password.expired");
                     throw new ClientException(msg);

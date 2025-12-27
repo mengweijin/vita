@@ -89,6 +89,11 @@ public class UserDO extends BaseEntity {
     private String totp;
 
     /**
+     * 用户是否已启用 TOTP 动态口令。[Y, N]
+     */
+    private String totpEnabled;
+
+    /**
     * 是否禁用。[Y, N]
     */
     private String disabled;

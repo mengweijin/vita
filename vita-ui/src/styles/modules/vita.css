@@ -1,45 +1,47 @@
 /* color palette from <https://github.com/vuejs/theme> */
-:root {
-}
-
 /* semantic color variables for this project */
 :root {
-	--vt-header-height: 60px;
-	/* tabs 页签：40px; 查询表单：70px; 表格头：63px；分页组件：50px */
-	--vt-table-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 40px - 70px - 63px - 50px);
-	--vt-content-aside-height: calc(100vh - var(--vt-header-height) - var(--vt-footer-height) - 70px);
-	--vt-content-background-color: #f7f7f7;
+  --vt-header-height: 60px;
+  --vt-aside-height: calc(100vh - var(--vt-header-height));
+  --vt-main-height: calc(var(--vt-aside-height) - var(--vt-footer-height));
+  /** tabs 页签头：40px；其它：14px */
+  --vt-tab-content-height: calc(var(--vt-main-height) - 40px - 14px);
+  /* 查询表单：50px; 表格头：62px；分页组件：42px; 其它：13px */
+  --vt-table-height: calc(
+    var(--vt-tab-content-height) - 50px - 62px - 42px - 13px
+  );
+  --vt-main-background-color: #f7f7f7;
 }
 
 /* 移动端样式 */
 @media screen and (max-width: 768px) {
-	:root {
-		--vt-footer-height: 110px;
-	}
+  :root {
+    --vt-footer-height: 110px;
+  }
 }
 
 /* PC端样式 */
 @media screen and (min-width: 768px) {
-	:root {
-		--vt-footer-height: 60px;
-	}
+  :root {
+    --vt-footer-height: 60px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-	}
+  :root {
+  }
 }
 
 .vt-table {
-	flex: 1;
-	/* tabs 页签：40px; 查询表单：70px; 表格头：63px；分页组件：50px */
-	height: var(--vt-table-height);
+  flex: 1;
+  /* tabs 页签：40px; 查询表单：70px; 表格头：63px；分页组件：50px */
+  height: var(--vt-table-height);
 }
 
 .el-pagination {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 .el-dialog__footer {
-	padding-top: 0px !important;
+  padding-top: 0px !important;
 }

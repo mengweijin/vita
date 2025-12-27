@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.otp;
+package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.core.codec.binary.Base32;
 import cn.hutool.v7.core.io.file.FileUtil;
@@ -19,7 +19,7 @@ import java.util.Scanner;
  * @since 2023/4/16
  */
 @Slf4j
-class TOTPUtilsTest {
+class TotpUtilsTest {
     /**
      * 这里仅作测试。生产环境可以取用户登录名。或者系统名称+用户登录名。
      *
@@ -68,6 +68,7 @@ class TOTPUtilsTest {
         String secretKey = TOTP.generateSecretKey(16);
         log.debug("SecretKey: {}", secretKey);
         Assertions.assertNotNull(secretKey);
+        Assertions.assertEquals(32, secretKey.length());
     }
 
     /**

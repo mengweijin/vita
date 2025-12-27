@@ -15,16 +15,16 @@ const size = ref("default");
 const userInfo = ref({});
 
 onMounted(() => {
-	loading.value = true;
-	userApi
-		.getLoginUserInfo()
-		.then((res) => {
-			userInfo.value = res;
-			loading.value = false;
-		})
-		.catch(() => {
-			loading.value = false;
-		});
+  loading.value = true;
+  userApi
+    .getLoginUserInfo()
+    .then((res) => {
+      userInfo.value = res;
+      loading.value = false;
+    })
+    .catch(() => {
+      loading.value = false;
+    });
 });
 </script>
 
@@ -82,11 +82,15 @@ onMounted(() => {
         </el-aside>
         <el-main>
           <el-tabs type="border-card">
-            <el-tab-pane label="基本资料" :lazy="true"><BasicInformation></BasicInformation></el-tab-pane>
+            <el-tab-pane label="基本资料" :lazy="true">
+              <BasicInformation></BasicInformation>
+            </el-tab-pane>
             <el-tab-pane label="修改密码" :lazy="true">修改密码</el-tab-pane>
             <el-tab-pane label="绑定动态口令" :lazy="true">TOTP</el-tab-pane>
             <el-tab-pane label="在线设备" :lazy="true">在线设备</el-tab-pane>
-            <el-tab-pane label="安全日志" :lazy="true"><UserSecurityLog></UserSecurityLog></el-tab-pane>
+            <el-tab-pane label="安全日志" :lazy="true">
+              <UserSecurityLog></UserSecurityLog>
+            </el-tab-pane>
           </el-tabs>
         </el-main>
       </el-container>
@@ -98,10 +102,12 @@ onMounted(() => {
 .el-tag+.el-tag {
   margin-left: 5px;
 }
+
 .vt-height {
-  height: calc(var(--vt-content-aside-height));
+  height: calc(var(--vt-tab-content-height));
 }
-.el-main{
+
+.el-main {
   padding: 0px 0px 0px 15px;
 }
 </style>

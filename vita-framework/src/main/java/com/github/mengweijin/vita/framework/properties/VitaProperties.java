@@ -55,10 +55,10 @@ public class VitaProperties {
     private Boolean loginCaptchaEnabled = true;
 
     /**
-     * ${vita.login-otp-enabled}
+     * ${vita.otp-enabled}
      */
     @NotNull
-    private Boolean loginOtpEnabled = false;
+    private Boolean otpEnabled = false;
 
     // endregion
 

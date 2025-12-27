@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.scheduler;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 @Component
 public class SchedulingTaskFactory {
 
+    @Getter
     private final Map<String, ISchedulingTask> schedulingTaskMap;
 
     public SchedulingTaskFactory(Map<String, ISchedulingTask> schedulingTaskMap) {

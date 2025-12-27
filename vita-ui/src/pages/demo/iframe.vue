@@ -6,7 +6,7 @@ meta:
 <script setup>
 const url = ref("https://aday.fun");
 
-onMounted(() => {});
+onMounted(() => { });
 </script>
 
 <template>

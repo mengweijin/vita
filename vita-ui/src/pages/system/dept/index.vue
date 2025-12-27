@@ -16,8 +16,8 @@ const size = ref("default");
 const tableRef = useTemplateRef("tableRef");
 
 const treeProps = reactive({
-	// 父子节点默认联动
-	checkStrictly: false,
+  // 父子节点默认联动
+  checkStrictly: false,
 });
 
 const tableData = ref([]);
@@ -26,58 +26,58 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	disabled: undefined,
-	keywords: undefined,
+  disabled: undefined,
+  keywords: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	deptApi.list(queryParams).then((res) => {
-		tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
-		loading.value = false;
-	});
+  loading.value = true;
+  deptApi.list(queryParams).then((res) => {
+    tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
+    loading.value = false;
+  });
 };
 
 const deptEditRef = useTemplateRef("deptEditRef");
 
 const handleAdd = (id) => {
-	deptEditRef.value.data = {
-		parentId: id ?? undefined,
-	};
-	deptEditRef.value.visible = true;
+  deptEditRef.value.data = {
+    parentId: id ?? undefined,
+  };
+  deptEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	deptEditRef.value.data = { ...row };
-	deptEditRef.value.visible = true;
+  // 使用展开运算符，避免数据污染
+  deptEditRef.value.data = { ...row };
+  deptEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	deptApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  deptApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 
@@ -218,6 +218,7 @@ onMounted(() => {
 
 <style scoped>
 .vt-table {
-  height: calc(var(--vt-table-height) + 50px);
+  /* 分页组件：42px; */
+  height: calc(var(--vt-table-height) + 42px);
 }
 </style>

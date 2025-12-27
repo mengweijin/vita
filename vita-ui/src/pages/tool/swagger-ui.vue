@@ -13,11 +13,11 @@ const { VITE_BASE_API } = import.meta.env;
 let url = VITE_BASE_API === "/" ? "/v3/api-docs" : `${VITE_BASE_API}/v3/api-docs`;
 
 onMounted(() => {
-	SwaggerUIBundle({
-		dom_id: "#swagger-ui",
-		presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
-		url: url,
-	});
+  SwaggerUIBundle({
+    dom_id: "#swagger-ui",
+    presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
+    url: url,
+  });
 });
 </script>
 
@@ -29,6 +29,6 @@ onMounted(() => {
 
 <style scoped>
 .vt-swagger-ui {
-  height: calc(var(--vt-content-aside-height));
+  height: calc(var(--vt-tab-content-height));
 }
 </style>

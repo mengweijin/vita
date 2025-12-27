@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup>
-import { serverApi } from "@/api/monitor/server-api";
+import { serverApi } from "@/api/monitor/server-api.js";
 import utils from "@/utils/utils.js";
 
 const loading = ref(true);
@@ -24,21 +24,21 @@ const jvmInfo = ref(null);
 const diskInfo = ref([]);
 
 onMounted(() => {
-	serverApi.serverInfo().then((res) => {
-		data.value = res;
-		serverInfo.value = res.server;
-		cpuInfo.value = res.cpu;
-		memoryInfo.value = res.memory;
-		jvmInfo.value = res.jvm;
-		diskInfo.value = res.disk;
+  serverApi.serverInfo().then((res) => {
+    data.value = res;
+    serverInfo.value = res.server;
+    cpuInfo.value = res.cpu;
+    memoryInfo.value = res.memory;
+    jvmInfo.value = res.jvm;
+    diskInfo.value = res.disk;
 
-		loading.value = false;
-	});
+    loading.value = false;
+  });
 });
 </script>
 
 <template>
-  <el-scrollbar v-loading="loading">
+  <el-scrollbar v-loading="loading" class="vt-container">
     <el-descriptions title="服务器信息" :column="2" :size="size" border style="margin-top: 15px;">
       <el-descriptions-item label="厂商" label-align="right" min-width="200">
         {{ serverInfo?.manufacturer }}
@@ -150,12 +150,15 @@ onMounted(() => {
       <el-table-column prop="used" label="磁盘已使用容量" min-width="100" />
       <el-table-column prop="usageRate" label="磁盘使用率" min-width="100" />
     </el-table>
-
   </el-scrollbar>
-
 </template>
 
 <style scoped>
+.vt-container {
+  height: calc(var(--vt-tab-content-height));
+  padding-bottom: 15px;
+}
+
 .el-descriptions+.el-descriptions {
   margin-top: 25px;
 }

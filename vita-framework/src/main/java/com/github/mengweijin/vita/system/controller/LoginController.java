@@ -56,9 +56,9 @@ public class LoginController {
     }
 
     @SaIgnore
-    @GetMapping("/loginOtpEnabled")
-    public boolean getLoginOtpEnabled() {
-        return vitaProperties.getLoginOtpEnabled();
+    @GetMapping("/otpEnabled")
+    public boolean getOtpEnabled() {
+        return vitaProperties.getOtpEnabled();
     }
 
     @SaIgnore

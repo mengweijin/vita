@@ -17,23 +17,23 @@ const loading = ref(false);
 const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-	children: "children",
-	disabled: (data, node) => data.disabled === "Y",
-	label: "name",
+  children: "children",
+  disabled: (data, node) => data.disabled === "Y",
+  label: "name",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-	deptApi.list({ disabled: "N" }).then((res) => {
-		// 转为树状
-		treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
-	});
+  deptApi.list({ disabled: "N" }).then((res) => {
+    // 转为树状
+    treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
+  });
 };
 
 const handleTreeNodeClick = (data, node) => {
-	queryParams.deptId = data.id;
-	loadTableData();
+  queryParams.deptId = data.id;
+  loadTableData();
 };
 
 const size = ref("default");
@@ -43,80 +43,80 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const queryParams = reactive({
-	current: 1,
-	deptId: undefined,
-	disabled: undefined,
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  deptId: undefined,
+  disabled: undefined,
+  keywords: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	queryParams.deptId = null;
-	// 清除选中状态及背景颜色
-	treeRef.value.setCurrentKey(null);
-	loadTableData();
+  queryFormRef.value.resetFields();
+  queryParams.deptId = null;
+  // 清除选中状态及背景颜色
+  treeRef.value.setCurrentKey(null);
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	userApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  userApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 const userEditRef = useTemplateRef("userEditRef");
 
 const handleAdd = () => {
-	userEditRef.value.data = {};
-	userEditRef.value.visible = true;
+  userEditRef.value.data = {};
+  userEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	userEditRef.value.data = { ...row };
-	userEditRef.value.visible = true;
+  // 使用展开运算符，避免数据污染
+  userEditRef.value.data = { ...row };
+  userEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	userApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  userApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 const userSetRolesRef = useTemplateRef("userSetRolesRef");
 
 const handleSetRoles = (row) => {
-	userSetRolesRef.value.data = { ...row };
-	userSetRolesRef.value.visible = true;
+  userSetRolesRef.value.data = { ...row };
+  userSetRolesRef.value.visible = true;
 };
 
 const userResetPasswordRef = useTemplateRef("userResetPasswordRef");
 
 const handleResetPassword = (row) => {
-	userResetPasswordRef.value.data = { ...row };
-	userResetPasswordRef.value.visible = true;
+  userResetPasswordRef.value.data = { ...row };
+  userResetPasswordRef.value.visible = true;
 };
 
 onMounted(() => {
-	loadTreeData();
-	loadTableData();
+  loadTreeData();
+  loadTableData();
 });
 </script>
 
@@ -291,7 +291,7 @@ onMounted(() => {
 }
 
 .vt-height {
-  height: calc(var(--vt-content-aside-height)) !important;
+  height: calc(var(--vt-tab-content-height)) !important;
 }
 
 .el-main {

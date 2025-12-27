@@ -9,7 +9,14 @@
 		"enabled": true
 	},
 	"files": {
-		"includes": ["**", "!!**/dist", "!!**/node_modules", "!**/.vscode/vue.code-snippets", "!**/*columns.js"]
+		"includes": [
+			"**",
+			"!!**/dist",
+			"!!**/node_modules",
+			"!!**/.vscode/vue.code-snippets",
+			"!**/*.d.ts",
+			"!**/*columns.js"
+		]
 	},
 	"formatter": {
 		"attributePosition": "auto",
@@ -22,6 +29,9 @@
 		"lineEnding": "lf",
 		"lineWidth": 120
 	},
+	"html": {
+		"experimentalFullSupportEnabled": true
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -30,7 +40,9 @@
 	},
 	"overrides": [
 		{
-			"includes": ["**/*.vue"],
+			"includes": [
+				"**/*.vue"
+			],
 			"linter": {
 				"rules": {
 					"correctness": {

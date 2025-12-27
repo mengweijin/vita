@@ -1,8 +1,9 @@
-package com.github.mengweijin.vita.framework.otp;
+package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.core.codec.binary.Base32;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.crypto.digest.otp.TOTP;
+import cn.hutool.v7.swing.img.ImgUtil;
 import cn.hutool.v7.swing.qrcode.QrCodeUtil;
 import cn.hutool.v7.swing.qrcode.QrConfig;
 
@@ -14,7 +15,7 @@ import java.time.Instant;
  * @author mengweijin
  * @since 2023/4/16
  */
-public class TOTPService {
+public class TotpUtils {
 
     private static final QrConfig QR_CONFIG = new QrConfig();
 
@@ -31,7 +32,7 @@ public class TOTPService {
      */
     public static String generateQrCode(String secretKey, String label, String issuer) {
         String qrCodeContent = StrUtil.format("otpauth://totp/{}?secret={}&issuer={}", label, secretKey, issuer);
-        return QrCodeUtil.generateAsBase64DataUri(qrCodeContent, QR_CONFIG, QrCodeUtil.QR_TYPE_SVG);
+        return QrCodeUtil.generateAsBase64DataUri(qrCodeContent, QR_CONFIG, ImgUtil.IMAGE_TYPE_JPG);
     }
 
     public static boolean validate(String secretKey, int code) {

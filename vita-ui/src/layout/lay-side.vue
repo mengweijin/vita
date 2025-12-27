@@ -11,16 +11,16 @@ const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
 const activeMenu = computed(() => {
-	const { meta, path } = route;
-	return path || "/";
+  const { meta, path } = route;
+  return path || "/";
 });
 
 const menuTreeList = ref([]);
 
 onMounted(async () => {
-	const menuList = await menuApi.listSideMenus();
-	// 转为树状
-	menuTreeList.value = utils.toArrayTree(menuList, { sortKey: "seq" });
+  const menuList = await menuApi.listSideMenus();
+  // 转为树状
+  menuTreeList.value = utils.toArrayTree(menuList, { sortKey: "seq" });
 });
 </script>
 
@@ -34,7 +34,7 @@ onMounted(async () => {
 <style scoped>
 .vt-menu {
   transition: width 0.3s;
-  height: calc(100vh - var(--vt-header-height));
+  height: var(--vt-aside-height);
   overflow-y: auto;
   scrollbar-width: none;
 }

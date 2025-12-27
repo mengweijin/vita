@@ -36,8 +36,9 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
 .el-header {
   --el-header-padding: 0px 0px 0px 0px;
 }
+
 .el-main {
   padding: 0px;
-  background-color: var(--vt-content-background-color);
+  background-color: var(--vt-main-background-color);
 }
 </style>

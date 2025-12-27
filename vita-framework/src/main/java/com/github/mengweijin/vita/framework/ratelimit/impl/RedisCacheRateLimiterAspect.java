@@ -9,6 +9,7 @@ import com.github.mengweijin.vita.framework.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,12 +19,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 限流处理
+ * Redis 限流处理。此处仅留存实现方式，以供参考。
  * @author mengweijin
  */
 @Slf4j
-// @Aspect
+@Aspect
 // @Component
+@Deprecated(since = "2.0")
 public class RedisCacheRateLimiterAspect {
 
     private static final String CACHE_NAME_PREFIX = "RATE_LIMIT_";

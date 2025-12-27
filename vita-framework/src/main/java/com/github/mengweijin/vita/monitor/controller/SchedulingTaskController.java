@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -82,6 +83,12 @@ public class SchedulingTaskController {
     @GetMapping("/{id}")
     public SchedulingTaskDO getById(@PathVariable("id") Long id) {
         return schedulingTaskService.getById(id);
+    }
+
+    @SaCheckPermission("monitor:schedulingTask:select")
+    @PostMapping("/getTaskBeanNames")
+    public Set<String> getTaskBeanNames() {
+        return schedulingTaskService.getTaskBeanNames();
     }
 
     /**

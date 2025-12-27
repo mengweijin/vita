@@ -1,10 +1,17 @@
 {
-	// 保存时的代码修复操作
+	// 保存时的代码修复操作 always: 总是触发整理；explicit: 手动触发整理
+	// 使用 "explicit" 的好处：避免意外更改。不建议自动触发。
 	"editor.codeActionsOnSave": {
 		// 辅助操作：Sort the keys of a JSON object in natural order.
 		"source.action.useSortedKeys.biome": "explicit",
 		// 启用保存时修复所有可修复的问题。
 		"source.fixAll.biome": "explicit",
+		// 整理导入的功能：
+		// 合并相同来源的导入：多个 import from 'vue' 合并为一个
+		// 按字母顺序排序：对导入项进行排序
+		// 移除未使用的导入：自动删除未引用的导入
+		// 分组排序：通常按第三方库 → 内部模块的顺序
+		"source.organizeImports": "explicit",
 		// 导入排序
 		"source.organizeImports.biome": "explicit"
 	},
@@ -22,6 +29,10 @@
 	"explorer.fileNesting.enabled": false,
 	// 文件自动保存设置：关闭
 	"files.autoSave": "off",
+	// JavaScript 导入路径偏好
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	// 自动导入时是否包含文件扩展名。js: 包含完整路径
+	"javascript.preferences.importModuleSpecifierEnding": "js",
 	// 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
 	"javascript.suggest.paths": false,
 	// 关闭VSCode对 JavaScript 的内置验证，使用 Biome 进行验证
@@ -35,6 +46,10 @@
 	},
 	// 显示隐藏文件（以.开头的文件）
 	"path-intellisense.showHiddenFiles": true,
+	// TypeScript 导入路径偏好
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	// 自动导入时是否包含文件扩展名。js: 包含完整路径
+	"typescript.preferences.importModuleSpecifierEnding": "js",
 	// 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
 	"typescript.suggest.paths": false,
 	// 关闭VSCode对 TypeScript 的内置验证，使用 Biome 进行验证
