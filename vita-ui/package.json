@@ -23,7 +23,7 @@
 		"nprogress": "^0.2.0",
 		"pinia": "^3.0.4",
 		"pinia-plugin-persistedstate": "^4.7.1",
-		"qs": "^6.14.0",
+		"qs": "^6.14.1",
 		"sse.js": "^2.7.2",
 		"swagger-ui-dist": "^5.31.0",
 		"vue": "^3.5.25",
