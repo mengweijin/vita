@@ -52,7 +52,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
     private VitaProperties vitaProperties;
 
     /**
-     * DbErrorLogAppender初始化
+     * DbLoggerAppender 初始化
      */
     @PostConstruct
     @SuppressWarnings({"unused","java:S3252"})
@@ -114,7 +114,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
     }
 
     /**
-     * 堆栈跟踪信息拼装成html字符串
+     * 堆栈跟踪信息拼装成 html 字符串
      */
     private void renderStackTrace(StringBuilder stringBuilder, IThrowableProxy throwableProxy) {
         this.printFirstLine(stringBuilder, throwableProxy);

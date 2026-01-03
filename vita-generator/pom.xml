@@ -13,8 +13,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <mybatis-plus-generator.version>3.5.9</mybatis-plus-generator.version>
-        <velocity.version>2.3</velocity.version>
+        <velocity.version>2.4.1</velocity.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,7 +24,7 @@
         <dependency> 
             <groupId>com.baomidou</groupId>  
             <artifactId>mybatis-plus-generator</artifactId>  
-            <version>${mybatis-plus-generator.version}</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>

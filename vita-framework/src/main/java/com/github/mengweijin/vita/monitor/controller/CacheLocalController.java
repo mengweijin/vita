@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
-import com.github.mengweijin.vita.framework.cache.CacheConfig;
+import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
@@ -37,7 +37,7 @@ public class CacheLocalController {
 
     private final CacheManager cacheManager;
 
-    public CacheLocalController(@Qualifier(CacheConfig.LOCAL_CACHE_MANAGER) CacheManager cacheManager) {
+    public CacheLocalController(@Qualifier(CacheConst.CACHE_MANAGER_LOCAL) CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 

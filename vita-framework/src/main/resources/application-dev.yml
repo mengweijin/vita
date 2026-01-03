@@ -28,12 +28,6 @@ spring:
       settings:
         # 是否允许从其他地方访问，还是只允许从本地访问
         web-allow-others: false
-  data:
-    redis:
-      database: 0
-      host: localhost
-      port: 6379
-      password:
 decorator:
   datasource:
     enabled: true

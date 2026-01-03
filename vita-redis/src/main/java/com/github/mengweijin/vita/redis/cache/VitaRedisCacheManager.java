@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.cache.manager;
+package com.github.mengweijin.vita.redis.cache;
 
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.cache.CacheSpecification;

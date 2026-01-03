@@ -22,7 +22,7 @@ public final class CacheNames {
 
     public static final String REPEAT_SUBMIT = "REPEAT_SUBMIT#10s";
 
-    public static final String SSE_EMITTER_MESSAGE = "SSE_EMITTER_MESSAGE#12h";
+    public static final String SSE_EMITTER_MESSAGE = "SSE_EMITTER_MESSAGE#2h";
 
     public static final String RATE_LIMIT = "RATE_LIMIT#5m";
 

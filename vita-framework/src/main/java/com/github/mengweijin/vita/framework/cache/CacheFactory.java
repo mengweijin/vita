@@ -13,11 +13,6 @@ import org.springframework.cache.CacheManager;
 public final class CacheFactory {
     
     private static final CacheManager CACHE_MANAGER = SpringUtil.getBean(CacheManager.class);
-
-    private static final CacheManager LOCAL_CACHE_MANAGER = SpringUtil.getBean(CacheConfig.LOCAL_CACHE_MANAGER, CacheManager.class);
-
-    private static final CacheManager REDIS_CACHE_MANAGER = SpringUtil.getBean(CacheConfig.REDIS_CACHE_MANAGER, CacheManager.class);
-
     public static Cache getRepeatSubmitCache() {
         return CACHE_MANAGER.getCache(CacheNames.REPEAT_SUBMIT);
     }
@@ -31,6 +26,6 @@ public final class CacheFactory {
     }
 
     public static Cache getCaptchaCache() {
-        return LOCAL_CACHE_MANAGER.getCache(CacheNames.CAPTCHA);
+        return CACHE_MANAGER.getCache(CacheNames.CAPTCHA);
     }
 }

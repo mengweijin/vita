@@ -1,7 +1,6 @@
-package com.github.mengweijin.vita.framework.cache.manager;
+package com.github.mengweijin.vita.framework.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.mengweijin.vita.framework.cache.CacheSpecification;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.cache.Cache;

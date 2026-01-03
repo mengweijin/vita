@@ -1,7 +1,10 @@
-package com.github.mengweijin.vita.framework.cache;
+package com.github.mengweijin.vita.redis.cache;
 
-import com.github.mengweijin.vita.framework.cache.manager.VitaCaffeineCacheManager;
-import com.github.mengweijin.vita.framework.cache.manager.VitaRedisCacheManager;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.util.ObjUtil;
+import com.github.mengweijin.vita.framework.cache.CacheConst;
+import com.github.mengweijin.vita.framework.cache.CacheFactory;
+import com.github.mengweijin.vita.framework.cache.LocalCacheConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,7 +13,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -18,6 +20,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.time.Duration;
 
 /**
  * Spring Cache Documents 参考：<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Spring Cache Documents</a>
@@ -40,39 +44,30 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @AllArgsConstructor
 @EnableConfigurationProperties({CacheProperties.class})
-public class CacheConfig {
-
-    public static final String LOCAL_CACHE_MANAGER = "localCacheManager";
-
-    public static final String REDIS_CACHE_MANAGER = "redisCacheManager";
+public class RedisCacheConfig {
 
     private CacheProperties cacheProperties;
-
-    @Primary
-    @Bean(name = LOCAL_CACHE_MANAGER)
-    public CacheManager localCacheManager() {
-        VitaCaffeineCacheManager cacheManager = new VitaCaffeineCacheManager();
-        cacheManager.setDefaultExpireAfterWrite(cacheProperties.getRedis().getTimeToLive());
-        return cacheManager;
-    }
 
     /**
      * {@link GenericJackson2JsonRedisSerializer}：可以保存序列化对象的包名和类名，反序列化时可以根据这些信息将 JSON 数据转换回指定的 Java 对象。它适合需要保留类型信息的场景，但从 Redis 获取数据时需要将结果转为字符串后再解析为对象。
      * {@link Jackson2JsonRedisSerializer}：则直接将 Java 对象序列化为 JSON 字符串，反序列化时不需要额外的类型信息，使用更为简单。适合不需要保留类型信息的场景。
      */
-    @Bean(name = REDIS_CACHE_MANAGER)
+    @Bean(name = CacheConst.CACHE_MANAGER_REDIS)
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory, Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer) {
         CacheProperties.Redis redis = cacheProperties.getRedis();
+        Duration timeToLive = ObjUtil.defaultIfNull(redis.getTimeToLive(), LocalCacheConfig.DEFAULT_TIME_TO_LIVE);
+        String keyPrefix = StrUtil.defaultIfBlank(redis.getKeyPrefix(), "cache::");
+
         // 创建默认配置
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
-                .entryTtl(redis.getTimeToLive());
+                .entryTtl(timeToLive);
         if(!redis.isCacheNullValues()) {
             config.disableCachingNullValues();
         }
         if(redis.isUseKeyPrefix()) {
-            config.computePrefixWith(cacheName -> redis.getKeyPrefix() + cacheName + "::");
+            config.computePrefixWith(cacheName -> keyPrefix + cacheName + "::");
         }
         // 创建自定义 Redis 缓存管理器
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);

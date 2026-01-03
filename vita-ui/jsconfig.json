@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		// 指定基础目录，所有相对路径都基于此目录
 		"baseUrl": ".",
+		"checkJs": true, // 为 .js 文件启用类型检查
 		// 路径别名映射
 		"paths": {
 			// 将 @ 符号映射到 src 目录。使用示例：import User from '@/components/User'

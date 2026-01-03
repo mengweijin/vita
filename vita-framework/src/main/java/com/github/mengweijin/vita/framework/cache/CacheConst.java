@@ -14,6 +14,16 @@ import org.springframework.cache.interceptor.SimpleKeyGenerator;
 @SuppressWarnings({"unused"})
 public final class CacheConst {
 
+    // region ----- CACHE_MANAGER
+
+    public static final String CACHE_MANAGER_LOCAL = "localCacheManager";
+
+    public static final String CACHE_MANAGER_REDIS = "redisCacheManager";
+
+    // endregion
+
+    // region ----- KEY
+
     public static final String KEY_CLASS = "#root.targetClass.name";
 
     public static final String KEY_CLASS_METHOD = "#root.targetClass.name + ':' + #root.methodName";
@@ -22,7 +32,13 @@ public final class CacheConst {
 
     public static final String KEY_ALL = "'ALL'";
 
+    // endregion
+
+    // region ----- UNLESS
+
     public static final String UNLESS_LIST_EMPTY = "#result?.size() == 0";
 
     public static final String UNLESS_OBJECT_NULL = "#result == null";
+
+    // endregion
 }

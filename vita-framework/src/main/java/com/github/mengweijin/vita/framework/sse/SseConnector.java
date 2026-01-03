@@ -6,7 +6,6 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -26,78 +25,74 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @Component
-public class SseConnector implements InitializingBean {
+public class SseConnector {
 
-    private Cache cache;
-
-    private ExecutorService executorService;
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        cache = CacheFactory.getSseEmitterMessageCache();
-        executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-sse-", true);
-    }
+    private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-sse-", true);;
 
     /**
      * 注册回调
      * sseEmitter.onCompletion(onCompletion(username, token));
      *
-     * @param username username
+     * @param userId userId
      * @return SseEmitter
      */
-    public SseEmitter connect(String username) {
-        // 移除旧的连接（如果存在）
-        SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
+    public SseEmitter connect(Long userId) {
+        Cache cache = CacheFactory.getSseEmitterMessageCache();
+        SseEmitter sseEmitter = cache.get(userId, SseEmitter.class);
         if(sseEmitter != null) {
-            sseEmitter.complete();
-            cache.evictIfPresent(username);
+            // 如果存在旧的连接，重新 put 以刷新过期时间
+            cache.put(userId, sseEmitter);
+            return sseEmitter;
         }
 
         // 设置超时时间，0表示用不过期。
         sseEmitter = new SseEmitter(0L);
-        sseEmitter.onCompletion(() -> cache.evictIfPresent(username));
-        sseEmitter.onTimeout(() -> cache.evictIfPresent(username));
-        sseEmitter.onError(onError(username));
+        sseEmitter.onCompletion(() -> cache.evictIfPresent(userId));
+        sseEmitter.onTimeout(() -> cache.evictIfPresent(userId));
+        sseEmitter.onError(onError(userId));
 
         // 保存新连接
-        cache.put(username, sseEmitter);
+        cache.put(userId, sseEmitter);
         return sseEmitter;
     }
 
-    public void disconnect(String username) {
-        SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
+    public void disconnect(Long userId) {
+        Cache cache = CacheFactory.getSseEmitterMessageCache();
+        SseEmitter sseEmitter = cache.get(userId, SseEmitter.class);
         if (sseEmitter != null) {
             sseEmitter.complete();
-            cache.evictIfPresent(username);
+            cache.evictIfPresent(userId);
         }
     }
 
-    public void sendMessage(String message, String... usernames) {
-        if (ArrayUtil.isEmpty(usernames)) {
+    public void sendMessage(String message, Long... userIds) {
+        Cache cache = CacheFactory.getSseEmitterMessageCache();
+        if (ArrayUtil.isEmpty(userIds)) {
             return;
         }
 
-        for (String username : usernames) {
+        for (Long userId : userIds) {
             CompletableFuture.runAsync(() -> {
                 try {
-                    SseEmitter sseEmitter = cache.get(username, SseEmitter.class);
+                    SseEmitter sseEmitter = cache.get(userId, SseEmitter.class);
                     if (sseEmitter == null) {
-                        cache.evictIfPresent(username);
+                        cache.evictIfPresent(userId);
                     } else {
                         sseEmitter.send(message);
                     }
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
-                    cache.evictIfPresent(username);
+                    cache.evictIfPresent(userId);
                     throw new ServerException(e);
                 }
             }, executorService);
         }
     }
 
-    private Consumer<Throwable> onError(String username) {
+    private Consumer<Throwable> onError(Long userId) {
+        Cache cache = CacheFactory.getSseEmitterMessageCache();
         return throwable -> {
-            cache.evictIfPresent(username);
+            cache.evictIfPresent(userId);
             log.error(throwable.getMessage(), throwable);
         };
     }

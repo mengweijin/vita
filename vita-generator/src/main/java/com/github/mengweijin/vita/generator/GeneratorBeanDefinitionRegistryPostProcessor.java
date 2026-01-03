@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
  * @author mengweijin
  * @since 2022/7/27
  */
-//@Component
 public class GeneratorBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 
     @Override

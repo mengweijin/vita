@@ -6,6 +6,8 @@ import cn.hutool.v7.crypto.digest.otp.TOTP;
 import cn.hutool.v7.swing.img.ImgUtil;
 import cn.hutool.v7.swing.qrcode.QrCodeUtil;
 import cn.hutool.v7.swing.qrcode.QrConfig;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -15,6 +17,7 @@ import java.time.Instant;
  * @author mengweijin
  * @since 2023/4/16
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TotpUtils {
 
     private static final QrConfig QR_CONFIG = new QrConfig();

@@ -6,6 +6,11 @@ meta:
 <script setup>
 import { messageApi } from "@/api/system/message-api";
 import { useDictStore } from "@/store/dict-store.js";
+import { useMessageStore } from "@/store/message-store.js";
+
+const messageStore = useMessageStore();
+const { notViewedCount } = storeToRefs(messageStore);
+
 import columns from "./columns.js";
 
 const dictStore = useDictStore();
@@ -79,7 +84,9 @@ const loadTableData = () => {
 const selected = ref([]);
 
 const handleSetViewed = (messageReceiverIds) => {
+  const count = messageReceiverIds.split(",").length;
   messageApi.setViewed(messageReceiverIds).then(() => {
+    notViewedCount.value = notViewedCount.value - count;
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -92,7 +99,9 @@ const handleBatchSetViewed = () => {
 };
 
 const handleSetNotViewed = (messageReceiverIds) => {
+  const count = messageReceiverIds.split(",").length;
   messageApi.setNotViewed(messageReceiverIds).then(() => {
+    notViewedCount.value = notViewedCount.value + count;
     // 清空已选择
     selected.value = [];
     loadTableData();

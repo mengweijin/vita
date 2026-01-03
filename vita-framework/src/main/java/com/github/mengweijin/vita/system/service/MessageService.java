@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.framework.sse.SseConnector;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
@@ -41,6 +42,8 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
     private MessageReceiverService messageReceiverService;
 
     private TransactionTemplate transactionTemplate;
+
+    private SseConnector sseConnector;
 
     private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-message-", true);
 
@@ -118,6 +121,9 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
                         messageReceiverList.add(msgReceiver);
                     });
                     messageReceiverService.saveBatch(messageReceiverList, Constants.DEFAULT_BATCH_SIZE);
+
+                    // SSE 通知
+                    sseConnector.sendMessage(title, userIds.toArray(new Long[]{}));
                 }), executorService)
                 .exceptionally(e -> {
                     log.error(e.getMessage(), e);

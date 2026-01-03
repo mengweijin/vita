@@ -33,6 +33,8 @@
 	"javascript.preferences.importModuleSpecifier": "non-relative",
 	// 自动导入时是否包含文件扩展名。js: 包含完整路径
 	"javascript.preferences.importModuleSpecifierEnding": "js",
+	// 建议时自动完成 JSDoc 标签
+	"javascript.suggest.completeJSDocs": true,
 	// 关闭VSCode原生的路径建议，避免与Path Intellisense插件冲突
 	"javascript.suggest.paths": false,
 	// 关闭VSCode对 JavaScript 的内置验证，使用 Biome 进行验证

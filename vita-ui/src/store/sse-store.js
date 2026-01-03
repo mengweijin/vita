@@ -1,86 +1,103 @@
+import { useLoginStore } from "@/store/login-store.js";
+import { useMessageStore } from "@/store/message-store.js";
+import utils from "@/utils/utils.js";
+import { Icon } from "@iconify/vue";
 import { SSE } from "sse.js";
-import { sseApi } from "@/api/monitor/sse-api.js";
 
 const { VITE_BASE_API } = import.meta.env;
 const { VITE_APP_PREFIX } = import.meta.env;
 
 export const useSseStore = defineStore(
-	`${VITE_APP_PREFIX}-sse`,
-	() => {
-		const sseConnected = ref(false);
+  `${VITE_APP_PREFIX}-sse`,
+  () => {
+    /**
+     * 原生 EventSource 的 readyState 各个值的含义：
+     * 0：CONNECTING
+     * 1：OPEN
+     * 2: CLOSED
+     * 例如：关闭连接可设置：eventSource.value.readyState = 2;
+     */
+    const eventSource = ref(null);
 
-		const eventSourceRef = ref(null);
+    /**
+     * 连接 SSE 服务器
+     */
+    const connect = () => {
+      // 处理路径 SSE URL
+      const parentPath = utils.trimSpecified(window.location.origin, "/");
+      const baseApiPath = utils.trimSpecified(VITE_BASE_API, "/");
+      const fullPath = `${utils.join("/", true, parentPath, baseApiPath)}`;
+      const url = `${fullPath}/monitor/sse/subscribe?t=${Date.now()}`;
+      const bearerToken = useLoginStore().getBearerToken();
 
-		/**
-		 * 连接 SSE 服务器
-		 */
-		const connect = async (token) => {
-			console.log("连接 SSE 服务器中......");
-			// 先断开已有连接（如果存在）
-			disconnect();
+      // 创建SSE连接，关键步骤：在 headers 中传递 Token
+      eventSource.value = new SSE(url, {
+        autoReconnect: true,
+        headers: {
+          Authorization: bearerToken,
+        },
+        reconnectDelay: 10000,
+        start: true,
+        withCredentials: true,
+      });
 
-			// SSE URL
-			const url = `${window.location.origin}${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`;
+      console.log("SSE CONNECTING......");
 
-			// 创建SSE连接，关键步骤：在 headers 中传递 Token
-			const eventSource = new SSE(url, {
-				autoReconnect: false,
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-				start: true,
-			});
+      eventSource.value.addEventListener("open", (event) => {
+        // 后台第一次有消息时才打开连接，在这之前 eventSource.value.readyState = 0;
+        console.log("Connection established");
+      });
 
-			eventSource.addEventListener("open", (event) => {
-				// 连接成功建立
-				console.log("SSE连接已打开");
-				sseConnected.value = true;
-			});
+      eventSource.value.addEventListener("error", (event) => {
+        // 连接发生错误
+        console.error("SSE连接错误:", event);
+      });
 
-			eventSource.addEventListener("error", (event) => {
-				// 连接发生错误
-				console.error("SSE连接错误:", event);
-			});
+      eventSource.value.addEventListener("message", (event) => {
+        // 服务器发送的消息会在这里触发
+        ElMessage.success({
+          dangerouslyUseHTMLString: true,
+          duration: 10000,
+          icon: h(Icon, {
+            height: 24,
+            icon: "ep:chat-line-round",
+            width: 24,
+          }),
+          message: `<h4>您有新的消息，请注意查看！</h4> <br> ${event.data}`,
+          // 设置到视口边缘的距离（当位置为'top'时为顶部，当位置为'bottom'时为底部）默认：16
+          offset: 70,
+          placement: "top-right",
+          showClose: true,
+        });
 
-			eventSource.addEventListener("message", (event) => {
-				// 服务器发送的消息会在这里触发
-				ElMessage.primary({
-					dangerouslyUseHTMLString: true,
-					duration: 5000,
-					icon: '<Icon icon="ep:chat-line-round" width="24" height="24" />',
-					message: `您有新的消息，请注意查看！<br> ${event.data}`,
-					placement: "top-right",
-					showClose: true,
-				});
-			});
+        const messageStore = useMessageStore();
+        const { notViewedCount } = storeToRefs(messageStore);
+        notViewedCount.value = notViewedCount.value + 1;
+      });
+    };
 
-			eventSourceRef.value = eventSource;
-		};
+    const disconnect = () => {
+      if (eventSource.value?.readyState !== undefined) {
+        // 原生 EventSource，设置 readyState 为 2 (CLOSED)
+        eventSource.value.readyState = 2;
+      }
+      eventSource.value = null;
+    };
 
-		/**
-		 * 断开 SSE 连接
-		 */
-		const disconnect = () => {
-			if (eventSourceRef.value) {
-				eventSourceRef.value.close();
-				console.log("SSE 连接已关闭");
-				// 通知后端关闭连接
-				sseApi.close();
-			}
-			eventSourceRef.value = null;
-			sseConnected.value = false;
-		};
+    const clear = () => {
+      disconnect();
+    };
 
-		return {
-			connect,
-			disconnect,
-			eventSourceRef,
-			sseConnected,
-		};
-	},
-	{
-		persist: {
-			storage: sessionStorage,
-		},
-	},
+    return {
+      clear,
+      connect,
+      disconnect,
+      eventSource,
+    };
+  },
+  {
+    persist: {
+      storage: sessionStorage,
+    },
+  }
 );

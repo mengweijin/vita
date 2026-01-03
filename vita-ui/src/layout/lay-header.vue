@@ -18,40 +18,51 @@ import { useAppStore } from "@/store/app-store";
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
 
-import { messageApi } from "@/api/system/message-api";
-
 // 强制刷新（适合更新静态资源）
 const refresh = () => {
-	top.location.reload(true);
+  top.location.reload(true);
 };
 
 const onUserPersonalInformation = () => {
-	router.push("/profile/personal-information");
+  router.push("/profile/personal-information");
 };
 
 const onLogout = () => {
-	// 后端登出
-	loginApi.logout().finally(() => {
-		// 前端登出
-		loginStore.logout();
-		// 跳转登录页
-		router.push("/login");
-	});
+  // 后端登出
+  loginApi.logout().finally(() => {
+    // 前端登出
+    loginStore.logout();
+    // 跳转登录页
+    router.push("/login");
+  });
 };
 
 // 绑定目标元素（不传则默认全屏整个页面）
 const target = ref(null);
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(target);
 
-const notViewedMessageCount = ref("");
+import { useMessageStore } from "@/store/message-store.js";
+
+const messageStore = useMessageStore();
+const { notViewedCount } = storeToRefs(messageStore);
 
 const onOpenMessage = () => {
-	router.push("/system/message");
+  router.push("/system/message");
 };
 
+import { messageApi } from "@/api/system/message-api.js";
+
+import { useSseStore } from "@/store/sse-store.js";
+
+const sseStore = useSseStore();
+
 onMounted(async () => {
-	notViewedMessageCount.value = await messageApi.selectNotViewedCount();
+  notViewedCount.value = await messageApi.selectNotViewedCount();
+  sseStore.connect();
 });
+onUnmounted(() => {
+  sseStore.disconnect();
+})
 </script>
 
 <template>
@@ -72,9 +83,9 @@ onMounted(async () => {
       <Icon icon="ri:fullscreen-fill" width="24" height="24" v-else />
     </el-menu-item>
     <el-menu-item index="6" class="vt-icon-padding" @click="onOpenMessage()">
-      <Icon v-if="notViewedMessageCount === 0" icon="ep:chat-dot-round" width="24" height="24" />
+      <Icon v-if="notViewedCount === 0" icon="ep:chat-dot-round" width="24" height="24" />
       <el-icon v-else>
-        <el-badge :value="notViewedMessageCount" :max="99">
+        <el-badge :value="notViewedCount" :max="99">
           <el-icon :size="24">
             <Icon icon="ep:chat-dot-round" width="24" height="24" />
           </el-icon>

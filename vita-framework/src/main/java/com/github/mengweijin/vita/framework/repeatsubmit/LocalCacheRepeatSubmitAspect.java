@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.repeatsubmit.aop;
+package com.github.mengweijin.vita.framework.repeatsubmit;
 
 import cn.hutool.v7.core.array.ArrayUtil;
 import cn.hutool.v7.crypto.SecureUtil;
@@ -6,7 +6,6 @@ import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.P;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.repeatsubmit.RepeatSubmit;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

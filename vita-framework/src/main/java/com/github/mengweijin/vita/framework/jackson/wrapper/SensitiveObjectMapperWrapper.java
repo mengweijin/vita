@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 public class SensitiveObjectMapperWrapper extends AbstractObjectMapperWrapper {
 
     @SuppressWarnings({"java:S2386"})
-    public static final String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token"};
+    public static final String[] SENSITIVE_KEY = new String[]{"password", "pwd", "token", "key"};
 
     public static final String HIDE_VALUE = "********";
 

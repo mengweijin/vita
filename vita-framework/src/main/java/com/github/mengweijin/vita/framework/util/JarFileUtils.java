@@ -40,10 +40,10 @@ public class JarFileUtils {
             assert url != null;
             URLConnection urlConnection = url.openConnection();
             if (urlConnection instanceof JarURLConnection connection) {
-                // 项目打成jar时运行会得到JarURLConnection
+                // 项目打成 jar 时运行会得到 JarURLConnection
                 return loadClasspathContentInfo(connection, classLoader);
             } else {
-                // 在IDE里运行使用普通方式
+                // 在 IDE 里运行使用普通方式
                 return loadFileSystemContentInfo(urlConnection);
             }
         } catch (IOException e) {

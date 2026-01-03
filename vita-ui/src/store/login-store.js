@@ -1,4 +1,5 @@
 import { useDictStore } from "@/store/dict-store.js";
+import { useSseStore } from "@/store/sse-store.js";
 import { useTabsStore } from "@/store/tabs-store.js";
 import { useUserStore } from "@/store/user-store.js";
 import utils from "@/utils/utils.js";
@@ -8,91 +9,92 @@ const { VITE_APP_PREFIX } = import.meta.env;
 const TOKEN_KEY = `${VITE_APP_PREFIX}-token`;
 
 export const useLoginStore = defineStore(
-	`${VITE_APP_PREFIX}-login`,
-	() => {
-		const token = ref(null);
+  `${VITE_APP_PREFIX}-login`,
+  () => {
+    const token = ref(null);
 
-		const setToken = (newToken) => {
-			token.value = newToken;
-		};
+    const setToken = (newToken) => {
+      token.value = newToken;
+    };
 
-		const getToken = () => {
-			return token.value;
-		};
+    const getToken = () => {
+      return token.value;
+    };
 
-		const getBearerToken = () => {
-			return `Bearer ${getToken()}`;
-		};
+    const getBearerToken = () => {
+      return `Bearer ${getToken()}`;
+    };
 
-		const removeToken = () => {
-			token.value = null;
-		};
+    const removeToken = () => {
+      token.value = null;
+    };
 
-		const setLocalStorageToken = (newToken) => {
-			localStorage.setItem(TOKEN_KEY, newToken);
-		};
+    const setLocalStorageToken = (newToken) => {
+      localStorage.setItem(TOKEN_KEY, newToken);
+    };
 
-		const getLocalStorageToken = () => {
-			return localStorage.getItem(TOKEN_KEY);
-		};
+    const getLocalStorageToken = () => {
+      return localStorage.getItem(TOKEN_KEY);
+    };
 
-		const removeLocalStorageToken = () => {
-			localStorage.removeItem(TOKEN_KEY);
-		};
+    const removeLocalStorageToken = () => {
+      localStorage.removeItem(TOKEN_KEY);
+    };
 
-		const isLogin = async () => {
-			let token = getToken();
-			if (utils.isNotBlank(token)) {
-				return true;
-			}
+    const isLogin = async () => {
+      let token = getToken();
+      if (utils.isNotBlank(token)) {
+        return true;
+      }
 
-			token = getLocalStorageToken();
-			if (utils.isNotBlank(token)) {
-				setToken(token);
-				await initData();
-				return true;
-			}
-			return false;
-		};
+      token = getLocalStorageToken();
+      if (utils.isNotBlank(token)) {
+        setToken(token);
+        await initData();
+        return true;
+      }
+      return false;
+    };
 
-		/**
-		 * 初始化用户数据
-		 */
-		const initData = async () => {
-			// 初始化用户基本信息、角色、权限等
-			await useUserStore().initUser();
-			// 加载字典
-			await useDictStore().refresh();
-		};
+    /**
+     * 初始化用户数据
+     */
+    const initData = async () => {
+      // 初始化用户基本信息、角色、权限等
+      await useUserStore().initUser();
+      // 加载字典
+      await useDictStore().refresh();
+    };
 
-		/**
-		 * 前端登出
-		 */
-		const logout = () => {
-			removeToken();
-			removeLocalStorageToken();
-			useUserStore().clear();
-			useDictStore().clear();
-			useTabsStore().clear();
-		};
+    /**
+     * 前端登出
+     */
+    const logout = () => {
+      removeToken();
+      removeLocalStorageToken();
+      useUserStore().clear();
+      useDictStore().clear();
+      useTabsStore().clear();
+      useSseStore().clear();
+    };
 
-		return {
-			getBearerToken,
-			getLocalStorageToken,
-			getToken,
-			initData,
-			isLogin,
-			logout,
-			removeLocalStorageToken,
-			removeToken,
-			setLocalStorageToken,
-			setToken,
-			token,
-		};
-	},
-	{
-		persist: {
-			storage: sessionStorage,
-		},
-	},
+    return {
+      getBearerToken,
+      getLocalStorageToken,
+      getToken,
+      initData,
+      isLogin,
+      logout,
+      removeLocalStorageToken,
+      removeToken,
+      setLocalStorageToken,
+      setToken,
+      token,
+    };
+  },
+  {
+    persist: {
+      storage: sessionStorage,
+    },
+  }
 );

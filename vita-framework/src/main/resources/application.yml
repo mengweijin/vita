@@ -53,10 +53,6 @@ spring:
     #date-format: yyyy-MM-dd HH:mm:ss
     # 序列化所有实体类的字段，包括值为null的
     default-property-inclusion: ALWAYS
-  cache:
-    redis:
-      time-to-live: 600s
-      key-prefix: 'cache::'
   task:
     # @Async Spring异步任务。TaskExecutionProperties.java
     execution:
@@ -188,13 +184,6 @@ springdoc:
     enabled: true
     # OpenAPI 3规范的文档访问路径，默认值为/v3/api-docs
     path: /v3/api-docs
-  group-configs:
-    - group: 'system'
-      paths-to-match: '/system/**'
-      packages-to-scan: com.github.mengweijin.vita.system
-    - group: 'monitor'
-      paths-to-match: '/monitor/**'
-      packages-to-scan: com.github.mengweijin.vita.monitor
 decorator:
   datasource:
     enabled: false

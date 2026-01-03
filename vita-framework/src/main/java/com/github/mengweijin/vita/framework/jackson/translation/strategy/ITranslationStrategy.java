@@ -23,6 +23,7 @@ public interface ITranslationStrategy {
      * 数据翻译
      *
      * @param value 需要被翻译的值
+     * @param translation 注解 {@link Translation}
      * @return 返回转换后的值
      */
     Serializable translation(Object value, Translation translation);
