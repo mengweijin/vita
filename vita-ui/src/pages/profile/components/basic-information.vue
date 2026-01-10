@@ -42,10 +42,12 @@ const onSubmit = () => {
   });
 };
 
+const userAvatarRef = useTemplateRef("userAvatarRef");
+
 const cropperRef = useTemplateRef("cropperRef");
 
 const openVtCropper = () => {
-  cropperRef.value.dataBase64 = "";
+  cropperRef.value.src = userAvatarRef.value.src;
   cropperRef.value.visible = true;
 };
 
@@ -65,8 +67,7 @@ onMounted(() => {
 <template>
   <div>
     <el-form-item>
-      <el-avatar :src="userInfo?.avatar" :size="150" v-if="userInfo?.avatar" />
-      <el-avatar src="/avatar.jpg" :size="150" v-else />
+      <el-avatar ref="userAvatarRef" :src="userInfo?.avatar || '/avatar.jpg'" :size="150" />
       <el-button type="primary" style="margin-left: 20px;" @click="openVtCropper">
         <template #icon>
           <el-icon>
