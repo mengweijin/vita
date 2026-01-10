@@ -152,6 +152,7 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 | ![image](docs/readme/images/1.png) | ![image](docs/readme/images/2.png) |    
 |-----------------------------------:|:-----------------------------------|
 | ![image](docs/readme/images/3.png) | ![image](docs/readme/images/4.png) | 
+| ![image](docs/readme/images/5.png) | ![image](docs/readme/images/6.png) | 
 
 ## ⭐Star Vita on GitHub
 
