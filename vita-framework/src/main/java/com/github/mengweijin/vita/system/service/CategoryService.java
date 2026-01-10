@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.mapper.CategoryMapper;
@@ -22,14 +23,14 @@ import java.util.List;
 public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> {
 
     public LambdaQueryWrapper<CategoryDO> getQueryWrapper(CategoryDO category) {
-        LambdaQueryWrapper<CategoryDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<CategoryDO> wrapper = Wrappers.lambdaQuery(category);
         wrapper.eq(category.getId() != null, CategoryDO::getId, category.getId());
         wrapper.eq(category.getParentId() != null, CategoryDO::getParentId, category.getParentId());
         wrapper.eq(StrUtil.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
         wrapper.eq(category.getCreateBy() != null, CategoryDO::getCreateBy, category.getCreateBy());
         wrapper.eq(category.getUpdateBy() != null, CategoryDO::getUpdateBy, category.getUpdateBy());
-        wrapper.gt(category.getSearchStartTime() != null, CategoryDO::getCreateTime, category.getSearchStartTime());
-        wrapper.le(category.getSearchEndTime() != null, CategoryDO::getCreateTime, category.getSearchEndTime());
+        wrapper.gt(category.getStartCreateTime() != null, CategoryDO::getCreateTime, category.getStartCreateTime());
+        wrapper.le(category.getEndCreateTime() != null, CategoryDO::getCreateTime, category.getEndCreateTime());
         if (StrUtil.isNotBlank(category.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(CategoryDO::getName, category.getKeywords()));

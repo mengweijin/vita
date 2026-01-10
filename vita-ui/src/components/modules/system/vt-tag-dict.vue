@@ -18,7 +18,7 @@ const props = defineProps({
 		type: String,
 	},
 	value: {
-		required: true,
+		required: false,
 		type: String,
 	},
 });
@@ -41,18 +41,18 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>
-    <template v-for="(item, index) in options">
-      <template v-if="values.includes(item.val)">
-        <el-tag :key="item.val + ''" :size="props.size" :index="index" :type="item.tag" effect="dark">
-          {{ item.label + '' }}
-        </el-tag>
-      </template>
-    </template>
-  </div>
+	<div>
+		<template v-for="(item, index) in options">
+			<template v-if="values.includes(item.val)">
+				<el-tag :key="item.val + ''" :size="props.size" :index="index" :type="item.tag" effect="dark">
+					{{ item.label + '' }}
+				</el-tag>
+			</template>
+		</template>
+	</div>
 </template>
 <style scoped>
-.el-tag + .el-tag {
-  margin-left: 10px;
+.el-tag+.el-tag {
+	margin-left: 10px;
 }
 </style>

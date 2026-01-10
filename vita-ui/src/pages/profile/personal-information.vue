@@ -88,9 +88,15 @@ onMounted(() => {
             <el-tab-pane label="基本资料" :lazy="true">
               <BasicInformation></BasicInformation>
             </el-tab-pane>
-            <el-tab-pane label="修改密码" :lazy="true"><UserChangePassword></UserChangePassword></el-tab-pane>
-            <el-tab-pane label="绑定动态口令" :lazy="true"><UserTotp></UserTotp></el-tab-pane>
-            <el-tab-pane label="在线终端" :lazy="true"><UserOnlineTerminal></UserOnlineTerminal></el-tab-pane>
+            <el-tab-pane label="修改密码" :lazy="true">
+              <UserChangePassword></UserChangePassword>
+            </el-tab-pane>
+            <el-tab-pane label="绑定动态口令" :lazy="true">
+              <UserTotp></UserTotp>
+            </el-tab-pane>
+            <el-tab-pane label="在线终端" :lazy="true">
+              <UserOnlineTerminal></UserOnlineTerminal>
+            </el-tab-pane>
             <el-tab-pane label="安全日志" :lazy="true">
               <UserSecurityLog></UserSecurityLog>
             </el-tab-pane>

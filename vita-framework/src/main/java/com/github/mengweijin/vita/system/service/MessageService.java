@@ -6,6 +6,7 @@ import cn.hutool.v7.core.thread.ThreadUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -48,13 +49,13 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
     private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-message-", true);
 
     public LambdaQueryWrapper<MessageDO> getQueryWrapper(MessageDO message) {
-        LambdaQueryWrapper<MessageDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<MessageDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(message.getId() != null, MessageDO::getId, message.getId());
         wrapper.eq(StrUtil.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
         wrapper.eq(message.getCreateBy() != null, MessageDO::getCreateBy, message.getCreateBy());
         wrapper.eq(message.getUpdateBy() != null, MessageDO::getUpdateBy, message.getUpdateBy());
-        wrapper.gt(message.getSearchStartTime() != null, MessageDO::getCreateTime, message.getSearchStartTime());
-        wrapper.le(message.getSearchEndTime() != null, MessageDO::getCreateTime, message.getSearchEndTime());
+        wrapper.gt(message.getStartCreateTime() != null, MessageDO::getCreateTime, message.getStartCreateTime());
+        wrapper.le(message.getEndCreateTime() != null, MessageDO::getCreateTime, message.getEndCreateTime());
         if (StrUtil.isNotBlank(message.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(MessageDO::getTitle, message.getKeywords()));

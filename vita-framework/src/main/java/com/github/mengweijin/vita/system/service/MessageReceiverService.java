@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.system.service;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -30,7 +31,7 @@ import java.util.List;
 public class MessageReceiverService extends CrudRepository<MessageReceiverMapper, MessageReceiverDO> {
 
     public LambdaQueryWrapper<MessageReceiverDO> getQueryWrapper(MessageReceiverDO messageReceiver) {
-        LambdaQueryWrapper<MessageReceiverDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<MessageReceiverDO> wrapper = Wrappers.lambdaQuery();
 
         wrapper.eq(messageReceiver.getId() != null, MessageReceiverDO::getId, messageReceiver.getId());
         wrapper.eq(messageReceiver.getMessageId() != null, MessageReceiverDO::getMessageId, messageReceiver.getMessageId());
@@ -38,8 +39,8 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
         wrapper.eq(StrUtil.isNotBlank(messageReceiver.getViewed()), MessageReceiverDO::getViewed, messageReceiver.getViewed());
         wrapper.eq(messageReceiver.getCreateBy() != null, MessageReceiverDO::getCreateBy, messageReceiver.getCreateBy());
         wrapper.eq(messageReceiver.getUpdateBy() != null, MessageReceiverDO::getUpdateBy, messageReceiver.getUpdateBy());
-        wrapper.gt(messageReceiver.getSearchStartTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getSearchStartTime());
-        wrapper.le(messageReceiver.getSearchEndTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getSearchEndTime());
+        wrapper.gt(messageReceiver.getStartCreateTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getStartCreateTime());
+        wrapper.le(messageReceiver.getEndCreateTime() != null, MessageReceiverDO::getCreateTime, messageReceiver.getEndCreateTime());
         return wrapper;
     }
 

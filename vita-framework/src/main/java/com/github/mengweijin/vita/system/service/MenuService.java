@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -50,7 +51,7 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
     }
 
     public LambdaQueryWrapper<MenuDO> getQueryWrapper(MenuDO menu) {
-        LambdaQueryWrapper<MenuDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<MenuDO> wrapper = Wrappers.lambdaQuery();
 
         wrapper.eq(menu.getId() != null, MenuDO::getId, menu.getId());
         wrapper.eq(menu.getParentId() != null, MenuDO::getParentId, menu.getParentId());
@@ -58,8 +59,8 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         wrapper.eq(StrUtil.isNotBlank(menu.getDisabled()), MenuDO::getDisabled, menu.getDisabled());
         wrapper.eq(menu.getCreateBy() != null, MenuDO::getCreateBy, menu.getCreateBy());
         wrapper.eq(menu.getUpdateBy() != null, MenuDO::getUpdateBy, menu.getUpdateBy());
-        wrapper.gt(menu.getSearchStartTime() != null, MenuDO::getCreateTime, menu.getSearchStartTime());
-        wrapper.le(menu.getSearchEndTime() != null, MenuDO::getCreateTime, menu.getSearchEndTime());
+        wrapper.gt(menu.getStartCreateTime() != null, MenuDO::getCreateTime, menu.getStartCreateTime());
+        wrapper.le(menu.getEndCreateTime() != null, MenuDO::getCreateTime, menu.getEndCreateTime());
         if (StrUtil.isNotBlank(menu.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(MenuDO::getTitle, menu.getKeywords()));

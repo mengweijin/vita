@@ -93,6 +93,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/monitor/scheduling/[id]': RouteRecordInfo<
+      '/monitor/scheduling/[id]',
+      '/monitor/scheduling/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/monitor/server/': RouteRecordInfo<
       '/monitor/server/',
       '/monitor/server',
@@ -140,6 +147,13 @@ declare module 'vue-router/auto-routes' {
       '/system/dict',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/system/dict/[dictTypeId]': RouteRecordInfo<
+      '/system/dict/[dictTypeId]',
+      '/system/dict/:dictTypeId',
+      { dictTypeId: ParamValue<true> },
+      { dictTypeId: ParamValue<false> },
       | never
     >,
     '/system/file/': RouteRecordInfo<
@@ -271,6 +285,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/monitor/scheduling/[id].vue': {
+      routes:
+        | '/monitor/scheduling/[id]'
+      views:
+        | never
+    }
     'src/pages/monitor/server/index.vue': {
       routes:
         | '/monitor/server/'
@@ -310,6 +330,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/dict/index.vue': {
       routes:
         | '/system/dict/'
+      views:
+        | never
+    }
+    'src/pages/system/dict/[dictTypeId].vue': {
+      routes:
+        | '/system/dict/[dictTypeId]'
       views:
         | never
     }

@@ -12,6 +12,7 @@ import cn.hutool.v7.crypto.digest.DigestUtil;
 import cn.hutool.v7.swing.img.ImgUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
@@ -133,7 +134,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
             deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
         }
 
-        LambdaQueryWrapper<UserDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<UserDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(user.getId() != null, UserDO::getId, user.getId());
         wrapper.eq(StrUtil.isNotBlank(user.getCitizenId()), UserDO::getCitizenId, user.getCitizenId());
         wrapper.eq(StrUtil.isNotBlank(user.getMobile()), UserDO::getMobile, user.getMobile());
@@ -143,8 +144,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         wrapper.eq(StrUtil.isNotBlank(user.getDisabled()), UserDO::getDisabled, user.getDisabled());
         wrapper.eq(user.getCreateBy() != null, UserDO::getCreateBy, user.getCreateBy());
         wrapper.eq(user.getUpdateBy() != null, UserDO::getUpdateBy, user.getUpdateBy());
-        wrapper.gt(user.getSearchStartTime() != null, UserDO::getCreateTime, user.getSearchStartTime());
-        wrapper.le(user.getSearchEndTime() != null, UserDO::getCreateTime, user.getSearchEndTime());
+        wrapper.gt(user.getStartCreateTime() != null, UserDO::getCreateTime, user.getStartCreateTime());
+        wrapper.le(user.getEndCreateTime() != null, UserDO::getCreateTime, user.getEndCreateTime());
         wrapper.in(user.getDeptId() != null, UserDO::getDeptId, deptIds);
         if (StrUtil.isNotBlank(user.getKeywords())) {
             wrapper.and(w -> {

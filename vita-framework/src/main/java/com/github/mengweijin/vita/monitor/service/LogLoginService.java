@@ -8,6 +8,7 @@ import cn.hutool.v7.http.useragent.UserAgent;
 import cn.hutool.v7.http.useragent.UserAgentInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -49,7 +50,7 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
     private UserService userService;
 
     public LambdaQueryWrapper<LogLoginDO> getQueryWrapper(LogLoginDO logLogin) {
-        LambdaQueryWrapper<LogLoginDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<LogLoginDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(logLogin.getId() != null, LogLoginDO::getId, logLogin.getId());
 
         wrapper.eq(StrValidator.isNotBlank(logLogin.getIpLocation()), LogLoginDO::getIpLocation, logLogin.getIpLocation());
@@ -62,8 +63,8 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
 
         wrapper.eq(logLogin.getCreateBy() != null, LogLoginDO::getCreateBy, logLogin.getCreateBy());
         wrapper.eq(logLogin.getUpdateBy() != null, LogLoginDO::getUpdateBy, logLogin.getUpdateBy());
-        wrapper.gt(logLogin.getSearchStartTime() != null, LogLoginDO::getCreateTime, logLogin.getSearchStartTime());
-        wrapper.le(logLogin.getSearchEndTime() != null, LogLoginDO::getCreateTime, logLogin.getSearchEndTime());
+        wrapper.gt(logLogin.getStartCreateTime() != null, LogLoginDO::getCreateTime, logLogin.getStartCreateTime());
+        wrapper.le(logLogin.getEndCreateTime() != null, LogLoginDO::getCreateTime, logLogin.getEndCreateTime());
         if (StrUtil.isNotBlank(logLogin.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(LogLoginDO::getUsername, logLogin.getKeywords()));
@@ -120,7 +121,7 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
 
     public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
         String username = LoginHelper.getLoginUser().getUsername();
-        LambdaQueryWrapper<LogLoginDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<LogLoginDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(LogLoginDO::getUsername, username);
         wrapper.orderByDesc(LogLoginDO::getCreateTime);
         return this.page(page, wrapper);

@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -68,7 +69,7 @@ public class SchedulingTaskLogController {
     @SaCheckPermission("monitor:schedulingTaskLog:select")
     @GetMapping("/list")
     public List<SchedulingTaskLogDO> list(SchedulingTaskLogDO schedulingTaskLog) {
-        return schedulingTaskLogService.list(new LambdaQueryWrapper<>(schedulingTaskLog));
+        return schedulingTaskLogService.list(Wrappers.lambdaQuery(schedulingTaskLog));
     }
 
     /**

@@ -28,7 +28,7 @@ public class ${entityName}Service extends CrudRepository<${entityName}Mapper, ${
      * @return IPage
      */
     public IPage<${entityName}> page(IPage<${entityName}> page, ${entityName} ${entityPropertyName}){
-        LambdaQueryWrapper<${entityName}> query = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<${entityName}> query = Wrappers.lambdaQuery();
         query
         #foreach($field in ${allFields})
             #set($upperFirstName = $hutoolStrUtil.upperFirst(${field.propertyName}))

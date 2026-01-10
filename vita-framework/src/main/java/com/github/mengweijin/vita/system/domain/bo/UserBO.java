@@ -30,7 +30,7 @@ import java.util.List;
 public class UserBO extends BaseEntity {
 
     /**
-     * 部门ID
+     * 部门 ID
      */
     @NotNull
     private Long deptId;

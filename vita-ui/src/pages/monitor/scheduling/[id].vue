@@ -1,20 +1,21 @@
 <route lang="yaml">
 meta:
-  title: 登录日志
+  title: 调度任务执行日志
 </route>
 
 <script setup>
-import { logLoginApi } from "@/api/monitor/log-login-api";
-import { columns } from "./columns.js";
-import LogLoginDetail from "./components/log-login-detail.vue";
+import { schedulingTaskLogApi } from "@/api/monitor/scheduling-task-api.js";
+import { taskLogColumns as columns } from "./columns.js";
+
+const route = useRoute();
+
+const id = route.params.id;
 
 const loading = ref(true);
 
-const size = ref("default");
+const visible = ref(false);
 
-const tableRef = useTemplateRef("tableRef");
-
-const tableData = ref([]);
+const data = ref({});
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
@@ -22,8 +23,10 @@ const tableData = ref([]);
 const queryParams = reactive({
   current: 1,
   keywords: undefined,
-  loginType: undefined,
+  schedulingTaskId: undefined,
   size: 10,
+  status: undefined,
+  success: undefined,
   total: 0,
 });
 
@@ -34,9 +37,15 @@ const resetQueryForm = () => {
   loadTableData();
 };
 
+const size = ref("default");
+
+const tableRef = useTemplateRef("tableRef");
+
+const tableData = ref([]);
+
 const loadTableData = () => {
   loading.value = true;
-  logLoginApi.page(queryParams).then((res) => {
+  schedulingTaskLogApi.page(queryParams).then((res) => {
     tableData.value = res.records;
     queryParams.total = res.total;
     loading.value = false;
@@ -47,7 +56,7 @@ const loadTableData = () => {
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  logLoginApi.remove(ids).then(() => {
+  schedulingTaskLogApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -65,13 +74,9 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 };
 
-const logLoginDetailRef = useTemplateRef("logLoginDetailRef");
-const handleDetail = (row) => {
-  logLoginDetailRef.value.data = { ...row };
-  logLoginDetailRef.value.visible = true;
-};
-
 onMounted(() => {
+  loading.value = true;
+  queryParams.schedulingTaskId = id;
   loadTableData();
 });
 </script>
@@ -79,11 +84,14 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="登录账号、IP" clearable />
+    <el-form-item prop="keywords" label="关键字" v-if="false">
+      <el-input v-model="queryParams.keywords" placeholder="" clearable />
     </el-form-item>
-    <el-form-item prop="loginType" label="登录类型">
-      <VtSelectDict v-model="queryParams.loginType" :code="'vt_login_type'"></VtSelectDict>
+    <el-form-item prop="status" label="任务执行状态">
+      <VtSelectDict v-model="queryParams.status" :code="'vt_scheduling_task_status'"></VtSelectDict>
+    </el-form-item>
+    <el-form-item prop="success" label="任务执行结果">
+      <VtSelectDict v-model="queryParams.success" :code="'vt_succeeded'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -111,7 +119,7 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5" v-show="selected.length">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.id).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -126,7 +134,8 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
+    <VtTableBarRight :tableRef="tableRef" :shows="['size', 'columns']" :columns="columns"
+      @update-size="(val) => size = val" />
   </el-row>
 
   <!-- 表格 -->
@@ -136,42 +145,30 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.username.visible" prop="username" label="登录账号" min-width="100" fixed="left" />
-      <el-table-column v-if="columns.loginType.visible" prop="loginType" label="登录类型" min-width="100" align="center">
+      <el-table-column v-if="columns.schedulingTaskId.visible" prop="schedulingTaskId" label="调度任务ID" min-width="140" />
+      <el-table-column v-if="columns.args.visible" prop="args" label="实际执行参数" width="160" />
+      <el-table-column v-if="columns.status.visible" prop="status" label="执行状态" width="90" align="center">
         <template #default="{ row }">
-          <VtTagDict :code="'vt_login_type'" :value="row.loginType" :size="size"></VtTagDict>
+          <VtTagDict :code="'vt_scheduling_task_status'" :value="row.status" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.ip.visible" prop="ip" label="IP" min-width="140" />
-      <el-table-column v-if="columns.ipLocation.visible" prop="ipLocation" label="登录位置" min-width="180" />
-      <el-table-column v-if="columns.browser.visible" prop="browser" label="浏览器" min-width="100" />
-      <el-table-column v-if="columns.platform.visible" prop="platform" label="设备平台" min-width="100" />
-      <el-table-column v-if="columns.os.visible" prop="os" label="操作系统" min-width="130" />
-      <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
+      <el-table-column v-if="columns.success.visible" prop="success" label="执行结果" width="90" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_succeeded'" :value="row.success" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.errorMsg.visible" prop="errorMsg" label="失败信息" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="操作者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="操作时间" align="center" width="180" />
+      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="消耗时间（毫秒）" width="140" />
+      <el-table-column v-if="columns.message.visible" prop="message" label="附加信息" min-width="220" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="75">
         <template #default="scope">
           <div>
-            <el-tooltip content="详情" placement="top">
-              <el-button type="primary" text :size="size" @click="handleDetail(scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:view"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除 ID 为【${scope.row.id}】的任务执行记录吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">
@@ -192,11 +189,8 @@ onMounted(() => {
 
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-      @change="handlePageChange" />
+      @change="handlePageChange" :size="size" />
   </div>
-
-  <LogLoginDetail ref="logLoginDetailRef"></LogLoginDetail>
-
 </template>
 
 <style scoped></style>

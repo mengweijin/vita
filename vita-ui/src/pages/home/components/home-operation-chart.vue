@@ -1,6 +1,6 @@
 <script setup>
+import { homeApi } from "@/api/home-api.js";
 import * as echarts from "echarts";
-import { homeApi } from "@/api/home-api";
 
 const chartDomRef = useTemplateRef("chartDomRef");
 
@@ -59,24 +59,24 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
-	<div class="vt-chart-title">用户活跃度统计</div>
-	<div ref="chartDomRef" class="vt-chart"></div>
-  </div>
-	
+	<div>
+		<div class="vt-chart-title">用户活跃度统计</div>
+		<div ref="chartDomRef" class="vt-chart"></div>
+	</div>
+
 </template>
 
 <style lang="css" scoped>
 .vt-chart-title {
-  margin-top: 20px;
-  padding: 10px 0px 0px 15px;
-  background-color: white;
+	margin-top: 20px;
+	padding: 10px 0px 0px 15px;
+	background-color: white;
 }
 
 .vt-chart {
-  width: 100%;
-  height: 100%;
-  min-height: 450px;
-  background-color: white;
+	width: 100%;
+	height: 100%;
+	min-height: 450px;
+	background-color: white;
 }
 </style>

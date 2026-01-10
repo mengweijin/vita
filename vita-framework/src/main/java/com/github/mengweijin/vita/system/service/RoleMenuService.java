@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.mapper.RoleMenuMapper;
@@ -35,7 +36,7 @@ public class RoleMenuService extends CrudRepository<RoleMenuMapper, RoleMenuDO> 
     }
 
     public void removeByRoleId(Long roleId) {
-        LambdaQueryWrapper<RoleMenuDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<RoleMenuDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(RoleMenuDO::getRoleId, roleId);
         this.getBaseMapper().delete(wrapper);
     }

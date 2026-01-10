@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
@@ -44,12 +45,12 @@ public class DictTypeService extends CrudRepository<DictTypeMapper, DictTypeDO> 
     }
 
     public LambdaQueryWrapper<DictTypeDO> getQueryWrapper(DictTypeDO dictType) {
-        LambdaQueryWrapper<DictTypeDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<DictTypeDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(dictType.getId() != null, DictTypeDO::getId, dictType.getId());
         wrapper.eq(dictType.getCreateBy() != null, DictTypeDO::getCreateBy, dictType.getCreateBy());
         wrapper.eq(dictType.getUpdateBy() != null, DictTypeDO::getUpdateBy, dictType.getUpdateBy());
-        wrapper.gt(dictType.getSearchStartTime() != null, DictTypeDO::getCreateTime, dictType.getSearchStartTime());
-        wrapper.le(dictType.getSearchEndTime() != null, DictTypeDO::getCreateTime, dictType.getSearchEndTime());
+        wrapper.gt(dictType.getStartCreateTime() != null, DictTypeDO::getCreateTime, dictType.getStartCreateTime());
+        wrapper.le(dictType.getEndCreateTime() != null, DictTypeDO::getCreateTime, dictType.getEndCreateTime());
         if (StrUtil.isNotBlank(dictType.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(DictTypeDO::getName, dictType.getKeywords()));

@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -89,7 +90,7 @@ public class MessageController {
     @SaCheckPermission("system:message:select")
     @GetMapping("/list")
     public List<MessageDO> list(MessageDO message) {
-        return messageService.list(new LambdaQueryWrapper<>(message));
+        return messageService.list(Wrappers.lambdaQuery(message));
     }
 
     /**

@@ -5,6 +5,7 @@ import cn.hutool.v7.core.collection.set.SetUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.propertysource.DatabasePropertySource;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
@@ -55,12 +56,12 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
     }
 
     public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
-        LambdaQueryWrapper<ConfigDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<ConfigDO> wrapper = Wrappers.lambdaQuery(config);
         wrapper.eq(config.getId() != null, ConfigDO::getId, config.getId());
         wrapper.eq(config.getCreateBy() != null, ConfigDO::getCreateBy, config.getCreateBy());
         wrapper.eq(config.getUpdateBy() != null, ConfigDO::getUpdateBy, config.getUpdateBy());
-        wrapper.gt(config.getSearchStartTime() != null, ConfigDO::getCreateTime, config.getSearchStartTime());
-        wrapper.le(config.getSearchEndTime() != null, ConfigDO::getCreateTime, config.getSearchEndTime());
+        wrapper.gt(config.getStartCreateTime() != null, ConfigDO::getCreateTime, config.getStartCreateTime());
+        wrapper.le(config.getEndCreateTime() != null, ConfigDO::getCreateTime, config.getEndCreateTime());
         if (StrUtil.isNotBlank(config.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(ConfigDO::getConfigKey, config.getKeywords()));

@@ -1,8 +1,12 @@
 package com.github.mengweijin.vita.framework.log.aspect;
 
+import cn.hutool.v7.core.io.IoUtil;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrValidator;
+import cn.hutool.v7.extra.spring.SpringUtil;
+import cn.hutool.v7.json.JSONUtil;
 import com.github.mengweijin.vita.framework.domain.P;
 import com.github.mengweijin.vita.framework.jackson.wrapper.AbstractObjectMapperWrapper;
-import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -18,11 +22,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import cn.hutool.v7.core.io.IoUtil;
-import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.core.text.StrValidator;
-import cn.hutool.v7.extra.spring.SpringUtil;
-import cn.hutool.v7.json.JSONUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -55,8 +54,8 @@ public class LogOperationAspect {
 
     private static final String REQUEST_BODY = "REQUEST_BODY";
 
-    @Pointcut("@annotation(com.github.mengweijin.vita.framework.log.aspect.annotation.Log)")
-    public void pointCut() {}
+    @Pointcut("@annotation(logAnnotation)")
+    public void pointCut(Log logAnnotation) {}
 
     /**
      * Before 中要获取自定义注解参数，方法参数中的变量名称可以为任意值，但必须和 @annotation(logAnnotation) 中的值一致。
@@ -65,7 +64,7 @@ public class LogOperationAspect {
      * @param joinPoint     joinPoint
      * @param logAnnotation logAnnotation
      */
-    @Before("pointCut() && @annotation(logAnnotation)")
+    @Before("pointCut(logAnnotation)")
     public void before(JoinPoint joinPoint, Log logAnnotation) {
         StopWatch stopWatch = new StopWatch();
         STOP_WATCH.set(stopWatch);
@@ -78,7 +77,7 @@ public class LogOperationAspect {
      * @param joinPoint 切点
      * @param object    返回的对象，参数名必须和注解中配置的名称保持一致。
      */
-    @AfterReturning(pointcut = "pointCut() && @annotation(logAnnotation)", returning = "object")
+    @AfterReturning(pointcut = "pointCut(logAnnotation)", returning = "object")
     public void afterReturning(JoinPoint joinPoint, Log logAnnotation, Object object) {
         recordLog(joinPoint, logAnnotation, object, null);
     }
@@ -89,7 +88,7 @@ public class LogOperationAspect {
      * @param joinPoint 切点
      * @param e 异常
      */
-    @AfterThrowing(value = "pointCut() && @annotation(logAnnotation)", throwing = "e")
+    @AfterThrowing(value = "pointCut(logAnnotation)", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Log logAnnotation, Exception e) {
         recordLog(joinPoint, logAnnotation, null, e);
     }

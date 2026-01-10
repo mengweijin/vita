@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -39,13 +40,13 @@ public class PostService extends CrudRepository<PostMapper, PostDO> {
     }
 
     public LambdaQueryWrapper<PostDO> getQueryWrapper(PostDO post) {
-        LambdaQueryWrapper<PostDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<PostDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(post.getId() != null, PostDO::getId, post.getId());
         wrapper.eq(StrUtil.isNotBlank(post.getDisabled()), PostDO::getDisabled, post.getDisabled());
         wrapper.eq(post.getCreateBy() != null, PostDO::getCreateBy, post.getCreateBy());
         wrapper.eq(post.getUpdateBy() != null, PostDO::getUpdateBy, post.getUpdateBy());
-        wrapper.gt(post.getSearchStartTime() != null, PostDO::getCreateTime, post.getSearchStartTime());
-        wrapper.le(post.getSearchEndTime() != null, PostDO::getCreateTime, post.getSearchEndTime());
+        wrapper.gt(post.getStartCreateTime() != null, PostDO::getCreateTime, post.getStartCreateTime());
+        wrapper.le(post.getEndCreateTime() != null, PostDO::getCreateTime, post.getEndCreateTime());
         if (StrUtil.isNotBlank(post.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(PostDO::getCode, post.getKeywords()));

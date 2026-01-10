@@ -1,4 +1,4 @@
-export default reactive({
+const columns = reactive({
   selection: { label: "选择列", visible: false },
   index: { label: "序号列", visible: false },
   id: { label: "ID", visible: false },
@@ -15,3 +15,5 @@ export default reactive({
   updateTime: { label: "更新时间", visible: false },
   operation: { label: "操作", visible: true },
 });
+
+export { columns };

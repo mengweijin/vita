@@ -5,7 +5,7 @@ meta:
 
 <script setup>
 import { configApi } from "@/api/system/config-api";
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 import ConfigEdit from "./components/config-edit.vue";
 
 const loading = ref(true);
@@ -20,65 +20,65 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  keywords: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	configApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  configApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 const configEditRef = useTemplateRef("configEditRef");
 
 const handleAdd = () => {
-	configEditRef.value.data = {};
-	configEditRef.value.visible = true;
+  configEditRef.value.data = {};
+  configEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	configEditRef.value.data = { ...row };
-	configEditRef.value.visible = true;
+  // 使用展开运算符，避免数据污染
+  configEditRef.value.data = { ...row };
+  configEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	configApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  configApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 
@@ -140,19 +140,19 @@ onMounted(() => {
     </el-col>
     <el-col :span="1.5">
       <el-tooltip effect="dark" placement="top-start">
-      <template #content>
-        1. 此处配置和 spring boot 中的 application.yml 配置类似，但是使用的优先级最低。<br></br>
-        2. 即：当一个配置即不在命令行中，也不在 application.yml 中时，这里的配置才会生效。<br></br>
-        3. 此处配置支持动态刷新（类似 @RefreshScope），使用 @ConfigurationProperties 配置类来使用，也无需重启后台服务。
-      </template>
-      <el-button type="info">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:info-filled"></Icon>
-          </el-icon>
+        <template #content>
+          1. 此处配置和 spring boot 中的 application.yml 配置类似，但是使用的优先级最低。<br></br>
+          2. 即：当一个配置即不在命令行中，也不在 application.yml 中时，这里的配置才会生效。<br></br>
+          3. 此处配置支持动态刷新（类似 @RefreshScope），使用 @ConfigurationProperties 配置类来使用，也无需重启后台服务。
         </template>
-        配置说明
-      </el-button>
+        <el-button type="info">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:info-filled"></Icon>
+            </el-icon>
+          </template>
+          配置说明
+        </el-button>
       </el-tooltip>
     </el-col>
     <!-- 右侧 -->

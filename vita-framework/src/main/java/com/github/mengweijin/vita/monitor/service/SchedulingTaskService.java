@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.service;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.scheduler.SchedulingTaskFactory;
@@ -31,13 +32,13 @@ public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, 
     private SchedulingTaskFactory schedulingTaskFactory;
 
     public LambdaQueryWrapper<SchedulingTaskDO> getQueryWrapper(SchedulingTaskDO schedulingTask) {
-        LambdaQueryWrapper<SchedulingTaskDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<SchedulingTaskDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(schedulingTask.getId() != null, SchedulingTaskDO::getId, schedulingTask.getId());
         wrapper.eq(StrValidator.isNotBlank(schedulingTask.getDisabled()), SchedulingTaskDO::getDisabled, schedulingTask.getDisabled());
         wrapper.eq(schedulingTask.getCreateBy() != null, SchedulingTaskDO::getCreateBy, schedulingTask.getCreateBy());
         wrapper.eq(schedulingTask.getUpdateBy() != null, SchedulingTaskDO::getUpdateBy, schedulingTask.getUpdateBy());
-        wrapper.gt(schedulingTask.getSearchStartTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getSearchStartTime());
-        wrapper.le(schedulingTask.getSearchEndTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getSearchEndTime());
+        wrapper.gt(schedulingTask.getStartCreateTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getStartCreateTime());
+        wrapper.le(schedulingTask.getEndCreateTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getEndCreateTime());
         if (StrUtil.isNotBlank(schedulingTask.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(SchedulingTaskDO::getName, schedulingTask.getKeywords()));

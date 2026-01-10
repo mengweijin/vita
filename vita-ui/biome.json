@@ -15,7 +15,7 @@
 			"!!**/node_modules",
 			"!!**/.vscode/vue.code-snippets",
 			"!**/*.d.ts",
-			"!**/*columns.js"
+			"!**/columns.js"
 		]
 	},
 	"formatter": {

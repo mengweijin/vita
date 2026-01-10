@@ -5,9 +5,12 @@ meta:
 
 <script setup>
 import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api.js";
-import columns from "./columns.js";
+import cronstrue from 'cronstrue';
+import 'cronstrue/locales/zh_CN';
+import { columns } from "./columns.js";
 import SchedulingTaskEdit from "./components/scheduling-task-edit.vue";
-import SchedulingTaskLogDialog from "./components/scheduling-task-log-dialog.vue";
+
+const router = useRouter();
 
 const loading = ref(true);
 
@@ -21,71 +24,68 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	disabled: undefined,
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  disabled: undefined,
+  keywords: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	schedulingTaskApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  schedulingTaskApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
-const schedulingTaskLogDialogRef = useTemplateRef("schedulingTaskLogDialogRef");
-
 const handleViewTaskLog = (row) => {
-	schedulingTaskLogDialogRef.value.data = { ...row };
-	schedulingTaskLogDialogRef.value.visible = true;
+  router.push(`/monitor/scheduling/${row.id}`);
 };
 
 const handleRunTask = (row) => {
-	schedulingTaskApi.run(row.id);
+  schedulingTaskApi.run(row.id);
 };
 
 const schedulingTaskEditRef = useTemplateRef("schedulingTaskEditRef");
 
 const handleEdit = (row) => {
-	schedulingTaskEditRef.value.data = { ...row };
-	schedulingTaskEditRef.value.visible = true;
+  schedulingTaskEditRef.value.data = { ...row };
+  schedulingTaskEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	schedulingTaskApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  schedulingTaskApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 
@@ -149,16 +149,28 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="140" />
-      <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 表达式" width="120" />
-      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="240" />
-      <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="160" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="200" />
+      <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 表达式" width="120">
+        <template #default="{ row }">
+          <el-tooltip :content="cronstrue.toString(row.cron, { locale: 'zh_CN', use24HourTimeFormat: true })"
+            placement="top">
+            <span>{{ row.cron }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 执行描述" width="160">
+        <template #default="{ row }">
+          <span>{{ cronstrue.toString(row.cron, { locale: 'zh_CN', use24HourTimeFormat: true }) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="280" />
+      <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="120" />
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" width="80" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
@@ -219,7 +231,6 @@ onMounted(() => {
       @change="handlePageChange" />
   </div>
 
-  <SchedulingTaskLogDialog ref="schedulingTaskLogDialogRef"></SchedulingTaskLogDialog>
   <SchedulingTaskEdit ref="schedulingTaskEditRef" @refresh-table="loadTableData"></SchedulingTaskEdit>
 </template>
 

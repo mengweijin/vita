@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -67,7 +68,7 @@ public class DictTypeController {
     @SaCheckPermission("system:dictType:select")
     @GetMapping("/list")
     public List<DictTypeDO> list(DictTypeDO dictType) {
-        return dictTypeService.list(new LambdaQueryWrapper<>(dictType));
+        return dictTypeService.list(Wrappers.lambdaQuery(dictType));
     }
 
     /**

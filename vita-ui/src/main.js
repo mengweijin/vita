@@ -1,6 +1,9 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import "./styles/main.css";
+// 引入默认的 passive 事件监听器，以提升滚动性能
+// 解决告警：[Violation]Added non-passive event listener to a scroll-blocking 'wheel' event. Consider marking event handler as 'passive' to make the page more responsive.
+import "default-passive-events";
 
 const app = createApp(App);
 

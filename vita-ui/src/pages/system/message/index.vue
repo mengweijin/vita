@@ -11,7 +11,7 @@ import { useMessageStore } from "@/store/message-store.js";
 const messageStore = useMessageStore();
 const { notViewedCount } = storeToRefs(messageStore);
 
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 
 const dictStore = useDictStore();
 

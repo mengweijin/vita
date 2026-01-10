@@ -5,7 +5,7 @@ meta:
 
 <script setup>
 import { logOperationApi } from "@/api/monitor/log-operation-api";
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 import LogOperationDetail from "./components/log-operation-detail.vue";
 
 const loading = ref(true);
@@ -20,60 +20,60 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	httpMethod: undefined,
-	keywords: undefined,
-	operationType: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  httpMethod: undefined,
+  keywords: undefined,
+  operationType: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	logOperationApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  logOperationApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	logOperationApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  logOperationApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 const logOperationDetailRef = useTemplateRef("logOperationDetailRef");
 const handleDetail = (row) => {
-	logOperationDetailRef.value.data = { ...row };
-	logOperationDetailRef.value.visible = true;
+  logOperationDetailRef.value.data = { ...row };
+  logOperationDetailRef.value.visible = true;
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 

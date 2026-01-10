@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.service;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.mapper.LogOperationMapper;
@@ -37,7 +38,7 @@ public class LogOperationService extends CrudRepository<LogOperationMapper, LogO
     }
 
     public LambdaQueryWrapper<LogOperationDO> getQueryWrapper(LogOperationDO logOperation) {
-        LambdaQueryWrapper<LogOperationDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<LogOperationDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(logOperation.getId() != null, LogOperationDO::getId, logOperation.getId());
 
         wrapper.eq(StrValidator.isNotBlank(logOperation.getOperationType()), LogOperationDO::getOperationType, logOperation.getOperationType());
@@ -47,8 +48,8 @@ public class LogOperationService extends CrudRepository<LogOperationMapper, LogO
 
         wrapper.eq(logOperation.getCreateBy() != null, LogOperationDO::getCreateBy, logOperation.getCreateBy());
         wrapper.eq(logOperation.getUpdateBy() != null, LogOperationDO::getUpdateBy, logOperation.getUpdateBy());
-        wrapper.gt(logOperation.getSearchStartTime() != null, LogOperationDO::getCreateTime, logOperation.getSearchStartTime());
-        wrapper.le(logOperation.getSearchEndTime() != null, LogOperationDO::getCreateTime, logOperation.getSearchEndTime());
+        wrapper.gt(logOperation.getStartCreateTime() != null, LogOperationDO::getCreateTime, logOperation.getStartCreateTime());
+        wrapper.le(logOperation.getEndCreateTime() != null, LogOperationDO::getCreateTime, logOperation.getEndCreateTime());
         if (StrUtil.isNotBlank(logOperation.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(LogOperationDO::getTitle, logOperation.getKeywords()));

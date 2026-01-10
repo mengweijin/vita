@@ -6,6 +6,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -55,13 +56,13 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
     }
 
     public LambdaQueryWrapper<RoleDO> getQueryWrapper(RoleDO role) {
-        LambdaQueryWrapper<RoleDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<RoleDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(role.getId() != null, RoleDO::getId, role.getId());
         wrapper.eq(StrUtil.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled());
         wrapper.eq(role.getCreateBy() != null, RoleDO::getCreateBy, role.getCreateBy());
         wrapper.eq(role.getUpdateBy() != null, RoleDO::getUpdateBy, role.getUpdateBy());
-        wrapper.gt(role.getSearchStartTime() != null, RoleDO::getCreateTime, role.getSearchStartTime());
-        wrapper.le(role.getSearchEndTime() != null, RoleDO::getCreateTime, role.getSearchEndTime());
+        wrapper.gt(role.getStartCreateTime() != null, RoleDO::getCreateTime, role.getStartCreateTime());
+        wrapper.le(role.getEndCreateTime() != null, RoleDO::getCreateTime, role.getEndCreateTime());
         if (StrUtil.isNotBlank(role.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(RoleDO::getName, role.getKeywords()));

@@ -5,6 +5,7 @@ import cn.hutool.v7.core.date.TimeUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -46,7 +47,7 @@ public class SystemLogCleanTask implements ISchedulingTask {
         int days = NumberUtil.parseInt(daysString);
         LocalDateTime minusTime = LocalDate.now().minusDays(days).atTime(0, 0, 0);
 
-        LambdaQueryWrapper<LogDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<LogDO> wrapper = Wrappers.lambdaQuery();
         wrapper.le(LogDO::getCreateTime, minusTime);
 
         int deleted = logSystemService.getBaseMapper().delete(wrapper);

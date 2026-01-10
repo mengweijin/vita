@@ -1,6 +1,9 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
@@ -8,8 +11,6 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +31,13 @@ import java.util.Optional;
 public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> {
 
     public LambdaQueryWrapper<DictDataDO> getQueryWrapper(DictDataDO dictData) {
-        LambdaQueryWrapper<DictDataDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<DictDataDO> wrapper = Wrappers.lambdaQuery(dictData);
         wrapper.eq(dictData.getId() != null, DictDataDO::getId, dictData.getId());
         wrapper.eq(StrUtil.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled());
         wrapper.eq(dictData.getCreateBy() != null, DictDataDO::getCreateBy, dictData.getCreateBy());
         wrapper.eq(dictData.getUpdateBy() != null, DictDataDO::getUpdateBy, dictData.getUpdateBy());
-        wrapper.gt(dictData.getSearchStartTime() != null, DictDataDO::getCreateTime, dictData.getSearchStartTime());
-        wrapper.le(dictData.getSearchEndTime() != null, DictDataDO::getCreateTime, dictData.getSearchEndTime());
+        wrapper.gt(dictData.getStartCreateTime() != null, DictDataDO::getCreateTime, dictData.getStartCreateTime());
+        wrapper.le(dictData.getEndCreateTime() != null, DictDataDO::getCreateTime, dictData.getEndCreateTime());
         if (StrUtil.isNotBlank(dictData.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(DictDataDO::getLabel, dictData.getKeywords()));
@@ -65,8 +66,12 @@ public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> 
                 .list();
     }
 
-    public void checkValDuplicate(String code, String val) {
-        Optional<DictDataDO> optional = this.lambdaQuery().eq(DictDataDO::getCode, code).eq(DictDataDO::getVal, val).oneOpt();
+    public void checkValDuplicate(Long id, String code, String val) {
+        Optional<DictDataDO> optional = this.lambdaQuery()
+                .eq(DictDataDO::getCode, code)
+                .eq(DictDataDO::getVal, val)
+                .ne(id != null, DictDataDO::getId, id)
+                .oneOpt();
         if (optional.isPresent()) {
             throw new ClientException(CharSequenceUtil.format("The dict type code[{}] and value[{}] already exists!", code, val));
         }

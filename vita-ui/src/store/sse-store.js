@@ -1,6 +1,5 @@
 import { useLoginStore } from "@/store/login-store.js";
 import { useMessageStore } from "@/store/message-store.js";
-import utils from "@/utils/utils.js";
 import { Icon } from "@iconify/vue";
 import { SSE } from "sse.js";
 
@@ -23,25 +22,25 @@ export const useSseStore = defineStore(
      * 连接 SSE 服务器
      */
     const connect = () => {
+      // 先断开已有连接
+      disconnect();
       // 处理路径 SSE URL
-      const parentPath = utils.trimSpecified(window.location.origin, "/");
-      const baseApiPath = utils.trimSpecified(VITE_BASE_API, "/");
-      const fullPath = `${utils.join("/", true, parentPath, baseApiPath)}`;
-      const url = `${fullPath}/monitor/sse/subscribe?t=${Date.now()}`;
-      const bearerToken = useLoginStore().getBearerToken();
+      const url =
+        `${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`.replace(
+          "//",
+          "/"
+        );
 
       // 创建SSE连接，关键步骤：在 headers 中传递 Token
       eventSource.value = new SSE(url, {
         autoReconnect: true,
         headers: {
-          Authorization: bearerToken,
+          Authorization: useLoginStore().getBearerToken(),
         },
-        reconnectDelay: 10000,
+        reconnectDelay: 3000,
         start: true,
         withCredentials: true,
       });
-
-      console.log("SSE CONNECTING......");
 
       eventSource.value.addEventListener("open", (event) => {
         // 后台第一次有消息时才打开连接，在这之前 eventSource.value.readyState = 0;

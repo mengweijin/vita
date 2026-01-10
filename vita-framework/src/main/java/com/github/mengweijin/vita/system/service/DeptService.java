@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
@@ -46,14 +47,14 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
     }
 
     public LambdaQueryWrapper<DeptDO> getQueryWrapper(DeptDO dept) {
-        LambdaQueryWrapper<DeptDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<DeptDO> wrapper = Wrappers.lambdaQuery(dept);
         wrapper.eq(dept.getId() != null, DeptDO::getId, dept.getId());
         wrapper.eq(dept.getParentId() != null, DeptDO::getParentId, dept.getParentId());
         wrapper.eq(StrUtil.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled());
         wrapper.eq(dept.getCreateBy() != null, DeptDO::getCreateBy, dept.getCreateBy());
         wrapper.eq(dept.getUpdateBy() != null, DeptDO::getUpdateBy, dept.getUpdateBy());
-        wrapper.gt(dept.getSearchStartTime() != null, DeptDO::getCreateTime, dept.getSearchStartTime());
-        wrapper.le(dept.getSearchEndTime() != null, DeptDO::getCreateTime, dept.getSearchEndTime());
+        wrapper.gt(dept.getStartCreateTime() != null, DeptDO::getCreateTime, dept.getStartCreateTime());
+        wrapper.le(dept.getEndCreateTime() != null, DeptDO::getCreateTime, dept.getEndCreateTime());
         if (StrUtil.isNotBlank(dept.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(DeptDO::getCode, dept.getKeywords()));

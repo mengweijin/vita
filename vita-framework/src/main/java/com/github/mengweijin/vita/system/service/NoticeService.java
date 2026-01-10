@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import com.github.mengweijin.vita.system.mapper.NoticeMapper;
@@ -22,13 +23,13 @@ import org.springframework.stereotype.Service;
 public class NoticeService extends CrudRepository<NoticeMapper, NoticeDO> {
 
     public LambdaQueryWrapper<NoticeDO> getQueryWrapper(NoticeDO notice) {
-        LambdaQueryWrapper<NoticeDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<NoticeDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(notice.getId() != null, NoticeDO::getId, notice.getId());
         wrapper.eq(StrUtil.isNotBlank(notice.getReleased()), NoticeDO::getReleased, notice.getReleased());
         wrapper.eq(notice.getCreateBy() != null, NoticeDO::getCreateBy, notice.getCreateBy());
         wrapper.eq(notice.getUpdateBy() != null, NoticeDO::getUpdateBy, notice.getUpdateBy());
-        wrapper.gt(notice.getSearchStartTime() != null, NoticeDO::getCreateTime, notice.getSearchStartTime());
-        wrapper.le(notice.getSearchEndTime() != null, NoticeDO::getCreateTime, notice.getSearchEndTime());
+        wrapper.gt(notice.getStartCreateTime() != null, NoticeDO::getCreateTime, notice.getStartCreateTime());
+        wrapper.le(notice.getEndCreateTime() != null, NoticeDO::getCreateTime, notice.getEndCreateTime());
         if (StrUtil.isNotBlank(notice.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(NoticeDO::getTitle, notice.getKeywords()));

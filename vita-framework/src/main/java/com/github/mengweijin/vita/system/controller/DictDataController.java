@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -65,7 +66,7 @@ public class DictDataController {
      */
     @GetMapping("/list")
     public List<DictDataDO> list(DictDataDO dictData) {
-        return dictDataService.list(new LambdaQueryWrapper<>(dictData).orderByAsc(DictDataDO::getSeq));
+        return dictDataService.list(Wrappers.lambdaQuery(dictData).orderByAsc(DictDataDO::getSeq));
     }
 
     /**
@@ -97,7 +98,7 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataDO dictData) {
-        dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
+        dictDataService.checkValDuplicate(null, dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.save(dictData);
         return R.result(bool);
     }
@@ -112,7 +113,7 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataDO dictData) {
-        dictDataService.checkValDuplicate(dictData.getCode(), dictData.getVal());
+        dictDataService.checkValDuplicate(dictData.getId(), dictData.getCode(), dictData.getVal());
         boolean bool = dictDataService.updateById(dictData);
         return R.result(bool);
     }

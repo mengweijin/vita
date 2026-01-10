@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.system.service;
 
-import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.core.io.file.FileNameUtil;
 import cn.hutool.v7.core.io.file.FileUtil;
@@ -8,11 +7,13 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -47,15 +49,15 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
     private VitaProperties vitaProperties;
 
     public LambdaQueryWrapper<FileDO> getQueryWrapper(FileDO fileDO) {
-        LambdaQueryWrapper<FileDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<FileDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(fileDO.getId() != null, FileDO::getId, fileDO.getId());
         wrapper.eq(StrUtil.isNotBlank(fileDO.getMd5()), FileDO::getMd5, fileDO.getMd5());
         wrapper.eq(StrUtil.isNotBlank(fileDO.getSuffix()), FileDO::getSuffix, fileDO.getSuffix());
 
         wrapper.eq(fileDO.getCreateBy() != null, FileDO::getCreateBy, fileDO.getCreateBy());
         wrapper.eq(fileDO.getUpdateBy() != null, FileDO::getUpdateBy, fileDO.getUpdateBy());
-        wrapper.gt(fileDO.getSearchStartTime() != null, FileDO::getCreateTime, fileDO.getSearchStartTime());
-        wrapper.le(fileDO.getSearchEndTime() != null, FileDO::getCreateTime, fileDO.getSearchEndTime());
+        wrapper.gt(fileDO.getStartCreateTime() != null, FileDO::getCreateTime, fileDO.getStartCreateTime());
+        wrapper.le(fileDO.getEndCreateTime() != null, FileDO::getCreateTime, fileDO.getEndCreateTime());
         if (StrValidator.isNotBlank(fileDO.getKeywords())) {
             wrapper.and(w -> {
                 w.or(w1 -> w1.like(FileDO::getName, fileDO.getKeywords()));
@@ -78,19 +80,15 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         return list;
     }
 
-    public FileDO upload(MultipartFile multipartFile, String fileName) {
-        FileDO fileDO = this.buildFileDO(multipartFile, fileName);
+    public FileDO upload(MultipartFile multipartFile) {
+        FileDO fileDO = this.buildFileDO(multipartFile);
         AopUtils.getAopProxy(this).save(fileDO);
         return fileDO;
     }
 
     public FileDO buildFileDO(MultipartFile multipartFile) {
-        return this.buildFileDO(multipartFile, null);
-    }
-
-    public FileDO buildFileDO(MultipartFile multipartFile, String fileName) {
+        String fileName = multipartFile.getOriginalFilename();
         String md5 = UploadUtils.md5(multipartFile);
-        fileName = StrUtil.isBlank(fileName) ? multipartFile.getOriginalFilename() : fileName;
         String suffix = FileNameUtil.getSuffix(fileName);
 
         FileDO fileEntity = new FileDO();
@@ -99,18 +97,9 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         fileEntity.setSuffix(suffix);
         fileEntity.setDeleted(EYesNo.N.getValue());
 
-        List<FileDO> fileEntityList = this.getByMd5(md5);
-        if (CollUtil.isEmpty(fileEntityList)) {
-            String storagePath = getPath(vitaProperties.getUploadPath(), suffix);
-            copyFile(multipartFile, storagePath);
-            fileEntity.setStoragePath(storagePath);
-        } else {
-            String storagePath = fileEntityList.get(0).getStoragePath();
-            if (!FileUtil.exists(storagePath)) {
-                copyFile(multipartFile, storagePath);
-            }
-            fileEntity.setStoragePath(storagePath);
-        }
+        String storagePath = getStoragePath(vitaProperties.getUploadPath(), suffix);
+        copyFile(multipartFile, storagePath);
+        fileEntity.setStoragePath(storagePath);
         return fileEntity;
     }
 
@@ -122,7 +111,7 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         }
     }
 
-    public static String getPath(String dir, String suffix) {
+    public static String getStoragePath(String dir, String suffix) {
         LocalDateTime now = LocalDateTime.now();
         String year = String.valueOf(now.getYear());
         String month = CharSequenceUtil.padPre(String.valueOf(now.getMonthValue()), 2, "0");
@@ -138,5 +127,22 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
             }
             return fileDO;
         };
+    }
+
+    @Override
+    public boolean removeByIds(Collection<?> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return false;
+        }
+
+        List<FileDO> fileList = this.lambdaQuery().in(FileDO::getId, list).list();
+
+        boolean removed = super.removeByIds(list);
+        if(removed) {
+            // 从磁盘物理删除文件
+            fileList.forEach(f -> FileUtil.del(f.getStoragePath()));
+        }
+
+        return removed;
     }
 }

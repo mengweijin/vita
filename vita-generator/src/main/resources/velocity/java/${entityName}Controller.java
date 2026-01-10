@@ -1,6 +1,7 @@
 package ${package}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
@@ -50,7 +51,7 @@ public class ${entityName}Controller {
     @SaCheckPermission("${module}:${entityPropertyName}:select")
     @GetMapping("/list")
     public List<${entityName}> list(${entityName} ${entityPropertyName}) {
-        return ${entityPropertyName}Service.list(new LambdaQueryWrapper<>(${entityPropertyName}));
+        return ${entityPropertyName}Service.list(Wrappers.lambdaQuery(${entityPropertyName}));
     }
 
     /**

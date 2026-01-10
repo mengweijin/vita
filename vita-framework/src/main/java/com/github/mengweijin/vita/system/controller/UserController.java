@@ -7,6 +7,7 @@ import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
@@ -111,7 +112,7 @@ public class UserController {
     @SaCheckPermission("system:user:select")
     @GetMapping("/list")
     public List<UserVO> list(UserDO userDO) {
-        List<UserDO> userList = userService.list(new LambdaQueryWrapper<>(userDO));
+        List<UserDO> userList = userService.list(Wrappers.lambdaQuery(userDO));
         return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 

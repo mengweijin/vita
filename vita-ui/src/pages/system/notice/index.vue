@@ -6,7 +6,7 @@ meta:
 
 <script setup>
 import { noticeApi } from "@/api/system/notice-api";
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 import NoticeDetail from "./components/notice-detail.vue";
 import NoticeEdit from "./components/notice-edit.vue";
 
@@ -22,85 +22,85 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	keywords: undefined,
-	released: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  keywords: undefined,
+  released: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	noticeApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  noticeApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 const noticeEditRef = useTemplateRef("noticeEditRef");
 
 const handleAdd = () => {
-	noticeEditRef.value.data = {};
-	noticeEditRef.value.visible = true;
+  noticeEditRef.value.data = {};
+  noticeEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	noticeEditRef.value.data = { ...row };
-	noticeEditRef.value.visible = true;
+  // 使用展开运算符，避免数据污染
+  noticeEditRef.value.data = { ...row };
+  noticeEditRef.value.visible = true;
 };
 
 const handleRelease = (id) => {
-	noticeApi.release(id).then(() => {
-		loadTableData();
-	});
+  noticeApi.release(id).then(() => {
+    loadTableData();
+  });
 };
 
 const handleRevoke = (id) => {
-	noticeApi.revoke(id).then(() => {
-		loadTableData();
-	});
+  noticeApi.revoke(id).then(() => {
+    loadTableData();
+  });
 };
 
 const noticeDetailRef = useTemplateRef("noticeDetailRef");
 
 const handleViewDetail = (row) => {
-	noticeDetailRef.value.data = { ...row };
-	noticeDetailRef.value.visible = true;
+  noticeDetailRef.value.data = { ...row };
+  noticeDetailRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	noticeApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  noticeApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 

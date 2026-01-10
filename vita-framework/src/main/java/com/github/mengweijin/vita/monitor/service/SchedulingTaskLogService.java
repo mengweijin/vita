@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.monitor.service;
 
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskLogMapper;
@@ -26,15 +27,15 @@ import java.time.LocalTime;
 public class SchedulingTaskLogService extends CrudRepository<SchedulingTaskLogMapper, SchedulingTaskLogDO> {
 
     public LambdaQueryWrapper<SchedulingTaskLogDO> getQueryWrapper(SchedulingTaskLogDO taskLog) {
-        LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(taskLog.getId() != null, SchedulingTaskLogDO::getId, taskLog.getId());
         wrapper.eq(taskLog.getSchedulingTaskId() != null, SchedulingTaskLogDO::getSchedulingTaskId, taskLog.getSchedulingTaskId());
         wrapper.eq(StrUtil.isNotBlank(taskLog.getStatus()), SchedulingTaskLogDO::getStatus, taskLog.getStatus());
         wrapper.eq(StrUtil.isNotBlank(taskLog.getSuccess()), SchedulingTaskLogDO::getSuccess, taskLog.getSuccess());
         wrapper.eq(taskLog.getCreateBy() != null, SchedulingTaskLogDO::getCreateBy, taskLog.getCreateBy());
         wrapper.eq(taskLog.getUpdateBy() != null, SchedulingTaskLogDO::getUpdateBy, taskLog.getUpdateBy());
-        wrapper.gt(taskLog.getSearchStartTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getSearchStartTime());
-        wrapper.le(taskLog.getSearchEndTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getSearchEndTime());
+        wrapper.gt(taskLog.getStartCreateTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getStartCreateTime());
+        wrapper.le(taskLog.getEndCreateTime() != null, SchedulingTaskLogDO::getCreateTime, taskLog.getEndCreateTime());
         wrapper.like(StrUtil.isNotBlank(taskLog.getMessage()), SchedulingTaskLogDO::getMessage, taskLog.getMessage());
         return wrapper;
     }

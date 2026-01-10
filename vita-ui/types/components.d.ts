@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    copy: typeof import('../src/components/modules/common/vt-cropper-copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -62,6 +63,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VtCropper: typeof import('./../src/components/modules/common/vt-cropper.vue')['default']
+    VtCropperCopy: typeof import('./../src/components/modules/common/vt-cropper-copy.vue')['default']
     VtEditor: typeof import('./../src/components/modules/common/vt-editor.vue')['default']
     VtIconPicker: typeof import('./../src/components/modules/common/vt-icon-picker.vue')['default']
     VtSelectDept: typeof import('./../src/components/modules/system/vt-select-dept.vue')['default']

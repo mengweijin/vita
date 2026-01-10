@@ -5,9 +5,10 @@ meta:
 
 <script setup>
 import { dictTypeApi } from "@/api/system/dict-api";
-import columns from "./columns.js";
-import DictDataTable from "./components/dict-data-table.vue";
+import { columns } from "./columns.js";
 import DictTypeEdit from "./components/dict-type-edit.vue";
+
+const router = useRouter();
 
 const loading = ref(true);
 
@@ -21,72 +22,69 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  current: 1,
+  keywords: undefined,
+  size: 10,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	dictTypeApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  dictTypeApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 const dictTypeEditRef = useTemplateRef("dictTypeEditRef");
 
 const handleAdd = () => {
-	dictTypeEditRef.value.data = {};
-	dictTypeEditRef.value.visible = true;
+  dictTypeEditRef.value.data = {};
+  dictTypeEditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
-	// 使用展开运算符，避免数据污染
-	dictTypeEditRef.value.data = { ...row };
-	dictTypeEditRef.value.visible = true;
+  // 使用展开运算符，避免数据污染
+  dictTypeEditRef.value.data = { ...row };
+  dictTypeEditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	dictTypeApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  dictTypeApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
-const dictDataTableRef = useTemplateRef("dictDataTableRef");
-
-const openDictDataTableListDialog = (row) => {
-	dictDataTableRef.value.dictType = row;
-	dictDataTableRef.value.visible = true;
+const openDictDataTab = (row) => {
+  router.push(`/system/dict/${row.id}`);
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 
@@ -159,7 +157,7 @@ onMounted(() => {
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" show-overflow-tooltip />
       <el-table-column v-if="columns.name.visible" prop="name" label="字典名称" min-width="220" align="center" fixed="left">
         <template #default="{ row }">
-          <a href="javascript:" @click="openDictDataTableListDialog(row)">{{ row.name }}</a>
+          <a href="javascript:" @click="openDictDataTab(row)">{{ row.name }}</a>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.code.visible" prop="code" label="字典编码" min-width="220" show-overflow-tooltip />
@@ -216,8 +214,6 @@ onMounted(() => {
   </div>
 
   <DictTypeEdit ref="dictTypeEditRef" @refresh-table="loadTableData"></DictTypeEdit>
-
-  <DictDataTable ref="dictDataTableRef"></DictDataTable>
 </template>
 
 <style scoped></style>

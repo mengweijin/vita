@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,7 +100,7 @@ public class FileController {
     @SaCheckPermission("system:file:select")
     @GetMapping("/list")
     public List<FileVO> list(FileDO fileEntity) {
-        List<FileDO> list = fileService.list(new LambdaQueryWrapper<>(fileEntity));
+        List<FileDO> list = fileService.list(Wrappers.lambdaQuery(fileEntity));
         return BeanCopyUtils.copyList(list, FileVO.class);
     }
 
@@ -127,8 +127,8 @@ public class FileController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:file:create")
     @PostMapping("/create")
-    public R<FileVO> create(@RequestPart("file") MultipartFile file, @RequestParam(name = "fileName", required = false) String fileName) {
-        FileDO fileDO = fileService.upload(file, fileName);
+    public R<FileVO> create(@RequestPart("file") MultipartFile file) {
+        FileDO fileDO = fileService.upload(file);
         return R.ok(BeanCopyUtils.copyBean(fileDO, FileVO.class));
     }
 

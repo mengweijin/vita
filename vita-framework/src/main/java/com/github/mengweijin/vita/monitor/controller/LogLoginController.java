@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -73,7 +74,7 @@ public class LogLoginController {
     @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/list")
     public List<LogLoginDO> list(LogLoginDO logLogin) {
-        return logLoginService.list(new LambdaQueryWrapper<>(logLogin));
+        return logLoginService.list(Wrappers.lambdaQuery(logLogin));
     }
 
     /**

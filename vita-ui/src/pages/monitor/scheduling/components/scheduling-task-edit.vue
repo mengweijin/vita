@@ -1,5 +1,7 @@
 <script setup>
 import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api";
+import cronstrue from 'cronstrue';
+import 'cronstrue/locales/zh_CN';
 
 const loading = ref(true);
 
@@ -9,61 +11,68 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	args: undefined,
-	beanName: undefined,
-	cron: undefined,
-	disabled: undefined,
-	id: undefined,
-	name: undefined,
-	remark: undefined,
+  args: undefined,
+  beanName: undefined,
+  cron: undefined,
+  disabled: undefined,
+  id: undefined,
+  name: undefined,
+  remark: undefined,
 });
 
 const init = () => {
-	form.id = data.value.id ?? undefined;
-	form.name = data.value.name ?? undefined;
-	form.cron = data.value.cron ?? undefined;
-	form.beanName = data.value.beanName ?? undefined;
-	form.args = data.value.args ?? undefined;
-	form.disabled = data.value.disabled ?? undefined;
-	form.remark = data.value.remark ?? undefined;
+  form.id = data.value.id ?? undefined;
+  form.name = data.value.name ?? undefined;
+  form.cron = data.value.cron ?? undefined;
+  form.beanName = data.value.beanName ?? undefined;
+  form.args = data.value.args ?? undefined;
+  form.disabled = data.value.disabled ?? undefined;
+  form.remark = data.value.remark ?? undefined;
 };
 
 const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-	formRef.value.validate((valid, fields) => {
-		if (!valid) {
-			// fields 只有在验证失败的情况下才有值
-			console.log(fields);
-			return;
-		}
-		if (form.id) {
-			schedulingTaskApi.update(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
-			});
-		} else {
-			schedulingTaskApi.create(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
-			});
-		}
-	});
+  formRef.value.validate((valid, fields) => {
+    if (!valid) {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields);
+      return;
+    }
+    if (form.id) {
+      schedulingTaskApi.update(form).then((r) => {
+        emit("refresh-table");
+        onClosed();
+      });
+    } else {
+      schedulingTaskApi.create(form).then((r) => {
+        emit("refresh-table");
+        onClosed();
+      });
+    }
+  });
 };
 
 const emit = defineEmits(["refresh-table"]);
 
 const onOpened = () => {
-	loading.value = true;
-	init();
-	loading.value = false;
+  loading.value = true;
+  init();
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
-	init();
+  visible.value = false;
+  data.value = {};
+  init();
 };
+
+const cronDescription = computed(() => {
+  if (form.cron == null || form.cron === '') {
+    return '';
+  }
+  return cronstrue.toString(form.cron, { locale: 'zh_CN', use24HourTimeFormat: true });
+});
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
 defineExpose({ data, visible });
@@ -79,7 +88,8 @@ defineExpose({ data, visible });
       </el-form-item>
 
       <el-form-item prop="cron" label="CRON 表达式" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.cron" clearable maxlength="64" autocomplete="off" />
+        <el-input v-model="form.cron" clearable maxlength="64" autocomplete="off" style="width: 40%;" />
+        <span style="margin-left: 10px; color: #c2c2c2;">{{ cronDescription }}执行</span>
       </el-form-item>
 
       <el-form-item prop="beanName" label="Bean 名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">

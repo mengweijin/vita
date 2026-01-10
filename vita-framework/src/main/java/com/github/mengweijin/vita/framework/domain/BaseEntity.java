@@ -1,14 +1,15 @@
 package com.github.mengweijin.vita.framework.domain;
 
+import cn.hutool.v7.core.date.DateFormatPool;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
-import cn.hutool.v7.core.date.DateFormatPool;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -70,19 +71,38 @@ public abstract class BaseEntity implements Serializable {
      * 查询关键字
      */
     @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String keywords;
 
     /**
      * 按创建时间查询的开始时间
      */
     @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
-    private LocalDateTime searchStartTime;
+    private LocalDateTime startCreateTime;
 
     /**
      * 按创建时间查询的结束时间
      */
     @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
-    private LocalDateTime searchEndTime;
+    private LocalDateTime endCreateTime;
+
+    /**
+     * 按更新时间查询的开始时间
+     */
+    @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
+    private LocalDateTime startUpdateTime;
+
+    /**
+     * 按更新时间查询的结束时间
+     */
+    @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
+    private LocalDateTime endUpdateTime;
 }

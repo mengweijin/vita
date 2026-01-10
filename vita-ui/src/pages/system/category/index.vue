@@ -6,7 +6,7 @@ meta:
 <script setup>
 import { categoryApi } from "@/api/system/category-api";
 import utils from "@/utils/utils.js";
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 import CategoryEdit from "./components/category-edit.vue";
 
 const loading = ref(true);

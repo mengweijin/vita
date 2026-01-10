@@ -5,7 +5,7 @@ meta:
 
 <script setup>
 import { logSystemApi } from "@/api/monitor/log-system-api";
-import columns from "./columns.js";
+import { columns } from "./columns.js";
 import LogSystemDetail from "./components/log-system-detail.vue";
 
 const loading = ref(true);
@@ -20,59 +20,59 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-	current: 1,
-	keywords: undefined,
-	loggerLevel: undefined,
-	size: 100,
-	total: 0,
+  current: 1,
+  keywords: undefined,
+  loggerLevel: undefined,
+  size: 100,
+  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	logSystemApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  logSystemApi.page(queryParams).then((res) => {
+    tableData.value = res.records;
+    queryParams.total = res.total;
+    loading.value = false;
+  });
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-	logSystemApi.remove(ids).then(() => {
-		// 清空已选择
-		selected.value = [];
-		loadTableData();
-	});
+  logSystemApi.remove(ids).then(() => {
+    // 清空已选择
+    selected.value = [];
+    loadTableData();
+  });
 };
 
 const handleBatchDelete = () => {
-	const ids = selected.value.map((item) => item.id).join();
-	handleDelete(ids);
+  const ids = selected.value.map((item) => item.id).join();
+  handleDelete(ids);
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.current = currentPage;
+  queryParams.size = pageSize;
+  loadTableData();
 };
 
 const logSystemDetailRef = useTemplateRef("logSystemDetailRef");
 const handleDetail = (row) => {
-	logSystemDetailRef.value.data = { ...row };
-	logSystemDetailRef.value.visible = true;
+  logSystemDetailRef.value.data = { ...row };
+  logSystemDetailRef.value.visible = true;
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 

@@ -4,6 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
@@ -38,13 +39,13 @@ public class LogSystemService extends CrudRepository<LogMapper, LogDO> {
     }
 
     public LambdaQueryWrapper<LogDO> getQueryWrapper(LogDO logDO) {
-        LambdaQueryWrapper<LogDO> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<LogDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(logDO.getId() != null, LogDO::getId, logDO.getId());
         wrapper.eq(StrValidator.isNotBlank(logDO.getLoggerLevel()), LogDO::getLoggerLevel, logDO.getLoggerLevel());
         wrapper.eq(logDO.getCreateBy() != null, LogDO::getCreateBy, logDO.getCreateBy());
         wrapper.eq(logDO.getUpdateBy() != null, LogDO::getUpdateBy, logDO.getUpdateBy());
-        wrapper.gt(logDO.getSearchStartTime() != null, LogDO::getCreateTime, logDO.getSearchStartTime());
-        wrapper.le(logDO.getSearchEndTime() != null, LogDO::getCreateTime, logDO.getSearchEndTime());
+        wrapper.gt(logDO.getStartCreateTime() != null, LogDO::getCreateTime, logDO.getStartCreateTime());
+        wrapper.le(logDO.getEndCreateTime() != null, LogDO::getCreateTime, logDO.getEndCreateTime());
         wrapper.like(StrValidator.isNotBlank(logDO.getStackTrace()), LogDO::getStackTrace, logDO.getStackTrace());
         if (StrUtil.isNotBlank(logDO.getKeywords())) {
             wrapper.and(w -> {

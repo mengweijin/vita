@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
@@ -68,7 +69,7 @@ public class LogSystemController {
     @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/list")
     public List<LogDO> list(LogDO logDO) {
-        return logSystemService.list(new LambdaQueryWrapper<>(logDO));
+        return logSystemService.list(Wrappers.lambdaQuery(logDO));
     }
 
     /**
