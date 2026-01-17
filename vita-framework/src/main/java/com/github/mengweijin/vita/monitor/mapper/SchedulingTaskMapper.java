@@ -1,7 +1,8 @@
 package com.github.mengweijin.vita.monitor.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,7 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-06-03
  */
 @Mapper
-public interface SchedulingTaskMapper extends BaseMapper<SchedulingTaskDO> {
+public interface SchedulingTaskMapper extends BaseVitaMapper<SchedulingTaskDO, SchedulingTaskVO> {
 
 }
 

@@ -8,9 +8,7 @@ import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.ratelimit.ERateLimitStrategy;
 import com.github.mengweijin.vita.framework.ratelimit.RateLimit;
 import com.github.mengweijin.vita.framework.repeatsubmit.RepeatSubmit;
-import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
 import com.github.mengweijin.vita.system.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -68,8 +66,4 @@ public class LoginController {
         return loginService.getCaptcha();
     }
 
-    @GetMapping("/get/login-user")
-    public LoginUserVO getLoginUser() {
-        return LoginHelper.getLoginUser();
-    }
 }

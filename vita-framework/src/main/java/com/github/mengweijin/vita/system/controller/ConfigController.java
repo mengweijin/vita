@@ -3,15 +3,15 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.properties.VitaProperties;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.ConfigBO;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.vo.ConfigVO;
 import com.github.mengweijin.vita.system.service.ConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +44,6 @@ public class ConfigController {
 
     private ConfigService configService;
 
-    private VitaProperties vitaProperties;
-
     /**
      * <p>
      * Get Config page by Config
@@ -56,10 +54,10 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/page")
-    public IPage<ConfigDO> page(Page<ConfigDO> page, ConfigDO config) {
-        LambdaQueryWrapper<ConfigDO> wrapper = configService.getQueryWrapper(config);
+    public IPage<ConfigVO> page(Page<ConfigDO> page, ConfigDO config) {
+        LambdaQueryWrapper<ConfigDO> wrapper = configService.buildQueryWrapper(config);
         wrapper.orderByAsc(ConfigDO::getConfigKey);
-        return configService.page(page, wrapper);
+        return configService.pageVo(page, wrapper);
     }
 
     /**
@@ -71,8 +69,10 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/list")
-    public List<ConfigDO> list(ConfigDO config) {
-        return configService.list(Wrappers.lambdaQuery(config));
+    public List<ConfigVO> list(ConfigDO config) {
+        LambdaQueryWrapper<ConfigDO> wrapper = configService.buildQueryWrapper(config);
+        wrapper.orderByAsc(ConfigDO::getConfigKey);
+        return configService.listVo(wrapper);
     }
 
     /**
@@ -84,8 +84,8 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/{id}")
-    public ConfigDO getById(@PathVariable("id") Long id) {
-        return configService.getById(id);
+    public ConfigVO getById(@PathVariable("id") Long id) {
+        return configService.getVoById(id);
     }
 
     /**
@@ -97,20 +97,23 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/get-by-code/{code}")
-    public ConfigDO getByCode(@PathVariable("code") String code) {
-        return configService.getByConfigKey(code);
+    public ConfigVO getByCode(@PathVariable("code") String code) {
+        ConfigDO configDO = configService.getByConfigKey(code);
+        return MapstructUtils.getInstance().convert(configDO, ConfigVO.class);
     }
     /**
      * <p>
      * Add Config
      * </p>
-     * @param config {@link ConfigDO}
+     * @param bo {@link ConfigDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:config:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigBO config) {
-        boolean bool = configService.save(config);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigBO bo) {
+        boolean bool = configService.saveByBo(bo);
+        // 刷新配置
+        configService.publishEnvironmentChangeEvent(bo.getConfigKey());
         return R.result(bool);
     }
 
@@ -118,13 +121,15 @@ public class ConfigController {
      * <p>
      * Update Config
      * </p>
-     * @param config {@link ConfigDO}
+     * @param bo {@link ConfigDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigBO config) {
-        boolean bool = configService.updateById(config);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigBO bo) {
+        boolean bool = configService.updateByBoById(bo);
+        // 刷新配置
+        configService.publishEnvironmentChangeEvent(bo.getConfigKey());
         return R.result(bool);
     }
 
@@ -144,8 +149,9 @@ public class ConfigController {
     /**
      * 手动从数据库配置读取，并刷新被 @ConfigurationProperties 注解的类的属性的值
      */
+    @SaCheckPermission("system:config:refresh")
     @PostMapping("/manual-refresh")
-    public R<Void> manualRefresh() {
+    public R<Void> refresh() {
         configService.publishEnvironmentChangeEvent();
         return R.ok();
     }

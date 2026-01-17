@@ -3,13 +3,15 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.vo.DictDataVO;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,9 +54,9 @@ public class DictDataController {
      */
     @SaCheckPermission("system:dictData:select")
     @GetMapping("/page")
-    public IPage<DictDataDO> page(Page<DictDataDO> page, DictDataDO dictData) {
-        LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.getQueryWrapper(dictData);
-        return dictDataService.page(page, wrapper.orderByAsc(DictDataDO::getSeq));
+    public IPage<DictDataVO> page(Page<DictDataDO> page, DictDataDO dictData) {
+        LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.buildQueryWrapper(dictData);
+        return dictDataService.pageVo(page, wrapper.orderByAsc(DictDataDO::getSeq));
     }
 
     /**
@@ -65,8 +67,9 @@ public class DictDataController {
      * @return List<DictData>
      */
     @GetMapping("/list")
-    public List<DictDataDO> list(DictDataDO dictData) {
-        return dictDataService.list(Wrappers.lambdaQuery(dictData).orderByAsc(DictDataDO::getSeq));
+    public List<DictDataVO> list(DictDataDO dictData) {
+        LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.defaultQueryWrapper(dictData).orderByAsc(DictDataDO::getSeq);
+        return dictDataService.listVo(wrapper);
     }
 
     /**
@@ -78,28 +81,29 @@ public class DictDataController {
      */
     @SaCheckPermission("system:dictData:select")
     @GetMapping("/{id}")
-    public DictDataDO getById(@PathVariable("id") Long id) {
-        return dictDataService.getById(id);
+    public DictDataVO getById(@PathVariable("id") Long id) {
+        return dictDataService.getVoById(id);
     }
 
     @SaCheckPermission("system:dictData:select")
     @GetMapping("/get-by-code/{code}")
-    public List<DictDataDO> getByCode(@PathVariable("code") String code) {
-        return dictDataService.getByCode(code);
+    public List<DictDataVO> getByCode(@PathVariable("code") String code) {
+        List<DictDataDO> list = dictDataService.getByCode(code);
+        return MapstructUtils.getInstance().convert(list, DictDataVO.class);
     }
 
     /**
      * <p>
      * Add DictData
      * </p>
-     * @param dictData {@link DictDataDO}
+     * @param bo {@link DictDataDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictData:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataDO dictData) {
-        dictDataService.checkValDuplicate(null, dictData.getCode(), dictData.getVal());
-        boolean bool = dictDataService.save(dictData);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataBO bo) {
+        dictDataService.checkValDuplicate(null, bo.getCode(), bo.getVal());
+        boolean bool = dictDataService.saveByBo(bo);
         return R.result(bool);
     }
 
@@ -107,14 +111,14 @@ public class DictDataController {
      * <p>
      * Update DictData
      * </p>
-     * @param dictData {@link DictDataDO}
+     * @param bo {@link DictDataDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictData:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataDO dictData) {
-        dictDataService.checkValDuplicate(dictData.getId(), dictData.getCode(), dictData.getVal());
-        boolean bool = dictDataService.updateById(dictData);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataBO bo) {
+        dictDataService.checkValDuplicate(bo.getId(), bo.getCode(), bo.getVal());
+        boolean bool = dictDataService.updateByBoById(bo);
         return R.result(bool);
     }
 

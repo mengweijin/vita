@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.monitor.domain.bo.LogOperationBO;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
 import com.github.mengweijin.vita.monitor.service.LogOperationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -53,10 +55,10 @@ public class LogOperationController {
      */
     @SaCheckPermission("monitor:logOperation:select")
     @GetMapping("/page")
-    public IPage<LogOperationDO> page(Page<LogOperationDO> page, LogOperationDO logOperation) {
-        LambdaQueryWrapper<LogOperationDO> wrapper = logOperationService.getQueryWrapper(logOperation);
+    public IPage<LogOperationVO> page(Page<LogOperationDO> page, LogOperationDO logOperation) {
+        LambdaQueryWrapper<LogOperationDO> wrapper = logOperationService.buildQueryWrapper(logOperation);
         wrapper.orderByDesc(LogOperationDO::getCreateTime);
-        return logOperationService.page(page, wrapper);
+        return logOperationService.pageVo(page, wrapper);
     }
 
     /**
@@ -68,8 +70,8 @@ public class LogOperationController {
      */
     @SaCheckPermission("monitor:logOperation:select")
     @GetMapping("/list")
-    public List<LogOperationDO> list(LogOperationDO logOperation) {
-        return logOperationService.list(Wrappers.lambdaQuery(logOperation));
+    public List<LogOperationVO> list(LogOperationDO logOperation) {
+        return logOperationService.listVo(Wrappers.lambdaQuery(logOperation));
     }
 
     /**
@@ -81,8 +83,8 @@ public class LogOperationController {
      */
     @SaCheckPermission("monitor:logOperation:select")
     @GetMapping("/{id}")
-    public LogOperationDO getById(@PathVariable("id") Long id) {
-        return logOperationService.getById(id);
+    public LogOperationVO getById(@PathVariable("id") Long id) {
+        return logOperationService.getVoById(id);
     }
 
     /**
@@ -94,8 +96,8 @@ public class LogOperationController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("monitor:logOperation:create")
     @PostMapping("/create")
-    public R<Void> create(@Valid @RequestBody LogOperationDO logOperation) {
-        boolean bool = logOperationService.save(logOperation);
+    public R<Void> create(@Valid @RequestBody LogOperationBO logOperation) {
+        boolean bool = logOperationService.saveByBo(logOperation);
         return R.result(bool);
     }
 
@@ -108,8 +110,8 @@ public class LogOperationController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("monitor:logOperation:update")
     @PostMapping("update")
-    public R<Void> update(@Valid @RequestBody LogOperationDO logOperation) {
-        boolean bool = logOperationService.updateById(logOperation);
+    public R<Void> update(@Valid @RequestBody LogOperationBO logOperation) {
+        boolean bool = logOperationService.updateByBoById(logOperation);
         return R.result(bool);
     }
 

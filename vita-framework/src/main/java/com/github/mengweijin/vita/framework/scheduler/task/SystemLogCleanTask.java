@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.LogSystemService;
 import lombok.AllArgsConstructor;
@@ -47,8 +47,8 @@ public class SystemLogCleanTask implements ISchedulingTask {
         int days = NumberUtil.parseInt(daysString);
         LocalDateTime minusTime = LocalDate.now().minusDays(days).atTime(0, 0, 0);
 
-        LambdaQueryWrapper<LogDO> wrapper = Wrappers.lambdaQuery();
-        wrapper.le(LogDO::getCreateTime, minusTime);
+        LambdaQueryWrapper<LogSystemDO> wrapper = Wrappers.lambdaQuery();
+        wrapper.le(LogSystemDO::getCreateTime, minusTime);
 
         int deleted = logSystemService.getBaseMapper().delete(wrapper);
         return String.format("%s records before time [%s] were deleted.", deleted, TimeUtil.format(minusTime, DateFormatPool.NORM_DATETIME_FORMATTER));

@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.domain;
 
-import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +24,7 @@ class ExtPropTest {
         ext.put("nickname", "管理员");
         ext.put("startTime", LocalDateTime.now());
 
-        String str = P.getSensitiveObjectMapperWrapper().writeValueAsString(ext);
+        String str = ObjectMapperUtils.getSensitiveObjectMapperWrapper().writeValueAsString(ext);
 
         log.info(str);
         Assertions.assertNotNull(str);

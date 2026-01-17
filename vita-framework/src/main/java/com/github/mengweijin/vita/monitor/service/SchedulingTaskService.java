@@ -4,10 +4,11 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.scheduler.SchedulingTaskFactory;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,24 +28,22 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class SchedulingTaskService extends CrudRepository<SchedulingTaskMapper, SchedulingTaskDO> {
+public class SchedulingTaskService extends BaseVitaService<SchedulingTaskMapper, SchedulingTaskDO, SchedulingTaskVO> {
 
     private SchedulingTaskFactory schedulingTaskFactory;
 
-    public LambdaQueryWrapper<SchedulingTaskDO> getQueryWrapper(SchedulingTaskDO schedulingTask) {
+    @Override
+    public LambdaQueryWrapper<SchedulingTaskDO> buildQueryWrapper(SchedulingTaskDO schedulingTask) {
         LambdaQueryWrapper<SchedulingTaskDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(schedulingTask.getId() != null, SchedulingTaskDO::getId, schedulingTask.getId());
+        wrapper.eq(StrValidator.isNotBlank(schedulingTask.getExecuteAfterStarted()), SchedulingTaskDO::getExecuteAfterStarted, schedulingTask.getExecuteAfterStarted());
         wrapper.eq(StrValidator.isNotBlank(schedulingTask.getDisabled()), SchedulingTaskDO::getDisabled, schedulingTask.getDisabled());
         wrapper.eq(schedulingTask.getCreateBy() != null, SchedulingTaskDO::getCreateBy, schedulingTask.getCreateBy());
         wrapper.eq(schedulingTask.getUpdateBy() != null, SchedulingTaskDO::getUpdateBy, schedulingTask.getUpdateBy());
         wrapper.gt(schedulingTask.getStartCreateTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getStartCreateTime());
         wrapper.le(schedulingTask.getEndCreateTime() != null, SchedulingTaskDO::getCreateTime, schedulingTask.getEndCreateTime());
-        if (StrUtil.isNotBlank(schedulingTask.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(SchedulingTaskDO::getName, schedulingTask.getKeywords()));
-                w.or(w1 -> w1.like(SchedulingTaskDO::getBeanName, schedulingTask.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(schedulingTask.getName()), SchedulingTaskDO::getName, schedulingTask.getName());
+        wrapper.like(StrUtil.isNotBlank(schedulingTask.getBeanName()), SchedulingTaskDO::getBeanName, schedulingTask.getBeanName());
         return wrapper;
     }
 

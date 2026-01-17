@@ -9,7 +9,9 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.DictTypeBO;
 import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
+import com.github.mengweijin.vita.system.domain.vo.DictTypeVO;
 import com.github.mengweijin.vita.system.service.DictTypeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,10 +54,10 @@ public class DictTypeController {
      */
     @SaCheckPermission("system:dictType:select")
     @GetMapping("/page")
-    public IPage<DictTypeDO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
-        LambdaQueryWrapper<DictTypeDO> wrapper = dictTypeService.getQueryWrapper(dictType);
+    public IPage<DictTypeVO> page(Page<DictTypeDO> page, DictTypeDO dictType) {
+        LambdaQueryWrapper<DictTypeDO> wrapper = dictTypeService.buildQueryWrapper(dictType);
         wrapper.orderByAsc(DictTypeDO::getCode);
-        return dictTypeService.page(page, wrapper);
+        return dictTypeService.pageVo(page, wrapper);
     }
 
     /**
@@ -67,8 +69,8 @@ public class DictTypeController {
      */
     @SaCheckPermission("system:dictType:select")
     @GetMapping("/list")
-    public List<DictTypeDO> list(DictTypeDO dictType) {
-        return dictTypeService.list(Wrappers.lambdaQuery(dictType));
+    public List<DictTypeVO> list(DictTypeDO dictType) {
+        return dictTypeService.listVo(Wrappers.lambdaQuery(dictType));
     }
 
     /**
@@ -80,8 +82,8 @@ public class DictTypeController {
      */
     @SaCheckPermission("system:dictType:select")
     @GetMapping("/{id}")
-    public DictTypeDO getById(@PathVariable("id") Long id) {
-        return dictTypeService.getById(id);
+    public DictTypeVO getById(@PathVariable("id") Long id) {
+        return dictTypeService.getVoById(id);
     }
 
     /**
@@ -93,8 +95,8 @@ public class DictTypeController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dictType:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictTypeDO dictType) {
-        boolean bool = dictTypeService.save(dictType);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictTypeBO dictType) {
+        boolean bool = dictTypeService.saveByBo(dictType);
         return R.result(bool);
     }
 
@@ -107,8 +109,8 @@ public class DictTypeController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dictType:update")
     @PostMapping("update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictTypeDO dictType) {
-        boolean bool = dictTypeService.updateById(dictType);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictTypeBO dictType) {
+        boolean bool = dictTypeService.updateByBoById(dictType);
         return R.result(bool);
     }
 

@@ -74,19 +74,19 @@ public class SaTokenListenerImpl implements SaTokenListener {
         // ignore
     }
 
-    /** 每次创建Session时触发 */
+    /** 每次创建 Session 时触发 */
     @Override
     public void doCreateSession(String id) {
         // ignore
     }
 
-    /** 每次注销Session时触发 */
+    /** 每次注销 Session 时触发 */
     @Override
     public void doLogoutSession(String id) {
         // ignore
     }
 
-    /** 每次Token续期时触发 */
+    /** 每次 Token 续期时触发 */
     @Override
     public void doRenewTimeout(String loginType, Object loginId, String tokenValue, long timeout) {
         // ignore

@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.scheduler;
 
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
-import com.github.mengweijin.vita.framework.domain.P;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskLogService;
@@ -53,7 +53,7 @@ public interface ISchedulingTask {
         try {
             HashMap<?, ?> args = new HashMap<>(16);
             if(StrUtil.isNotBlank(task.getArgs())) {
-                args = P.getObjectMapperWrapper().readValue(task.getArgs(), HashMap.class);
+                args = ObjectMapperUtils.getObjectMapperWrapper().readValue(task.getArgs(), HashMap.class);
             }
             String result = run(task, args);
 

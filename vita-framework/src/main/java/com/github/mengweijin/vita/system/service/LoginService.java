@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
@@ -11,13 +12,12 @@ import cn.hutool.v7.swing.captcha.generator.MathGenerator;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
-import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.enums.dict.ELoginType;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,10 +39,6 @@ import java.util.Optional;
 public class LoginService {
 
     private UserService userService;
-
-    private RoleService roleService;
-
-    private MenuService menuService;
 
     private LogLoginService logLoginService;
 
@@ -95,22 +91,19 @@ public class LoginService {
             saLoginParameter.setActiveTimeout(604800);
         }
 
-        StpUtil.login(loginBO.getUsername(), saLoginParameter);
+        StpUtil.login(user.getUsername(), saLoginParameter);
 
-        LoginUserVO loginUser = this.buildLoginUser(user);
-        LoginHelper.setLoginUser(loginUser);
+        UserSessionVO loginUser = this.buildSessionUser(user);
+        StpUtil.getTokenSession().set(SaSession.USER, loginUser);
 
         return loginUser.getToken();
     }
 
-    private LoginUserVO buildLoginUser(UserDO user) {
-        LoginUserVO loginUser = new LoginUserVO();
+    private UserSessionVO buildSessionUser(UserDO user) {
+        UserSessionVO loginUser = new UserSessionVO();
         loginUser.setUserId(user.getId());
         loginUser.setUsername(user.getUsername());
         loginUser.setNickname(user.getNickname());
-        loginUser.setAvatar(userService.getAvatarById(user.getId()));
-        loginUser.setRoles(roleService.getRoleCodeByUsername(user.getUsername()));
-        loginUser.setPermissions(menuService.getMenuPermissionListByUsername(user.getUsername()));
         loginUser.setToken(StpUtil.getTokenValue());
         return loginUser;
     }

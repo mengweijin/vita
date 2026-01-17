@@ -1,7 +1,7 @@
 <script setup>
-import { configApi } from "@/api/system/config-api";
-import { roleApi } from "@/api/system/role-api";
-import { userApi } from "@/api/system/user-api";
+import { configApi } from "@/api/system/config-api.js";
+import { roleApi } from "@/api/system/role-api.js";
+import { userApi } from "@/api/system/user-api.js";
 import VtSelectDept from "@/components/modules/system/vt-select-dept.vue";
 import VtSelectDict from "@/components/modules/system/vt-select-dict.vue";
 import VtSelectPost from "@/components/modules/system/vt-select-post.vue";
@@ -15,98 +15,108 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	citizenId: undefined,
-	deptId: undefined,
-	disabled: "N",
-	email: undefined,
-	gender: undefined,
-	id: undefined,
-	mobile: undefined,
-	nickname: undefined,
-	password: undefined,
-	postIds: [],
-	remark: undefined,
-	roleIds: [],
-	username: undefined,
+  citizenId: undefined,
+  deptId: undefined,
+  disabled: "N",
+  email: undefined,
+  gender: undefined,
+  id: undefined,
+  mobile: undefined,
+  nickname: undefined,
+  password: undefined,
+  postIds: [],
+  remark: undefined,
+  roleIds: [],
+  username: undefined,
 });
 
 const init = () => {
-	form.id = data.value.id ?? undefined;
-	form.deptId = data.value.deptId ?? undefined;
-	form.username = data.value.username ?? undefined;
-	form.password = data.value.password ?? undefined;
-	form.nickname = data.value.nickname ?? undefined;
-	form.mobile = data.value.mobile ?? undefined;
-	form.email = data.value.email ?? undefined;
-	form.gender = data.value.gender ?? "male";
-	form.disabled = data.value.disabled ?? "N";
-	form.remark = data.value.remark ?? undefined;
-	form.citizenId = data.value.citizenId ?? undefined;
-	form.roleIds = data.value?.roleIds ?? [];
-	form.postIds = data.value?.postIds ?? [];
+  form.id = data.value.id ?? undefined;
+  form.deptId = data.value.deptId ?? undefined;
+  form.username = data.value.username ?? undefined;
+  form.password = data.value.password ?? undefined;
+  form.nickname = data.value.nickname ?? undefined;
+  form.mobile = data.value.mobile ?? undefined;
+  form.email = data.value.email ?? undefined;
+  form.gender = data.value.gender ?? "male";
+  form.disabled = data.value.disabled ?? "N";
+  form.remark = data.value.remark ?? undefined;
+  form.citizenId = data.value.citizenId ?? undefined;
+  form.roleIds = data.value?.roleIds ?? [];
+  form.postIds = data.value?.postIds ?? [];
 };
 
 const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-	formRef.value.validate((valid, fields) => {
-		if (!valid) {
-			// fields 只有在验证失败的情况下才有值
-			console.log(fields);
-			return;
-		}
-		if (form.id) {
-			userApi.update(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
-			});
-		} else {
-			userApi.create(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
-			});
-		}
-	});
+  formRef.value.validate((valid, fields) => {
+    if (!valid) {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields);
+      return;
+    }
+    if (form.id) {
+      userApi.update(form).then((r) => {
+        emit("refresh-table");
+        onClosed();
+      });
+    } else {
+      userApi.create(form).then((r) => {
+        emit("refresh-table");
+        onClosed();
+      });
+    }
+  });
 };
 
 const emit = defineEmits(["refresh-table"]);
 
-const initSensitiveInfo = () => {
-	userApi.getSensitiveUserById(data.value.id).then((res) => {
-		form.citizenId = res.citizenId;
-		form.roleIds = res.roleIds;
-		form.postIds = res.postIds;
-	});
+const initEditInfo = (userId) => {
+  userApi.getUserBOById(userId).then((res) => {
+    form.id = res.id ?? undefined;
+    form.deptId = res.deptId ?? undefined;
+    form.username = res.username ?? undefined;
+    form.password = res.password ?? undefined;
+    form.nickname = res.nickname ?? undefined;
+    form.mobile = res.mobile ?? undefined;
+    form.email = res.email ?? undefined;
+    form.gender = res.gender ?? "male";
+    form.disabled = res.disabled ?? "N";
+    form.remark = res.remark ?? undefined;
+    form.citizenId = res.citizenId ?? undefined;
+    form.roleIds = res.roleIds ?? [];
+    form.postIds = res.postIds ?? [];
+  });
 };
 
 const initDefaultPassword = () => {
-	configApi.getByCode("vita.user.default-password").then((res) => {
-		form.password = res?.configValue ?? undefined;
-	});
+  configApi.getByCode("vita.user.default-password").then((res) => {
+    form.password = res?.configValue ?? undefined;
+  });
 };
 
 const initDefaultRole = () => {
-	roleApi.getDefaultRole().then((role) => {
-		form.roleIds.push(role?.id);
-	});
+  roleApi.getDefaultRole().then((role) => {
+    form.roleIds.push(role?.id);
+  });
 };
 
 const onOpened = async () => {
-	loading.value = true;
-	init();
-	if (data.value.id) {
-		initSensitiveInfo();
-	} else {
-		initDefaultPassword();
-		initDefaultRole();
-	}
-	loading.value = false;
+  loading.value = true;
+  if (data.value.id) {
+    initEditInfo(data.value.id);
+  } else {
+    init();
+    initDefaultPassword();
+    initDefaultRole();
+  }
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
-	init();
+  visible.value = false;
+  data.value = {};
+  init();
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */

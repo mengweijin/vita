@@ -8,9 +8,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.FileBO;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
 import com.github.mengweijin.vita.system.domain.vo.FileVO;
 import com.github.mengweijin.vita.system.service.FileService;
@@ -54,7 +55,7 @@ public class FileController {
     @PostMapping("/upload")
     public List<FileVO> upload(HttpServletRequest request) {
         List<FileDO> fileList = fileService.upload(request);
-        return BeanCopyUtils.copyList(fileList, FileVO.class);
+        return MapstructUtils.getInstance().convert(fileList, FileVO.class);
     }
 
     /**
@@ -84,10 +85,9 @@ public class FileController {
     @SaCheckPermission("system:file:select")
     @GetMapping("/page")
     public IPage<FileVO> page(Page<FileDO> page, FileDO fileEntity) {
-        LambdaQueryWrapper<FileDO> wrapper = fileService.getQueryWrapper(fileEntity);
+        LambdaQueryWrapper<FileDO> wrapper = fileService.buildQueryWrapper(fileEntity);
         wrapper.orderByDesc(FileDO::getCreateTime);
-        page = fileService.page(page, wrapper);
-        return BeanCopyUtils.copyPage(page, FileVO.class);
+        return fileService.pageVo(page, wrapper);
     }
 
     /**
@@ -100,8 +100,7 @@ public class FileController {
     @SaCheckPermission("system:file:select")
     @GetMapping("/list")
     public List<FileVO> list(FileDO fileEntity) {
-        List<FileDO> list = fileService.list(Wrappers.lambdaQuery(fileEntity));
-        return BeanCopyUtils.copyList(list, FileVO.class);
+        return fileService.listVo(Wrappers.lambdaQuery(fileEntity));
     }
 
     /**
@@ -114,8 +113,7 @@ public class FileController {
     @SaCheckPermission("system:file:select")
     @GetMapping("/{id}")
     public FileVO getById(@PathVariable("id") Long id) {
-        FileDO fileDO = fileService.getById(id);
-        return BeanCopyUtils.copyBean(fileDO, FileVO.class);
+        return fileService.getVoById(id);
     }
 
     /**
@@ -129,7 +127,7 @@ public class FileController {
     @PostMapping("/create")
     public R<FileVO> create(@RequestPart("file") MultipartFile file) {
         FileDO fileDO = fileService.upload(file);
-        return R.ok(BeanCopyUtils.copyBean(fileDO, FileVO.class));
+        return R.ok(MapstructUtils.getInstance().convert(fileDO, FileVO.class));
     }
 
     /**
@@ -141,8 +139,8 @@ public class FileController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:file:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileDO fileEntity) {
-        boolean bool = fileService.updateById(fileEntity);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileBO fileEntity) {
+        boolean bool = fileService.updateByBoById(fileEntity);
         return R.result(bool);
     }
 

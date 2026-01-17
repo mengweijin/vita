@@ -2,14 +2,13 @@ package com.github.mengweijin.vita.monitor.domain.vo;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.session.SaTerminalInfo;
+import cn.hutool.v7.core.date.TimeUtil;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.hutool.v7.core.date.TimeUtil;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +53,7 @@ public class SaSessionVO {
     /**
      * 此 Session 绑定的登录设备终端信息 Model
      */
-    private List<SaTerminalInfoVO> terminalInfoList = new ArrayList<>();
+    private List<SaTerminalInfoVO> terminalInfoList;
 
 
     public SaSessionVO(SaSession session) {

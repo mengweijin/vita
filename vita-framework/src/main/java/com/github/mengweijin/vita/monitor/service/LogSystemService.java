@@ -1,12 +1,12 @@
 package com.github.mengweijin.vita.monitor.service;
 
-import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogSystemVO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Slf4j
 @Service
-public class LogSystemService extends CrudRepository<LogMapper, LogDO> {
+public class LogSystemService extends BaseVitaService<LogMapper, LogSystemDO, LogSystemVO> {
 
     private final ExecutorService executorService = ThreadUtil.newSingleExecutor();
 
@@ -34,26 +34,23 @@ public class LogSystemService extends CrudRepository<LogMapper, LogDO> {
      * 使用单个线程异步执行，以保证日志的插入顺序
      */
     @EventListener
-    public void saveAsync(LogDO entity) {
+    public void saveAsync(LogSystemDO entity) {
         CompletableFuture.runAsync(() -> this.save(entity), executorService);
     }
 
-    public LambdaQueryWrapper<LogDO> getQueryWrapper(LogDO logDO) {
-        LambdaQueryWrapper<LogDO> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(logDO.getId() != null, LogDO::getId, logDO.getId());
-        wrapper.eq(StrValidator.isNotBlank(logDO.getLoggerLevel()), LogDO::getLoggerLevel, logDO.getLoggerLevel());
-        wrapper.eq(logDO.getCreateBy() != null, LogDO::getCreateBy, logDO.getCreateBy());
-        wrapper.eq(logDO.getUpdateBy() != null, LogDO::getUpdateBy, logDO.getUpdateBy());
-        wrapper.gt(logDO.getStartCreateTime() != null, LogDO::getCreateTime, logDO.getStartCreateTime());
-        wrapper.le(logDO.getEndCreateTime() != null, LogDO::getCreateTime, logDO.getEndCreateTime());
-        wrapper.like(StrValidator.isNotBlank(logDO.getStackTrace()), LogDO::getStackTrace, logDO.getStackTrace());
-        if (StrUtil.isNotBlank(logDO.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(LogDO::getThreadName, logDO.getKeywords()));
-                w.or(w1 -> w1.like(LogDO::getLoggerName, logDO.getKeywords()));
-                w.or(w1 -> w1.like(LogDO::getFormattedMessage, logDO.getKeywords()));
-            });
-        }
+    @Override
+    public LambdaQueryWrapper<LogSystemDO> buildQueryWrapper(LogSystemDO logSystemDO) {
+        LambdaQueryWrapper<LogSystemDO> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(logSystemDO.getId() != null, LogSystemDO::getId, logSystemDO.getId());
+        wrapper.eq(StrValidator.isNotBlank(logSystemDO.getLoggerLevel()), LogSystemDO::getLoggerLevel, logSystemDO.getLoggerLevel());
+        wrapper.eq(logSystemDO.getCreateBy() != null, LogSystemDO::getCreateBy, logSystemDO.getCreateBy());
+        wrapper.eq(logSystemDO.getUpdateBy() != null, LogSystemDO::getUpdateBy, logSystemDO.getUpdateBy());
+        wrapper.gt(logSystemDO.getStartCreateTime() != null, LogSystemDO::getCreateTime, logSystemDO.getStartCreateTime());
+        wrapper.le(logSystemDO.getEndCreateTime() != null, LogSystemDO::getCreateTime, logSystemDO.getEndCreateTime());
+        wrapper.like(StrValidator.isNotBlank(logSystemDO.getThreadName()), LogSystemDO::getThreadName, logSystemDO.getThreadName());
+        wrapper.like(StrValidator.isNotBlank(logSystemDO.getLoggerName()), LogSystemDO::getLoggerName, logSystemDO.getLoggerName());
+        wrapper.like(StrValidator.isNotBlank(logSystemDO.getFormattedMessage()), LogSystemDO::getFormattedMessage, logSystemDO.getFormattedMessage());
+        wrapper.like(StrValidator.isNotBlank(logSystemDO.getStackTrace()), LogSystemDO::getStackTrace, logSystemDO.getStackTrace());
         return wrapper;
     }
 }

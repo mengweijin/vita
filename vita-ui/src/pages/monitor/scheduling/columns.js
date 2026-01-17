@@ -7,6 +7,7 @@ const columns = reactive({
   beanName: { label: "执行 Bean 名称", visible: true },
   args: { label: "执行参数", visible: true },
   disabled: { label: "状态", visible: true },
+  executeAfterStarted: { label: "启动时执行", visible: true },
   remark: { label: "备注", visible: true },
   createByName: { label: "创建者", visible: false },
   createTime: { label: "创建时间", visible: false },

@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
-import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
+import com.github.mengweijin.vita.monitor.domain.bo.LogSystemBO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogSystemVO;
 import com.github.mengweijin.vita.monitor.service.LogSystemService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -48,28 +50,28 @@ public class LogSystemController {
      * Get Log-System page by LogDO
      * </p>
      * @param page page
-     * @param logDO {@link LogDO}
+     * @param logSystemDO {@link LogSystemDO}
      * @return Page<LogDO>
      */
     @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/page")
-    public IPage<LogDO> page(Page<LogDO> page, LogDO logDO) {
-        LambdaQueryWrapper<LogDO> wrapper = logSystemService.getQueryWrapper(logDO);
-        wrapper.orderByAsc(LogDO::getCreateTime);
-        return logSystemService.page(page, wrapper);
+    public IPage<LogSystemVO> page(Page<LogSystemDO> page, LogSystemDO logSystemDO) {
+        LambdaQueryWrapper<LogSystemDO> wrapper = logSystemService.buildQueryWrapper(logSystemDO);
+        wrapper.orderByAsc(LogSystemDO::getCreateTime);
+        return logSystemService.pageVo(page, wrapper);
     }
 
     /**
      * <p>
      * Get Log-System list by LogDO
      * </p>
-     * @param logDO {@link LogDO}
+     * @param logSystemDO {@link LogSystemDO}
      * @return List<LogDO>
      */
     @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/list")
-    public List<LogDO> list(LogDO logDO) {
-        return logSystemService.list(Wrappers.lambdaQuery(logDO));
+    public List<LogSystemVO> list(LogSystemDO logSystemDO) {
+        return logSystemService.listVo(Wrappers.lambdaQuery(logSystemDO));
     }
 
     /**
@@ -81,21 +83,21 @@ public class LogSystemController {
      */
     @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/{id}")
-    public LogDO getById(@PathVariable("id") Long id) {
-        return logSystemService.getById(id);
+    public LogSystemVO getById(@PathVariable("id") Long id) {
+        return logSystemService.getVoById(id);
     }
 
     /**
      * <p>
      * Add Log-System
      * </p>
-     * @param logDO {@link LogDO}
+     * @param bo {@link LogSystemBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("monitor:logSystem:create")
     @PostMapping("/create")
-    public R<Void> create(@Valid @RequestBody LogDO logDO) {
-        boolean bool = logSystemService.save(logDO);
+    public R<Void> create(@Valid @RequestBody LogSystemBO bo) {
+        boolean bool = logSystemService.saveByBo(bo);
         return R.result(bool);
     }
 
@@ -103,13 +105,13 @@ public class LogSystemController {
      * <p>
      * Update Log-System
      * </p>
-     * @param logDO {@link LogDO}
+     * @param bo {@link LogSystemBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("monitor:logSystem:update")
     @PostMapping("update")
-    public R<Void> update(@Valid @RequestBody LogDO logDO) {
-        boolean bool = logSystemService.updateById(logDO);
+    public R<Void> update(@Valid @RequestBody LogSystemBO bo) {
+        boolean bool = logSystemService.updateByBoById(bo);
         return R.result(bool);
     }
 

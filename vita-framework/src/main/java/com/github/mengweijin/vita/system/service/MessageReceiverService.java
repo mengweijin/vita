@@ -5,9 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.domain.vo.MessageReceiverVO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MessageReceiverMapper;
@@ -28,9 +29,10 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class MessageReceiverService extends CrudRepository<MessageReceiverMapper, MessageReceiverDO> {
+public class MessageReceiverService extends BaseVitaService<MessageReceiverMapper, MessageReceiverDO, MessageReceiverVO> {
 
-    public LambdaQueryWrapper<MessageReceiverDO> getQueryWrapper(MessageReceiverDO messageReceiver) {
+    @Override
+    public LambdaQueryWrapper<MessageReceiverDO> buildQueryWrapper(MessageReceiverDO messageReceiver) {
         LambdaQueryWrapper<MessageReceiverDO> wrapper = Wrappers.lambdaQuery();
 
         wrapper.eq(messageReceiver.getId() != null, MessageReceiverDO::getId, messageReceiver.getId());
@@ -45,7 +47,7 @@ public class MessageReceiverService extends CrudRepository<MessageReceiverMapper
     }
 
     public Long selectNotViewedCount() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         return this.lambdaQuery()
                 .eq(MessageReceiverDO::getUserId, userId)
                 .eq(MessageReceiverDO::getViewed, EYesNo.N.getValue())

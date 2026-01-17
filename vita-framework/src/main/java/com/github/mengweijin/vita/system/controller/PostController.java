@@ -9,7 +9,9 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.PostBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
+import com.github.mengweijin.vita.system.domain.vo.PostVO;
 import com.github.mengweijin.vita.system.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,9 +54,9 @@ public class PostController {
      */
     @SaCheckPermission("system:post:select")
     @GetMapping("/page")
-    public IPage<PostDO> page(Page<PostDO> page, PostDO post) {
-        LambdaQueryWrapper<PostDO> wrapper = postService.getQueryWrapper(post);
-        return postService.page(page, wrapper.orderByAsc(PostDO::getSeq));
+    public IPage<PostVO> page(Page<PostDO> page, PostDO post) {
+        LambdaQueryWrapper<PostDO> wrapper = postService.buildQueryWrapper(post);
+        return postService.pageVo(page, wrapper.orderByAsc(PostDO::getSeq));
     }
 
     /**
@@ -66,8 +68,8 @@ public class PostController {
      */
     @SaCheckPermission("system:post:select")
     @GetMapping("/list")
-    public List<PostDO> list(PostDO post) {
-        return postService.list(Wrappers.lambdaQuery(post));
+    public List<PostVO> list(PostDO post) {
+        return postService.listVo(Wrappers.lambdaQuery(post));
     }
 
     /**
@@ -79,21 +81,21 @@ public class PostController {
      */
     @SaCheckPermission("system:post:select")
     @GetMapping("/{id}")
-    public PostDO getById(@PathVariable("id") Long id) {
-        return postService.getById(id);
+    public PostVO getById(@PathVariable("id") Long id) {
+        return postService.getVoById(id);
     }
 
     /**
      * <p>
      * Add Post
      * </p>
-     * @param post {@link PostDO}
+     * @param post {@link PostBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:post:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody PostDO post) {
-        boolean bool = postService.save(post);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody PostBO post) {
+        boolean bool = postService.saveByBo(post);
         return R.result(bool);
     }
 
@@ -101,13 +103,13 @@ public class PostController {
      * <p>
      * Update Post
      * </p>
-     * @param post {@link PostDO}
+     * @param post {@link PostBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:post:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody PostDO post) {
-        boolean bool = postService.updateById(post);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody PostBO post) {
+        boolean bool = postService.updateByBoById(post);
         return R.result(bool);
     }
 

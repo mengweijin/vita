@@ -46,9 +46,10 @@ const queryParams = reactive({
   current: 1,
   deptId: undefined,
   disabled: undefined,
-  keywords: undefined,
+  nickname: undefined,
   size: 10,
   total: 0,
+  username: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -131,8 +132,11 @@ onMounted(() => {
     <el-main class="vt-main vt-height">
       <!-- 查询表单 -->
       <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-        <el-form-item prop="keywords" label="关键字">
-          <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
+        <el-form-item prop="username" label="用户名">
+          <el-input v-model="queryParams.username" placeholder="" clearable />
+        </el-form-item>
+        <el-form-item prop="nickname" label="昵称">
+          <el-input v-model="queryParams.nickname" placeholder="" clearable />
         </el-form-item>
         <el-form-item prop="disabled" label="状态">
           <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
@@ -249,7 +253,7 @@ onMounted(() => {
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
                   <div style="display: inline-block;">
-                    <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                    <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.username}】吗？`"
                       confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                       <template #reference>
                         <el-button type="danger" text :size="size">

@@ -78,7 +78,14 @@ export default defineConfig(({ mode }) => {
         routesFolder: "src/pages", // 路由文件夹，默认是 'src/pages'
       }),
       // ⚠️ Vue 必须放在 VueRouter() 之后
-      vue(),
+      vue({
+        template: {
+          compilerOptions: {
+            // 将所有以 “cropper-” 开头的标签都视为自定义元素
+            isCustomElement: (tag) => tag.startsWith("cropper-"),
+          },
+        },
+      }),
       vueDevTools(),
       svgLoader(),
       legacy({

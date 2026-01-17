@@ -1,15 +1,17 @@
 package com.github.mengweijin.vita.system.service;
 
-import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.github.mengweijin.vita.framework.util.AopUtils;
-import com.github.mengweijin.vita.system.domain.entity.RoleDO;
-import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
-import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
-import lombok.extern.slf4j.Slf4j;
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.framework.util.AopUtils;
+import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserRoleVO;
+import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> {
+public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO, UserRoleVO> {
 
     public Set<Long> getRoleIdsByUserId(Long userId) {
         List<UserRoleDO> list = this.lambdaQuery().select(UserRoleDO::getRoleId).eq(UserRoleDO::getUserId, userId).list();
@@ -99,4 +101,8 @@ public class UserRoleService extends CrudRepository<UserRoleMapper, UserRoleDO> 
         return this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
     }
 
+    @Override
+    public LambdaQueryWrapper<UserRoleDO> buildQueryWrapper(UserRoleDO entity) {
+        return defaultQueryWrapper(entity);
+    }
 }

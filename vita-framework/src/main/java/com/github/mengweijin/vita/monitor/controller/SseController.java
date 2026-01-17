@@ -29,7 +29,7 @@ public class SseController {
      */
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         return sseConnector.connect(userId);
     }
 
@@ -38,7 +38,7 @@ public class SseController {
      */
     @PostMapping("/close")
     public R<Void> closeConnection() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         sseConnector.disconnect(userId);
         return R.ok();
     }

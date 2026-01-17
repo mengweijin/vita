@@ -18,7 +18,7 @@ import java.util.Set;
 public class DefaultDataPermissionHandler extends BaseDataPermissionHandler {
     @Override
     protected Long getLoginUserId() {
-        return LoginHelper.getLoginUser().getUserId();
+        return LoginHelper.getSessionUserId();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DefaultDataPermissionHandler extends BaseDataPermissionHandler {
     protected List<Long> getLoginUserDeptIdList() {
         UserService userService = SpringUtil.getBean(UserService.class);
         DeptService deptService = SpringUtil.getBean(DeptService.class);
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         UserDO user = userService.lambdaQuery().select(UserDO::getDeptId).eq(UserDO::getId, userId).one();
         return deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
     }

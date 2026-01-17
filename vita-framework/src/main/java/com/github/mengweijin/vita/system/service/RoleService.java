@@ -7,13 +7,15 @@ import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
+import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.RoleVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import jakarta.validation.constraints.NotNull;
@@ -40,7 +42,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
+public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
 
     private RoleMenuService roleMenuService;
 
@@ -55,7 +57,8 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
         return super.removeByIds(roleIds);
     }
 
-    public LambdaQueryWrapper<RoleDO> getQueryWrapper(RoleDO role) {
+    @Override
+    public LambdaQueryWrapper<RoleDO> buildQueryWrapper(RoleDO role) {
         LambdaQueryWrapper<RoleDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(role.getId() != null, RoleDO::getId, role.getId());
         wrapper.eq(StrUtil.isNotBlank(role.getDisabled()), RoleDO::getDisabled, role.getDisabled());
@@ -63,20 +66,18 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
         wrapper.eq(role.getUpdateBy() != null, RoleDO::getUpdateBy, role.getUpdateBy());
         wrapper.gt(role.getStartCreateTime() != null, RoleDO::getCreateTime, role.getStartCreateTime());
         wrapper.le(role.getEndCreateTime() != null, RoleDO::getCreateTime, role.getEndCreateTime());
-        if (StrUtil.isNotBlank(role.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(RoleDO::getName, role.getKeywords()));
-                w.or(w1 -> w1.like(RoleDO::getCode, role.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(role.getName()), RoleDO::getName, role.getName());
+        wrapper.like(StrUtil.isNotBlank(role.getCode()), RoleDO::getCode, role.getCode());
         return wrapper;
     }
 
-    public Set<String> getRoleCodeByUsername(String username) {
-        if (VitaConst.USER_ADMIN_USERNAME.equals(username)) {
+    public Set<String> getRoleCodeByUserId(Long userId) {
+        UserService userService = SpringUtil.getBean(UserService.class);
+        UserDO user = userService.getById(userId);
+        if (LoginHelper.isAdmin(user.getId(), user.getUsername())) {
             return this.list().stream().map(RoleDO::getCode).collect(Collectors.toSet());
         }
-        return this.getBaseMapper().getRoleCodeByUsername(username);
+        return this.getBaseMapper().getRoleCodeByUserId(userId);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -102,7 +103,6 @@ public class RoleService extends CrudRepository<RoleMapper, RoleDO> {
     public void sendPermissionChangeMessageToOnlineUsers(@NotNull Long roleId) {
         // 角色下所有用户 id
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
-
         UserService userService = SpringUtil.getBean(UserService.class);
 
         // 获取所有在线 session

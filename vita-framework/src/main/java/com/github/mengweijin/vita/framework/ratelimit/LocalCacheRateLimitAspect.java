@@ -13,7 +13,7 @@ import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.system.constant.VitaConst;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
@@ -97,14 +97,14 @@ public class LocalCacheRateLimitAspect {
         log.warn(msg);
 
         Set<Long> userIds = this.getMessageReceivers();
-        LoginUserVO loginUser = LoginHelper.getLoginUserQuietly();
-        String username = Optional.ofNullable(loginUser).map(LoginUserVO::getUsername).orElse(Const.DASH_CN);
+        UserSessionVO loginUser = LoginHelper.getSessionUser();
+        String username = Optional.ofNullable(loginUser).map(UserSessionVO::getUsername).orElse(Const.DASH_CN);
         String methodName = joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
         String rateLimitStrategyName = rateLimit.strategy().name();
 
         String messageTitle = I18nUtils.msg("system.RATE_LIMIT.title");
         String messageContent = I18nUtils.msg("system.RATE_LIMIT.content", username, methodName, rateLimitStrategyName);
-        messageService.sendMessageToUsersAsync(EMessageCategory.ALERT, messageTitle, messageContent, userIds);
+        messageService.sendMessageToUsersAsync(EMessageCategory.WARNING, messageTitle, messageContent, userIds);
 
         throw new ClientException(rateLimit.message());
     }

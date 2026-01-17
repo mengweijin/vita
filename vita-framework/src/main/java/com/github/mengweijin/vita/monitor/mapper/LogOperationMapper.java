@@ -1,7 +1,8 @@
 package com.github.mengweijin.vita.monitor.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
 import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @since 2023-06-03
  */
 @Mapper
-public interface LogOperationMapper extends BaseMapper<LogOperationDO> {
+public interface LogOperationMapper extends BaseVitaMapper<LogOperationDO, LogOperationVO> {
 
     /**
      * 查询时间范围内的日用户操作次数

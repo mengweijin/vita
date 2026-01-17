@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,6 +9,7 @@ import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.MessageBO;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import com.github.mengweijin.vita.system.service.MessageReceiverService;
@@ -75,8 +75,7 @@ public class MessageController {
     @SaCheckPermission("system:message:select")
     @GetMapping("/page")
     public IPage<MessageVO> page(Page<MessageVO> page, MessageVO message) {
-        Long userId = LoginHelper.getLoginUser().getUserId();
-        message.setUserId(userId);
+        message.setUserId(LoginHelper.getSessionUserId());
         return messageReceiverService.page(page, message);
     }
 
@@ -89,8 +88,8 @@ public class MessageController {
      */
     @SaCheckPermission("system:message:select")
     @GetMapping("/list")
-    public List<MessageDO> list(MessageDO message) {
-        return messageService.list(Wrappers.lambdaQuery(message));
+    public List<MessageVO> list(MessageDO message) {
+        return messageService.listVo(Wrappers.lambdaQuery(message));
     }
 
     /**
@@ -102,8 +101,8 @@ public class MessageController {
      */
     @SaCheckPermission("system:message:select")
     @GetMapping("/{id}")
-    public MessageDO getById(@PathVariable("id") Long id) {
-        return messageService.getById(id);
+    public MessageVO getById(@PathVariable("id") Long id) {
+        return messageService.getVoById(id);
     }
 
     /**
@@ -115,8 +114,8 @@ public class MessageController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:message:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MessageDO message) {
-        boolean bool = messageService.save(message);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MessageBO message) {
+        boolean bool = messageService.saveByBo(message);
         return R.result(bool);
     }
 
@@ -129,8 +128,8 @@ public class MessageController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:message:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MessageDO message) {
-        boolean bool = messageService.updateById(message);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MessageBO message) {
+        boolean bool = messageService.updateByBoById(message);
         return R.result(bool);
     }
 

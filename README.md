@@ -66,7 +66,7 @@
 
 **Vita（中文名：微塔）**：是一款**轻量级单机部署快速开发平台应用系统**。
 
-基于 SpringBoot 3、sa-token、mybatis-plus、vite、vue 3、element-plus、javascript 等技术，不依赖任何第三方服务。
+基于 SpringBoot 3、sa-token、mybatis-plus、vite、vue 3、element-plus、纯 javascript 等技术，不依赖任何第三方服务。
 
 有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西，和很复杂的配置文件，自己从零搭建又太耗费时间，**真的太麻烦了！**
 

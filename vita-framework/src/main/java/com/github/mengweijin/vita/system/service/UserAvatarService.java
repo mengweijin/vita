@@ -1,7 +1,9 @@
 package com.github.mengweijin.vita.system.service;
 
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserAvatarVO;
 import com.github.mengweijin.vita.system.mapper.UserAvatarMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class UserAvatarService extends CrudRepository<UserAvatarMapper, UserAvatarDO> {
+public class UserAvatarService extends BaseVitaService<UserAvatarMapper, UserAvatarDO, UserAvatarVO> {
 
     public boolean setAvatar(UserAvatarDO userAvatar) {
         Optional<UserAvatarDO> optional = this.lambdaQuery().eq(UserAvatarDO::getUserId, userAvatar.getUserId()).oneOpt();
@@ -27,4 +29,8 @@ public class UserAvatarService extends CrudRepository<UserAvatarMapper, UserAvat
         return this.saveOrUpdate(userAvatar);
     }
 
+    @Override
+    public LambdaQueryWrapper<UserAvatarDO> buildQueryWrapper(UserAvatarDO entity) {
+        return defaultQueryWrapper(entity);
+    }
 }

@@ -1,12 +1,13 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
+import com.github.mengweijin.vita.system.domain.vo.CategoryVO;
 import com.github.mengweijin.vita.system.mapper.CategoryMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,25 +21,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> {
-
-    public LambdaQueryWrapper<CategoryDO> getQueryWrapper(CategoryDO category) {
-        LambdaQueryWrapper<CategoryDO> wrapper = Wrappers.lambdaQuery(category);
-        wrapper.eq(category.getId() != null, CategoryDO::getId, category.getId());
-        wrapper.eq(category.getParentId() != null, CategoryDO::getParentId, category.getParentId());
-        wrapper.eq(StrUtil.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
-        wrapper.eq(category.getCreateBy() != null, CategoryDO::getCreateBy, category.getCreateBy());
-        wrapper.eq(category.getUpdateBy() != null, CategoryDO::getUpdateBy, category.getUpdateBy());
-        wrapper.gt(category.getStartCreateTime() != null, CategoryDO::getCreateTime, category.getStartCreateTime());
-        wrapper.le(category.getEndCreateTime() != null, CategoryDO::getCreateTime, category.getEndCreateTime());
-        if (StrUtil.isNotBlank(category.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(CategoryDO::getName, category.getKeywords()));
-                w.or(w1 -> w1.like(CategoryDO::getCode, category.getKeywords()));
-            });
-        }
-        return wrapper;
-    }
+public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO, CategoryVO> {
 
     public CategoryDO getByCode(String code) {
         return this.lambdaQuery().eq(CategoryDO::getCode, code).one();
@@ -57,4 +40,18 @@ public class CategoryService extends CrudRepository<CategoryMapper, CategoryDO> 
         return this.getBaseMapper().selectChildrenIdsById(categoryDO.getId());
     }
 
+    @Override
+    public LambdaQueryWrapper<CategoryDO> buildQueryWrapper(CategoryDO category) {
+        LambdaQueryWrapper<CategoryDO> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(category.getId() != null, CategoryDO::getId, category.getId());
+        wrapper.eq(category.getParentId() != null, CategoryDO::getParentId, category.getParentId());
+        wrapper.eq(StrUtil.isNotBlank(category.getDisabled()), CategoryDO::getDisabled, category.getDisabled());
+        wrapper.eq(category.getCreateBy() != null, CategoryDO::getCreateBy, category.getCreateBy());
+        wrapper.eq(category.getUpdateBy() != null, CategoryDO::getUpdateBy, category.getUpdateBy());
+        wrapper.gt(category.getStartCreateTime() != null, CategoryDO::getCreateTime, category.getStartCreateTime());
+        wrapper.le(category.getEndCreateTime() != null, CategoryDO::getCreateTime, category.getEndCreateTime());
+        wrapper.like(StrUtil.isNotBlank(category.getName()), CategoryDO::getName, category.getName());
+        wrapper.like(StrUtil.isNotBlank(category.getCode()), CategoryDO::getCode, category.getCode());
+        return wrapper;
+    }
 }

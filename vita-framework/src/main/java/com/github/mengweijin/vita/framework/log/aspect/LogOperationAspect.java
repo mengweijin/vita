@@ -5,7 +5,7 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import cn.hutool.v7.json.JSONUtil;
-import com.github.mengweijin.vita.framework.domain.P;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.framework.jackson.wrapper.AbstractObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
@@ -70,7 +70,7 @@ public class LogOperationAspect {
         STOP_WATCH.set(stopWatch);
         stopWatch.start();
 
-        LOGIN_USER_ID.set(LoginHelper.getLoginUserIdQuietly());
+        LOGIN_USER_ID.set(LoginHelper.getSessionUserId());
     }
 
     /**
@@ -111,7 +111,7 @@ public class LogOperationAspect {
                 setRequestData(request, logOperation);
             }
             if (logAnnotation.saveResponseData() && object != null) {
-                String responseData = P.getSensitiveObjectMapperWrapper().writeValueAsString(object);
+                String responseData = ObjectMapperUtils.getSensitiveObjectMapperWrapper().writeValueAsString(object);
                 logOperation.setResponseData(CharSequenceUtil.subByLength(responseData, 0, 2000));
             }
             logOperation.setSuccess(e == null ? EYesNo.Y.getValue() : EYesNo.N.getValue());
@@ -147,7 +147,7 @@ public class LogOperationAspect {
             dataMap.put(REQUEST_ARGS, parameterMap);
         }
 
-        AbstractObjectMapperWrapper objectMapperWrapper = P.getSensitiveObjectMapperWrapper();
+        AbstractObjectMapperWrapper objectMapperWrapper = ObjectMapperUtils.getSensitiveObjectMapperWrapper();
         // 这里会从 request 中通过流的方式读取 requestBody，而默认，流只能读取一次，第二次就读不到数据了。
         // 在 SpringMVC 中，会先解析 @RequestBody 注释的参数，而触发 requestBody 数据的流读取。
         // 此时就造成日志这里因为读取不到流数据而报错。

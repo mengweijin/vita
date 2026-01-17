@@ -1,7 +1,8 @@
 package com.github.mengweijin.vita.system.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
+import com.github.mengweijin.vita.system.domain.vo.RoleMenuVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,7 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-06-03
  */
 @Mapper
-public interface RoleMenuMapper extends BaseMapper<RoleMenuDO> {
+public interface RoleMenuMapper extends BaseVitaMapper<RoleMenuDO, RoleMenuVO> {
 
 }
 

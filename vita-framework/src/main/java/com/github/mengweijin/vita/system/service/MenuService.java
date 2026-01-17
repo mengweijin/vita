@@ -1,19 +1,21 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.MenuVO;
 import com.github.mengweijin.vita.system.enums.dict.EMenuType;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.MenuMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -33,7 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
+public class MenuService extends BaseVitaService<MenuMapper, MenuDO, MenuVO> {
 
     private UserService userService;
 
@@ -50,7 +52,8 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         return super.removeByIds(ids);
     }
 
-    public LambdaQueryWrapper<MenuDO> getQueryWrapper(MenuDO menu) {
+    @Override
+    public LambdaQueryWrapper<MenuDO> buildQueryWrapper(MenuDO menu) {
         LambdaQueryWrapper<MenuDO> wrapper = Wrappers.lambdaQuery();
 
         wrapper.eq(menu.getId() != null, MenuDO::getId, menu.getId());
@@ -61,28 +64,34 @@ public class MenuService extends CrudRepository<MenuMapper, MenuDO> {
         wrapper.eq(menu.getUpdateBy() != null, MenuDO::getUpdateBy, menu.getUpdateBy());
         wrapper.gt(menu.getStartCreateTime() != null, MenuDO::getCreateTime, menu.getStartCreateTime());
         wrapper.le(menu.getEndCreateTime() != null, MenuDO::getCreateTime, menu.getEndCreateTime());
-        if (StrUtil.isNotBlank(menu.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(MenuDO::getTitle, menu.getKeywords()));
-                w.or(w1 -> w1.like(MenuDO::getPermission, menu.getKeywords()));
-                w.or(w1 -> w1.like(MenuDO::getUrl, menu.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(menu.getTitle()), MenuDO::getTitle, menu.getTitle());
+        wrapper.like(StrUtil.isNotBlank(menu.getPermission()), MenuDO::getPermission, menu.getPermission());
+        wrapper.like(StrUtil.isNotBlank(menu.getUrl()), MenuDO::getUrl, menu.getUrl());
         return wrapper;
     }
 
-    public Set<String> getMenuPermissionListByUsername(String username) {
-        if (VitaConst.USER_ADMIN_USERNAME.equals(username)) {
-            return this.lambdaQuery().select(MenuDO::getPermission).isNotNull(MenuDO::getPermission).list()
-                    .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
+    public Set<String> getPermissionListByUserId(Long userId) {
+        UserDO user = userService.getById(userId);
+        if (LoginHelper.isAdmin(user.getId(), user.getUsername())) {
+            return this.lambdaQuery()
+                    .select(MenuDO::getPermission)
+                    .isNotNull(MenuDO::getPermission)
+                    .list()
+                    .stream()
+                    .map(MenuDO::getPermission)
+                    .collect(Collectors.toSet());
         }
 
-        UserDO user = userService.getByUsername(username);
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(user.getId());
         Set<Long> menuIds = roleMenuService.getMenuIdsInRoleIds(roleIds);
 
-        return this.lambdaQuery().select(MenuDO::getPermission).isNotNull(MenuDO::getPermission).in(MenuDO::getId, menuIds).list()
-                .stream().map(MenuDO::getPermission).collect(Collectors.toSet());
+        return this.lambdaQuery().select(MenuDO::getPermission)
+                .isNotNull(MenuDO::getPermission)
+                .in(MenuDO::getId, menuIds)
+                .list()
+                .stream()
+                .map(MenuDO::getPermission)
+                .collect(Collectors.toSet());
     }
 
     public List<MenuDO> getSideMenuByUserId(Long userId) {

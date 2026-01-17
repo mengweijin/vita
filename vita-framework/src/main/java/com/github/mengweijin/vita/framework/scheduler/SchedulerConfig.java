@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.framework.scheduler;
 
-import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskService;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
@@ -32,11 +31,10 @@ public class SchedulerConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar registrar) {
-        DynamicTaskManager dynamicTaskManager = SpringUtil.getBean(DynamicTaskManager.class);
         List<SchedulingTaskDO> taskList = scheduledTaskService.lambdaQuery()
                 .eq(SchedulingTaskDO::getDisabled, EYesNo.N.getValue())
                 .list();
         // 启动时加载所有启用任务
-        taskList.forEach(task  -> dynamicTaskManager.addTask(registrar,  task));
+        taskList.forEach(task  -> dynamicTaskManager().addTask(registrar,  task));
     }
 }

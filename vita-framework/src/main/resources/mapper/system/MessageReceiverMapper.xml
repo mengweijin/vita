@@ -50,9 +50,11 @@
             <if test="p.category != null and p.category != ''">
                 and a.CATEGORY = #{p.category}
             </if>
-            <if test="p.keywords != null and p.keywords != ''">
-                and a.TITLE like concat(concat('%', #{p.keywords}), '%')
-                and a.CONTENT like concat(concat('%', #{p.keywords}), '%')
+            <if test="p.title != null and p.title != ''">
+                and a.TITLE like concat(concat('%', #{p.title}), '%')
+            </if>
+            <if test="p.content != null and p.content != ''">
+                and a.CONTENT like concat(concat('%', #{p.content}), '%')
             </if>
         </where>
         order by t.CREATE_TIME desc

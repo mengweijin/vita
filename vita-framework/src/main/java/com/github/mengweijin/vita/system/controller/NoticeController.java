@@ -9,7 +9,9 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.NoticeBO;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
+import com.github.mengweijin.vita.system.domain.vo.NoticeVO;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.NoticeService;
 import lombok.AllArgsConstructor;
@@ -53,10 +55,10 @@ public class NoticeController {
      */
     @SaCheckPermission("system:notice:select")
     @GetMapping("/page")
-    public IPage<NoticeDO> page(Page<NoticeDO> page, NoticeDO notice) {
-        LambdaQueryWrapper<NoticeDO> wrapper = noticeService.getQueryWrapper(notice);
+    public IPage<NoticeVO> page(Page<NoticeDO> page, NoticeDO notice) {
+        LambdaQueryWrapper<NoticeDO> wrapper = noticeService.buildQueryWrapper(notice);
         wrapper.orderByDesc(NoticeDO::getUpdateTime);
-        return noticeService.page(page, wrapper);
+        return noticeService.pageVo(page, wrapper);
     }
 
     /**
@@ -68,8 +70,8 @@ public class NoticeController {
      */
     @SaCheckPermission("system:notice:select")
     @GetMapping("/list")
-    public List<NoticeDO> list(NoticeDO notice) {
-        return noticeService.list(Wrappers.lambdaQuery(notice));
+    public List<NoticeVO> list(NoticeDO notice) {
+        return noticeService.listVo(Wrappers.lambdaQuery(notice));
     }
 
     /**
@@ -81,8 +83,8 @@ public class NoticeController {
      */
     @SaCheckPermission("system:notice:select")
     @GetMapping("/{id}")
-    public NoticeDO getById(@PathVariable("id") Long id) {
-        return noticeService.getById(id);
+    public NoticeVO getById(@PathVariable("id") Long id) {
+        return noticeService.getVoById(id);
     }
 
     /**
@@ -94,8 +96,8 @@ public class NoticeController {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:notice:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody NoticeDO notice) {
-        boolean bool = noticeService.save(notice);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody NoticeBO notice) {
+        boolean bool = noticeService.saveByBo(notice);
         return R.result(bool);
     }
 
@@ -108,8 +110,8 @@ public class NoticeController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:notice:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody NoticeDO notice) {
-        boolean bool = noticeService.updateById(notice);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody NoticeBO notice) {
+        boolean bool = noticeService.updateByBoById(notice);
         return R.result(bool);
     }
 

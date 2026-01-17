@@ -4,18 +4,18 @@ import { userApi } from "@/api/system/user-api.js";
 import utils from "@/utils/utils.js";
 
 const props = defineProps({
-	multiple: {
-		default: false,
-		type: Boolean,
-	},
-	size: {
-		default: "default",
-		type: String,
-	},
-	style: {
-		default: "min-width: 200px; width: 100%;",
-		type: String,
-	},
+  multiple: {
+    default: false,
+    type: Boolean,
+  },
+  size: {
+    default: "default",
+    type: String,
+  },
+  style: {
+    default: "min-width: 200px; width: 100%;",
+    type: String,
+  },
 });
 
 const selectValue = defineModel({ default: [], type: Array });
@@ -23,136 +23,124 @@ const selectValue = defineModel({ default: [], type: Array });
 const treeRef = useTemplateRef("treeRef");
 
 const treeProps = reactive({
-	children: "children",
-	disabled: (data, node) => data.disabled === "Y",
-	label: "name",
+  children: "children",
+  disabled: (data, node) => data.disabled === "Y",
+  label: "name",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = () => {
-	deptApi.list({ disabled: "N" }).then((res) => {
-		// 转为树状
-		treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
-	});
+  deptApi.list({ disabled: "N" }).then((res) => {
+    // 转为树状
+    treeData.value = utils.toArrayTree(res, { sortKey: "seq" });
+  });
 };
 
 const handleTreeNodeClick = (data, node) => {
-	queryParams.deptId = data.id;
-	loadTableData();
+  paramsQuery.deptId = data.id;
+  loadTableData();
 };
 
 const loading = ref(false);
 
 const tableData = ref([]);
 
-const queryParams = reactive({
-	current: 1,
-	deptId: undefined,
-	disabled: "N",
-	keywords: undefined,
-	size: 10,
-	total: 0,
+// 分页参数
+const pageQuery = reactive({
+  current: 1,
+  size: 10,
+  total: 0
+})
+
+// 查询参数
+const paramsQuery = reactive({
+  deptId: undefined,
+  disabled: "N",
+  nickname: undefined,
+  username: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	queryParams.deptId = null;
-	// 清除选中状态及背景颜色
-	treeRef.value.setCurrentKey(null);
-	loadTableData();
+  queryFormRef.value.resetFields();
+  paramsQuery.deptId = null;
+  // 清除选中状态及背景颜色
+  treeRef.value.setCurrentKey(null);
+  loadTableData();
 };
 
 const loadTableData = () => {
-	loading.value = true;
-	userApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  userApi.page({ ...paramsQuery, ...pageQuery }).then((res) => {
+    tableData.value = res.records;
+    pageQuery.total = res.total;
+    loading.value = false;
+  });
 };
 
 const dropdownRef = useTemplateRef("dropdownRef");
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  pageQuery.current = currentPage;
+  pageQuery.size = pageSize;
+  loadTableData();
 
-	// 手动保持下拉展开
-	setTimeout(() => {
-		// 调用内部方法重新展开
-		dropdownRef.value?.handleOpen();
-	}, 10);
+  // 手动保持下拉展开
+  setTimeout(() => {
+    // 调用内部方法重新展开
+    dropdownRef.value?.handleOpen();
+  }, 10);
 };
 
 const selected = ref([]);
 
 const handleTableRowClick = (row) => {
-	if (props.multiple) {
-		if (!utils.find(selected.value, (item) => item.id === row.id)) {
-			selected.value.push(row);
-		}
-		if (!utils.includes(selectValue.value, row.id)) {
-			selectValue.value.push(row.id);
-		}
-		return;
-	}
+  if (props.multiple) {
+    if (!utils.find(selected.value, (item) => item.id === row.id)) {
+      selected.value.push(row);
+    }
+    if (!utils.includes(selectValue.value, row.id)) {
+      selectValue.value.push(row.id);
+    }
+    return;
+  }
 
-	if (selectValue.value.length) {
-		if (!utils.find(selected.value, (item) => item.id === row.id)) {
-			selected.value.push(row);
-		}
-		// 清空数组
-		selectValue.value.splice(0, selectValue.value.length);
-		selectValue.value.push(row.id);
-	} else {
-		selected.value.push(row);
-		selectValue.value.push(row.id);
-	}
+  if (selectValue.value.length) {
+    if (!utils.find(selected.value, (item) => item.id === row.id)) {
+      selected.value.push(row);
+    }
+    // 清空数组
+    selectValue.value.splice(0, selectValue.value.length);
+    selectValue.value.push(row.id);
+  } else {
+    selected.value.push(row);
+    selectValue.value.push(row.id);
+  }
 };
 
 const handleRemoveTag = (value) => {
-	utils.remove(selected.value, (item) => item.id === value);
+  utils.remove(selected.value, (item) => item.id === value);
 };
 
 const getLabelValue = (userId) => {
-	const user = utils.find(selected.value, (item) => item.id === userId);
-	return user?.nickname + "(" + user?.username + ")";
+  const user = utils.find(selected.value, (item) => item.id === userId);
+  return `${user?.nickname}(${user?.username})`;
 };
 
 onMounted(() => {
-	loadTreeData();
-	loadTableData();
+  loadTreeData();
+  loadTableData();
 });
 </script>
 
 <template>
-  <el-dropdown
-    ref="dropdownRef"
-    trigger="click"
-    placement="bottom"
-    :size="props.size"
-    :hide-on-click="false"
-    :max-height="500"
-    :style="props.style"
-    :popper-append-to-body="false"
-  >
-    <el-input-tag
-      v-model="selectValue"
-      draggable
-      clearable
-      :save-on-blur="false"
-      :trigger="''"
-      :tag-type="'primary'"
-      :tag-effect="'dark'"
-      :max="props.multiple ? 999 : 1"
-      :size="props.size"
-      placeholder="请选择用户"
-      @remove-tag="handleRemoveTag"
-    >
+  <el-dropdown ref="dropdownRef" trigger="click" placement="bottom" :size="props.size" :hide-on-click="false"
+    :max-height="500" :style="props.style" :popper-append-to-body="false">
+    <el-input-tag v-model="selectValue" draggable clearable :save-on-blur="false" :trigger="''" :tag-type="'primary'"
+      :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户"
+      @remove-tag="handleRemoveTag">
       <template #tag="{ value }">
         <span>{{ getLabelValue(value) }}</span>
       </template>
@@ -161,30 +149,19 @@ onMounted(() => {
       <el-container>
         <el-aside width="160px" style="padding: 15px 0px 0px 10px">
           <el-scrollbar max-height="100%">
-            <el-tree
-              ref="treeRef"
-              :node-key="'id'"
-              :props="treeProps"
-              :data="treeData"
-              :size="'small'"
-              default-expand-all
-              highlight-current
-              :expand-on-click-node="false"
-              @node-click="handleTreeNodeClick"
-            />
+            <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" :size="'small'"
+              default-expand-all highlight-current :expand-on-click-node="false" @node-click="handleTreeNodeClick" />
           </el-scrollbar>
         </el-aside>
         <el-main class="vt-user-table-border">
           <!-- 查询表单 -->
-          <el-form
-            ref="queryFormRef"
-            :model="queryParams"
-            :inline="true"
-            :size="'small'"
-            @submit.prevent="loadTableData"
-          >
-            <el-form-item prop="keywords" label="关键字">
-              <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
+          <el-form ref="queryFormRef" :model="paramsQuery" :inline="true" :size="'small'"
+            @submit.prevent="loadTableData">
+            <el-form-item prop="username" label="用户名">
+              <el-input v-model="paramsQuery.username" placeholder="" clearable />
+            </el-form-item>
+            <el-form-item prop="nickname" label="昵称">
+              <el-input v-model="paramsQuery.nickname" placeholder="" clearable />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" native-type="submit">
@@ -207,18 +184,8 @@ onMounted(() => {
           </el-form>
 
           <!-- 表格 -->
-          <el-table
-            v-loading="loading"
-            :data="tableData"
-            :size="'small'"
-            row-key="id"
-            height="191px"
-            stripe
-            border
-            show-overflow-tooltip
-            highlight-current-row
-            @row-click="handleTableRowClick"
-          >
+          <el-table v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px" stripe border
+            show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
             <el-table-column prop="username" label="用户名" min-width="100" align="center" />
             <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
             <el-table-column prop="gender" label="性别" min-width="80" align="center">
@@ -230,15 +197,9 @@ onMounted(() => {
           </el-table>
 
           <!--  @click.native.stop：阻止事件冒泡 -->
-          <el-pagination
-            background
-            layout="total, sizes, prev, pager, next, jumper"
-            v-model:current-page="queryParams.current"
-            v-model:page-size="queryParams.size"
-            :total="queryParams.total"
-            @change="handlePageChange"
-            :size="'small'"
-          />
+          <el-pagination background layout="total, sizes, prev, pager, next, jumper"
+            v-model:current-page="pageQuery.current" v-model:page-size="pageQuery.size" :total="pageQuery.total"
+            @change="handlePageChange" :size="'small'" />
         </el-main>
       </el-container>
     </template>

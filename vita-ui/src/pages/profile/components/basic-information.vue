@@ -56,7 +56,7 @@ const setUserAvatar = (base64) => {
 };
 
 onMounted(() => {
-  userApi.getLoginUserInfo().then((res) => {
+  userApi.getUserProfileVO().then((res) => {
     userInfo.value = res;
     init();
     loading.value = false;

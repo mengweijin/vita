@@ -1,12 +1,14 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.system.domain.entity.UserPostDO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserPostVO;
 import com.github.mengweijin.vita.system.mapper.UserPostMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.collection.CollUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class UserPostService extends CrudRepository<UserPostMapper, UserPostDO> {
+public class UserPostService extends BaseVitaService<UserPostMapper, UserPostDO, UserPostVO> {
 
     public Set<Long> getUserIdsByPostId(Long postId) {
         List<UserPostDO> list = this.lambdaQuery().select(UserPostDO::getUserId).eq(UserPostDO::getPostId, postId).list();
@@ -58,5 +60,10 @@ public class UserPostService extends CrudRepository<UserPostMapper, UserPostDO> 
     public Set<Long> getPostIdsByUserId(Long userId) {
         List<UserPostDO> list = this.lambdaQuery().select(UserPostDO::getPostId).eq(UserPostDO::getUserId, userId).list();
         return list.stream().map(UserPostDO::getPostId).collect(Collectors.toSet());
+    }
+
+    @Override
+    public LambdaQueryWrapper<UserPostDO> buildQueryWrapper(UserPostDO entity) {
+        return defaultQueryWrapper(entity);
     }
 }

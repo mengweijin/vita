@@ -21,8 +21,9 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   current: 1,
-  keywords: undefined,
+  formattedMessage: undefined,
   loggerLevel: undefined,
+  loggerName: undefined,
   size: 100,
   total: 0,
 });
@@ -79,8 +80,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="线程名称、日志名称、日志内容" style="width: 260px;" clearable />
+    <el-form-item prop="loggerName" label="日志名称">
+      <el-input v-model="queryParams.loggerName" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="formattedMessage" label="日志内容">
+      <el-input v-model="queryParams.formattedMessage" placeholder="" clearable />
     </el-form-item>
     <el-form-item prop="loggerLevel" label="日志级别">
       <VtSelectDict v-model="queryParams.loggerLevel" :code="'vt_log_level'"></VtSelectDict>

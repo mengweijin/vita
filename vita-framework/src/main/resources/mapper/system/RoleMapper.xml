@@ -9,4 +9,11 @@
         where u.USERNAME = #{username}
     </select>
 
+    <select id="getRoleCodeByUserId" resultType="java.lang.String">
+        select distinct r.CODE from VT_ROLE r
+        inner join VT_USER_ROLE ur on ur.ROLE_ID = r.ID
+        inner join VT_USER u on u.ID = ur.USER_ID
+        where u.ID = #{userId}
+    </select>
+
 </mapper>

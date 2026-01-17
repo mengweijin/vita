@@ -116,8 +116,8 @@ create TABLE VT_DICT_DATA (
 create unique index UIDX_VT_DICT_DATA_CODE_VAL on VT_DICT_DATA(CODE, VAL);
 
 
-drop table IF EXISTS VT_LOG;
-create TABLE VT_LOG (
+drop table IF EXISTS VT_LOG_SYSTEM;
+create TABLE VT_LOG_SYSTEM (
   ID                            bigint NOT NULL comment '主键ID',
   LOGGER_LEVEL                  varchar(10) DEFAULT NULL comment '日志级别',
   THREAD_NAME                   varchar(255) DEFAULT NULL comment '线程名称',
@@ -352,6 +352,7 @@ create TABLE VT_SCHEDULING_TASK (
   BEAN_NAME 		            varchar(128) NOT NULL comment '任务实现类的 Bean 名称（Bean 需要实现 ISchedulingTask 类）',
   ARGS 	                        varchar(255) DEFAULT NULL comment '执行参数。以 JSON 字符串存储',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
+  EXECUTE_AFTER_STARTED         char(1) DEFAULT 'N' NOT NULL comment '应用启动后是否立即执行一次。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',

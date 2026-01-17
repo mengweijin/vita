@@ -2,6 +2,10 @@ package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskBO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +17,10 @@ import lombok.EqualsAndHashCode;
  * @author mengweijin
  * @since 2023-06-03
  */
+@AutoMappers({
+        @AutoMapper(target = SchedulingTaskBO.class),
+        @AutoMapper(target = SchedulingTaskVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_SCHEDULING_TASK")
@@ -37,6 +45,11 @@ public class SchedulingTaskDO extends BaseEntity {
      * 执行参数。以 JSON 字符串存储
      */
     private String args;
+
+    /**
+     * 应用启动后是否立即执行一次。[Y, N]
+     */
+    private String executeAfterStarted;
 
     /**
     * 是否禁用。[Y, N]

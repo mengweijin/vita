@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.monitor.service;
 
-import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
@@ -10,11 +9,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.IpRegionUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogLoginVO;
 import com.github.mengweijin.vita.monitor.mapper.LogLoginMapper;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.home.HomeConsoleChartDataVO;
@@ -45,11 +45,12 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> {
+public class LogLoginService extends BaseVitaService<LogLoginMapper, LogLoginDO, LogLoginVO> {
 
     private UserService userService;
 
-    public LambdaQueryWrapper<LogLoginDO> getQueryWrapper(LogLoginDO logLogin) {
+    @Override
+    public LambdaQueryWrapper<LogLoginDO> buildQueryWrapper(LogLoginDO logLogin) {
         LambdaQueryWrapper<LogLoginDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(logLogin.getId() != null, LogLoginDO::getId, logLogin.getId());
 
@@ -65,12 +66,9 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
         wrapper.eq(logLogin.getUpdateBy() != null, LogLoginDO::getUpdateBy, logLogin.getUpdateBy());
         wrapper.gt(logLogin.getStartCreateTime() != null, LogLoginDO::getCreateTime, logLogin.getStartCreateTime());
         wrapper.le(logLogin.getEndCreateTime() != null, LogLoginDO::getCreateTime, logLogin.getEndCreateTime());
-        if (StrUtil.isNotBlank(logLogin.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(LogLoginDO::getUsername, logLogin.getKeywords()));
-                w.or(w1 -> w1.like(LogLoginDO::getIp, logLogin.getKeywords()));
-            });
-        }
+
+        wrapper.like(StrValidator.isNotBlank(logLogin.getUsername()), LogLoginDO::getUsername, logLogin.getUsername());
+        wrapper.like(StrValidator.isNotBlank(logLogin.getIp()), LogLoginDO::getIp, logLogin.getIp());
         return wrapper;
     }
 
@@ -120,7 +118,7 @@ public class LogLoginService extends CrudRepository<LogLoginMapper, LogLoginDO> 
     }
 
     public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
-        String username = LoginHelper.getLoginUser().getUsername();
+        String username = LoginHelper.getSessionUsername();
         LambdaQueryWrapper<LogLoginDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(LogLoginDO::getUsername, username);
         wrapper.orderByDesc(LogLoginDO::getCreateTime);

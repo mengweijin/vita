@@ -7,12 +7,13 @@ import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.sse.SseConnector;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,7 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
+public class MessageService extends BaseVitaService<MessageMapper, MessageDO, MessageVO> {
 
     private MessageReceiverService messageReceiverService;
 
@@ -48,7 +49,8 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
 
     private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-message-", true);
 
-    public LambdaQueryWrapper<MessageDO> getQueryWrapper(MessageDO message) {
+    @Override
+    public LambdaQueryWrapper<MessageDO> buildQueryWrapper(MessageDO message) {
         LambdaQueryWrapper<MessageDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(message.getId() != null, MessageDO::getId, message.getId());
         wrapper.eq(StrUtil.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
@@ -56,12 +58,8 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
         wrapper.eq(message.getUpdateBy() != null, MessageDO::getUpdateBy, message.getUpdateBy());
         wrapper.gt(message.getStartCreateTime() != null, MessageDO::getCreateTime, message.getStartCreateTime());
         wrapper.le(message.getEndCreateTime() != null, MessageDO::getCreateTime, message.getEndCreateTime());
-        if (StrUtil.isNotBlank(message.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(MessageDO::getTitle, message.getKeywords()));
-                w.or(w1 -> w1.like(MessageDO::getContent, message.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(message.getTitle()), MessageDO::getTitle, message.getTitle());
+        wrapper.like(StrUtil.isNotBlank(message.getContent()), MessageDO::getContent, message.getContent());
         return wrapper;
     }
 
@@ -95,7 +93,7 @@ public class MessageService extends CrudRepository<MessageMapper, MessageDO> {
     }
 
     public void sendMessageToUsersAsync(EMessageCategory category, String title, String content, Set<Long> userIds) {
-        Long loginId = LoginHelper.getLoginUserIdQuietly();
+        Long loginId = LoginHelper.getSessionUserId();
         CompletableFuture.runAsync(() -> transactionTemplate.executeWithoutResult(status -> {
                     MessageDO message = new MessageDO();
                     message.setCategory(category.getValue());

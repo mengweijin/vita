@@ -4,7 +4,7 @@ import cn.hutool.v7.core.array.ArrayUtil;
 import cn.hutool.v7.crypto.SecureUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.domain.P;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,7 +79,7 @@ public class LocalCacheRepeatSubmitAspect {
         }
         for (Object obj : paramsArray) {
             if (obj != null && !isFilterObject(obj)) {
-                params.add(P.getObjectMapperWrapper().writeValueAsString(obj));
+                params.add(ObjectMapperUtils.getObjectMapperWrapper().writeValueAsString(obj));
             }
         }
         return params.toString();

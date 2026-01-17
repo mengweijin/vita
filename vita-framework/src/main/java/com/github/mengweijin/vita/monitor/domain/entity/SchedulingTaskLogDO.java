@@ -2,7 +2,11 @@ package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskLogBO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
 import com.github.mengweijin.vita.system.enums.dict.ESchedulingTaskStatus;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +18,10 @@ import lombok.EqualsAndHashCode;
  * @author mengweijin
  * @since 2023-06-03
  */
+@AutoMappers({
+        @AutoMapper(target = SchedulingTaskLogBO.class),
+        @AutoMapper(target = SchedulingTaskLogVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_SCHEDULING_TASK_LOG")

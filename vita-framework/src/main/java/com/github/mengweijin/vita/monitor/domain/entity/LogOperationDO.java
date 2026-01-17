@@ -1,8 +1,12 @@
 package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.monitor.domain.bo.LogOperationBO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +18,10 @@ import lombok.EqualsAndHashCode;
  * @author mengweijin
  * @since 2023-06-03
  */
+@AutoMappers({
+        @AutoMapper(target = LogOperationBO.class),
+        @AutoMapper(target = LogOperationVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_LOG_OPERATION")

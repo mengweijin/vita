@@ -2,6 +2,10 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.system.domain.bo.RoleBO;
+import com.github.mengweijin.vita.system.domain.vo.RoleVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +17,10 @@ import lombok.EqualsAndHashCode;
  * @author mengweijin
  * @since 2023-06-03
  */
+@AutoMappers({
+        @AutoMapper(target = RoleBO.class),
+        @AutoMapper(target = RoleVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_ROLE")

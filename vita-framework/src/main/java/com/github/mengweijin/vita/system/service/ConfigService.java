@@ -6,9 +6,10 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.propertysource.DatabasePropertySource;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
+import com.github.mengweijin.vita.system.domain.vo.ConfigVO;
 import com.github.mengweijin.vita.system.mapper.ConfigMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
+public class ConfigService extends BaseVitaService<ConfigMapper, ConfigDO, ConfigVO> {
 
     private ApplicationContext applicationContext;
 
@@ -55,20 +56,17 @@ public class ConfigService extends CrudRepository<ConfigMapper, ConfigDO> {
         return updated;
     }
 
-    public LambdaQueryWrapper<ConfigDO> getQueryWrapper(ConfigDO config) {
-        LambdaQueryWrapper<ConfigDO> wrapper = Wrappers.lambdaQuery(config);
+    @Override
+    public LambdaQueryWrapper<ConfigDO> buildQueryWrapper(ConfigDO config) {
+        LambdaQueryWrapper<ConfigDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(config.getId() != null, ConfigDO::getId, config.getId());
         wrapper.eq(config.getCreateBy() != null, ConfigDO::getCreateBy, config.getCreateBy());
         wrapper.eq(config.getUpdateBy() != null, ConfigDO::getUpdateBy, config.getUpdateBy());
         wrapper.gt(config.getStartCreateTime() != null, ConfigDO::getCreateTime, config.getStartCreateTime());
         wrapper.le(config.getEndCreateTime() != null, ConfigDO::getCreateTime, config.getEndCreateTime());
-        if (StrUtil.isNotBlank(config.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(ConfigDO::getConfigKey, config.getKeywords()));
-                w.or(w1 -> w1.like(ConfigDO::getConfigValue, config.getKeywords()));
-                w.or(w1 -> w1.like(ConfigDO::getRemark, config.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(config.getConfigKey()), ConfigDO::getConfigKey, config.getConfigKey());
+        wrapper.like(StrUtil.isNotBlank(config.getConfigValue()), ConfigDO::getConfigValue, config.getConfigValue());
+        wrapper.like(StrUtil.isNotBlank(config.getRemark()), ConfigDO::getRemark, config.getRemark());
         return wrapper;
     }
 

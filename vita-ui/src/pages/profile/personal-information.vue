@@ -19,8 +19,7 @@ const userInfo = ref({});
 
 onMounted(() => {
   loading.value = true;
-  userApi
-    .getLoginUserInfo()
+  userApi.getUserProfileVO()
     .then((res) => {
       userInfo.value = res;
       loading.value = false;

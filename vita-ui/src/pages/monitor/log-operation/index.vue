@@ -22,10 +22,11 @@ const tableData = ref([]);
 const queryParams = reactive({
   current: 1,
   httpMethod: undefined,
-  keywords: undefined,
   operationType: undefined,
   size: 10,
+  title: undefined,
   total: 0,
+  url: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -80,14 +81,19 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="模块标题、URL、方法名称" clearable />
+    <el-form-item prop="title" label="模块标题">
+      <el-input v-model="queryParams.title" placeholder="" clearable style="width: 160px;" />
+    </el-form-item>
+    <el-form-item prop="url" label="URL">
+      <el-input v-model="queryParams.url" placeholder="" clearable style="width: 160px;" />
     </el-form-item>
     <el-form-item prop="operationType" label="操作类型">
-      <VtSelectDict v-model="queryParams.operationType" :code="'vt_operation_log_type'"></VtSelectDict>
+      <VtSelectDict v-model="queryParams.operationType" :code="'vt_operation_log_type'" :style="'width: 120px;'">
+      </VtSelectDict>
     </el-form-item>
     <el-form-item prop="httpMethod" label="请求方式">
-      <VtSelectDict v-model="queryParams.httpMethod" :code="'vt_http_request_type'"></VtSelectDict>
+      <VtSelectDict v-model="queryParams.httpMethod" :code="'vt_http_request_type'" :style="'width: 120px;'">
+      </VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">

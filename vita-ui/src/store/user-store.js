@@ -1,30 +1,30 @@
-import { loginApi } from "@/api/login-api.js";
+import { userApi } from "@/api/system/user-api.js";
 
 const { VITE_APP_PREFIX } = import.meta.env;
 
 export const useUserStore = defineStore(
-	`${VITE_APP_PREFIX}-user`,
-	() => {
-		const user = ref(null);
+  `${VITE_APP_PREFIX}-user`,
+  () => {
+    const user = ref(null);
 
-		const initUser = async () => {
-			// 这个请求就需要 token
-			user.value = await loginApi.getLoginUser();
-		};
+    const initUser = async () => {
+      // 这个请求就需要 token
+      user.value = await userApi.getUserStoreVO();
+    };
 
-		const getRoles = () => user.value?.roles;
+    const getRoles = () => user.value?.roles;
 
-		const getPermissions = () => user.value?.permissions;
+    const getPermissions = () => user.value?.permissions;
 
-		const clear = () => {
-			user.value = null;
-		};
+    const clear = () => {
+      user.value = null;
+    };
 
-		return { clear, getPermissions, getRoles, initUser, user };
-	},
-	{
-		persist: {
-			storage: sessionStorage,
-		},
-	},
+    return { clear, getPermissions, getRoles, initUser, user };
+  },
+  {
+    persist: {
+      storage: sessionStorage,
+    },
+  }
 );

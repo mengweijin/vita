@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
+import cn.hutool.v7.core.regex.RegexPool;
 import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
@@ -12,9 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import cn.hutool.v7.core.regex.RegexPool;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,8 +58,8 @@ public class UserBO extends BaseEntity {
 
     /**
      * 身份证号
+     * 格式验证：@Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.citizenId.pattern}")
      */
-    @Pattern(regexp = RegexPool.CITIZEN_ID, message = "{user.citizenId.pattern}")
     private String citizenId;
 
     /**
@@ -76,8 +75,8 @@ public class UserBO extends BaseEntity {
 
     /**
      * 移动电话
+     * 格式验证：@Pattern(regexp = RegexPool.MOBILE, message = "{user.mobile.pattern}")
      */
-    @Pattern(regexp = RegexPool.MOBILE, message = "{user.mobile.pattern}")
     private String mobile;
 
     /**
@@ -93,10 +92,10 @@ public class UserBO extends BaseEntity {
     /**
      * 角色
      */
-    private List<Long> roleIds = new ArrayList<>();
+    private List<Long> roleIds;
 
     /**
      * 岗位
      */
-    private List<Long> postIds = new ArrayList<>();
+    private List<Long> postIds;
 }

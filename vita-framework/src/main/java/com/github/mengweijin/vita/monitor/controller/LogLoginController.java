@@ -54,7 +54,7 @@ public class LogLoginController {
     @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/page")
     public IPage<LogLoginDO> page(Page<LogLoginDO> page, LogLoginDO logLogin) {
-        LambdaQueryWrapper<LogLoginDO> wrapper = logLoginService.getQueryWrapper(logLogin);
+        LambdaQueryWrapper<LogLoginDO> wrapper = logLoginService.buildQueryWrapper(logLogin);
         wrapper.orderByDesc(LogLoginDO::getCreateTime);
         return logLoginService.page(page, wrapper);
     }

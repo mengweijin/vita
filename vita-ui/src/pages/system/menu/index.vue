@@ -28,7 +28,7 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   disabled: undefined,
-  keywords: undefined,
+  title: undefined,
   type: undefined,
 });
 
@@ -86,8 +86,8 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、权限字符、组件" clearable />
+    <el-form-item prop="title" label="名称">
+      <el-input v-model="queryParams.title" placeholder="" clearable />
     </el-form-item>
     <el-form-item prop="type" label="菜单类型">
       <VtSelectDict v-model="queryParams.type" :code="'vt_menu_type'"></VtSelectDict>

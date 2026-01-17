@@ -21,10 +21,11 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   current: 1,
-  keywords: undefined,
+  ip: undefined,
   loginType: undefined,
   size: 10,
   total: 0,
+  username: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -79,8 +80,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="登录账号、IP" clearable />
+    <el-form-item prop="username" label="登录账号">
+      <el-input v-model="queryParams.username" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="ip" label="IP地址">
+      <el-input v-model="queryParams.ip" placeholder="" clearable />
     </el-form-item>
     <el-form-item prop="loginType" label="登录类型">
       <VtSelectDict v-model="queryParams.loginType" :code="'vt_login_type'"></VtSelectDict>

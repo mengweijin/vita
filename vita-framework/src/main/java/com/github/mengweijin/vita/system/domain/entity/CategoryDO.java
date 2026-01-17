@@ -2,16 +2,20 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
-import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.validator.rule.CategoryCodeDuplicateCheckRule;
-import jakarta.validation.constraints.NotBlank;
+import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
+import com.github.mengweijin.vita.system.domain.vo.CategoryVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * @author mengweijin
  */
+@AutoMappers({
+        @AutoMapper(target = CategoryBO.class),
+        @AutoMapper(target = CategoryVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_CATEGORY")
@@ -25,14 +29,11 @@ public class CategoryDO extends BaseEntity {
     /**
      * 编码
      */
-    @NotBlank(groups = Group.Create.class)
-    @BusinessCheck(groups = Group.Create.class, checkRule = CategoryCodeDuplicateCheckRule.class)
     private String code;
 
     /**
      * 名称
      */
-    @NotBlank
     private String name;
 
     /**

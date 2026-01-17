@@ -153,7 +153,7 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 -- 字典：系统消息类别
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140001, 'vt_message_category', 'system', '系统', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140002, 'vt_message_category', 'security', '安全', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140003, 'vt_message_category', 'alert', '告警', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140003, 'vt_message_category', 'warning', '警告', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140004, 'vt_message_category', 'user', '用户', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140005, 'vt_message_category', 'other', '其它', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：已发布/未发布
@@ -334,9 +334,9 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 
 
 -- 调度任务
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,'文件上传存储路径下的空文件夹清理','0 20 3 ? * 1','fileUploadEmptyDirectoryCleanTask',null,'N','文件上传存储路径下的空文件夹清理任务，防止文件删除后，遗留的空文件夹太多。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','Y','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','Y','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,'文件上传存储路径下的空文件夹清理','0 20 3 ? * 1','fileUploadEmptyDirectoryCleanTask',null,'N','Y','文件上传存储路径下的空文件夹清理任务，防止文件删除后，遗留的空文件夹太多。',1,current_timestamp(),1,current_timestamp());
 
 
 -- 用户-角色

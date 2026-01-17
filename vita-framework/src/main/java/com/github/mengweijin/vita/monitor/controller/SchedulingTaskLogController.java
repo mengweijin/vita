@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskLogBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskLogService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -53,10 +55,10 @@ public class SchedulingTaskLogController {
      */
     @SaCheckPermission("monitor:schedulingTaskLog:select")
     @GetMapping("/page")
-    public IPage<SchedulingTaskLogDO> page(Page<SchedulingTaskLogDO> page, SchedulingTaskLogDO schedulingTaskLog) {
-        LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = schedulingTaskLogService.getQueryWrapper(schedulingTaskLog);
+    public IPage<SchedulingTaskLogVO> page(Page<SchedulingTaskLogDO> page, SchedulingTaskLogDO schedulingTaskLog) {
+        LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = schedulingTaskLogService.buildQueryWrapper(schedulingTaskLog);
         wrapper.orderByDesc(SchedulingTaskLogDO::getCreateTime);
-        return schedulingTaskLogService.page(page, wrapper);
+        return schedulingTaskLogService.pageVo(page, wrapper);
     }
 
     /**
@@ -68,8 +70,8 @@ public class SchedulingTaskLogController {
      */
     @SaCheckPermission("monitor:schedulingTaskLog:select")
     @GetMapping("/list")
-    public List<SchedulingTaskLogDO> list(SchedulingTaskLogDO schedulingTaskLog) {
-        return schedulingTaskLogService.list(Wrappers.lambdaQuery(schedulingTaskLog));
+    public List<SchedulingTaskLogVO> list(SchedulingTaskLogDO schedulingTaskLog) {
+        return schedulingTaskLogService.listVo(Wrappers.lambdaQuery(schedulingTaskLog));
     }
 
     /**
@@ -81,21 +83,21 @@ public class SchedulingTaskLogController {
      */
     @SaCheckPermission("monitor:schedulingTaskLog:select")
     @GetMapping("/{id}")
-    public SchedulingTaskLogDO getById(@PathVariable("id") Long id) {
-        return schedulingTaskLogService.getById(id);
+    public SchedulingTaskLogVO getById(@PathVariable("id") Long id) {
+        return schedulingTaskLogService.getVoById(id);
     }
 
     /**
      * <p>
      * Add SchedulingTaskLogDO
      * </p>
-     * @param schedulingTaskLogDO {@link SchedulingTaskLogDO}
+     * @param bo {@link SchedulingTaskLogBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("monitor:schedulingTaskLog:create")
     @PostMapping("/create")
-    public R<Void> create(@Valid @RequestBody SchedulingTaskLogDO schedulingTaskLogDO) {
-        boolean bool = schedulingTaskLogService.save(schedulingTaskLogDO);
+    public R<Void> create(@Valid @RequestBody SchedulingTaskLogBO bo) {
+        boolean bool = schedulingTaskLogService.saveByBo(bo);
         return R.result(bool);
     }
 
@@ -103,13 +105,13 @@ public class SchedulingTaskLogController {
      * <p>
      * Update SchedulingTaskLogDO
      * </p>
-     * @param schedulingTaskLogDO {@link SchedulingTaskLogDO}
+     * @param bo {@link SchedulingTaskLogBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("monitor:schedulingTaskLog:update")
     @PostMapping("/update")
-    public R<Void> update(@Valid @RequestBody SchedulingTaskLogDO schedulingTaskLogDO) {
-        boolean bool = schedulingTaskLogService.updateById(schedulingTaskLogDO);
+    public R<Void> update(@Valid @RequestBody SchedulingTaskLogBO bo) {
+        boolean bool = schedulingTaskLogService.updateByBoById(bo);
         return R.result(bool);
     }
 
@@ -128,4 +130,3 @@ public class SchedulingTaskLogController {
     }
 
 }
-

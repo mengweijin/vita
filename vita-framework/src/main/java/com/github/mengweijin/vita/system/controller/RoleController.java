@@ -9,9 +9,12 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.RoleBO;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
+import com.github.mengweijin.vita.system.domain.vo.RoleVO;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -62,9 +65,9 @@ public class RoleController {
      */
     @SaCheckPermission("system:role:select")
     @GetMapping("/page")
-    public IPage<RoleDO> page(Page<RoleDO> page, RoleDO role) {
-        LambdaQueryWrapper<RoleDO> wrapper = roleService.getQueryWrapper(role);
-        return roleService.page(page, wrapper.orderByAsc(RoleDO::getSeq));
+    public IPage<RoleVO> page(Page<RoleDO> page, RoleDO role) {
+        LambdaQueryWrapper<RoleDO> wrapper = roleService.buildQueryWrapper(role);
+        return roleService.pageVo(page, wrapper.orderByAsc(RoleDO::getSeq));
     }
 
     /**
@@ -76,8 +79,8 @@ public class RoleController {
      */
     @SaCheckPermission("system:role:select")
     @GetMapping("/list")
-    public List<RoleDO> list(RoleDO role) {
-        return roleService.list(Wrappers.lambdaQuery(role).eq(RoleDO::getDisabled, EYesNo.N.getValue()));
+    public List<RoleVO> list(RoleDO role) {
+        return roleService.listVo(Wrappers.lambdaQuery(role).eq(RoleDO::getDisabled, EYesNo.N.getValue()));
     }
 
     /**
@@ -88,16 +91,16 @@ public class RoleController {
      * @param userId userId
      * @return Role
      */
-    @SaCheckPermission("system:role:select")
-    @GetMapping("/list-role-ids-by-user-id/{userId}")
+    @GetMapping("/get-role-ids-by-user-id/{userId}")
     public Set<Long> getRoleIdsByUserId(@PathVariable("userId") Long userId) {
         return userRoleService.getRoleIdsByUserId(userId);
     }
 
     @GetMapping("/get-default-role")
-    public RoleDO getDefaultRole() {
+    public RoleVO getDefaultRole() {
         String defaultRoleCode = vitaProperties.getUser().getDefaultRoleCode();
-        return roleService.getByCode(defaultRoleCode);
+        RoleDO roleDO = roleService.getByCode(defaultRoleCode);
+        return MapstructUtils.getInstance().convert(roleDO, RoleVO.class);
     }
 
 
@@ -110,21 +113,21 @@ public class RoleController {
      */
     @SaCheckPermission("system:role:select")
     @GetMapping("/{id}")
-    public RoleDO getById(@PathVariable("id") Long id) {
-        return roleService.getById(id);
+    public RoleVO getById(@PathVariable("id") Long id) {
+        return roleService.getVoById(id);
     }
 
     /**
      * <p>
      * Add Role
      * </p>
-     * @param role {@link RoleDO}
+     * @param role {@link RoleBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:role:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody RoleDO role) {
-        boolean bool = roleService.save(role);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody RoleBO role) {
+        boolean bool = roleService.saveByBo(role);
         return R.result(bool);
     }
 
@@ -132,13 +135,13 @@ public class RoleController {
      * <p>
      * Update Role
      * </p>
-     * @param role {@link RoleDO}
+     * @param role {@link RoleBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:role:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody RoleDO role) {
-        boolean bool = roleService.updateById(role);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody RoleBO role) {
+        boolean bool = roleService.updateByBoById(role);
         return R.result(bool);
     }
 

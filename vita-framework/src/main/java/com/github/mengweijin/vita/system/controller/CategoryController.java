@@ -8,7 +8,9 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
+import com.github.mengweijin.vita.system.domain.vo.CategoryVO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +49,9 @@ public class CategoryController {
      */
     @SaCheckPermission("system:category:select")
     @GetMapping("/page")
-    public IPage<CategoryDO> page(Page<CategoryDO> page, CategoryDO categoryDO) {
-        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.getQueryWrapper(categoryDO);
-        return categoryService.page(page, wrapper);
+    public IPage<CategoryVO> page(Page<CategoryDO> page, CategoryDO categoryDO) {
+        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.buildQueryWrapper(categoryDO);
+        return categoryService.pageVo(page, wrapper);
     }
 
     /**
@@ -60,9 +62,10 @@ public class CategoryController {
      */
     @SaCheckPermission("system:category:select")
     @GetMapping("/list")
-    public List<CategoryDO> list(CategoryDO categoryDO) {
-        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.getQueryWrapper(categoryDO);
-        return categoryService.list(wrapper.orderByAsc(CategoryDO::getSeq));
+    public List<CategoryVO> list(CategoryDO categoryDO) {
+        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.buildQueryWrapper(categoryDO);
+        wrapper.orderByAsc(CategoryDO::getSeq);
+        return categoryService.listVo(wrapper);
     }
 
     /**
@@ -73,33 +76,33 @@ public class CategoryController {
      */
     @SaCheckPermission("system:category:select")
     @GetMapping("/{id}")
-    public CategoryDO getById(@PathVariable("id") Long id) {
-        return categoryService.getById(id);
+    public CategoryVO getById(@PathVariable("id") Long id) {
+        return categoryService.getVoById(id);
     }
 
     /**
      * Add Category
      *
-     * @param categoryDO {@link CategoryDO}
+     * @param categoryBO {@link CategoryBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:category:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody CategoryDO categoryDO) {
-        boolean bool = categoryService.save(categoryDO);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody CategoryBO categoryBO) {
+        boolean bool = categoryService.saveByBo(categoryBO);
         return R.result(bool);
     }
 
     /**
      * Update Category
      *
-     * @param categoryDO {@link CategoryDO}
+     * @param categoryBO {@link CategoryBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:category:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody CategoryDO categoryDO) {
-        boolean bool = categoryService.updateById(categoryDO);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody CategoryBO categoryBO) {
+        boolean bool = categoryService.updateByBoById(categoryBO);
         return R.result(bool);
     }
 

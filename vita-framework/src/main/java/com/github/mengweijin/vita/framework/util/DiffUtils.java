@@ -16,8 +16,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public final class DiffUtils {
 
     public static <T> DiffResult<?> diff(T t1, T t2) {
-        DiffBuilder<Object> builder = DiffBuilder.builder().setLeft(t1).setRight(t2).setStyle(ToStringStyle.JSON_STYLE).build();
-        ReflectionDiffBuilder<Object> diffBuilder = ReflectionDiffBuilder.builder().setDiffBuilder(builder).build();
+        DiffBuilder<Object> builder = DiffBuilder.builder()
+                .setLeft(t1)
+                .setRight(t2)
+                .setStyle(ToStringStyle.JSON_STYLE)
+                .build();
+        ReflectionDiffBuilder<Object> diffBuilder = ReflectionDiffBuilder.builder()
+                .setDiffBuilder(builder)
+                .build();
         return diffBuilder.build();
     }
 }

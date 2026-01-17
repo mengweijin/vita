@@ -3,8 +3,9 @@ package com.github.mengweijin.vita.monitor.service;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
+import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,10 @@ import java.time.LocalTime;
  */
 @Slf4j
 @Service
-public class SchedulingTaskLogService extends CrudRepository<SchedulingTaskLogMapper, SchedulingTaskLogDO> {
+public class SchedulingTaskLogService extends BaseVitaService<SchedulingTaskLogMapper, SchedulingTaskLogDO, SchedulingTaskLogVO> {
 
-    public LambdaQueryWrapper<SchedulingTaskLogDO> getQueryWrapper(SchedulingTaskLogDO taskLog) {
+    @Override
+    public LambdaQueryWrapper<SchedulingTaskLogDO> buildQueryWrapper(SchedulingTaskLogDO taskLog) {
         LambdaQueryWrapper<SchedulingTaskLogDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(taskLog.getId() != null, SchedulingTaskLogDO::getId, taskLog.getId());
         wrapper.eq(taskLog.getSchedulingTaskId() != null, SchedulingTaskLogDO::getSchedulingTaskId, taskLog.getSchedulingTaskId());

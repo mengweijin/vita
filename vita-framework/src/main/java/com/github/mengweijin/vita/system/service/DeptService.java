@@ -1,17 +1,18 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import com.github.mengweijin.vita.system.mapper.DeptMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
+public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
 
     @Override
     public boolean removeByIds(Collection<?> ids) {
@@ -46,8 +47,9 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
         return super.removeByIds(ids);
     }
 
-    public LambdaQueryWrapper<DeptDO> getQueryWrapper(DeptDO dept) {
-        LambdaQueryWrapper<DeptDO> wrapper = Wrappers.lambdaQuery(dept);
+    @Override
+    public LambdaQueryWrapper<DeptDO> buildQueryWrapper(DeptDO dept) {
+        LambdaQueryWrapper<DeptDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(dept.getId() != null, DeptDO::getId, dept.getId());
         wrapper.eq(dept.getParentId() != null, DeptDO::getParentId, dept.getParentId());
         wrapper.eq(StrUtil.isNotBlank(dept.getDisabled()), DeptDO::getDisabled, dept.getDisabled());
@@ -55,12 +57,8 @@ public class DeptService extends CrudRepository<DeptMapper, DeptDO> {
         wrapper.eq(dept.getUpdateBy() != null, DeptDO::getUpdateBy, dept.getUpdateBy());
         wrapper.gt(dept.getStartCreateTime() != null, DeptDO::getCreateTime, dept.getStartCreateTime());
         wrapper.le(dept.getEndCreateTime() != null, DeptDO::getCreateTime, dept.getEndCreateTime());
-        if (StrUtil.isNotBlank(dept.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(DeptDO::getCode, dept.getKeywords()));
-                w.or(w1 -> w1.like(DeptDO::getName, dept.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(dept.getCode()), DeptDO::getCode, dept.getCode());
+        wrapper.like(StrUtil.isNotBlank(dept.getName()), DeptDO::getName, dept.getName());
         return wrapper;
     }
 

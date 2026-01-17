@@ -23,8 +23,8 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   current: 1,
-  keywords: undefined,
   md5: undefined,
+  name: undefined,
   size: 10,
   total: 0,
 });
@@ -88,8 +88,8 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="文件名称、后缀" clearable />
+    <el-form-item prop="name" label="名称">
+      <el-input v-model="queryParams.name" placeholder="" clearable />
     </el-form-item>
     <el-form-item prop="md5" label="MD5">
       <el-input v-model="queryParams['md5']" clearable />

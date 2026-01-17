@@ -1,7 +1,5 @@
 <script setup>
-import Cropper from 'cropperjs';
-
-const loading = ref(false);
+import 'cropperjs';
 
 const visible = ref(false);
 
@@ -9,25 +7,18 @@ const emit = defineEmits(["callback"]);
 
 const src = ref('');
 
-const imageRef = useTemplateRef('imageRef');
-
-const cropperRef = ref(null);
+const cropperCanvas = useTemplateRef('cropperCanvas');
+const cropperImage = useTemplateRef('cropperImage');
+const cropperShade = useTemplateRef('cropperShade');
+const cropperSelection = useTemplateRef('cropperSelection');
 
 const onOpened = () => {
-	loading.value = true;
-	cropperRef.value = new Cropper(imageRef.value);
-	const cropperCanvas = cropperRef.value.getCropperCanvas();
-	cropperCanvas.style.height = '350px';
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$ready(() => {
-		loading.value = false;
-	});
-	loading.value = false;
+
 };
 
 const onClosed = () => {
 	visible.value = false;
-	cropperRef.value = null;
+	src.value = '';
 };
 
 const onSubmit = () => {
@@ -40,58 +31,47 @@ const rotationAngle = ref(45);
 const zoomScale = ref(0.1);
 
 const handleMoveUp = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$move(0, -moveDistance.value);
+	cropperImage.value.$move(0, -moveDistance.value);
 };
 
 const handleMoveDown = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$move(0, moveDistance.value);
+	cropperImage.value.$move(0, moveDistance.value);
 };
 
 const handleMoveLeft = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$move(-moveDistance.value, 0);
+	cropperImage.value.$move(-moveDistance.value, 0);
 };
 
 const handleMoveRight = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$move(moveDistance.value, 0);
+	cropperImage.value.$move(moveDistance.value, 0);
 };
 
 const handleRotateLeft = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$rotate(`${-rotationAngle.value}deg`);
+	cropperImage.value.$rotate(`${-rotationAngle.value}deg`);
 };
 
 const handleRotateRight = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$rotate(`${rotationAngle.value}deg`);
+	cropperImage.value.$rotate(`${rotationAngle.value}deg`);
 };
 
 const handleZoomBigger = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$zoom(zoomScale.value);
+	cropperImage.value.$zoom(zoomScale.value);
 };
 
 const handleZoomSmaller = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$zoom(-zoomScale.value);
+	cropperImage.value.$zoom(-zoomScale.value);
 };
 
 const handleScaleX = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$scale(-1, 1);
+	cropperImage.value.$scale(-1, 1);
 };
 
 const handleScaleY = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$scale(1, -1);
+	cropperImage.value.$scale(1, -1);
 };
 
 const handleCenter = () => {
-	const cropperImage = cropperRef.value.getCropperImage();
-	cropperImage.$center("contain");
+	cropperImage.value.$center("contain");
 };
 
 
@@ -99,15 +79,61 @@ const handleCenter = () => {
 defineExpose({ src, visible });
 
 onMounted(() => {
+
 });
 </script>
 
 <template>
 	<el-dialog v-model="visible" :title="'图片裁剪'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
-		width="80%" style="height: 510px;">
-		<div v-loading="loading">
+		width="1000px" style="height: 510px;">
+		<div>
 			<div>
-				<img ref="imageRef" :src="src" alt="Picture">
+				<el-row :gutter="10">
+					<el-col :span="16">
+						<cropper-canvas ref="cropperCanvas" background style="height: 350px;">
+							<cropper-image ref="cropperImage" :src="src" alt="Picture" rotatable scalable skewable
+								translatable></cropper-image>
+							<cropper-shade ref="cropperShade" hidden></cropper-shade>
+							<cropper-handle action="select" plain></cropper-handle>
+							<cropper-selection ref="cropperSelection" id="cropperSelection" initial-aspect-ratio="1"
+								initial-coverage="1" movable resizable outlined>
+								<cropper-grid role="grid" covered></cropper-grid>
+								<cropper-crosshair centered></cropper-crosshair>
+								<cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
+								<cropper-handle action="n-resize"></cropper-handle>
+								<cropper-handle action="e-resize"></cropper-handle>
+								<cropper-handle action="s-resize"></cropper-handle>
+								<cropper-handle action="w-resize"></cropper-handle>
+								<cropper-handle action="ne-resize"></cropper-handle>
+								<cropper-handle action="nw-resize"></cropper-handle>
+								<cropper-handle action="se-resize"></cropper-handle>
+								<cropper-handle action="sw-resize"></cropper-handle>
+							</cropper-selection>
+						</cropper-canvas>
+					</el-col>
+					<el-col :span="8">
+						<div class="cropper-viewers">
+							<cropper-viewer selection="#cropperSelection" class="vt-cropper-viewer"
+								style="width: 160px;"></cropper-viewer>
+							<cropper-viewer selection="#cropperSelection" class="vt-cropper-viewer"
+								style="width: 80px;"></cropper-viewer>
+							<cropper-viewer selection="#cropperSelection" class="vt-cropper-viewer"
+								style="width: 40px;"></cropper-viewer>
+						</div>
+						<div class="cropper-viewers">
+							<div class="vt-cropper-viewer vt-cropper-viewer-circle"
+								style="width: 160px; height: 160px;">
+								<cropper-viewer selection="#cropperSelection" style="width: 160px;"></cropper-viewer>
+							</div>
+							<div class="vt-cropper-viewer vt-cropper-viewer-circle" style="width: 80px; height: 80px;">
+								<cropper-viewer selection="#cropperSelection" style="width: 80px;"></cropper-viewer>
+							</div>
+							<div class="vt-cropper-viewer vt-cropper-viewer-circle" style="width: 40px; height: 40px;">
+								<cropper-viewer selection="#cropperSelection" style="width: 40px;"></cropper-viewer>
+							</div>
+						</div>
+					</el-col>
+				</el-row>
 			</div>
 			<div style="margin-top: 10px;">
 				<el-form :inline="true">
@@ -278,5 +304,20 @@ onMounted(() => {
 	height: 2em;
 	border-left: 2px var(--el-border-color) var(--el-border-style);
 	margin-left: -5px;
+}
+
+.vt-cropper-viewer {
+	border: 1px solid var(--vp-c-divider);
+	display: inline-block;
+	margin-right: 0.25rem;
+}
+
+.vt-cropper-viewer-circle {
+	/* 1. 关键：将容器设置为正方形 */
+	width: 160px;
+	height: 160px;
+	/* 2. 核心：设置为圆形并隐藏溢出 */
+	border-radius: 50%;
+	overflow: hidden;
 }
 </style>

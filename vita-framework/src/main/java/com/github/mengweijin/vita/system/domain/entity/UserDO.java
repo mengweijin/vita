@@ -4,6 +4,12 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.system.domain.bo.UserBO;
+import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,6 +23,12 @@ import java.time.LocalDateTime;
  * @author mengweijin
  * @since 2023-06-03
  */
+@AutoMappers({
+        @AutoMapper(target = UserBO.class),
+        @AutoMapper(target = UserVO.class),
+        @AutoMapper(target = UserBasicInformationBO.class),
+        @AutoMapper(target = UserProfileVO.class),
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("VT_USER")
@@ -91,6 +103,7 @@ public class UserDO extends BaseEntity {
     /**
      * 用户是否已启用 TOTP 动态口令。[Y, N]
      */
+    @JsonIgnore
     private String totpEnabled;
 
     /**

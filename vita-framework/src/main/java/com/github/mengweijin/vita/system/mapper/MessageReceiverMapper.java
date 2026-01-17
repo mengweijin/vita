@@ -1,9 +1,10 @@
 package com.github.mengweijin.vita.system.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
+import com.github.mengweijin.vita.system.domain.vo.MessageReceiverVO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,7 +18,7 @@ import org.apache.ibatis.annotations.Param;
  * @since 2023-06-03
  */
 @Mapper
-public interface MessageReceiverMapper extends BaseMapper<MessageReceiverDO> {
+public interface MessageReceiverMapper extends BaseVitaMapper<MessageReceiverDO, MessageReceiverVO> {
 
     /**
      * 自定义分页

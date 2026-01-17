@@ -20,8 +20,9 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+  configKey: undefined,
+  configValue: undefined,
   current: 1,
-  keywords: undefined,
   size: 10,
   total: 0,
 });
@@ -85,8 +86,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="配置键、配置值" clearable />
+    <el-form-item prop="configKey" label="配置键">
+      <el-input v-model="queryParams.configKey" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="configValue" label="配置值">
+      <el-input v-model="queryParams.configValue" placeholder="" clearable />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -196,7 +200,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.configKey}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
                     <el-button type="danger" text :size="size">

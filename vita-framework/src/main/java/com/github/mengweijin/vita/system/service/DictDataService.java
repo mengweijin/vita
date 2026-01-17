@@ -4,11 +4,12 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.domain.vo.DictDataVO;
 import com.github.mengweijin.vita.system.mapper.DictDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,23 +29,20 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class DictDataService extends CrudRepository<DictDataMapper, DictDataDO> {
+public class DictDataService extends BaseVitaService<DictDataMapper, DictDataDO, DictDataVO> {
 
-    public LambdaQueryWrapper<DictDataDO> getQueryWrapper(DictDataDO dictData) {
-        LambdaQueryWrapper<DictDataDO> wrapper = Wrappers.lambdaQuery(dictData);
+    @Override
+    public LambdaQueryWrapper<DictDataDO> buildQueryWrapper(DictDataDO dictData) {
+        LambdaQueryWrapper<DictDataDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(dictData.getId() != null, DictDataDO::getId, dictData.getId());
         wrapper.eq(StrUtil.isNotBlank(dictData.getDisabled()), DictDataDO::getDisabled, dictData.getDisabled());
         wrapper.eq(dictData.getCreateBy() != null, DictDataDO::getCreateBy, dictData.getCreateBy());
         wrapper.eq(dictData.getUpdateBy() != null, DictDataDO::getUpdateBy, dictData.getUpdateBy());
         wrapper.gt(dictData.getStartCreateTime() != null, DictDataDO::getCreateTime, dictData.getStartCreateTime());
         wrapper.le(dictData.getEndCreateTime() != null, DictDataDO::getCreateTime, dictData.getEndCreateTime());
-        if (StrUtil.isNotBlank(dictData.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(DictDataDO::getLabel, dictData.getKeywords()));
-                w.or(w1 -> w1.like(DictDataDO::getCode, dictData.getKeywords()));
-                w.or(w1 -> w1.like(DictDataDO::getVal, dictData.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(dictData.getLabel()), DictDataDO::getLabel, dictData.getLabel());
+        wrapper.like(StrUtil.isNotBlank(dictData.getCode()), DictDataDO::getCode, dictData.getCode());
+        wrapper.like(StrUtil.isNotBlank(dictData.getVal()), DictDataDO::getVal, dictData.getVal());
         return wrapper;
     }
 

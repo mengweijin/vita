@@ -18,8 +18,6 @@ public final class VitaConst {
 
     // endregion
 
-    public static final String SESSION_LOGIN_USER = "loginUser";
-
     // region ----- Role
 
     public static final String ROLE_ADMIN_CODE = "role_admin";

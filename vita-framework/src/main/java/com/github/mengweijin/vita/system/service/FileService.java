@@ -5,18 +5,18 @@ import cn.hutool.v7.core.io.file.FileNameUtil;
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
+import com.github.mengweijin.vita.system.domain.vo.FileVO;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,11 +44,12 @@ import java.util.function.Supplier;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class FileService extends CrudRepository<FileMapper, FileDO> {
+public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
 
     private VitaProperties vitaProperties;
 
-    public LambdaQueryWrapper<FileDO> getQueryWrapper(FileDO fileDO) {
+    @Override
+    public LambdaQueryWrapper<FileDO> buildQueryWrapper(FileDO fileDO) {
         LambdaQueryWrapper<FileDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(fileDO.getId() != null, FileDO::getId, fileDO.getId());
         wrapper.eq(StrUtil.isNotBlank(fileDO.getMd5()), FileDO::getMd5, fileDO.getMd5());
@@ -58,11 +59,7 @@ public class FileService extends CrudRepository<FileMapper, FileDO> {
         wrapper.eq(fileDO.getUpdateBy() != null, FileDO::getUpdateBy, fileDO.getUpdateBy());
         wrapper.gt(fileDO.getStartCreateTime() != null, FileDO::getCreateTime, fileDO.getStartCreateTime());
         wrapper.le(fileDO.getEndCreateTime() != null, FileDO::getCreateTime, fileDO.getEndCreateTime());
-        if (StrValidator.isNotBlank(fileDO.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(FileDO::getName, fileDO.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(fileDO.getName()), FileDO::getName, fileDO.getName());
         return wrapper;
     }
 

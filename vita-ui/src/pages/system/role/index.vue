@@ -22,9 +22,10 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+  code: undefined,
   current: 1,
   disabled: undefined,
-  keywords: undefined,
+  name: undefined,
   size: 10,
   total: 0,
 });
@@ -102,8 +103,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="名称、编码" clearable />
+    <el-form-item prop="name" label="名称">
+      <el-input v-model="queryParams.name" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="code" label="编码">
+      <el-input v-model="queryParams.code" placeholder="" clearable />
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
       <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>

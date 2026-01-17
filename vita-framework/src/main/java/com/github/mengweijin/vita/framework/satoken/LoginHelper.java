@@ -1,9 +1,10 @@
 package com.github.mengweijin.vita.framework.satoken;
 
+import cn.dev33.satoken.exception.SaTokenContextException;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import com.github.mengweijin.vita.system.constant.VitaConst;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
+ * {@link StpUtil}
+ * {@link cn.dev33.satoken.stp.StpLogic}
  * @author mengweijin
  */
 @SuppressWarnings({"unused"})
@@ -19,43 +21,31 @@ import java.util.Optional;
 public class LoginHelper {
 
     /**
-     * 设置登录用户缓存
-     */
-    public static void setLoginUser(LoginUserVO loginUser) {
-        StpUtil.getTokenSession().set(VitaConst.SESSION_LOGIN_USER, loginUser);
-    }
-
-    /**
      * 获取登录用户
      */
-    public static LoginUserVO getLoginUser() {
-        return getLoginUser(StpUtil.getTokenSession());
-    }
-
-    public static LoginUserVO getLoginUserQuietly() {
+    public static UserSessionVO getSessionUser() {
+        SaSession saSession;
         try {
-            return getLoginUser();
-        } catch (Exception e) {
+            saSession = StpUtil.getTokenSession();
+        } catch (SaTokenContextException e) {
             return null;
         }
-    }
-
-    public static Long getLoginUserIdQuietly() {
-        return Optional.ofNullable(getLoginUserQuietly()).map(LoginUserVO::getUserId).orElse(null);
-    }
-
-    /**
-     * 获取登录用户
-     */
-    public static LoginUserVO getLoginUser(String token) {
-        return getLoginUser(StpUtil.getTokenSessionByToken(token));
-    }
-
-    private static LoginUserVO getLoginUser(SaSession session){
-        if (session == null) {
+        if(saSession == null) {
             return null;
         }
-        return (LoginUserVO) session.get(VitaConst.SESSION_LOGIN_USER);
+        return (UserSessionVO) saSession.get(SaSession.USER);
+    }
+
+    public static Long getSessionUserId() {
+        return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getUserId).orElse(null);
+    }
+
+    public static String getSessionUsername() {
+        return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getUsername).orElse(null);
+    }
+
+    public static String getToken() {
+        return StpUtil.getTokenValue();
     }
 
     public static List<String> getPermissionList() {
@@ -72,7 +62,20 @@ public class LoginHelper {
      * @return boolean
      */
     public static boolean isAdmin() {
-        LoginUserVO loginUser = getLoginUser();
-        return VitaConst.USER_ADMIN_ID == loginUser.getUserId() && VitaConst.USER_ADMIN_USERNAME.equals(loginUser.getUsername());
+        UserSessionVO loginUser = getSessionUser();
+        if(loginUser != null) {
+            return isAdmin(loginUser.getUserId(), loginUser.getUsername());
+        }
+        return false;
+
+    }
+
+    /**
+     * 是否为管理员
+     *
+     * @return boolean
+     */
+    public static boolean isAdmin(Long userId, String username) {
+        return VitaConst.USER_ADMIN_ID == userId && VitaConst.USER_ADMIN_USERNAME.equals(username);
     }
 }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
+import org.apache.commons.lang3.builder.DiffExclude;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -45,10 +46,12 @@ public abstract class BaseEntity implements Serializable {
     @TableId(value = "ID", type = IdType.ASSIGN_ID)
     protected Long id;
 
+    @DiffExclude
     @JsonFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
     @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     protected LocalDateTime createTime;
 
+    @DiffExclude
     @JsonFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
     @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     protected LocalDateTime updateTime;
@@ -59,10 +62,12 @@ public abstract class BaseEntity implements Serializable {
     @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
     protected Long updateBy;
 
+    @DiffExclude
     @TableField(exist = false)
     @Translation(translateType = ETranslateType.USER_ID_TO_NICKNAME, field = "createBy")
     private String createByName;
 
+    @DiffExclude
     @TableField(exist = false)
     @Translation(translateType = ETranslateType.USER_ID_TO_NICKNAME, field = "updateBy")
     private String updateByName;
@@ -70,6 +75,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 查询关键字
      */
+    @DiffExclude
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String keywords;
@@ -77,6 +83,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 按创建时间查询的开始时间
      */
+    @DiffExclude
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
@@ -85,6 +92,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 按创建时间查询的结束时间
      */
+    @DiffExclude
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
@@ -93,6 +101,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 按更新时间查询的开始时间
      */
+    @DiffExclude
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)
@@ -101,6 +110,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 按更新时间查询的结束时间
      */
+    @DiffExclude
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_PATTERN)

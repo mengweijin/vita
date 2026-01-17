@@ -1,7 +1,8 @@
 package com.github.mengweijin.vita.system.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
+import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @since 2023-06-03
  */
 @Mapper
-public interface DeptMapper extends BaseMapper<DeptDO> {
+public interface DeptMapper extends BaseVitaMapper<DeptDO, DeptVO> {
 
     /**
      * select children ids

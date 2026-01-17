@@ -14,8 +14,8 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
@@ -28,7 +28,8 @@ import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRoleBO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -82,23 +83,22 @@ public class UserController {
     @SaCheckPermission("system:user:select")
     @GetMapping("/page")
     public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
-        LambdaQueryWrapper<UserDO> wrapper = userService.getQueryWrapper(user);
-        IPage<UserDO> userPage = userService.page(page, wrapper);
-        return BeanCopyUtils.copyPage(userPage, UserVO.class);
+        LambdaQueryWrapper<UserDO> wrapper = userService.buildQueryWrapper(user);
+        return userService.pageVo(page, wrapper);
     }
 
     @SaCheckPermission("system:user:select")
     @GetMapping("/pageByRole/{roleId}")
     public IPage<UserVO> pageByRole(@PathVariable("roleId") Long roleId, Page<UserDO> page, UserDO user) {
         IPage<UserDO> userPage = userService.pageByRole(roleId, page, user);
-        return BeanCopyUtils.copyPage(userPage, UserVO.class);
+        return userService.toVoPage(userPage);
     }
 
     @SaCheckPermission("system:user:select")
     @GetMapping("/pageByPost/{postId}")
     public IPage<UserVO> pageByPost(@PathVariable("postId") Long postId, Page<UserDO> page, UserDO user) {
         IPage<UserDO> userPage = userService.pageByPost(postId, page, user);
-        return BeanCopyUtils.copyPage(userPage, UserVO.class);
+        return userService.toVoPage(userPage);
     }
 
     /**
@@ -112,8 +112,7 @@ public class UserController {
     @SaCheckPermission("system:user:select")
     @GetMapping("/list")
     public List<UserVO> list(UserDO userDO) {
-        List<UserDO> userList = userService.list(Wrappers.lambdaQuery(userDO));
-        return BeanCopyUtils.copyList(userList, UserVO.class);
+        return userService.listVo(Wrappers.lambdaQuery(userDO));
     }
 
     /**
@@ -127,28 +126,18 @@ public class UserController {
     @SaCheckPermission("system:user:select")
     @GetMapping("/{id}")
     public UserVO getById(@PathVariable("id") Long id) {
-        UserDO user = userService.getById(id);
-        return BeanCopyUtils.copyBean(user, UserVO.class);
+        return userService.getVoById(id);
     }
 
-    /**
-     * <p>
-     * Get Sensitive User by id
-     * </p>
-     *
-     * @param id id
-     * @return User
-     */
-    @SaCheckPermission("system:user:sensitive")
-    @GetMapping("/get-sensitive-info/{id}")
-    public UserSensitiveVO getSensitiveUserById(@PathVariable("id") Long id) {
-        return userService.getSensitiveUserById(id);
+    @GetMapping("/get-user-store-vo")
+    public UserStoreVO getUserStoreVO() {
+        return userService.getUserStoreVO();
     }
 
-    @GetMapping("/get-login-user-info")
-    public UserSensitiveVO getLoginUserInfo() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
-        return userService.getSensitiveUserById(userId);
+    @GetMapping("/get-user-profile-vo")
+    public UserProfileVO getUserProfileVO() {
+        Long userId = LoginHelper.getSessionUserId();
+        return userService.getUserProfileVO(userId);
     }
 
     /**
@@ -181,10 +170,16 @@ public class UserController {
         return R.ok();
     }
 
+    @SaCheckPermission("system:user:update")
+    @GetMapping("/get-user-bo-by-id/{id}")
+    public UserBO getUserBO(@PathVariable("id") Long id) {
+        return userService.getUserBO(id);
+    }
+
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @PostMapping("/updateBasicInformation")
     public R<Void> updateBasicInformation(@RequestBody UserBasicInformationBO bo) {
-        UserDO userDO = BeanCopyUtils.copyBean(bo, new UserDO());
+        UserDO userDO = MapstructUtils.getInstance().convert(bo, UserDO.class);
         boolean bool = userService.updateById(userDO);
         return R.result(bool);
     }
@@ -227,7 +222,7 @@ public class UserController {
     @SaCheckPermission("system:user:changePassword")
     @PostMapping("/change-password")
     public R<Void> changePassword(@Validated @RequestBody PasswordChangeBO bo) {
-        String username = LoginHelper.getLoginUser().getUsername();
+        String username = LoginHelper.getSessionUsername();
         boolean bool = userService.changePassword(username, bo.getPassword(), bo.getNewPassword());
         return R.result(bool);
     }
@@ -292,7 +287,7 @@ public class UserController {
      */
     @PostMapping("/enable-totp/{code}")
     public R<Void> enableTotp(@Validated @PathVariable Integer code) {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         UserDO user = userService.getById(userId);
         if(TotpUtils.validate(user.getTotp(), code)) {
             boolean bool = userService.enableTotp();

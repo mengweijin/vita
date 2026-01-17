@@ -1,7 +1,8 @@
 package com.github.mengweijin.vita.system.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
+import com.github.mengweijin.vita.system.domain.vo.FileVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,7 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-06-03
  */
 @Mapper
-public interface FileMapper extends BaseMapper<FileDO> {
+public interface FileMapper extends BaseVitaMapper<FileDO, FileVO> {
 
 }
 

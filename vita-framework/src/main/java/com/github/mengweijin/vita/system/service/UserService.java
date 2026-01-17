@@ -14,25 +14,27 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.framework.util.BeanCopyUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
-import com.github.mengweijin.vita.system.domain.vo.LoginUserVO;
-import com.github.mengweijin.vita.system.domain.vo.user.UserSensitiveVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
@@ -69,7 +71,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class UserService extends CrudRepository<UserMapper, UserDO> {
+public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     private UserAvatarService userAvatarService;
 
@@ -108,7 +110,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(UserBO userBO) {
-        UserDO userDO = BeanCopyUtils.copyBean(userBO, new UserDO());
+        UserDO userDO = MapstructUtils.getInstance().convert(userBO, UserDO.class);
         // 用户
         if(userBO.getId() == null) {
             // 新增
@@ -128,7 +130,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         return String.join(Const.COMMA, password, salt);
     }
 
-    public LambdaQueryWrapper<UserDO> getQueryWrapper(UserDO user) {
+    @Override
+    public LambdaQueryWrapper<UserDO> buildQueryWrapper(UserDO user) {
         List<Long> deptIds = new ArrayList<>();
         if (!Objects.isNull(user.getDeptId())) {
             deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
@@ -147,12 +150,8 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         wrapper.gt(user.getStartCreateTime() != null, UserDO::getCreateTime, user.getStartCreateTime());
         wrapper.le(user.getEndCreateTime() != null, UserDO::getCreateTime, user.getEndCreateTime());
         wrapper.in(user.getDeptId() != null, UserDO::getDeptId, deptIds);
-        if (StrUtil.isNotBlank(user.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(UserDO::getUsername, user.getKeywords()));
-                w.or(w1 -> w1.like(UserDO::getNickname, user.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(user.getUsername()), UserDO::getUsername, user.getUsername());
+        wrapper.like(StrUtil.isNotBlank(user.getNickname()), UserDO::getNickname, user.getNickname());
         return wrapper;
     }
 
@@ -258,11 +257,38 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                 });
     }
 
-    public UserSensitiveVO getSensitiveUserById(Long id) {
+    public UserStoreVO getUserStoreVO() {
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
+
+        UserStoreVO vo = new UserStoreVO();
+        vo.setId(user.getId());
+        vo.setUsername(user.getUsername());
+        vo.setNickname(user.getNickname());
+        vo.setDeptId(user.getDeptId());
+        vo.setRoles(LoginHelper.getRoleList());
+        vo.setPermissions(LoginHelper.getPermissionList());
+        vo.setToken(LoginHelper.getToken());
+        vo.setDeptName(deptService.getNameById(user.getDeptId()));
+        vo.setAvatar(this.getAvatarById(user.getId()));
+        return vo;
+    }
+
+    public UserBO getUserBO(Long id) {
         UserDO user = this.getById(id);
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(id);
         Set<Long> postIds = userPostService.getPostIdsByUserId(id);
-        UserSensitiveVO vo = BeanCopyUtils.copyBean(user, new UserSensitiveVO());
+        UserBO bo = MapstructUtils.getInstance().convert(user, UserBO.class);
+        bo.setRoleIds(new ArrayList<>(roleIds));
+        bo.setPostIds(new ArrayList<>(postIds));
+        return bo;
+    }
+
+
+    public UserProfileVO getUserProfileVO(Long id) {
+        UserDO user = this.getById(id);
+        Set<Long> roleIds = userRoleService.getRoleIdsByUserId(id);
+        Set<Long> postIds = userPostService.getPostIdsByUserId(id);
+        UserProfileVO vo = MapstructUtils.getInstance().convert(user, UserProfileVO.class);
         vo.setRoleIds(roleIds);
         vo.setPostIds(postIds);
 
@@ -284,7 +310,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         if(CollUtil.isEmpty(userIds)) {
             return page;
         }
-        LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
+        LambdaQueryWrapper<UserDO> wrapper = this.buildQueryWrapper(user);
         wrapper.in(UserDO::getId, userIds);
         return this.page(page, wrapper);
     }
@@ -294,7 +320,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
         if(CollUtil.isEmpty(userIds)) {
             return page;
         }
-        LambdaQueryWrapper<UserDO> wrapper = this.getQueryWrapper(user);
+        LambdaQueryWrapper<UserDO> wrapper = this.buildQueryWrapper(user);
         wrapper.in(UserDO::getId, userIds);
         return this.page(page, wrapper);
     }
@@ -308,7 +334,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     }
 
     public String generateTotpQrCodeBase64() {
-        LoginUserVO loginUser = LoginHelper.getLoginUser();
+        UserSessionVO loginUser = LoginHelper.getSessionUser();
         UserDO user = this.getById(loginUser.getUserId());
         String key = user.getTotp();
         if(StrUtil.isBlank(key)) {
@@ -344,7 +370,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     }
 
     public boolean enableTotp() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         return this.lambdaUpdate()
                 .set(UserDO::getTotpEnabled, EYesNo.Y.getValue())
                 .eq(UserDO::getId, userId)
@@ -352,7 +378,7 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
     }
 
     public boolean getTotpEnabled() {
-        Long userId = LoginHelper.getLoginUser().getUserId();
+        Long userId = LoginHelper.getSessionUserId();
         String totpEnabled = this.lambdaQuery()
                 .select(UserDO::getTotpEnabled)
                 .eq(UserDO::getId, userId)
@@ -360,4 +386,5 @@ public class UserService extends CrudRepository<UserMapper, UserDO> {
                 .getTotpEnabled();
         return EYesNo.Y.getValue().equals(totpEnabled);
     }
+
 }

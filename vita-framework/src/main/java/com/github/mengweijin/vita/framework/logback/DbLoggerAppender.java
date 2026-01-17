@@ -16,7 +16,7 @@ import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
-import com.github.mengweijin.vita.monitor.domain.entity.LogDO;
+import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -80,22 +80,22 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
             return;
         }
 
-        Long loginUserId = LoginHelper.getLoginUserIdQuietly();
+        Long loginUserId = LoginHelper.getSessionUserId();
         LocalDateTime createTime = event.getInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        LogDO logDO = new LogDO();
-        logDO.setLoggerLevel(event.getLevel().levelStr);
-        logDO.setThreadName(event.getThreadName());
-        logDO.setLoggerName(loggerName);
-        logDO.setFormattedMessage(CharSequenceUtil.subPre(event.getFormattedMessage(), 3000));
-        logDO.setStackTrace(getStackTraceMsg(event.getThrowableProxy()));
+        LogSystemDO logSystemDO = new LogSystemDO();
+        logSystemDO.setLoggerLevel(event.getLevel().levelStr);
+        logSystemDO.setThreadName(event.getThreadName());
+        logSystemDO.setLoggerName(loggerName);
+        logSystemDO.setFormattedMessage(CharSequenceUtil.subPre(event.getFormattedMessage(), 3000));
+        logSystemDO.setStackTrace(getStackTraceMsg(event.getThrowableProxy()));
 
-        logDO.setCreateBy(loginUserId);
-        logDO.setUpdateBy(loginUserId);
-        logDO.setCreateTime(createTime);
-        logDO.setUpdateTime(createTime);
+        logSystemDO.setCreateBy(loginUserId);
+        logSystemDO.setUpdateBy(loginUserId);
+        logSystemDO.setCreateTime(createTime);
+        logSystemDO.setUpdateTime(createTime);
 
-        SpringUtil.publishEvent(logDO);
+        SpringUtil.publishEvent(logSystemDO);
     }
 
     /**

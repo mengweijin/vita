@@ -24,9 +24,9 @@ public enum EMessageCategory implements IEnum<String> {
     SECURITY("security"),
 
     /**
-     * 告警消息
+     * 警告消息
      */
-    ALERT("alert"),
+    WARNING("warning"),
 
     /**
      * 来自用户的消息

@@ -6,7 +6,9 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
 import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.DeptBO;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
+import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +50,9 @@ public class DeptController {
      */
     @SaCheckPermission("system:dept:select")
     @GetMapping("/list")
-    public List<DeptDO> list(DeptDO dept) {
-        LambdaQueryWrapper<DeptDO> wrapper = deptService.getQueryWrapper(dept);
-        return deptService.list(wrapper.orderByAsc(DeptDO::getSeq));
+    public List<DeptVO> list(DeptDO dept) {
+        LambdaQueryWrapper<DeptDO> wrapper = deptService.buildQueryWrapper(dept);
+        return deptService.listVo(wrapper.orderByAsc(DeptDO::getSeq));
     }
 
     /**
@@ -62,21 +64,21 @@ public class DeptController {
      */
     @SaCheckPermission("system:dept:select")
     @GetMapping("/{id}")
-    public DeptDO getById(@PathVariable("id") Long id) {
-        return deptService.getById(id);
+    public DeptVO getById(@PathVariable("id") Long id) {
+        return deptService.getVoById(id);
     }
 
     /**
      * <p>
      * Add Dept
      * </p>
-     * @param dept {@link DeptDO}
+     * @param bo {@link DeptDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("system:dept:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DeptDO dept) {
-        boolean bool = deptService.save(dept);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DeptBO bo) {
+        boolean bool = deptService.saveByBo(bo);
         return R.result(bool);
     }
 
@@ -84,13 +86,13 @@ public class DeptController {
      * <p>
      * Update Dept
      * </p>
-     * @param dept {@link DeptDO}
+     * @param bo {@link DeptBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dept:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DeptDO dept) {
-        boolean bool = deptService.updateById(dept);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DeptBO bo) {
+        boolean bool = deptService.updateByBoById(bo);
         return R.result(bool);
     }
 

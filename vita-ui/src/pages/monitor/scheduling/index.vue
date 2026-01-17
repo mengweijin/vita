@@ -24,9 +24,10 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
+  beanName: undefined,
   current: 1,
   disabled: undefined,
-  keywords: undefined,
+  name: undefined,
   size: 10,
   total: 0,
 });
@@ -84,16 +85,27 @@ const handlePageChange = (currentPage, pageSize) => {
   loadTableData();
 };
 
+const taskBeanNames = ref([]);
+
 onMounted(() => {
   loadTableData();
+
+  schedulingTaskApi.getTaskBeanNames().then((res) => {
+    taskBeanNames.value = res;
+  });
 });
 </script>
 
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="keywords" label="关键字">
-      <el-input v-model="queryParams.keywords" placeholder="任务名称、Bean 名称" clearable />
+    <el-form-item prop="name" label="任务名称">
+      <el-input v-model="queryParams.name" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="beanName" label="Bean 名称">
+      <el-select v-model="queryParams.beanName" clearable :filterable="true" :multiple="false" placeholder="请选择">
+        <el-option v-for="item in taskBeanNames" :key="item" :label="item" :value="item" />
+      </el-select>
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
       <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
@@ -149,7 +161,7 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="200" />
+      <el-table-column v-if="columns.name.visible" prop="name" label="任务名称" min-width="180" />
       <el-table-column v-if="columns.cron.visible" prop="cron" label="CRON 表达式" width="120">
         <template #default="{ row }">
           <el-tooltip :content="cronstrue.toString(row.cron, { locale: 'zh_CN', use24HourTimeFormat: true })"
@@ -163,11 +175,17 @@ onMounted(() => {
           <span>{{ cronstrue.toString(row.cron, { locale: 'zh_CN', use24HourTimeFormat: true }) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="280" />
+      <el-table-column v-if="columns.beanName.visible" prop="beanName" label="执行 Bean 名称" width="240" />
       <el-table-column v-if="columns.args.visible" prop="args" label="执行参数" min-width="120" />
       <el-table-column v-if="columns.disabled.visible" prop="disabled" label="状态" width="80" align="center">
         <template #default="{ row }">
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="columns.executeAfterStarted.visible" prop="executeAfterStarted" label="启动时执行" width="100"
+        align="center">
+        <template #default="{ row }">
+          <VtTagDict :code="'vt_yes_no'" :value="row.executeAfterStarted" :size="size"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />

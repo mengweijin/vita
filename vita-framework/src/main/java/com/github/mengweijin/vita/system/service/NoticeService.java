@@ -1,12 +1,13 @@
 package com.github.mengweijin.vita.system.service;
 
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.repository.CrudRepository;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
+import com.github.mengweijin.vita.system.domain.vo.NoticeVO;
 import com.github.mengweijin.vita.system.mapper.NoticeMapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.StrUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,9 +21,10 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class NoticeService extends CrudRepository<NoticeMapper, NoticeDO> {
+public class NoticeService extends BaseVitaService<NoticeMapper, NoticeDO, NoticeVO> {
 
-    public LambdaQueryWrapper<NoticeDO> getQueryWrapper(NoticeDO notice) {
+    @Override
+    public LambdaQueryWrapper<NoticeDO> buildQueryWrapper(NoticeDO notice) {
         LambdaQueryWrapper<NoticeDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(notice.getId() != null, NoticeDO::getId, notice.getId());
         wrapper.eq(StrUtil.isNotBlank(notice.getReleased()), NoticeDO::getReleased, notice.getReleased());
@@ -30,12 +32,8 @@ public class NoticeService extends CrudRepository<NoticeMapper, NoticeDO> {
         wrapper.eq(notice.getUpdateBy() != null, NoticeDO::getUpdateBy, notice.getUpdateBy());
         wrapper.gt(notice.getStartCreateTime() != null, NoticeDO::getCreateTime, notice.getStartCreateTime());
         wrapper.le(notice.getEndCreateTime() != null, NoticeDO::getCreateTime, notice.getEndCreateTime());
-        if (StrUtil.isNotBlank(notice.getKeywords())) {
-            wrapper.and(w -> {
-                w.or(w1 -> w1.like(NoticeDO::getTitle, notice.getKeywords()));
-                w.or(w1 -> w1.like(NoticeDO::getDescription, notice.getKeywords()));
-            });
-        }
+        wrapper.like(StrUtil.isNotBlank(notice.getTitle()), NoticeDO::getTitle, notice.getTitle());
+        wrapper.like(StrUtil.isNotBlank(notice.getDescription()), NoticeDO::getDescription, notice.getDescription());
         return wrapper;
     }
 }
