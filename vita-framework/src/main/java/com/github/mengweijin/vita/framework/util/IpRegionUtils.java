@@ -37,7 +37,11 @@ public class IpRegionUtils {
     public static String search(String ip) {
         try {
             return initIp2Region().search(ip);
-        } catch (InetAddressException | IOException | InterruptedException e) {
+        } catch (InetAddressException | IOException e) {
+            throw new ServerException(e);
+        } catch ( InterruptedException e) {
+            /* Clean up whatever needs to be handled before interrupting  */
+            Thread.currentThread().interrupt();
             throw new ServerException(e);
         }
     }
