@@ -8,7 +8,6 @@ import cn.hutool.v7.http.useragent.UserAgentInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.IpRegionUtils;
@@ -117,7 +116,7 @@ public class LogLoginService extends BaseVitaService<LogLoginMapper, LogLoginDO,
         return this.getBaseMapper().selectDailyUserLoginCountBetweenTime(startTime, endTime);
     }
 
-    public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
+    public IPage<LogLoginDO> pageByLoginUser(IPage<LogLoginDO> page) {
         String username = LoginHelper.getSessionUsername();
         LambdaQueryWrapper<LogLoginDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(LogLoginDO::getUsername, username);

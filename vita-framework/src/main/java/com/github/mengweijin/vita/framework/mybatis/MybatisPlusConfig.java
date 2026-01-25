@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.mybatis;
 
+import cn.hutool.v7.core.net.NetUtil;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
@@ -14,12 +15,11 @@ import com.github.mengweijin.vita.framework.mybatis.data.permission.DefaultDataP
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import cn.hutool.v7.core.net.NetUtil;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -29,7 +29,7 @@ import java.util.Properties;
  **/
 @SuppressWarnings({"unused"})
 @AllArgsConstructor
-@Configuration
+@AutoConfiguration
 @ConditionalOnBean(DataSource.class)
 public class MybatisPlusConfig {
 
@@ -41,7 +41,6 @@ public class MybatisPlusConfig {
      * 默认对返回类型为Map的对象的key不起作用，所以需要自定义 MybatisMapWrapperFactory 类来处理
      */
     @Bean
-    @ConditionalOnMissingBean
     public ConfigurationCustomizer configurationCustomizer() {
         return configuration -> {
             configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());

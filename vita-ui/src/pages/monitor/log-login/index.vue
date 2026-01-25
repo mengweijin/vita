@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup>
-import { logLoginApi } from "@/api/monitor/log-login-api";
+import { logLoginApi } from "@/api/monitor/log-login-api.js";
 import { columns } from "./columns.js";
 import LogLoginDetail from "./components/log-login-detail.vue";
 
@@ -20,11 +20,11 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  current: 1,
   ip: undefined,
   loginType: undefined,
-  size: 10,
-  total: 0,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
   username: undefined,
 });
 
@@ -38,8 +38,8 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   logLoginApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
@@ -61,8 +61,8 @@ const handleBatchDelete = () => {
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
   loadTableData();
 };
 
@@ -195,8 +195,8 @@ onMounted(() => {
     </el-table>
 
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-      @change="handlePageChange" />
+      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal" @change="handlePageChange" />
   </div>
 
   <LogLoginDetail ref="logLoginDetailRef"></LogLoginDetail>

@@ -3,11 +3,10 @@ package com.github.mengweijin.vita.monitor.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
@@ -34,9 +33,9 @@ public class UserOnlineController {
 
     @SaCheckPermission("monitor:userOnline:select")
     @GetMapping("/page")
-    public IPage<SaSessionVO> page(Page<SaSessionVO> page, @RequestParam(value = "keywords", defaultValue = "") String keywords) {
-        long size = page.getSize();
-        long start = (page.getCurrent() - 1) * size;
+    public PageQuery<SaSessionVO> page(PageQuery<SaSessionVO> page, @RequestParam(value = "keywords", defaultValue = "") String keywords) {
+        long size = page.getPageSize();
+        long start = (page.getPageCurrent() - 1) * size;
 
         List<SaSessionVO> dtoList = new ArrayList<>();
 
@@ -50,8 +49,8 @@ public class UserOnlineController {
 
         // 获取所有已登录的会话id
         List<String> allSessionIdList = StpUtil.searchSessionId("", 0, -1, false);
-        page.setTotal(allSessionIdList.size());
-        page.setRecords(dtoList);
+        page.setPageTotal(allSessionIdList.size());
+        page.setPageRecords(dtoList);
         return page;
     }
 

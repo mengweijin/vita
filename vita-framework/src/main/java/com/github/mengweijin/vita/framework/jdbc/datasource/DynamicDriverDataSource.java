@@ -1,11 +1,10 @@
 package com.github.mengweijin.vita.framework.jdbc.datasource;
 
-import com.github.mengweijin.vita.framework.exception.ServerException;
-import lombok.Getter;
 import cn.hutool.v7.core.classloader.JarClassLoader;
 import cn.hutool.v7.core.io.file.FileUtil;
-import cn.hutool.v7.core.lang.Assert;
 import cn.hutool.v7.db.driver.DriverIdentifier;
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import lombok.Getter;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -29,25 +28,19 @@ import java.util.logging.Logger;
 @SuppressWarnings({"unused"})
 public class DynamicDriverDataSource implements DataSource {
 
-    private JarClassLoader classLoader;
+    private final JarClassLoader classLoader;
 
-    private String url;
+    private final String url;
 
-    private String username;
+    private final String username;
 
-    private String password;
+    private final String password;
 
     public DynamicDriverDataSource(String jarFilePath, String url, String username, String password) {
-        File jarFile = FileUtil.file(jarFilePath);
-        init(jarFile, url, username, password);
+        this(FileUtil.file(jarFilePath), url, username, password);
     }
 
     public DynamicDriverDataSource(File jarFile, String url, String username, String password) {
-        init(jarFile, url, username, password);
-    }
-
-    private void init(File jarFile, String url, String username, String password) {
-        Assert.notNull(jarFile);
         if (!FileUtil.exists(jarFile)) {
             throw new ServerException("File not exist at path " + jarFile.getAbsolutePath());
         }

@@ -2,25 +2,13 @@ import http from "@/utils/http.js";
 
 const URL_PREFIX = "/system/user";
 
-/**
- * @typedef {Object} PasswordChangeBO
- * @property {string} password - 旧密码
- * @property {string} newPassword - 新密码
- */
-
-/**
- * @typedef {Object} PasswordResetBO
- * @property {string} username - 用户名
- * @property {string} password - 密码
- */
-
-/**
- * @typedef {Object} UserRoleBO
- * @property {number} userId - 用户ID
- * @property {number[]} roleIds - 角色 ID 数组
- */
-
 export const userApi = {
+  /**
+   * @typedef {Object} PasswordChangeBO
+   * @property {string} password - 旧密码
+   * @property {string} newPassword - 新密码
+   */
+
   /**
    * 修改密码
    * @param {PasswordChangeBO} data - 修改密码数据对象
@@ -59,11 +47,23 @@ export const userApi = {
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
   /**
+   * @typedef {Object} PasswordResetBO
+   * @property {string} username - 用户名
+   * @property {string} password - 密码
+   */
+
+  /**
    * 重置密码
    * @param {PasswordResetBO} data
    * @returns
    */
   resetPassword: (data) => http.post(`${URL_PREFIX}/reset-password`, data),
+
+  /**
+   * @typedef {Object} UserRoleBO
+   * @property {number} userId - 用户ID
+   * @property {number[]} roleIds - 角色 ID 数组
+   */
 
   /**
    * 设置用户角色

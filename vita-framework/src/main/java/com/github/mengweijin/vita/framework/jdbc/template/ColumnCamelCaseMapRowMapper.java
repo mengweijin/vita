@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.jdbc.template;
 
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.lang.NonNull;
 
 /**
  * When use the JdbcTemplate to query data, you can set a ColumnMapRowMapper,
@@ -19,8 +20,9 @@ public class ColumnCamelCaseMapRowMapper extends ColumnMapRowMapper {
      * @param columnName columnName
      * @return columnName
      */
+    @NonNull
     @Override
-    protected String getColumnKey(String columnName) {
+    protected String getColumnKey(@NonNull String columnName) {
         return CharSequenceUtil.toCamelCase(columnName);
     }
 }

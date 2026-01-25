@@ -39,7 +39,7 @@ public class IpRegionUtils {
             return initIp2Region().search(ip);
         } catch (InetAddressException | IOException e) {
             throw new ServerException(e);
-        } catch ( InterruptedException e) {
+        } catch (InterruptedException e) {
             /* Clean up whatever needs to be handled before interrupting  */
             Thread.currentThread().interrupt();
             throw new ServerException(e);

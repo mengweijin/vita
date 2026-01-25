@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.jackson.wrapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,14 @@ public abstract class AbstractObjectMapperWrapper {
         try {
             return objectMapper.readValue(content, valueTypeRef);
         } catch (JsonProcessingException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public <T extends JsonNode> T valueToTree(Object fromValue) {
+        try {
+            return objectMapper.valueToTree(fromValue);
+        } catch (IllegalArgumentException e) {
             throw new ServerException(e);
         }
     }

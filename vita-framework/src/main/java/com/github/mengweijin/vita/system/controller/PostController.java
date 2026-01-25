@@ -2,12 +2,11 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.PostBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
@@ -54,7 +53,7 @@ public class PostController {
      */
     @SaCheckPermission("system:post:select")
     @GetMapping("/page")
-    public IPage<PostVO> page(Page<PostDO> page, PostDO post) {
+    public PageQuery<PostVO> page(PageQuery<PostDO> page, PostDO post) {
         LambdaQueryWrapper<PostDO> wrapper = postService.buildQueryWrapper(post);
         return postService.pageVo(page, wrapper.orderByAsc(PostDO::getSeq));
     }

@@ -125,14 +125,14 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
         <groupId>com.github.mengweijin</groupId>
         <artifactId>vita-framework</artifactId>
     </dependency>
-    <dependency>
-        <!-- 可选 -->
-        <groupId>com.github.mengweijin</groupId>
-        <artifactId>vita-generator</artifactId>
-    </dependency>
     ```
 
-3. 然后增加一个 @SpringBootApplication 启动类，直接启动就可以了。
+3. 然后增加一个 @SpringBootApplication 启动类，添加 vita 扫描包路径（如下）和自己工程的扫描包路径（请自行添加）。
+
+   ```text
+   @ComponentScan(basePackages = { "com.github.mengweijin.vita" })
+   @MapperScan(basePackages = { "com.github.mengweijin.vita.**.mapper" })
+   ```
 
 ### 功能矩阵
 

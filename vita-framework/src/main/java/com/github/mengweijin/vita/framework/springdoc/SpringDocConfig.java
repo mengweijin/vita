@@ -7,20 +7,22 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author mengweijin
  */
 @AllArgsConstructor
-@Configuration
+@AutoConfiguration
 public class SpringDocConfig {
 
     private ApplicationProperties applicationProperties;
 
     @Bean
-    public OpenAPI openAPI() {
+    @ConditionalOnMissingBean
+    public OpenAPI openApi() {
         String applicationName = applicationProperties.getName();
         String applicationVersion = applicationProperties.getVersion();
         String applicationAuthor = applicationProperties.getAuthor();

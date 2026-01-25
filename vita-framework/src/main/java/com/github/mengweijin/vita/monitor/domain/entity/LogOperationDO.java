@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.monitor.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.LogOperationBO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
 import io.github.linpeilie.annotations.AutoMapper;

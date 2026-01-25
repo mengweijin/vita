@@ -2,12 +2,11 @@ package com.github.mengweijin.vita.monitor.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.LogSystemBO;
 import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogSystemVO;
@@ -55,7 +54,7 @@ public class LogSystemController {
      */
     @SaCheckPermission("monitor:logSystem:select")
     @GetMapping("/page")
-    public IPage<LogSystemVO> page(Page<LogSystemDO> page, LogSystemDO logSystemDO) {
+    public PageQuery<LogSystemVO> page(PageQuery<LogSystemDO> page, LogSystemDO logSystemDO) {
         LambdaQueryWrapper<LogSystemDO> wrapper = logSystemService.buildQueryWrapper(logSystemDO);
         wrapper.orderByAsc(LogSystemDO::getCreateTime);
         return logSystemService.pageVo(page, wrapper);

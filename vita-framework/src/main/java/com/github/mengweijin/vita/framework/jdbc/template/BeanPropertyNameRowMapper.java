@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.jdbc.template;
 
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.lang.NonNull;
 
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class BeanPropertyNameRowMapper<T> extends BeanPropertyRowMapper<T> {
      * @param pd the property descriptor discovered on initialization
      * @return a set of mapped names
      */
+    @NonNull
     @Override
     protected Set<String> mappedNames(PropertyDescriptor pd) {
         Set<String> mappedNames = new HashSet<>(4);

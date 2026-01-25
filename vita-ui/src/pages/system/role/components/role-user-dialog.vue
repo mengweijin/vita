@@ -12,18 +12,18 @@ const size = ref("default");
 const data = ref({});
 
 const queryParams = reactive({
-	current: 1,
-	disabled: "N",
-	keywords: undefined,
-	size: 10,
-	total: 0,
+  disabled: "N",
+  keywords: undefined,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
-	queryFormRef.value.resetFields();
-	loadTableData();
+  queryFormRef.value.resetFields();
+  loadTableData();
 };
 
 const tableRef = useTemplateRef("tableRef");
@@ -31,18 +31,18 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const loadTableData = () => {
-	loading.value = true;
-	userApi.pageByRole(data.value.id, queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  userApi.pageByRole(data.value.id, queryParams).then((res) => {
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
+    loading.value = false;
+  });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
+  loadTableData();
 };
 
 const selected = ref([]);
@@ -50,30 +50,30 @@ const selected = ref([]);
 const roleUsersSelectDialogRef = useTemplateRef("roleUsersSelectDialogRef");
 
 const handleRoleAddUser = () => {
-	roleUsersSelectDialogRef.value.data = { ...data.value };
-	roleUsersSelectDialogRef.value.visible = true;
+  roleUsersSelectDialogRef.value.data = { ...data.value };
+  roleUsersSelectDialogRef.value.visible = true;
 };
 
 const handleRoleRemoveUser = (userId) => {
-	roleApi.removeByRoleIdInUserIds(data.value.id, userId).then(() => {
-		loadTableData();
-	});
+  roleApi.removeByRoleIdInUserIds(data.value.id, userId).then(() => {
+    loadTableData();
+  });
 };
 
 const handleRoleRemoveUserBatch = () => {
-	const userIds = selected.value.map((item) => item.id).join();
-	roleApi.removeByRoleIdInUserIds(data.value.id, userIds).then(() => {
-		loadTableData();
-	});
+  const userIds = selected.value.map((item) => item.id).join();
+  roleApi.removeByRoleIdInUserIds(data.value.id, userIds).then(() => {
+    loadTableData();
+  });
 };
 
 const onOpened = () => {
-	loadTableData();
+  loadTableData();
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
+  visible.value = false;
+  data.value = {};
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -84,7 +84,8 @@ defineExpose({ data, visible });
   <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close :align-center="false" @opened="onOpened"
     @closed="onClosed" width="70%" style="max-height: 90%;">
     <!-- 查询表单 -->
-    <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData" style="margin-top: 5px;">
+    <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
+      style="margin-top: 5px;">
       <el-form-item prop="keywords" label="关键字">
         <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
       </el-form-item>
@@ -188,8 +189,8 @@ defineExpose({ data, visible });
       </el-table>
 
       <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-        v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-        @change="handlePageChange" />
+        v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+        :total="queryParams.pageTotal" @change="handlePageChange" />
     </div>
 
     <RoleUsersSelectDialog ref="roleUsersSelectDialogRef" @refresh-table="loadTableData"></RoleUsersSelectDialog>

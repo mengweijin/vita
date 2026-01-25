@@ -2,11 +2,11 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.datachange.DataChangeLog;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.ConfigBO;
@@ -54,7 +54,7 @@ public class ConfigController {
      */
     @SaCheckPermission("system:config:select")
     @GetMapping("/page")
-    public IPage<ConfigVO> page(Page<ConfigDO> page, ConfigDO config) {
+    public PageQuery<ConfigVO> page(PageQuery<ConfigDO> page, ConfigDO config) {
         LambdaQueryWrapper<ConfigDO> wrapper = configService.buildQueryWrapper(config);
         wrapper.orderByAsc(ConfigDO::getConfigKey);
         return configService.pageVo(page, wrapper);
@@ -123,6 +123,7 @@ public class ConfigController {
      * </p>
      * @param bo {@link ConfigDO}
      */
+    @DataChangeLog(entityClass = ConfigDO.class, businessId = "#bo.id")
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")

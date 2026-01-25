@@ -2,11 +2,10 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
@@ -54,7 +53,7 @@ public class DictDataController {
      */
     @SaCheckPermission("system:dictData:select")
     @GetMapping("/page")
-    public IPage<DictDataVO> page(Page<DictDataDO> page, DictDataDO dictData) {
+    public PageQuery<DictDataVO> page(PageQuery<DictDataDO> page, DictDataDO dictData) {
         LambdaQueryWrapper<DictDataDO> wrapper = dictDataService.buildQueryWrapper(dictData);
         return dictDataService.pageVo(page, wrapper.orderByAsc(DictDataDO::getSeq));
     }

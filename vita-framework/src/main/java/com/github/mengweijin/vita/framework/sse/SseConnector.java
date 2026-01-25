@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 @Component
 public class SseConnector {
 
-    private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-sse-", true);;
+    private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-sse-", true);
 
     /**
      * 注册回调

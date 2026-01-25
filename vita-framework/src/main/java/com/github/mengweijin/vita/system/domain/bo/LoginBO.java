@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
 import com.github.mengweijin.vita.framework.constant.Regex;
-import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
+import com.github.mengweijin.vita.framework.validator.annotation.Check;
 import com.github.mengweijin.vita.system.validator.rule.CaptchaMandatoryCheckRule;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -22,7 +22,7 @@ public class LoginBO implements Serializable {
     @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
 
-    @BusinessCheck(checkRule = CaptchaMandatoryCheckRule.class)
+    @Check(rules = CaptchaMandatoryCheckRule.class)
     private String captcha;
 
     private boolean remember;

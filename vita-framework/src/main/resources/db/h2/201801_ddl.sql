@@ -153,6 +153,25 @@ create TABLE VT_LOG_OPERATION (
 );
 
 
+drop table IF EXISTS VT_LOG_DATA_CHANGE;
+create TABLE VT_LOG_DATA_CHANGE (
+  ID                            bigint NOT NULL comment '主键ID',
+  TABLE_NAME                    varchar(64) NOT NULL comment '数据库业务表名称',
+  BUSINESS_ID                   bigint NOT NULL comment '业务数据主键ID',
+  OPERATION_TYPE                varchar(10) NOT NULL comment '操作类型枚举：EOperationType.java',
+  BEFORE_DATA                   JSON DEFAULT NULL comment '变更前的数据。JSON',
+  AFTER_DATA                    JSON DEFAULT NULL comment '变更后的数据。JSON',
+  CHANGE_DATA                   JSON DEFAULT NULL comment '变更字段数据。List<DataChangeModel> JSON',
+  REMARK 	                    varchar(255) comment '备注',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+create unique index UIDX_VT_LDC_TABLE_ID on VT_LOG_DATA_CHANGE(TABLE_NAME, BUSINESS_ID);
+
+
 drop table IF EXISTS VT_LOG_LOGIN;
 create TABLE VT_LOG_LOGIN (
   ID                            bigint NOT NULL comment '主键ID',
@@ -278,7 +297,6 @@ create TABLE VT_USER (
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   DELETED                       char(1) DEFAULT 'N' NOT NULL comment '逻辑删除。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
-  EXT_DATA                      JSON comment '动态扩展的 JSON 字段',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',

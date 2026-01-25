@@ -4,12 +4,12 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
-import com.github.mengweijin.vita.framework.validator.BusinessCheckValidator;
+import com.github.mengweijin.vita.framework.validator.CheckValidator;
 
 /**
  * @author mengweijin
  */
-public class CaptchaMandatoryCheckRule implements BusinessCheckValidator.CheckRule {
+public class CaptchaMandatoryCheckRule implements CheckValidator.CheckRule {
     @Override
     public boolean isValid(CharSequence value) {
         VitaProperties vitaProperties = SpringUtil.getBean(VitaProperties.class);

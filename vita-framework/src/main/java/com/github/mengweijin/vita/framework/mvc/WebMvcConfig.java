@@ -2,8 +2,9 @@ package com.github.mengweijin.vita.framework.mvc;
 
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -17,7 +18,7 @@ import java.time.Duration;
 /**
  * @author Meng Wei Jin
  **/
-@Configuration
+@AutoConfiguration
 @AllArgsConstructor
 @SuppressWarnings({"unused"})
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -32,6 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @return CorsFilter
      */
     @Bean
+    @ConditionalOnMissingBean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         // 允许的源域名

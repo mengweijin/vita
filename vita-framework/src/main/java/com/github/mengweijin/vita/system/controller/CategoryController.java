@@ -2,11 +2,9 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
@@ -39,20 +37,6 @@ public class CategoryController {
     private static final String LOG_TITLE = "分类管理";
 
     private CategoryService categoryService;
-
-    /**
-     * Get Category page by Category
-     *
-     * @param page     page
-     * @param categoryDO {@link CategoryDO}
-     * @return Page<Category>
-     */
-    @SaCheckPermission("system:category:select")
-    @GetMapping("/page")
-    public IPage<CategoryVO> page(Page<CategoryDO> page, CategoryDO categoryDO) {
-        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.buildQueryWrapper(categoryDO);
-        return categoryService.pageVo(page, wrapper);
-    }
 
     /**
      * Get Category list by Category

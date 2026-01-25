@@ -4,7 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
@@ -54,8 +54,9 @@ public class MessageReceiverService extends BaseVitaService<MessageReceiverMappe
                 .count();
     }
 
-    public IPage<MessageVO> page(Page<MessageVO> page, MessageVO message) {
-        return this.getBaseMapper().page(page, message);
+    public PageQuery<MessageVO> page(PageQuery<MessageVO> pageQuery, MessageVO message) {
+        IPage<MessageVO> page = this.getBaseMapper().page(pageQuery.toPage(), message);
+        return PageQuery.of(page);
     }
 
     public boolean setViewed(List<Long> ids) {

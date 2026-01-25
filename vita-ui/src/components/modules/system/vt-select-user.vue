@@ -38,7 +38,7 @@ const loadTreeData = () => {
 };
 
 const handleTreeNodeClick = (data, node) => {
-  paramsQuery.deptId = data.id;
+  queryParams.deptId = data.id;
   loadTableData();
 };
 
@@ -46,18 +46,14 @@ const loading = ref(false);
 
 const tableData = ref([]);
 
-// 分页参数
-const pageQuery = reactive({
-  current: 1,
-  size: 10,
-  total: 0
-})
-
 // 查询参数
-const paramsQuery = reactive({
+const queryParams = reactive({
   deptId: undefined,
   disabled: "N",
   nickname: undefined,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
   username: undefined,
 });
 
@@ -65,7 +61,7 @@ const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
-  paramsQuery.deptId = null;
+  queryParams.deptId = null;
   // 清除选中状态及背景颜色
   treeRef.value.setCurrentKey(null);
   loadTableData();
@@ -73,9 +69,9 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  userApi.page({ ...paramsQuery, ...pageQuery }).then((res) => {
-    tableData.value = res.records;
-    pageQuery.total = res.total;
+  userApi.page(queryParams).then((res) => {
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
@@ -83,8 +79,8 @@ const loadTableData = () => {
 const dropdownRef = useTemplateRef("dropdownRef");
 
 const handlePageChange = (currentPage, pageSize) => {
-  pageQuery.current = currentPage;
-  pageQuery.size = pageSize;
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
   loadTableData();
 
   // 手动保持下拉展开
@@ -155,13 +151,13 @@ onMounted(() => {
         </el-aside>
         <el-main class="vt-user-table-border">
           <!-- 查询表单 -->
-          <el-form ref="queryFormRef" :model="paramsQuery" :inline="true" :size="'small'"
+          <el-form ref="queryFormRef" :model="queryParams" :inline="true" :size="'small'"
             @submit.prevent="loadTableData">
             <el-form-item prop="username" label="用户名">
-              <el-input v-model="paramsQuery.username" placeholder="" clearable />
+              <el-input v-model="queryParams.username" placeholder="" clearable />
             </el-form-item>
             <el-form-item prop="nickname" label="昵称">
-              <el-input v-model="paramsQuery.nickname" placeholder="" clearable />
+              <el-input v-model="queryParams.nickname" placeholder="" clearable />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" native-type="submit">
@@ -198,8 +194,8 @@ onMounted(() => {
 
           <!--  @click.native.stop：阻止事件冒泡 -->
           <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-            v-model:current-page="pageQuery.current" v-model:page-size="pageQuery.size" :total="pageQuery.total"
-            @change="handlePageChange" :size="'small'" />
+            v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+            :total="queryParams.pageTotal" @change="handlePageChange" :size="'small'" />
         </el-main>
       </el-container>
     </template>

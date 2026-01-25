@@ -13,7 +13,6 @@ import cn.hutool.v7.swing.img.ImgUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
@@ -23,6 +22,7 @@ import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
@@ -32,7 +32,6 @@ import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
-import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
@@ -269,7 +268,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         vo.setPermissions(LoginHelper.getPermissionList());
         vo.setToken(LoginHelper.getToken());
         vo.setDeptName(deptService.getNameById(user.getDeptId()));
-        vo.setAvatar(this.getAvatarById(user.getId()));
+        vo.setAvatar(AopUtils.getAopProxy(this).getAvatarById(user.getId()));
         return vo;
     }
 
@@ -305,7 +304,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         return vo;
     }
 
-    public IPage<UserDO> pageByRole(Long roleId, Page<UserDO> page, UserDO user) {
+    public IPage<UserDO> pageByRole(Long roleId, IPage<UserDO> page, UserDO user) {
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
         if(CollUtil.isEmpty(userIds)) {
             return page;
@@ -315,7 +314,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         return this.page(page, wrapper);
     }
 
-    public IPage<UserDO> pageByPost(Long postId, Page<UserDO> page, UserDO user) {
+    public IPage<UserDO> pageByPost(Long postId, IPage<UserDO> page, UserDO user) {
         Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
         if(CollUtil.isEmpty(userIds)) {
             return page;
@@ -334,14 +333,13 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     }
 
     public String generateTotpQrCodeBase64() {
-        UserSessionVO loginUser = LoginHelper.getSessionUser();
-        UserDO user = this.getById(loginUser.getUserId());
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
         String key = user.getTotp();
         if(StrUtil.isBlank(key)) {
             key = TotpUtils.generateSecretKey();
-            this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, loginUser.getUserId()).update();
+            this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, user.getId()).update();
         }
-        String label = String.format("%s(%s)", loginUser.getNickname(), loginUser.getUsername());
+        String label = String.format("%s(%s)", user.getNickname(), user.getUsername());
         String qrCode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
         this.writeTotpQrCodeToTempPath(qrCode);
         return qrCode;

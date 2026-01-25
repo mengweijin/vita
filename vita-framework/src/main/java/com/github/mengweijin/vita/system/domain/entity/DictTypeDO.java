@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
+import com.github.mengweijin.vita.framework.validator.annotation.Check;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictTypeBO;
 import com.github.mengweijin.vita.system.domain.vo.DictTypeVO;
@@ -40,7 +40,7 @@ public class DictTypeDO extends BaseEntity {
     * 字典类型编码。
     */
     @NotBlank(groups = Group.Create.class)
-    @BusinessCheck(groups = Group.Create.class, checkRule = DictTypeCodeDuplicateCheckRule.class)
+    @Check(groups = Group.Create.class, rules = DictTypeCodeDuplicateCheckRule.class)
     private String code;
 
     /**

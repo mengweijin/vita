@@ -22,12 +22,12 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  current: 1,
   description: undefined,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
   released: undefined,
-  size: 10,
   title: undefined,
-  total: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -95,8 +95,8 @@ const handleBatchDelete = () => {
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
   loadTableData();
 };
 
@@ -262,8 +262,8 @@ onMounted(() => {
     </el-table>
 
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-      @change="handlePageChange" />
+      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal" @change="handlePageChange" />
   </div>
 
   <NoticeEdit ref="noticeEditRef" @refresh-table="loadTableData"></NoticeEdit>

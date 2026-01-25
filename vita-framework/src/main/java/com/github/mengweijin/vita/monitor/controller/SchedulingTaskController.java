@@ -2,12 +2,11 @@ package com.github.mengweijin.vita.monitor.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
@@ -56,7 +55,7 @@ public class SchedulingTaskController {
      */
     @SaCheckPermission("monitor:schedulingTask:select")
     @GetMapping("/page")
-    public IPage<SchedulingTaskVO> page(Page<SchedulingTaskDO> page, SchedulingTaskDO schedulingTask) {
+    public PageQuery<SchedulingTaskVO> page(PageQuery<SchedulingTaskDO> page, SchedulingTaskDO schedulingTask) {
         LambdaQueryWrapper<SchedulingTaskDO> wrapper = schedulingTaskService.buildQueryWrapper(schedulingTask);
         wrapper.orderByDesc(SchedulingTaskDO::getCreateTime);
         return schedulingTaskService.pageVo(page, wrapper);

@@ -38,6 +38,7 @@ public final class VitaConst {
 
     // region ----- <COLUMN_NAME>
 
+    public static final String COLUMN_ID = "ID";
     public static final String COLUMN_DEPT_ID = "DEPT_ID";
     public static final String COLUMN_ROLE_ID = "ROLE_ID";
     public static final String COLUMN_CREATE_BY = "CREATE_BY";

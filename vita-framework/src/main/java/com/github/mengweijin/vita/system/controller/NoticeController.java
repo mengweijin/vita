@@ -2,12 +2,11 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.NoticeBO;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
@@ -55,7 +54,7 @@ public class NoticeController {
      */
     @SaCheckPermission("system:notice:select")
     @GetMapping("/page")
-    public IPage<NoticeVO> page(Page<NoticeDO> page, NoticeDO notice) {
+    public PageQuery<NoticeVO> page(PageQuery<NoticeDO> page, NoticeDO notice) {
         LambdaQueryWrapper<NoticeDO> wrapper = noticeService.buildQueryWrapper(notice);
         wrapper.orderByDesc(NoticeDO::getUpdateTime);
         return noticeService.pageVo(page, wrapper);

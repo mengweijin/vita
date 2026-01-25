@@ -20,12 +20,12 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  current: 1,
   formattedMessage: undefined,
   loggerLevel: undefined,
   loggerName: undefined,
-  size: 100,
-  total: 0,
+  pageCurrent: 1,
+  pageSize: 100,
+  pageTotal: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -38,8 +38,8 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   logSystemApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
@@ -61,8 +61,8 @@ const handleBatchDelete = () => {
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
   loadTableData();
 };
 
@@ -188,8 +188,8 @@ onMounted(() => {
     </el-table>
 
     <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="queryParams.current" v-model:page-size="queryParams.size" :total="queryParams.total"
-      :page-sizes="[100, 200, 300, 500, 1000]" @change="handlePageChange" />
+      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal" :page-sizes="[100, 200, 300, 500, 1000]" @change="handlePageChange" />
   </div>
 
   <LogSystemDetail ref="logSystemDetailRef"></LogSystemDetail>

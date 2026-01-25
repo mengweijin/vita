@@ -2,12 +2,11 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -65,7 +64,7 @@ public class RoleController {
      */
     @SaCheckPermission("system:role:select")
     @GetMapping("/page")
-    public IPage<RoleVO> page(Page<RoleDO> page, RoleDO role) {
+    public PageQuery<RoleVO> page(PageQuery<RoleDO> page, RoleDO role) {
         LambdaQueryWrapper<RoleDO> wrapper = roleService.buildQueryWrapper(role);
         return roleService.pageVo(page, wrapper.orderByAsc(RoleDO::getSeq));
     }

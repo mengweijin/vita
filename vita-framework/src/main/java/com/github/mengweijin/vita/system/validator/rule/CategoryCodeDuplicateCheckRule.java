@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.validator.rule;
 
-import com.github.mengweijin.vita.framework.validator.BusinessCheckValidator;
+import com.github.mengweijin.vita.framework.validator.CheckValidator;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import cn.hutool.v7.core.text.CharSequenceUtil;
@@ -9,7 +9,7 @@ import cn.hutool.v7.extra.spring.SpringUtil;
 /**
  * @author mengweijin
  */
-public class CategoryCodeDuplicateCheckRule implements BusinessCheckValidator.CheckRule {
+public class CategoryCodeDuplicateCheckRule implements CheckValidator.CheckRule {
     @Override
     public boolean isValid(CharSequence value) {
         CategoryService categoryService = SpringUtil.getBean(CategoryService.class);

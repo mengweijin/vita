@@ -8,11 +8,11 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
@@ -82,23 +82,23 @@ public class UserController {
      */
     @SaCheckPermission("system:user:select")
     @GetMapping("/page")
-    public IPage<UserVO> page(Page<UserDO> page, UserDO user) {
+    public PageQuery<UserVO> page(PageQuery<UserDO> page, UserDO user) {
         LambdaQueryWrapper<UserDO> wrapper = userService.buildQueryWrapper(user);
         return userService.pageVo(page, wrapper);
     }
 
     @SaCheckPermission("system:user:select")
     @GetMapping("/pageByRole/{roleId}")
-    public IPage<UserVO> pageByRole(@PathVariable("roleId") Long roleId, Page<UserDO> page, UserDO user) {
-        IPage<UserDO> userPage = userService.pageByRole(roleId, page, user);
-        return userService.toVoPage(userPage);
+    public PageQuery<UserVO> pageByRole(@PathVariable("roleId") Long roleId, PageQuery<UserDO> pageQuery, UserDO user) {
+        IPage<UserDO> userPage = userService.pageByRole(roleId, pageQuery.toPage(), user);
+        return userService.toVoPageQuery(userPage);
     }
 
     @SaCheckPermission("system:user:select")
     @GetMapping("/pageByPost/{postId}")
-    public IPage<UserVO> pageByPost(@PathVariable("postId") Long postId, Page<UserDO> page, UserDO user) {
-        IPage<UserDO> userPage = userService.pageByPost(postId, page, user);
-        return userService.toVoPage(userPage);
+    public PageQuery<UserVO> pageByPost(@PathVariable("postId") Long postId, PageQuery<UserDO> pageQuery, UserDO user) {
+        IPage<UserDO> userPage = userService.pageByPost(postId, pageQuery.toPage(), user);
+        return userService.toVoPageQuery(userPage);
     }
 
     /**

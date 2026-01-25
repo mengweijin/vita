@@ -1,13 +1,11 @@
 # Todo List
 
 - 后端
-  - @Configuration 改为 @AutoConfiguration。
   - TOTP 结合 sa-token 二级认证功能实现修改密码的确认操作。
   - aop 实现审计日志功能。
   - 调度任务分为 spring（放系统配置表里） 和 quartz 两部分。
   - mybatis plus 数据权限插件。
 - 前端
-  - 分页查询统一使用 pageQuery 和 paramsQuery 对象。
   - cropperjs 图像裁剪。
   - 按钮权限。
   - 页面权限。

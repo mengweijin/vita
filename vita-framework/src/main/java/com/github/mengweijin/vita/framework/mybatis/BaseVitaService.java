@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -96,12 +97,39 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
      * @param page         翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
+    @Deprecated
     public IPage<V> pageVo(IPage<T> page, Wrapper<T> queryWrapper) {
         return getBaseMapper().selectVoPage(page, queryWrapper);
     }
 
+    /**
+     * 翻页查询
+     *
+     * @param pageQuery        {@link PageQuery} 翻页对象
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    public PageQuery<V> pageVo(PageQuery<T> pageQuery, Wrapper<T> queryWrapper) {
+        return getBaseMapper().selectVoPage(pageQuery, queryWrapper);
+    }
+
+    /**
+     * 分页转换
+     * @deprecated See toVoPageQuery(IPage<T> page) method.
+     * @param page IPage<T>
+     * @return IPage<V>
+     */
+    @Deprecated
     public IPage<V> toVoPage(IPage<T> page) {
         return getBaseMapper().toVoPage(page);
+    }
+
+    /**
+     * 分页转换
+     * @param page IPage<T>
+     * @return PageQuery<V>
+     */
+    public PageQuery<V> toVoPageQuery(IPage<T> page) {
+        return getBaseMapper().toVoPageQuery(page);
     }
 
     /**

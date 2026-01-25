@@ -1,11 +1,10 @@
-
+${AnsiColor.BRIGHT_CYAN}
                       风 调 码 顺
 
               上 拜 图 灵 只 佑 服 务 可 用
 
               下 跪 关 公 但 求 永 不 宕 机
-
-
+${AnsiColor.BRIGHT_YELLOW}
                         _ooOoo_
                        o8888888o
                        88" . "88
@@ -26,7 +25,7 @@
                          `=---='
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
              佛祖保佑     永不宕机     永无BUG
-
+${AnsiColor.BRIGHT_CYAN}
                          程序员歌
 
                写字楼里写字间，写字间里程序员；
@@ -46,14 +45,13 @@
                    指 尖 流 转 代 码 诗
 
           _____________________________________
-
+${AnsiColor.BRIGHT_MAGENTA}
                                           ,   ,   ,
 ---_--_----__----__----__-----------__----------------__--
   / /  ) /___) /   ) /   )| /| /  /___) /   /   /   /   )
 _/_/__/_(___ _/___/_(___/_|/_|/__(___ _/___/___/___/___/__
                        /                  /
                    (_ /               (_ /
-
 ${AnsiColor.BRIGHT_GREEN}
 =====================================================================================
            Application Name:  ${application.name}
@@ -68,4 +66,4 @@ Server Servlet Content-Path:  ${server.servlet.context-path}
                 GitHub Link:  ${application.github}
                  Gitee Link:  ${application.gitee}
 =====================================================================================
-${AnsiColor.BLACK}
+${AnsiColor.DEFAULT}

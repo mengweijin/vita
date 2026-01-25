@@ -4,11 +4,12 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.aspect.annotation.Log;
-import com.github.mengweijin.vita.framework.log.aspect.enums.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
+import com.github.mengweijin.vita.monitor.domain.vo.LogLoginVO;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -53,15 +54,16 @@ public class LogLoginController {
      */
     @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/page")
-    public IPage<LogLoginDO> page(Page<LogLoginDO> page, LogLoginDO logLogin) {
+    public PageQuery<LogLoginVO> page(PageQuery<LogLoginDO> page, LogLoginDO logLogin) {
         LambdaQueryWrapper<LogLoginDO> wrapper = logLoginService.buildQueryWrapper(logLogin);
         wrapper.orderByDesc(LogLoginDO::getCreateTime);
-        return logLoginService.page(page, wrapper);
+        return logLoginService.pageVo(page, wrapper);
     }
 
     @GetMapping("/page-by-login-user")
-    public IPage<LogLoginDO> pageByLoginUser(Page<LogLoginDO> page) {
-        return logLoginService.pageByLoginUser(page);
+    public PageQuery<LogLoginVO> pageByLoginUser(PageQuery<LogLoginDO> pageQuery) {
+        IPage<LogLoginDO> page = logLoginService.pageByLoginUser(pageQuery.toPage());
+        return logLoginService.toVoPageQuery(page);
     }
 
     /**
@@ -73,8 +75,8 @@ public class LogLoginController {
      */
     @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/list")
-    public List<LogLoginDO> list(LogLoginDO logLogin) {
-        return logLoginService.list(Wrappers.lambdaQuery(logLogin));
+    public List<LogLoginVO> list(LogLoginDO logLogin) {
+        return logLoginService.listVo(Wrappers.lambdaQuery(logLogin));
     }
 
     /**
@@ -86,8 +88,8 @@ public class LogLoginController {
      */
     @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/{id}")
-    public LogLoginDO getById(@PathVariable("id") Long id) {
-        return logLoginService.getById(id);
+    public LogLoginVO getById(@PathVariable("id") Long id) {
+        return logLoginService.getVoById(id);
     }
 
     /**

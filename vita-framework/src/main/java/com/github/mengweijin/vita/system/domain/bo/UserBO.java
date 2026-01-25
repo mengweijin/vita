@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.system.domain.bo;
 import cn.hutool.v7.core.regex.RegexPool;
 import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
+import com.github.mengweijin.vita.framework.validator.annotation.Check;
 import com.github.mengweijin.vita.framework.validator.annotation.CharsetLength;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.validator.rule.UsernameDuplicateCheckRule;
@@ -39,7 +39,7 @@ public class UserBO extends BaseEntity {
      */
     @NotBlank(groups = {Group.Create.class})
     @Pattern(regexp = RegexPool.GENERAL, message = "{user.username.pattern}")
-    @BusinessCheck(groups = {Group.Create.class}, checkRule = UsernameDuplicateCheckRule.class)
+    @Check(groups = {Group.Create.class}, rules = UsernameDuplicateCheckRule.class)
     private String username;
 
     /**

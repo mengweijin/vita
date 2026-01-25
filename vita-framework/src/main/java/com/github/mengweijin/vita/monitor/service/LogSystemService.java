@@ -9,7 +9,6 @@ import com.github.mengweijin.vita.monitor.domain.entity.LogSystemDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogSystemVO;
 import com.github.mengweijin.vita.monitor.mapper.LogMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
@@ -33,8 +32,7 @@ public class LogSystemService extends BaseVitaService<LogMapper, LogSystemDO, Lo
     /**
      * 使用单个线程异步执行，以保证日志的插入顺序
      */
-    @EventListener
-    public void saveAsync(LogSystemDO entity) {
+    public void saveBySingleExecutorService(LogSystemDO entity) {
         CompletableFuture.runAsync(() -> this.save(entity), executorService);
     }
 

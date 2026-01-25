@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.domain.vo.MessageReceiverVO;
@@ -26,6 +25,6 @@ public interface MessageReceiverMapper extends BaseVitaMapper<MessageReceiverDO,
      * @param message MessageVO
      * @return IPage
      */
-    IPage<MessageVO> page(Page<MessageVO> page, @Param("p") MessageVO message);
+    IPage<MessageVO> page(IPage<MessageVO> page, @Param("p") MessageVO message);
 }
 

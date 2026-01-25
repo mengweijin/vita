@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
-import com.github.mengweijin.vita.framework.validator.annotation.BusinessCheck;
+import com.github.mengweijin.vita.framework.validator.annotation.Check;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.ConfigDO;
 import com.github.mengweijin.vita.system.validator.rule.ConfigKeyDuplicateCheckRule;
@@ -27,7 +27,7 @@ public class ConfigBO extends ConfigDO {
      */
     @NotBlank(groups = {Group.Create.class, Group.Update.class})
     @Length(max = 255)
-    @BusinessCheck(groups = {Group.Create.class}, checkRule = ConfigKeyDuplicateCheckRule.class)
+    @Check(groups = {Group.Create.class}, rules = ConfigKeyDuplicateCheckRule.class)
     private String configKey;
 
     @NotBlank(groups = {Group.Create.class, Group.Update.class})
