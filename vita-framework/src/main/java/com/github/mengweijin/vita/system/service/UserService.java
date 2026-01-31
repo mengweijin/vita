@@ -26,6 +26,7 @@ import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
+import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
@@ -94,6 +95,8 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     private EnvironmentChecker environmentChecker;
 
+    private LogDataChangeService logDataChangeService;
+
     @Override
     public boolean save(UserDO user) {
         if(StrUtil.isBlank(user.getPassword())) {
@@ -119,10 +122,16 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
             super.updateById(userDO);
         }
 
+        Set<Long> beforeRoleIds = userRoleService.getRoleIdsByUserId(userDO.getId());
+        Set<Long> beforePostIds = userPostService.getPostIdsByUserId(userDO.getId());
+
         // 角色
         userRoleService.setUserRoles(userDO.getId(), userBO.getRoleIds());
         // 岗位
         userPostService.setUserPosts(userDO.getId(), userBO.getPostIds());
+
+        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userDO.getId(), List.copyOf(beforeRoleIds), userBO.getRoleIds());
+        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_POST, userDO.getId(), List.copyOf(beforePostIds), userBO.getPostIds());
     }
 
     public String saltedPassword(String password, String salt) {

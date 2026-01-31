@@ -1,7 +1,10 @@
 package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.core.bean.BeanUtil;
+import cn.hutool.v7.core.map.MapUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.domain.TeacherVO;
+import com.github.mengweijin.vita.framework.log.datachange.DataChangeLogAspect;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -42,16 +45,16 @@ class DiffUtilsTest {
 
     @Test
     void diffMaps() {
-        Map<String, Object> m1 = BeanUtil.beanToMap(t1);
-        Map<String, Object> m2 = BeanUtil.beanToMap(t2);
-        List<DiffModel<String, Object>> list = DiffUtils.diffMaps(m1, m2);
-
+        Map<String, String> m1 = MapUtil.map(BeanUtil.beanToMap(t1), (k, v) -> StrUtil.toStringOrNull(v));
+        Map<String, String> m2 = MapUtil.map(BeanUtil.beanToMap(t2), (k, v) -> StrUtil.toStringOrNull(v));
+        List<DiffModel> list = DiffUtils.diffMaps(m1, m2, DataChangeLogAspect.IGNORE_FIELDS);
+        printChange(list);
         Assertions.assertEquals(2, list.size());
     }
 
     @Test
     void diffBeanBeanByApacheCommonsLang3() {
-        List<DiffModel<String, String>> list = DiffUtils.getDiffModelByApacheCommonsLang3(t1, t2);
+        List<DiffModel> list = DiffUtils.diffBeans(t1, t2, DataChangeLogAspect.IGNORE_FIELDS);
         printChange(list);
         Assertions.assertEquals(2, list.size());
     }
@@ -59,26 +62,20 @@ class DiffUtilsTest {
     @Test
     void diffBeanBeanByApacheCommonsLang3ThrowsNullPointerException() {
         TeacherVO t1 = new TeacherVO();
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.getDiffModelByApacheCommonsLang3(null, t1));
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.getDiffModelByApacheCommonsLang3(t1, null));
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(null, t1, DataChangeLogAspect.IGNORE_FIELDS));
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(t1, null, DataChangeLogAspect.IGNORE_FIELDS));
     }
 
     @Test
     void diffBeanBeanByApacheCommonsLang3Create() {
-        TeacherVO t1 = new TeacherVO();
+        TeacherVO t0 = new TeacherVO();
 
-        TeacherVO t2 = new TeacherVO();
-        t2.setId(1L);
-        t2.setName("李四");
-        t2.setAge(16);
-        t2.setCreateBy(0L);
-        t2.setCreateTime(LocalDateTime.now());
-
-        List<DiffModel<String, String>> list = DiffUtils.getDiffModelByApacheCommonsLang3(t1, t2);
+        List<DiffModel> list = DiffUtils.diffBeans(t0, t2, DataChangeLogAspect.IGNORE_FIELDS);
         printChange(list);
+        Assertions.assertEquals(3, list.size());
     }
 
-    private void printChange(List<DiffModel<String, String>> list) {
+    private void printChange(List<DiffModel> list) {
         list.forEach(i -> log.info("字段 “{}” 从 “{}” 变更为 “{}”", i.getFieldName(), i.getOldValue(), i.getNewValue()));
     }
 

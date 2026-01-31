@@ -7,15 +7,15 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author mengweijin
  */
 @AllArgsConstructor
-@AutoConfiguration
+@Configuration
 public class SpringDocConfig {
 
     private ApplicationProperties applicationProperties;

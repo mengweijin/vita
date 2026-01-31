@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.LogDataChangeBO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogDataChangeVO;
+import com.github.mengweijin.vita.framework.log.datachange.strategy.DefaultHumanReadableStrategy;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -45,11 +45,6 @@ public class LogDataChangeDO extends BaseEntity {
     private Long businessId;
 
     /**
-     * 操作类型枚举 {@link EOperationType}
-     */
-    private String operationType;
-
-    /**
      * 数据变更前的数据。JSON
      */
     @JsonIgnore
@@ -64,14 +59,15 @@ public class LogDataChangeDO extends BaseEntity {
     private JsonNode afterData;
 
     /**
-     * 变更前后的数据。List<DataChangeModel> JSON。
+     * 变更前后的数据。List<DiffModel> JSON。
      * JSON 映射需要同时开启 @TableName(autoResultMap = true)
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<DiffModel<?, ?>> changeData;
+    private List<DiffModel> changeData;
 
     /**
-     * 备注
+     * 可阅读的数据转换策略，存储 Spring Bean 名称。
+     * 默认使用策略 {@link DefaultHumanReadableStrategy}
      */
-    private String remark;
+    private String readableStrategy;
 }

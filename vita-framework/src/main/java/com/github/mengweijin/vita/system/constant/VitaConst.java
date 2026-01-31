@@ -33,6 +33,8 @@ public final class VitaConst {
     public static final String TABLE_VT_ROLE = "VT_ROLE";
     public static final String TABLE_VT_USER_DEPT = "VT_USER_DEPT";
     public static final String TABLE_VT_USER_ROLE = "VT_USER_ROLE";
+    public static final String TABLE_VT_USER_POST = "VT_USER_POST";
+    public static final String TABLE_VT_ROLE_MENU = "VT_ROLE_MENU";
 
     // endregion
 

@@ -39,6 +39,7 @@ import java.util.Objects;
  * @author mengweijin
  */
 @Slf4j
+@SuppressWarnings({"java:S2638"})
 public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**

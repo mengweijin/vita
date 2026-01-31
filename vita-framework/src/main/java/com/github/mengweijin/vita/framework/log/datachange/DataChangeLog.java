@@ -1,7 +1,6 @@
 package com.github.mengweijin.vita.framework.log.datachange;
 
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,11 +21,6 @@ public @interface DataChangeLog {
      * 实体类型
      */
     Class<? extends BaseEntity> entityClass();
-
-    /**
-     * 操作类型 {@link EOperationType}
-     */
-    EOperationType operationType() default EOperationType.UPDATE;
 
     /**
      * 业务 ID 的 Spring EL 表达式

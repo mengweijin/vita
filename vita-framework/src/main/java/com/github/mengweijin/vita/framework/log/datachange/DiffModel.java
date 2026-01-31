@@ -14,15 +14,27 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiffModel<K, V> implements Serializable {
+public class DiffModel implements Serializable {
 
+    /**
+     * 差异类型枚举
+     */
     private DiffType diffType;
 
-    private K fieldName;
+    /**
+     * 字段名
+     */
+    private String fieldName;
 
-    private V oldValue;
+    /**
+     * 旧值
+     */
+    private String oldValue;
 
-    private V newValue;
+    /**
+     * 新值
+     */
+    private String newValue;
 
     /**
      *  差异类型枚举
@@ -30,9 +42,9 @@ public class DiffModel<K, V> implements Serializable {
     public enum DiffType {
         // 新增的键
         ADDED,
-        // 删除的键
-        REMOVED,
         // 修改的值
-        MODIFIED
+        MODIFIED,
+        // 删除的键
+        REMOVED
     }
 }

@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,6 +17,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PageQuery<T> implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * 当前页
@@ -29,14 +32,14 @@ public class PageQuery<T> implements Serializable {
     private long pageSize = 10;
 
     /**
-     * 总数。同
+     * 总数
      */
     private long pageTotal = 0;
 
     /**
      * 查询数据列表
      */
-    private List<T> pageRecords = Collections.emptyList();
+    private List<T> pageRecords;
 
     public PageQuery(final long pageCurrent, final long pageSize, final long pageTotal, final List<T> pageRecords) {
         this.pageCurrent = pageCurrent;
@@ -51,7 +54,7 @@ public class PageQuery<T> implements Serializable {
         return page;
     }
 
-    public static <E> PageQuery<E> of(IPage<E> page) {
+    public static <E extends Serializable> PageQuery<E> of(IPage<E> page) {
         return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
     }
 }

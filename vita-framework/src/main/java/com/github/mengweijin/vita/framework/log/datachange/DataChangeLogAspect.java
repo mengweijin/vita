@@ -1,13 +1,14 @@
 package com.github.mengweijin.vita.framework.log.datachange;
 
+import cn.hutool.v7.core.map.MapUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.jdbc.template.ColumnUpperCaseMapRowMapper;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.mybatis.MybatisMapperHelper;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
+import com.github.mengweijin.vita.framework.log.datachange.strategy.DefaultHumanReadableStrategy;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.dao.DataAccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -49,6 +51,8 @@ public class DataChangeLogAspect {
 
     private static final String[] IGNORE_COLUMNS = new String[]{"CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME"};
 
+    public static final String[] IGNORE_FIELDS = new String[]{"createBy", "createTime", "updateBy", "updateTime", "createByName", "updateByName"};
+
     @Pointcut("@annotation(dataChangeLog)")
     public void pointCut(DataChangeLog dataChangeLog) {}
 
@@ -57,34 +61,33 @@ public class DataChangeLogAspect {
         Long businessId = this.parseBusinessId(joinPoint, dataChangeLog.businessId());
         Class<? extends BaseEntity> entityClass = dataChangeLog.entityClass();
         String tableName = mybatisMapperHelper.getTableName(entityClass);
-        EOperationType operationType = dataChangeLog.operationType();
 
         // 执行原方法前获取旧对象
-        Map<String, Object> beforeData = this.queryForMap(tableName, businessId);
+        Map<String, String> beforeData = this.queryForMap(tableName, businessId);
 
         // 执行原方法
         Object proceed = joinPoint.proceed();
 
         // 执行原方法后获取新对象
-        Map<String, Object> afterData = this.queryForMap(tableName, businessId);
+        Map<String, String> afterData = this.queryForMap(tableName, businessId);
 
         // 保存日志
-        logDataChangeService.saveWhenChange(tableName, businessId, operationType, beforeData, afterData, IGNORE_COLUMNS);
+        logDataChangeService.saveWhenMapChange(tableName, businessId, new DefaultHumanReadableStrategy(), beforeData, afterData, IGNORE_COLUMNS);
 
         return proceed;
     }
 
-    private Map<String, Object> queryForMap(String tableName, Long businessId) {
-        Map<String, Object> beforeData;
+    private Map<String, String> queryForMap(String tableName, Long businessId) {
         try {
             String sql = StrUtil.format(SQL_TEMPLATE, tableName, VitaConst.COLUMN_ID);
-            // beforeData = jdbcTemplate.queryForMap(sql, businessId);
-            beforeData = jdbcTemplate.queryForObject(sql, new ColumnUpperCaseMapRowMapper(), businessId);
-        } catch (Throwable e) {
+            Map<String, Object> map = jdbcTemplate.queryForObject(sql, new ColumnUpperCaseMapRowMapper(), businessId);
+            if (map != null) {
+                return MapUtil.map(map, (k, v) -> StrUtil.toStringOrNull(v));
+            }
+        } catch (DataAccessException e) {
             log.warn("No existing record found for table: {}, id: {}", tableName, businessId);
-            beforeData = Map.of();
         }
-        return beforeData;
+        return Map.of();
     }
 
     /**
@@ -106,7 +109,7 @@ public class DataChangeLogAspect {
             Expression exp = SPEL_EXPRESSION_PARSER.parseExpression(expression);
             Object value = exp.getValue(context);
             return NumberUtil.parseLong(StrUtil.toStringOrNull(value));
-        } catch (Throwable e) {
+        } catch (RuntimeException e) {
             log.error("The parsing of the businessId expression failed: {}", expression, e);
             throw new ServerException(e);
         }

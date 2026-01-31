@@ -157,19 +157,18 @@ drop table IF EXISTS VT_LOG_DATA_CHANGE;
 create TABLE VT_LOG_DATA_CHANGE (
   ID                            bigint NOT NULL comment '主键ID',
   TABLE_NAME                    varchar(64) NOT NULL comment '数据库业务表名称',
-  BUSINESS_ID                   bigint NOT NULL comment '业务数据主键ID',
-  OPERATION_TYPE                varchar(10) NOT NULL comment '操作类型枚举：EOperationType.java',
-  BEFORE_DATA                   JSON DEFAULT NULL comment '变更前的数据。JSON',
-  AFTER_DATA                    JSON DEFAULT NULL comment '变更后的数据。JSON',
-  CHANGE_DATA                   JSON DEFAULT NULL comment '变更字段数据。List<DataChangeModel> JSON',
-  REMARK 	                    varchar(255) comment '备注',
+  BUSINESS_ID                   bigint DEFAULT NULL comment '业务数据主键ID',
+  BEFORE_DATA                   json DEFAULT NULL comment '变更前的数据。JSON',
+  AFTER_DATA                    json DEFAULT NULL comment '变更后的数据。JSON',
+  CHANGE_DATA                   json DEFAULT NULL comment '变更字段数据。List<DataChangeModel> JSON',
+  READABLE_STRATEGY             varchar(64) NOT NULL comment '可阅读的数据转换策略，存储 Spring Bean 名称。',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-create unique index UIDX_VT_LDC_TABLE_ID on VT_LOG_DATA_CHANGE(TABLE_NAME, BUSINESS_ID);
+create index UIDX_VT_LDC_TABLE_ID on VT_LOG_DATA_CHANGE(TABLE_NAME, BUSINESS_ID);
 
 
 drop table IF EXISTS VT_LOG_LOGIN;
@@ -368,7 +367,7 @@ create TABLE VT_SCHEDULING_TASK (
   NAME 		                    varchar(255) NOT NULL comment '任务名称',
   CRON 		                    varchar(64) NOT NULL comment 'CRON 表达式',
   BEAN_NAME 		            varchar(128) NOT NULL comment '任务实现类的 Bean 名称（Bean 需要实现 ISchedulingTask 类）',
-  ARGS 	                        varchar(255) DEFAULT NULL comment '执行参数。以 JSON 字符串存储',
+  ARGS 	                        varchar DEFAULT NULL comment '执行参数。以 JSON 字符串存储',
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   EXECUTE_AFTER_STARTED         char(1) DEFAULT 'N' NOT NULL comment '应用启动后是否立即执行一次。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
@@ -389,7 +388,7 @@ create TABLE VT_SCHEDULING_TASK_LOG (
   STATUS                        varchar(30) DEFAULT NULL comment '任务执行状态。字典：vt_scheduling_task_status',
   SUCCESS                       char(1) DEFAULT 'N' comment '任务是否执行成功。vt_succeeded [Y, N]',
   COST_TIME                     bigint NOT NULL DEFAULT 0 comment '执行消耗时间（毫秒）',
-  ARGS 	                        varchar(255) DEFAULT NULL comment '实际执行参数。以 JSON 字符串存储',
+  ARGS 	                        varchar DEFAULT NULL comment '实际执行参数。以 JSON 字符串存储',
   MESSAGE                       varchar(3000) DEFAULT NULL comment '执行成功或失败时的附加信息',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',

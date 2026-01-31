@@ -15,13 +15,11 @@ import com.github.mengweijin.vita.framework.mybatis.data.permission.DefaultDataP
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
@@ -29,8 +27,7 @@ import java.util.Properties;
  **/
 @SuppressWarnings({"unused"})
 @AllArgsConstructor
-@AutoConfiguration
-@ConditionalOnBean(DataSource.class)
+@Configuration
 public class MybatisPlusConfig {
 
     private DataSourceProperties dataSourceProperties;

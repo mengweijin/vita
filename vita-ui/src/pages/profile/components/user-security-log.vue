@@ -10,23 +10,23 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const queryParams = reactive({
-  current: 1,
-  size: 10,
-  total: 0,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
 });
 
 const loadTableData = () => {
   loading.value = true;
   logLoginApi.pageByLoginUser(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-  queryParams.current = currentPage;
-  queryParams.size = pageSize;
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
   loadTableData();
 };
 
@@ -61,8 +61,9 @@ onMounted(() => {
     <el-table-column v-if="false" prop="updateTime" label="更新时间" align="center" width="180" />
   </el-table>
 
-  <el-pagination background layout="total, sizes, prev, pager, next, jumper" v-model:current-page="queryParams.current"
-    v-model:page-size="queryParams.size" :total="queryParams.total" @change="handlePageChange" />
+  <el-pagination background layout="total, sizes, prev, pager, next, jumper"
+    v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+    :total="queryParams.pageTotal" @change="handlePageChange" />
 </template>
 
 <style scoped></style>

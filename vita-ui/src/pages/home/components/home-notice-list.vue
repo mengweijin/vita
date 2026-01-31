@@ -10,36 +10,36 @@ const size = ref("small");
 const tableData = ref([]);
 
 const queryParams = reactive({
-	current: 1,
-	released: "Y",
-	size: 5,
-	total: 0,
+  pageCurrent: 1,
+  pageSize: 5,
+  pageTotal: 0,
+  released: "Y",
 });
 
 const loadTableData = () => {
-	loading.value = true;
-	noticeApi.page(queryParams).then((res) => {
-		tableData.value = res.records;
-		queryParams.total = res.total;
-		loading.value = false;
-	});
+  loading.value = true;
+  noticeApi.page(queryParams).then((res) => {
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
+    loading.value = false;
+  });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
-	queryParams.current = currentPage;
-	queryParams.size = pageSize;
-	loadTableData();
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
+  loadTableData();
 };
 
 const noticeDetailRef = useTemplateRef("noticeDetailRef");
 
 const handleViewDetail = (row) => {
-	noticeDetailRef.value.data = { ...row };
-	noticeDetailRef.value.visible = true;
+  noticeDetailRef.value.data = { ...row };
+  noticeDetailRef.value.visible = true;
 };
 
 onMounted(() => {
-	loadTableData();
+  loadTableData();
 });
 </script>
 
@@ -78,8 +78,8 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="total, prev, pager, next, jumper" :size="size" v-model:current-page="queryParams.current"
-      v-model:page-size="queryParams.size" :total="queryParams.total" @change="handlePageChange" />
+    <el-pagination layout="total, prev, pager, next, jumper" :size="size" v-model:current-page="queryParams.pageCurrent"
+      v-model:page-size="queryParams.pageSize" :total="queryParams.pageTotal" @change="handlePageChange" />
 
     <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
   </div>

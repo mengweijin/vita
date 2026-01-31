@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.spring;
 
 import cn.hutool.v7.core.reflect.ClassUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
-import com.github.mengweijin.vita.framework.VitaAutoConfiguration;
+import com.github.mengweijin.vita.framework.VitaConfiguration;
 import com.github.mengweijin.vita.framework.constant.Const;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -18,7 +18,7 @@ public class VitaBeanDefinitionRegistryPostProcessor implements BeanDefinitionRe
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
-        String pkg = ClassUtil.getPackage(VitaAutoConfiguration.class);
+        String pkg = ClassUtil.getPackage(VitaConfiguration.class);
         String parentPkg = CharSequenceUtil.subBefore(pkg, Const.DOT, true);
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(beanDefinitionRegistry);
         scanner.scan(parentPkg);

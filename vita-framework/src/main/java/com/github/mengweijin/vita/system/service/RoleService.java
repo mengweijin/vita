@@ -11,6 +11,7 @@ import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
+import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
@@ -48,6 +49,8 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
 
     private UserRoleService userRoleService;
 
+    private LogDataChangeService logDataChangeService;
+
     @Override
     public boolean removeByIds(Collection<?> roleIds) {
         long userCount = userRoleService.countUserInRoleIds(roleIds);
@@ -82,6 +85,8 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean setMenuPermission(RolePermissionBO bo) {
+        Set<Long> beforeMenuIds = roleMenuService.getMenuIdsByRoleId(bo.getRoleId());
+
         roleMenuService.removeByRoleId(bo.getRoleId());
 
         List<RoleMenuDO> collect = bo.getMenuIds().stream().map(menuId -> {
@@ -91,8 +96,11 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
             return roleMenu;
         }).collect(Collectors.toList());
         if(!collect.isEmpty()) {
-            return roleMenuService.saveBatch(collect, Constants.DEFAULT_BATCH_SIZE);
+            roleMenuService.saveBatch(collect, Constants.DEFAULT_BATCH_SIZE);
         }
+
+        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_ROLE_MENU, bo.getRoleId(), List.copyOf(beforeMenuIds), List.copyOf(bo.getMenuIds()));
+
         return true;
     }
 

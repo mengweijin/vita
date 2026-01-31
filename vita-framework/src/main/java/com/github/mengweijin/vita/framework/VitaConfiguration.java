@@ -3,11 +3,11 @@ package com.github.mengweijin.vita.framework;
 import cn.hutool.v7.swing.captcha.generator.MathGenerator;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
@@ -28,9 +28,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableAsync(proxyTargetClass = true)
-@AutoConfiguration
+@Configuration
 @EnableConfigurationProperties({VitaProperties.class, ApplicationProperties.class})
-public class VitaAutoConfiguration {
+public class VitaConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

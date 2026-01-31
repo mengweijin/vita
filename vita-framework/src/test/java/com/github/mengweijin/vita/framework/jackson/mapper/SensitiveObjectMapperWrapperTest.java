@@ -35,6 +35,5 @@ class SensitiveObjectMapperWrapperTest {
 
         private Map<String, String> map;
 
-
     }
 }

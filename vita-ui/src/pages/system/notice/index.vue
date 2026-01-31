@@ -40,8 +40,8 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   noticeApi.page(queryParams).then((res) => {
-    tableData.value = res.records;
-    queryParams.total = res.total;
+    tableData.value = res.pageRecords;
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };

@@ -33,6 +33,7 @@
         <oshi.version>6.9.2</oshi.version>
         <zxing.version>3.5.4</zxing.version>
         <fastexcel.version>1.3.0</fastexcel.version>
+        <fesod-sheet.version>2.0.0-incubating</fesod-sheet.version>
         <ip2region.version>3.3.4</ip2region.version>
         <velocity.version>2.4.1</velocity.version>
         <mapstruct-plus.version>1.4.8</mapstruct-plus.version>
@@ -171,6 +172,11 @@
                 <groupId>cn.idev.excel</groupId>
                 <artifactId>fastexcel</artifactId>
                 <version>${fastexcel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.fesod</groupId>
+                <artifactId>fesod-sheet</artifactId>
+                <version>${fesod-sheet.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>

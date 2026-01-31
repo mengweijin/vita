@@ -21,7 +21,7 @@ import java.io.File;
  * matchIfMissing: 缺少该property时是否可以加载。如果为true，没有该property也会正常加载；反之报错
  * <p>
  * ConfigurationProperties 注解主要用来把properties配置文件转化为bean来使用。
- * VitaAutoConfiguration 中的 EnableConfigurationProperties 注解的作用是使@ConfigurationProperties注解生效。
+ * VitaConfiguration 中的 EnableConfigurationProperties 注解的作用是使@ConfigurationProperties注解生效。
  * 如果只配置@ConfigurationProperties注解，在IOC容器中是获取不到properties配置文件转化的bean的。
  * <p>
  * 1. spring cloud 使用 @RefreshScope + @Value 方式可以动态更新。
