@@ -23,6 +23,11 @@ public class UserBasicInformationBO implements Serializable {
     private Long id;
 
     /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
      * 用户昵称
      */
     @NotBlank

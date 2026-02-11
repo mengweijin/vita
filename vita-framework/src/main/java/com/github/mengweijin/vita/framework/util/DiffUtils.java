@@ -3,7 +3,9 @@ package com.github.mengweijin.vita.framework.util;
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.collection.ListUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
+import com.github.mengweijin.vita.system.enums.dict.EDiffType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.Diff;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DiffUtils {
 
-    public static final String DEFAULT_FIELD_NAME = "list";
+    public static final String DEFAULT_FIELD_NAME = "item";
 
     public static List<DiffModel> diffLists(List<?> o1, List<?> o2) {
         List<?> list1 = CollUtil.emptyIfNull(o1);
@@ -37,16 +39,22 @@ public final class DiffUtils {
         List<DiffModel> diff = new ArrayList<>();
 
         // 差集 list1 - list2     移除的项
-        String difference1 = list1.stream().filter(item -> !list2.contains(item)).map(StrUtil::toString).collect(Collectors.joining());
+        list1.stream()
+                .filter(item -> !list2.contains(item))
+                .forEach(i -> {
+                    DiffModel diffModel = new DiffModel(EDiffType.REMOVED, DEFAULT_FIELD_NAME, StrUtil.toStringOrNull(i), null);
+                    diff.add(diffModel);
+                });
+
         // 差集 list2 - list1     新增的项
-        String difference2 = list2.stream().filter(item -> !list1.contains(item)).map(StrUtil::toString).collect(Collectors.joining());
+        list2.stream()
+                .filter(item -> !list1.contains(item))
+                .forEach(i -> {
+                    DiffModel diffModel = new DiffModel(EDiffType.ADDED, DEFAULT_FIELD_NAME, null, StrUtil.toStringOrNull(i));
+                    diff.add(diffModel);
+                });
 
-        DiffModel diffModel1 = new DiffModel(DiffModel.DiffType.REMOVED, DEFAULT_FIELD_NAME, difference1, null);
-        DiffModel diffModel2 = new DiffModel(DiffModel.DiffType.ADDED, DEFAULT_FIELD_NAME, null, difference2);
-
-        diff.add(diffModel1);
-        diff.add(diffModel2);
-        return diff;
+        return cleanNullAndEmptyEqualsValue(diff);
     }
 
     public static List<DiffModel> diffMaps(Map<String, String> m1, Map<String, String> m2, String... ignoreKeys) {
@@ -61,7 +69,7 @@ public final class DiffUtils {
             for (Map.Entry<String, String> entry : m2.entrySet()) {
                 if(!ignoreKeyList.contains(entry.getKey())) {
                     DiffModel diffModel = new DiffModel();
-                    diffModel.setDiffType(DiffModel.DiffType.ADDED);
+                    diffModel.setDiffType(EDiffType.ADDED);
                     diffModel.setFieldName(entry.getKey());
                     diffModel.setOldValue(null);
                     diffModel.setNewValue(entry.getValue());
@@ -75,7 +83,7 @@ public final class DiffUtils {
             for (Map.Entry<String, String> entry : m1.entrySet()) {
                 if(!ignoreKeyList.contains(entry.getKey())) {
                     DiffModel diffModel = new DiffModel();
-                    diffModel.setDiffType(DiffModel.DiffType.REMOVED);
+                    diffModel.setDiffType(EDiffType.REMOVED);
                     diffModel.setFieldName(entry.getKey());
                     diffModel.setOldValue(entry.getValue());
                     diffModel.setNewValue(null);
@@ -100,14 +108,14 @@ public final class DiffUtils {
             }
 
             if(v1 == null) {
-                diff.add(new DiffModel(DiffModel.DiffType.ADDED, key, null, v2));
+                diff.add(new DiffModel(EDiffType.ADDED, key, null, v2));
             } else if (v2 == null) {
-                diff.add(new DiffModel(DiffModel.DiffType.REMOVED, key, v1, null));
+                diff.add(new DiffModel(EDiffType.REMOVED, key, v1, null));
             } else if (!v1.equals(v2)) {
-                diff.add(new DiffModel(DiffModel.DiffType.MODIFIED, key, v1, v2));
+                diff.add(new DiffModel(EDiffType.MODIFIED, key, v1, v2));
             }
         }
-        return diff;
+        return cleanNullAndEmptyEqualsValue(diff);
     }
 
     public static <T> List<DiffModel> diffBeans(T t1, T t2, String... ignoreFields) {
@@ -130,25 +138,33 @@ public final class DiffUtils {
             DiffModel diffModel = getDiffModel(diff);
             list.add(diffModel);
         }
-        return list;
+        return cleanNullAndEmptyEqualsValue(list);
     }
 
     private static @NonNull DiffModel getDiffModel(Diff<?> diff) {
         DiffModel diffModel = new DiffModel();
         if(diff.getLeft() == null) {
-            diffModel.setDiffType(DiffModel.DiffType.ADDED);
+            diffModel.setDiffType(EDiffType.ADDED);
         } else if(diff.getRight() == null) {
-            diffModel.setDiffType(DiffModel.DiffType.REMOVED);
+            diffModel.setDiffType(EDiffType.REMOVED);
         } else {
-            diffModel.setDiffType(DiffModel.DiffType.MODIFIED);
+            diffModel.setDiffType(EDiffType.MODIFIED);
         }
         // 发生变化的字段名
         diffModel.setFieldName(diff.getFieldName());
         // 字段对应的旧值
-        diffModel.setOldValue(StrUtil.toStringOrNull(diff.getLeft()));
+        diffModel.setOldValue(StrUtil.nullIfBlank(StrUtil.toStringOrNull(diff.getLeft())));
         // 字段对应的新值
-        diffModel.setNewValue(StrUtil.toStringOrNull(diff.getRight()));
+        diffModel.setNewValue(StrUtil.nullIfBlank(StrUtil.toStringOrNull(diff.getRight())));
         return diffModel;
+    }
+
+    private static List<DiffModel> cleanNullAndEmptyEqualsValue(List<DiffModel> list) {
+        return list.stream().filter(item -> {
+            String oldValue = StrUtil.defaultIfBlank(item.getOldValue(), Const.EMPTY);
+            String newValue = StrUtil.defaultIfBlank(item.getNewValue(), Const.EMPTY);
+            return !oldValue.equals(newValue);
+        }).collect(Collectors.toList());
     }
 
 }

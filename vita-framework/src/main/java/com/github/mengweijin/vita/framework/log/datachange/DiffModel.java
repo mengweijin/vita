@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.log.datachange;
 
+import com.github.mengweijin.vita.system.enums.dict.EDiffType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class DiffModel implements Serializable {
     /**
      * 差异类型枚举
      */
-    private DiffType diffType;
+    private EDiffType diffType;
 
     /**
      * 字段名
@@ -36,15 +37,4 @@ public class DiffModel implements Serializable {
      */
     private String newValue;
 
-    /**
-     *  差异类型枚举
-     */
-    public enum DiffType {
-        // 新增的键
-        ADDED,
-        // 修改的值
-        MODIFIED,
-        // 删除的键
-        REMOVED
-    }
 }

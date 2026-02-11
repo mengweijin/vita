@@ -65,6 +65,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/monitor/log-data-change/': RouteRecordInfo<
+      '/monitor/log-data-change/',
+      '/monitor/log-data-change',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/monitor/log-login/': RouteRecordInfo<
       '/monitor/log-login/',
       '/monitor/log-login',
@@ -258,6 +265,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/monitor/cache-local/index.vue': {
       routes:
         | '/monitor/cache-local/'
+      views:
+        | never
+    }
+    'src/pages/monitor/log-data-change/index.vue': {
+      routes:
+        | '/monitor/log-data-change/'
       views:
         | never
     }

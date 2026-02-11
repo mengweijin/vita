@@ -56,7 +56,7 @@ public class LogDataChangeController {
     @GetMapping("/page")
     public PageQuery<LogDataChangeVO> page(PageQuery<LogDataChangeDO> page, LogDataChangeDO logDataChangeDO) {
         LambdaQueryWrapper<LogDataChangeDO> wrapper = logDataChangeService.buildQueryWrapper(logDataChangeDO);
-        wrapper.orderByAsc(LogDataChangeDO::getCreateTime);
+        wrapper.orderByDesc(LogDataChangeDO::getCreateTime);
         return logDataChangeService.pageVo(page, wrapper);
     }
 
@@ -84,6 +84,12 @@ public class LogDataChangeController {
     @GetMapping("/{id}")
     public LogDataChangeVO getById(@PathVariable("id") Long id) {
         return logDataChangeService.getVoById(id);
+    }
+
+    @SaCheckPermission("monitor:logDataChange:select")
+    @GetMapping("/tableNames")
+    public List<String> getTableNames() {
+        return logDataChangeService.getTableNames();
     }
 
     /**

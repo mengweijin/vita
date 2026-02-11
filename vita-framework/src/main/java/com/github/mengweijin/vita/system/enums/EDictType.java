@@ -65,7 +65,12 @@ public enum EDictType implements IEnum<String> {
     /**
      * 已发布/未发布
      */
-    VT_RELEASED("vt_released");
+    VT_RELEASED("vt_released"),
+
+    /**
+     * 差异类型枚举
+     */
+    VT_DIFF_TYPE("vt_diff_type");
 
     private final String value;
 

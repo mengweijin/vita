@@ -1,7 +1,7 @@
 <script setup>
-import "vue-json-pretty/lib/styles.css";
-import VueJsonPretty from "vue-json-pretty";
 import utils from "@/utils/utils.js";
+import VueJsonPretty from "vue-json-pretty";
+import "vue-json-pretty/lib/styles.css";
 
 const loading = ref(true);
 
@@ -12,12 +12,12 @@ const visible = ref(false);
 const data = ref({});
 
 const onOpened = () => {
-	loading.value = false;
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
+  visible.value = false;
+  data.value = {};
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -48,16 +48,20 @@ defineExpose({ data, visible });
         </el-descriptions-item>
 
         <el-descriptions-item label=" 请求数据" label-align="right">
-          <template v-if="data?.requestData != null">
-            <vue-json-pretty v-if="utils.isJSON(data?.requestData)" :data="JSON.parse(data?.requestData)" />
-            <div v-else>{{ data?.requestData }}</div>
-          </template>
+          <el-scrollbar max-height="300px">
+            <template v-if="data?.requestData != null">
+              <vue-json-pretty v-if="utils.isJSON(data?.requestData)" :data="JSON.parse(data?.requestData)" />
+              <div v-else>{{ data?.requestData }}</div>
+            </template>
+          </el-scrollbar>
         </el-descriptions-item>
         <el-descriptions-item label="响应数据" label-align="right">
-          <template v-if="data?.responseData != null">
-            <vue-json-pretty v-if="utils.isJSON(data?.responseData)" :data="JSON.parse(data?.responseData)" />
-            <div v-else>{{ data?.responseData }}</div>
-          </template>
+          <el-scrollbar max-height="300px">
+            <template v-if="data?.responseData != null">
+              <vue-json-pretty v-if="utils.isJSON(data?.responseData)" :data="JSON.parse(data?.responseData)" />
+              <div v-else>{{ data?.responseData }}</div>
+            </template>
+          </el-scrollbar>
         </el-descriptions-item>
 
         <el-descriptions-item label="执行消耗时间" label-align="right">

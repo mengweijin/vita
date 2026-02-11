@@ -8,12 +8,12 @@ const visible = ref(false);
 const data = ref({});
 
 const onOpened = () => {
-	loading.value = false;
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
+  visible.value = false;
+  data.value = {};
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -47,9 +47,9 @@ defineExpose({ data, visible });
         </el-descriptions-item>
 
         <el-descriptions-item label="堆栈追踪" label-align="right" :span="2">
-          <div class="vt-descriptions-item">
-            {{ data?.stackTrace }}
-          </div>
+          <el-scrollbar max-height="300px">
+            <div class="vt-descriptions-item">{{ data?.stackTrace }}</div>
+          </el-scrollbar>
         </el-descriptions-item>
       </el-descriptions>
     </div>
@@ -58,12 +58,6 @@ defineExpose({ data, visible });
 
 <style scoped>
 .vt-descriptions-item {
-  /* 根据需求调整高度 */
-  max-height: 350px;
-  /* 启用水平滚动 */
-  overflow-x: auto;
-  /* 启用垂直滚动 */
-  overflow-y: auto;
   /* 长单词自动换行 */
   word-break: break-all;
   /** 保留所有空白符 */

@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup>
-import { userApi } from "@/api/system/user-api";
+import { userApi } from "@/api/system/user-api.js";
 import UserChangePassword from "@/pages/profile/components/user-change-password.vue";
 import UserOnlineTerminal from "@/pages/profile/components/user-online-terminal.vue";
 import UserTotp from "@/pages/profile/components/user-totp.vue";
@@ -15,16 +15,29 @@ const loading = ref(true);
 
 const size = ref("default");
 
-const userInfo = ref({});
+const userInfo = ref({
+  avatar: "",
+  citizenId: "",
+  deptName: "",
+  disabled: null,
+  email: "",
+  gender: null,
+  id: null,
+  mobile: "",
+  nickname: "",
+  postList: [],
+  remark: "",
+  roleList: [],
+  username: "",
+});
+
+const activeTabName = ref("tab1");
 
 onMounted(() => {
   loading.value = true;
   userApi.getUserProfileVO()
     .then((res) => {
       userInfo.value = res;
-      loading.value = false;
-    })
-    .catch(() => {
       loading.value = false;
     });
 });
@@ -83,21 +96,21 @@ onMounted(() => {
           </el-descriptions>
         </el-aside>
         <el-main>
-          <el-tabs type="border-card">
-            <el-tab-pane label="基本资料" :lazy="true">
-              <BasicInformation></BasicInformation>
+          <el-tabs v-model="activeTabName" type="border-card">
+            <el-tab-pane label="基本资料" name="tab1">
+              <BasicInformation v-model:user="userInfo" v-if="activeTabName === 'tab1'"></BasicInformation>
             </el-tab-pane>
-            <el-tab-pane label="修改密码" :lazy="true">
-              <UserChangePassword></UserChangePassword>
+            <el-tab-pane label="修改密码" name="tab2">
+              <UserChangePassword v-if="activeTabName === 'tab2'"></UserChangePassword>
             </el-tab-pane>
-            <el-tab-pane label="绑定动态口令" :lazy="true">
-              <UserTotp></UserTotp>
+            <el-tab-pane label="绑定动态口令" name="tab3">
+              <UserTotp v-if="activeTabName === 'tab3'"></UserTotp>
             </el-tab-pane>
-            <el-tab-pane label="在线终端" :lazy="true">
-              <UserOnlineTerminal></UserOnlineTerminal>
+            <el-tab-pane label="在线终端" name="tab4">
+              <UserOnlineTerminal v-if="activeTabName === 'tab4'"></UserOnlineTerminal>
             </el-tab-pane>
-            <el-tab-pane label="安全日志" :lazy="true">
-              <UserSecurityLog></UserSecurityLog>
+            <el-tab-pane label="安全日志" name="tab5">
+              <UserSecurityLog v-if="activeTabName === 'tab5'"></UserSecurityLog>
             </el-tab-pane>
           </el-tabs>
         </el-main>

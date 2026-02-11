@@ -9,7 +9,6 @@ import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.monitor.domain.bo.LogDataChangeBO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogDataChangeVO;
-import com.github.mengweijin.vita.framework.log.datachange.strategy.DefaultHumanReadableStrategy;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -46,6 +45,7 @@ public class LogDataChangeDO extends BaseEntity {
 
     /**
      * 数据变更前的数据。JSON
+     * JSON 映射需要同时开启 @TableName(autoResultMap = true)
      */
     @JsonIgnore
     @TableField(typeHandler = JacksonTypeHandler.class)
@@ -53,6 +53,7 @@ public class LogDataChangeDO extends BaseEntity {
 
     /**
      * 数据变更后的数据。JSON
+     * JSON 映射需要同时开启 @TableName(autoResultMap = true)
      */
     @JsonIgnore
     @TableField(typeHandler = JacksonTypeHandler.class)
@@ -66,8 +67,8 @@ public class LogDataChangeDO extends BaseEntity {
     private List<DiffModel> changeData;
 
     /**
-     * 可阅读的数据转换策略，存储 Spring Bean 名称。
-     * 默认使用策略 {@link DefaultHumanReadableStrategy}
+     * 人类可阅读的变更数据信息。List<String> JSON
      */
-    private String readableStrategy;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> readableMessages;
 }

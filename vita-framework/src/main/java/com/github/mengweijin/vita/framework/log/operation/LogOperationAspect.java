@@ -50,9 +50,9 @@ public class LogOperationAspect {
 
     private static final ThreadLocal<Long> LOGIN_USER_ID = new ThreadLocal<>();
 
-    private static final String REQUEST_ARGS = "REQUEST_ARGS";
+    private static final String QUERY_PARAMS = "queryParams";
 
-    private static final String REQUEST_BODY = "REQUEST_BODY";
+    private static final String REQUEST_BODY = "requestBody";
 
     @Pointcut("@annotation(logAnnotation)")
     public void pointCut(Log logAnnotation) {}
@@ -144,7 +144,7 @@ public class LogOperationAspect {
         // request.getParameterMap()也会发生下面注释中说到的流不能重复读取的问题，造成获取不到数据。
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (parameterMap != null && !parameterMap.isEmpty()) {
-            dataMap.put(REQUEST_ARGS, parameterMap);
+            dataMap.put(QUERY_PARAMS, parameterMap);
         }
 
         AbstractObjectMapperWrapper objectMapperWrapper = ObjectMapperUtils.getSensitiveObjectMapperWrapper();

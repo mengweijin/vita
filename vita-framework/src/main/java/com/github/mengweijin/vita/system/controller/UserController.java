@@ -5,6 +5,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -15,7 +16,6 @@ import com.github.mengweijin.vita.framework.log.operation.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
@@ -23,11 +23,13 @@ import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
+import com.github.mengweijin.vita.system.domain.bo.TotpBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRoleBO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.TotpVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
@@ -179,8 +181,7 @@ public class UserController {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @PostMapping("/updateBasicInformation")
     public R<Void> updateBasicInformation(@RequestBody UserBasicInformationBO bo) {
-        UserDO userDO = MapstructUtils.getInstance().convert(bo, UserDO.class);
-        boolean bool = userService.updateById(userDO);
+        boolean bool = userService.updateBasicInformation(bo);
         return R.result(bool);
     }
 
@@ -270,31 +271,40 @@ public class UserController {
         return R.ok();
     }
 
-    @GetMapping("/get-totp-enabled")
-    public boolean getTotpEnabled() {
-        return userService.getTotpEnabled();
+    @GetMapping("/has/totpKey")
+    public boolean hasTotpKey() {
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
+        return StrUtil.isNotBlank(user.getTotp());
     }
 
-
-    @GetMapping("/generate-totp-qrcode")
-    public String generateTotpQrCodeBase64() {
-        return userService.generateTotpQrCodeBase64();
+    @PostMapping("/validate/totp/{code}")
+    public boolean validateTotpCode(@PathVariable("code") Integer code) {
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
+        boolean validated = TotpUtils.validate(user.getTotp(), code);
+        if(validated) {
+            return true;
+        }
+        throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
     }
 
     /**
-     * 启用动态口令
-     * @param code validate code
+     * 生成 TOTP 二维码
+     * @return TotpVO
      */
-    @PostMapping("/enable-totp/{code}")
-    public R<Void> enableTotp(@Validated @PathVariable Integer code) {
-        Long userId = LoginHelper.getSessionUserId();
-        UserDO user = userService.getById(userId);
-        if(TotpUtils.validate(user.getTotp(), code)) {
-            boolean bool = userService.enableTotp();
-            return R.result(bool);
-        } else {
-            throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
-        }
+    @GetMapping("/generate/totpQrcode")
+    public TotpVO generateTotpQrcode() {
+        return userService.generateTotpQrcode();
+    }
+
+    /**
+     * 保存 TOTP
+     * @param bo TotpBO
+     * @return R
+     */
+    @PostMapping("/save/totp")
+    public R<Void> saveTotp(@Validated @RequestBody TotpBO bo) {
+        boolean saved = userService.saveTotp(bo);
+        return R.result(saved);
     }
 
     @GetMapping("/get-sa-terminal-info-list")

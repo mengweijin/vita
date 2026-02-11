@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.jackson.translation.strategy;
+package com.github.mengweijin.vita.framework.jackson.translation.handler;
 
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @AllArgsConstructor
-public class DictDataLabelTranslationStrategy implements ITranslationStrategy {
+public class DictDataLabelTranslationHandler implements ITranslationHandler {
 
     private DictDataService dictDataService;
 

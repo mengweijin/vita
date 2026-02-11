@@ -8,7 +8,6 @@ import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.jdbc.template.ColumnUpperCaseMapRowMapper;
 import com.github.mengweijin.vita.framework.mybatis.MybatisMapperHelper;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.framework.log.datachange.strategy.DefaultHumanReadableStrategy;
 import com.github.mengweijin.vita.system.constant.VitaConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,8 +70,8 @@ public class DataChangeLogAspect {
         // 执行原方法后获取新对象
         Map<String, String> afterData = this.queryForMap(tableName, businessId);
 
-        // 保存日志
-        logDataChangeService.saveWhenMapChange(tableName, businessId, new DefaultHumanReadableStrategy(), beforeData, afterData, IGNORE_COLUMNS);
+        // 保存数据变动日志
+        logDataChangeService.saveWhenMapChange(tableName, businessId, beforeData, afterData, IGNORE_COLUMNS);
 
         return proceed;
     }

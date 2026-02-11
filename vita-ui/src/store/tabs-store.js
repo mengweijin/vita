@@ -11,7 +11,7 @@ export const useTabsStore = defineStore(
     // 标签页列表
     const tabsList = ref([]);
 
-    // 当前激活的标签页
+    // 当前激活的标签页的名称
     const activeTab = ref("");
 
     // method 可直接解构
@@ -61,7 +61,7 @@ export const useTabsStore = defineStore(
         if (firstClosableTab) {
           utils.remove(
             tabsList.value,
-            (tab) => tab.name === firstClosableTab.name
+            (tab) => tab.name === firstClosableTab.name,
           );
         }
       }
@@ -91,7 +91,7 @@ export const useTabsStore = defineStore(
     const removeTab = (name) => {
       const closedTabIndex = utils.findIndexOf(
         tabsList.value,
-        (tab) => tab.name === name
+        (tab) => tab.name === name,
       );
       // 未找到标签页，直接返回
       if (closedTabIndex === -1) {
@@ -130,7 +130,7 @@ export const useTabsStore = defineStore(
       const currentIndex = tabsList.value.findIndex((tab) => tab.name === name);
       utils.remove(
         tabsList.value,
-        (tab, index) => tab.closable && index < currentIndex
+        (tab, index) => tab.closable && index < currentIndex,
       );
     };
 
@@ -139,7 +139,7 @@ export const useTabsStore = defineStore(
       const currentIndex = tabsList.value.findIndex((tab) => tab.name === name);
       utils.remove(
         tabsList.value,
-        (tab, index) => tab.closable && index > currentIndex
+        (tab, index) => tab.closable && index > currentIndex,
       );
     };
 
@@ -167,5 +167,5 @@ export const useTabsStore = defineStore(
     persist: {
       storage: sessionStorage,
     },
-  }
+  },
 );

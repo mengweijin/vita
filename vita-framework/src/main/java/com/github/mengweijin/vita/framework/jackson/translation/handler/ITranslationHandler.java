@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.jackson.translation.strategy;
+package com.github.mengweijin.vita.framework.jackson.translation.handler;
 
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author mengweijin
  * @since 2023/5/20
  */
-public interface ITranslationStrategy {
+public interface ITranslationHandler {
 
     /**
      * 支持的翻译类型

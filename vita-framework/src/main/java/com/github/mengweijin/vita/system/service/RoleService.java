@@ -12,6 +12,7 @@ import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
@@ -99,7 +100,7 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
             roleMenuService.saveBatch(collect, Constants.DEFAULT_BATCH_SIZE);
         }
 
-        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_ROLE_MENU, bo.getRoleId(), List.copyOf(beforeMenuIds), List.copyOf(bo.getMenuIds()));
+        logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_ROLE_MENU, bo.getRoleId(), List.copyOf(beforeMenuIds), List.copyOf(bo.getMenuIds()));
 
         return true;
     }

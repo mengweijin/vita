@@ -7,10 +7,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.AopUtils;
+import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
+import com.github.mengweijin.vita.system.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserRoleVO;
 import com.github.mengweijin.vita.system.mapper.UserRoleMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +35,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO, UserRoleVO> {
+
+    private LogDataChangeService logDataChangeService;
 
     public Set<Long> getRoleIdsByUserId(Long userId) {
         List<UserRoleDO> list = this.lambdaQuery().select(UserRoleDO::getRoleId).eq(UserRoleDO::getUserId, userId).list();
@@ -68,6 +74,8 @@ public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO,
 
     @Transactional(rollbackFor = Exception.class)
     public void setUserRoles(Long userId, List<Long> roleIds) {
+        Set<Long> beforeRoleIds = this.getRoleIdsByUserId(userId);
+
         this.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
 
         if(CollUtil.isEmpty(roleIds)) {
@@ -82,23 +90,46 @@ public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO,
         }).toList();
 
         AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+
+        // 保存用户角色变动日志
+        logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userId, List.copyOf(beforeRoleIds), roleIds);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean addUsers(Long roleId, List<Long> userIds) {
-        this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
+        List<UserRoleDO> queryList = this.lambdaQuery().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).list();
+        List<Long> queriedUserIds = queryList.stream().map(UserRoleDO::getUserId).toList();
+        // 筛选出来新增加该角色的用户，避免重复添加
+        List<Long> addIds = userIds.stream().filter(item -> !queriedUserIds.contains(item)).toList();
 
-        List<UserRoleDO> list = userIds.stream().map(userId -> {
+        // 剩下的用户均为新增当前角色
+        List<UserRoleDO> list = addIds.stream().map(userId -> {
             UserRoleDO userRoleDO = new UserRoleDO();
             userRoleDO.setRoleId(roleId);
             userRoleDO.setUserId(userId);
             return userRoleDO;
         }).toList();
-        return AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+        boolean saved = AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
+
+        if(saved) {
+            // 保存用户角色变动日志
+            for (Long userId : addIds) {
+                logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userId, List.of(), List.of(roleId));
+            }
+        }
+        return saved;
     }
 
     public boolean removeByRoleIdInUserIds(Long roleId, List<Long> userIds) {
-        return this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
+        boolean removed = this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
+
+        if(removed) {
+            // 保存用户角色变动日志
+            for (Long userId : userIds) {
+                logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userId, List.of(roleId), List.of());
+            }
+        }
+        return removed;
     }
 
     @Override

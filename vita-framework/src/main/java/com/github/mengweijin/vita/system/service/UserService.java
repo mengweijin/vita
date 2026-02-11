@@ -27,20 +27,24 @@ import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
+import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.system.domain.bo.TotpBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
+import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
+import com.github.mengweijin.vita.system.domain.vo.TotpVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
-import com.github.mengweijin.vita.system.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,15 +127,13 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         }
 
         Set<Long> beforeRoleIds = userRoleService.getRoleIdsByUserId(userDO.getId());
-        Set<Long> beforePostIds = userPostService.getPostIdsByUserId(userDO.getId());
 
-        // 角色
+        // 保存角色
         userRoleService.setUserRoles(userDO.getId(), userBO.getRoleIds());
-        // 岗位
+        // 保存岗位
         userPostService.setUserPosts(userDO.getId(), userBO.getPostIds());
-
-        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userDO.getId(), List.copyOf(beforeRoleIds), userBO.getRoleIds());
-        // logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_POST, userDO.getId(), List.copyOf(beforePostIds), userBO.getPostIds());
+        // 保存角色变动日志
+        logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userDO.getId(), List.copyOf(beforeRoleIds), userBO.getRoleIds());
     }
 
     public String saltedPassword(String password, String salt) {
@@ -341,22 +343,58 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
                 .stream().map(UserDO::getId).collect(Collectors.toSet());
     }
 
-    public String generateTotpQrCodeBase64() {
-        UserDO user = this.getById(LoginHelper.getSessionUserId());
-        String key = user.getTotp();
-        if(StrUtil.isBlank(key)) {
-            key = TotpUtils.generateSecretKey();
-            this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, user.getId()).update();
+    @CacheEvict(
+            value = {
+                    CacheNames.USER_ID_TO_AVATAR,
+                    CacheNames.USER_ID_TO_NICKNAME,
+                    CacheNames.USER_ID_TO_USERNAME
+            },
+            key = "#bo.id + ''")
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateBasicInformation(UserBasicInformationBO bo) {
+        UserDO userDO = MapstructUtils.getInstance().convert(bo, UserDO.class);
+        boolean bool = AopUtils.getAopProxy(this).updateById(userDO);
+
+        if(StrUtil.isNotBlank(bo.getAvatar())) {
+            UserAvatarDO userAvatar = new UserAvatarDO();
+            userAvatar.setUserId(bo.getId());
+            userAvatar.setAvatar(bo.getAvatar());
+            userAvatarService.setAvatar(userAvatar);
         }
+        return  bool;
+    }
+
+    public TotpVO generateTotpQrcode() {
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
+        // 每次都重新创建 key, 如果用户又绑定了一次，之前的就作废。
+        String key = TotpUtils.generateSecretKey();
         String label = String.format("%s(%s)", user.getNickname(), user.getUsername());
-        String qrCode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
-        this.writeTotpQrCodeToTempPath(qrCode);
-        return qrCode;
+        String qrcode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
+        return new TotpVO(key, qrcode);
+    }
+
+    public boolean validateTotp(Integer code) {
+        UserDO user = this.getById(LoginHelper.getSessionUserId());
+        return TotpUtils.validate(user.getTotp(), code);
+    }
+
+    public boolean saveTotp(TotpBO bo) {
+        boolean validated = TotpUtils.validate(bo.getKey(), bo.getCode());
+        if(!validated) {
+            throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
+        }
+        Long userId = LoginHelper.getSessionUserId();
+        return this.lambdaUpdate()
+                .set(UserDO::getTotp, bo.getKey())
+                .eq(UserDO::getId, userId)
+                .update();
     }
 
     /**
      *  这个方法只在 {@link EnvironmentChecker} isDevOrLocalOrTest() 环境下执行
+     * @deprecated 2.0
      */
+    @Deprecated(since = "2.0", forRemoval = true)
     public void writeTotpQrCodeToTempPath(String qrCode) {
         if(environmentChecker.isDevOrLocalOrTest()) {
             String base64Data = qrCode;
@@ -374,24 +412,6 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
                 log.error(e.getMessage(), e);
             }
         }
-    }
-
-    public boolean enableTotp() {
-        Long userId = LoginHelper.getSessionUserId();
-        return this.lambdaUpdate()
-                .set(UserDO::getTotpEnabled, EYesNo.Y.getValue())
-                .eq(UserDO::getId, userId)
-                .update();
-    }
-
-    public boolean getTotpEnabled() {
-        Long userId = LoginHelper.getSessionUserId();
-        String totpEnabled = this.lambdaQuery()
-                .select(UserDO::getTotpEnabled)
-                .eq(UserDO::getId, userId)
-                .one()
-                .getTotpEnabled();
-        return EYesNo.Y.getValue().equals(totpEnabled);
     }
 
 }

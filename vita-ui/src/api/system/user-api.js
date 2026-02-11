@@ -18,21 +18,33 @@ export const userApi = {
 
   create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-  enableTotp: (code) => http.post(`${URL_PREFIX}/enable-totp/${code}`, {}),
+  validateTotpCode: (code) => http.post(`${URL_PREFIX}/validate/totp/${code}`),
 
-  generateTotpQrCodeBase64: () =>
-    http.get(`${URL_PREFIX}/generate-totp-qrcode`),
+  /**
+   * @typedef {Object} TotpVO
+   * @property {string} key - 密钥
+   * @property {string} qrcode - 二维码 base64 字符串
+   */
+  /**
+   * 生成数字口令二维码
+   * @returns {TotpVO}
+   */
+  generateTotpQrcode: () => http.get(`${URL_PREFIX}/generate/totpQrcode`),
 
   getSaTerminalInfoList: () =>
     http.get(`${URL_PREFIX}/get-sa-terminal-info-list`),
-
-  getTotpEnabled: () => http.get(`${URL_PREFIX}/get-totp-enabled`),
 
   getUserBOById: (id) => http.get(`${URL_PREFIX}/get-user-bo-by-id/${id}`),
 
   getUserProfileVO: () => http.get(`${URL_PREFIX}/get-user-profile-vo`),
 
   getUserStoreVO: () => http.get(`${URL_PREFIX}/get-user-store-vo`),
+
+  /**
+   * 判断用户是否已绑定数字口令
+   * @returns boolean
+   */
+  hasTotpKey: () => http.get(`${URL_PREFIX}/has/totpKey`),
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
@@ -58,6 +70,17 @@ export const userApi = {
    * @returns
    */
   resetPassword: (data) => http.post(`${URL_PREFIX}/reset-password`, data),
+
+  /**
+   * @typedef {Object} TotpBO
+   * @property {string} key - 密钥
+   * @property {Number} code - 数字口令
+   */
+  /**
+   * 保存 totp 绑定
+   * @param {TotpBO} data
+   */
+  saveTotp: (data) => http.post(`${URL_PREFIX}/save/totp`, data),
 
   /**
    * @typedef {Object} UserRoleBO

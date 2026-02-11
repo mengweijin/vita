@@ -1,34 +1,56 @@
 <script setup>
 import 'cropperjs';
 
-const visible = ref(false);
+const modelValue = defineModel({ type: String });
 
-const emit = defineEmits(["callback"]);
-
-const src = ref('');
+const visible = defineModel("visible", { default: false, required: true, type: Boolean });
+const src = defineModel("src", { default: '', required: true, type: String });
 
 const cropperCanvas = useTemplateRef('cropperCanvas');
 const cropperImage = useTemplateRef('cropperImage');
 const cropperShade = useTemplateRef('cropperShade');
 const cropperSelection = useTemplateRef('cropperSelection');
 
-const onOpened = () => {
-
-};
-
 const onClosed = () => {
 	visible.value = false;
-	src.value = '';
 };
 
-const onSubmit = () => {
-	emit("callback", resultBase64);
+const onSubmit = async () => {
+	const canvas = await cropperSelection.value.$toCanvas();
+	const imageBase64 = canvas.toDataURL('image/png');
+	modelValue.value = imageBase64;
+	src.value = imageBase64;
 	onClosed();
 };
 
+const handleOnImageSelected = (uploadFile) => {
+	const file = uploadFile.raw;
+	if (!file) {
+		return;
+	}
+
+	try {
+		// 将文件转换为 base64 的通用函数
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			src.value = e.target.result;
+		};
+		reader.readAsDataURL(file);
+	} catch (_error) { }
+};
+
+// 纵横比
+const aspectRatio = ref(1);
+// 移动距离
 const moveDistance = ref(10);
+// 旋转角度
 const rotationAngle = ref(45);
+// 缩放比例
 const zoomScale = ref(0.1);
+
+const handleAspectRatio = (ratio) => {
+	aspectRatio.value = ratio;
+};
 
 const handleMoveUp = () => {
 	cropperImage.value.$move(0, -moveDistance.value);
@@ -73,20 +95,40 @@ const handleScaleY = () => {
 const handleCenter = () => {
 	cropperImage.value.$center("contain");
 };
-
-
-/** 暴露给父组件，父组件可通过 cropperRef.value.visible = true; 来赋值 */
-defineExpose({ src, visible });
-
-onMounted(() => {
-
-});
 </script>
 
 <template>
-	<el-dialog v-model="visible" :title="'图片裁剪'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
-		width="1000px" style="height: 510px;">
+	<el-dialog v-model="visible" :title="'图像裁剪'" destroy-on-close align-center @closed="onClosed" width="1000px"
+		style="height: 560px;">
 		<div>
+			<div>
+				<el-form :inline="true">
+					<el-form-item prop="aspectRatio" label="裁剪比例">
+						<el-select v-model.number="aspectRatio" style="width: 100px;" @change="handleAspectRatio"
+							placeholder="自由裁剪">
+							<el-option label="自由裁剪" :value="undefined"></el-option>
+							<el-option label="1:1" :value="1"></el-option>
+							<el-option label="4:3" :value="4 / 3"></el-option>
+							<el-option label="16:9" :value="16 / 9"></el-option>
+							<el-option label="3:4" :value="3 / 4"></el-option>
+							<el-option label="9:16" :value="9 / 16"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-upload :show-file-list="false" :auto-upload="false" action="#"
+							:on-change="handleOnImageSelected" accept="image/*">
+							<el-button type="primary">
+								<template #icon>
+									<el-icon>
+										<Icon icon="ep:upload"></Icon>
+									</el-icon>
+								</template>
+								上传图片
+							</el-button>
+						</el-upload>
+					</el-form-item>
+				</el-form>
+			</div>
 			<div>
 				<el-row :gutter="10">
 					<el-col :span="16">
@@ -95,7 +137,7 @@ onMounted(() => {
 								translatable></cropper-image>
 							<cropper-shade ref="cropperShade" hidden></cropper-shade>
 							<cropper-handle action="select" plain></cropper-handle>
-							<cropper-selection ref="cropperSelection" id="cropperSelection" initial-aspect-ratio="1"
+							<cropper-selection ref="cropperSelection" id="cropperSelection" :aspect-ratio="aspectRatio"
 								initial-coverage="1" movable resizable outlined>
 								<cropper-grid role="grid" covered></cropper-grid>
 								<cropper-crosshair centered></cropper-crosshair>
@@ -120,7 +162,7 @@ onMounted(() => {
 							<cropper-viewer selection="#cropperSelection" class="vt-cropper-viewer"
 								style="width: 40px;"></cropper-viewer>
 						</div>
-						<div class="cropper-viewers">
+						<div class="cropper-viewers" v-if="aspectRatio === 1">
 							<div class="vt-cropper-viewer vt-cropper-viewer-circle"
 								style="width: 160px; height: 160px;">
 								<cropper-viewer selection="#cropperSelection" style="width: 160px;"></cropper-viewer>
@@ -274,7 +316,7 @@ onMounted(() => {
 		</div>
 		<template #footer>
 			<div>
-				<el-button type="primary">
+				<el-button type="primary" @click="onSubmit">
 					<template #icon>
 						<el-icon>
 							<Icon icon="ep:check"></Icon>

@@ -18,9 +18,9 @@ import java.sql.SQLException;
  */
 @MappedTypes({Object.class})
 @MappedJdbcTypes(JdbcType.VARCHAR)
-public class JsonbTypeHandler extends JacksonTypeHandler {
+public class PostgresJsonbTypeHandler extends JacksonTypeHandler {
 
-    public JsonbTypeHandler(Class<T> type) {
+    public PostgresJsonbTypeHandler(Class<T> type) {
         super(type);
     }
 
@@ -29,13 +29,14 @@ public class JsonbTypeHandler extends JacksonTypeHandler {
      * @param type type
      * @param field field
      */
-    public JsonbTypeHandler(Class<?> type, Field field) {
+    public PostgresJsonbTypeHandler(Class<?> type, Field field) {
         super(type, field);
     }
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        var jsonbObject = new PGobject();
+        // PostgreSQL
+        PGobject jsonbObject = new PGobject();
         jsonbObject.setType("jsonb");
         jsonbObject.setValue(toJson(parameter));
         ps.setObject(i, jsonbObject);

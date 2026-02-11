@@ -1,35 +1,34 @@
-package com.github.mengweijin.vita.framework.jackson.translation.strategy;
+package com.github.mengweijin.vita.framework.jackson.translation.handler;
 
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
-import com.github.mengweijin.vita.system.service.UserService;
+import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
-import cn.hutool.v7.core.text.StrValidator;
 import org.springframework.stereotype.Component;
 
 /**
  * 用户名翻译
+ *
  * @author mengweijin
  * @since 2023/5/20
  */
 @Component
 @AllArgsConstructor
-public class UserNicknameTranslationStrategy implements ITranslationStrategy {
+public class DeptNameTranslationHandler implements ITranslationHandler {
 
-    private UserService userService;
+    private DeptService deptService;
 
     @Override
     public ETranslateType translateType() {
-        return ETranslateType.USER_ID_TO_NICKNAME;
+        return ETranslateType.DEPT_ID_TO_NAME;
     }
 
     @Override
     public String translation(Object value, Translation translation) {
         if (value instanceof Long id) {
-            return userService.getNicknameById(id);
-        } else if(value instanceof String ids && StrValidator.isNotBlank(ids)) {
-            return userService.getUserNicknamesByIds(ids);
+            return deptService.getNameById(id);
         }
         return null;
     }
+
 }

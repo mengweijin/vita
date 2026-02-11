@@ -1,4 +1,7 @@
 <script setup>
+import VueJsonPretty from "vue-json-pretty";
+import "vue-json-pretty/lib/styles.css";
+
 const loading = ref(true);
 
 const size = ref("default");
@@ -21,37 +24,30 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="'登录日志详情'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
+  <el-dialog v-model="visible" :title="'数据变动日志详情'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
     width="80%">
     <div v-loading="loading">
       <el-descriptions title="" :column="2" :size="size" border>
-        <el-descriptions-item label="登录账号" label-align="right" min-width="100">
-          {{ data?.username }}
+        <el-descriptions-item label="表名称" label-align="right" min-width="100">
+          {{ data?.tableName }}
         </el-descriptions-item>
-        <el-descriptions-item label="登录类型" label-align="right">
-          <VtTagDict :code="'vt_login_type'" :value="data?.loginType" :size="'default'"></VtTagDict>
-        </el-descriptions-item>
-
-        <el-descriptions-item label="登录 IP" label-align="right">
-          {{ data?.ip }}
+        <el-descriptions-item label="业务数据 ID" label-align="right">
+          {{ data?.businessId }}
         </el-descriptions-item>
 
-        <el-descriptions-item label="IP 位置" label-align="right">
-          {{ data?.ipLocation }}
+        <el-descriptions-item label="变更记录数据" label-align="right">
+          <el-scrollbar max-height="300px">
+            <template v-if="data?.changeData != null">
+              <vue-json-pretty :data="data?.changeData" />
+            </template>
+          </el-scrollbar>
         </el-descriptions-item>
-
-        <el-descriptions-item label="操作系统" label-align="right">
-          {{ data?.os }}
-        </el-descriptions-item>
-        <el-descriptions-item label="浏览器" label-align="right">
-          {{ data?.browser }}
-        </el-descriptions-item>
-        <el-descriptions-item label="设备平台" label-align="right">
-          {{ data?.platform }}
-        </el-descriptions-item>
-
-        <el-descriptions-item label="登录是否成功" label-align="right">
-          <VtTagDict :code="'vt_succeeded'" :value="data?.success" :size="'default'"></VtTagDict>
+        <el-descriptions-item label="变更阅读信息" label-align="right">
+          <el-scrollbar max-height="300px">
+            <template v-if="data?.readableMessages != null">
+              <vue-json-pretty :data="data?.readableMessages" />
+            </template>
+          </el-scrollbar>
         </el-descriptions-item>
 
         <el-descriptions-item label="创建者" label-align="right">

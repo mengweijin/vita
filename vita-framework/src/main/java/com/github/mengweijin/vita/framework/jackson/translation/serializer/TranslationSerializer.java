@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
-import com.github.mengweijin.vita.framework.jackson.translation.TranslationStrategyFactory;
-import com.github.mengweijin.vita.framework.jackson.translation.strategy.ITranslationStrategy;
+import com.github.mengweijin.vita.framework.jackson.translation.TranslationHandlerFactory;
+import com.github.mengweijin.vita.framework.jackson.translation.handler.ITranslationHandler;
 import com.github.mengweijin.vita.framework.util.ReflectUtils;
 import cn.hutool.v7.core.text.StrValidator;
 
@@ -24,7 +24,7 @@ public class TranslationSerializer extends JsonSerializer<Object> implements Con
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        ITranslationStrategy translationStrategy = TranslationStrategyFactory.getTranslationStrategy(translation.translateType());
+        ITranslationHandler translationStrategy = TranslationHandlerFactory.getTranslationStrategy(translation.translateType());
         if(translationStrategy == null) {
             gen.writeObject(value);
         } else {

@@ -10,14 +10,14 @@ const extendUtils = {
    */
   addFullPath: (
     list,
-    { idKey = "id", parentKey = "parentId", pathKey = "name", separator = "/" }
+    { idKey = "id", parentKey = "parentId", pathKey = "name", separator = "/" },
   ) => {
     const buildPath = (id) => {
       const pathList = [];
       let row = XEUtils.find(
         list,
         (item) =>
-          XEUtils.toValueString(id) === XEUtils.toValueString(item[idKey])
+          XEUtils.toValueString(id) === XEUtils.toValueString(item[idKey]),
       );
       while (row != null) {
         // 往最前面增加元素（向数组最前面插入元素时，需设置起始索引为 0, 且删除数量为 0）
@@ -26,7 +26,7 @@ const extendUtils = {
           list,
           (item) =>
             XEUtils.toValueString(item[idKey]) ===
-            XEUtils.toValueString(row[parentKey])
+            XEUtils.toValueString(row[parentKey]),
         );
       }
       return pathList.join(separator);
@@ -187,6 +187,15 @@ const extendUtils = {
     return str && str.length > 0
       ? str.charAt(0).toUpperCase() + str.slice(1)
       : str;
+  },
+
+  /**
+   * 异步等待指定毫秒数
+   * @param {Number} ms
+   * @returns Promise
+   */
+  sleep: (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   },
 };
 
