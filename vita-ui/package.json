@@ -16,7 +16,7 @@
 		"@vueuse/core": "^14.1.0",
 		"@wangeditor-next/editor": "^5.6.49",
 		"@wangeditor-next/editor-for-vue": "^5.1.14",
-		"axios": "^1.13.2",
+		"axios": "^1.13.5",
 		"cronstrue": "^3.9.0",
 		"cropperjs": "^2.1.0",
 		"default-passive-events": "^4.0.0",
