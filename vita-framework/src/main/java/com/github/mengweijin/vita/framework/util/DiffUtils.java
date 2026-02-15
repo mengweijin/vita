@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -164,7 +163,7 @@ public final class DiffUtils {
             String oldValue = StrUtil.defaultIfBlank(item.getOldValue(), Const.EMPTY);
             String newValue = StrUtil.defaultIfBlank(item.getNewValue(), Const.EMPTY);
             return !oldValue.equals(newValue);
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
 }

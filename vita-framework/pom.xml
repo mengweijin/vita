@@ -93,13 +93,9 @@
             <artifactId>ip2region</artifactId> 
         </dependency>
         <dependency>
-            <groupId>cn.idev.excel</groupId>
-            <artifactId>fastexcel</artifactId>
+            <groupId>org.apache.fesod</groupId>
+            <artifactId>fesod-sheet</artifactId>
         </dependency>
-<!--        <dependency>-->
-        <!--            <groupId>org.apache.fesod</groupId>-->
-        <!--            <artifactId>fesod-sheet</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>

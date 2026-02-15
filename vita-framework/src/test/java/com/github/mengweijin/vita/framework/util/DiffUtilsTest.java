@@ -61,9 +61,9 @@ class DiffUtilsTest {
 
     @Test
     void diffBeanBeanByApacheCommonsLang3ThrowsNullPointerException() {
-        TeacherVO t1 = new TeacherVO();
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(null, t1, DataChangeLogAspect.IGNORE_FIELDS));
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(t1, null, DataChangeLogAspect.IGNORE_FIELDS));
+        TeacherVO t0 = new TeacherVO();
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(null, t0, DataChangeLogAspect.IGNORE_FIELDS));
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(t0, null, DataChangeLogAspect.IGNORE_FIELDS));
     }
 
     @Test

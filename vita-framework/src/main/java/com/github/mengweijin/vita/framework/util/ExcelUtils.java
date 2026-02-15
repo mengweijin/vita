@@ -1,13 +1,13 @@
 package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.http.meta.HttpHeaderUtil;
-import cn.idev.excel.FastExcelFactory;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.fesod.sheet.FesodSheet;
 import org.springframework.http.HttpHeaders;
 
 import java.io.File;
@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * 注解：@ExcelProperty(index = 2) {@link cn.idev.excel.annotation.ExcelProperty}
+ * 注解：@ExcelProperty(index = 2) {@link org.apache.fesod.sheet.annotation.ExcelProperty}
  *
  * @author mengweijin
  * @since 2022/11/20
@@ -35,7 +35,7 @@ public class ExcelUtils {
      *
      */
     public static <T> List<T> read(String filePath, Class<T> cls) {
-        return FastExcelFactory.read(filePath).head(cls).sheet().doReadSync();
+        return FesodSheet.read(filePath).head(cls).sheet().doReadSync();
     }
 
     /**
@@ -46,7 +46,7 @@ public class ExcelUtils {
      *
      */
     public static <T> List<T> read(InputStream in, Class<T> cls) {
-        return FastExcelFactory.read(in).head(cls).sheet().doReadSync();
+        return FesodSheet.read(in).head(cls).sheet().doReadSync();
     }
 
     /**
@@ -72,7 +72,7 @@ public class ExcelUtils {
      *
      */
     public static <T> void write(Class<T> cls, List<T> list, File targetFile) {
-        FastExcelFactory.write(targetFile, cls).sheet(0).doWrite(list);
+        FesodSheet.write(targetFile, cls).sheet(0).doWrite(list);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ExcelUtils {
      *
      */
     public static <T> void write(Class<T> cls, List<T> list, OutputStream out) {
-        FastExcelFactory.write(out, cls).sheet(0).doWrite(list);
+        FesodSheet.write(out, cls).sheet(0).doWrite(list);
     }
 
     /**
