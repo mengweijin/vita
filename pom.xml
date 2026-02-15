@@ -10,7 +10,7 @@
     </parent>  
     <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
-    <version>2.0.0-M3-SNAPSHOT</version>
+    <version>2.0.0-M3</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>vita-parent</description>
@@ -20,7 +20,7 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <vita.version>2.0.0-M3-SNAPSHOT</vita.version>
+        <vita.version>2.0.0-M3</vita.version>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -305,7 +305,7 @@
                     <allowSnapshots>true</allowSnapshots>
                     <processAllModules>true</processAllModules>
                     <generateBackupPoms>false</generateBackupPoms>
-                    <newVersion>2.0.0-M3-SNAPSHOT</newVersion>
+                    <newVersion>2.0.0-M3</newVersion>
                 </configuration>
             </plugin>
             <!-- 需要在 settings.xml 中配置 <server><id>central</id> ......其他配置 </server>           -->
