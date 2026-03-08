@@ -1,6 +1,6 @@
 <script setup>
+import utils from "@/utils/utils.js";
 import { listIcons } from "@iconify/vue";
-import { debounce, isEmpty } from "xe-utils";
 
 const inputValue = defineModel({ default: "", type: String });
 
@@ -42,7 +42,7 @@ const handleCurrentChange = (current) => {
 
 const search = ref(null);
 
-const handleSearch = debounce(() => {
+const handleSearch = utils.debounce(() => {
   if (search.value) {
     const filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
     currentIconList.value = pageIconList(filteredList);
@@ -67,7 +67,7 @@ const close = () => {
 };
 
 watch(inputValue, (newIcon) => {
-  if (isEmpty(inputValue.value)) {
+  if (utils.isEmpty(inputValue.value)) {
     iconPreview.value = "ep:search";
   } else {
     iconPreview.value = newIcon;

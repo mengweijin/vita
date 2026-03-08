@@ -25,6 +25,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,9 +50,9 @@ public class DataChangeLogAspect {
 
     private static final String SQL_TEMPLATE = "SELECT * FROM {} WHERE {} = ?";
 
-    private static final String[] IGNORE_COLUMNS = new String[]{"CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME"};
+    private static final List<String> IGNORE_COLUMNS = Arrays.asList("CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME");
 
-    public static final String[] IGNORE_FIELDS = new String[]{"createBy", "createTime", "updateBy", "updateTime", "createByName", "updateByName"};
+    public static final List<String> IGNORE_FIELDS = Arrays.asList("createBy", "createTime", "updateBy", "updateTime", "createByName", "updateByName");
 
     @Pointcut("@annotation(dataChangeLog)")
     public void pointCut(DataChangeLog dataChangeLog) {}
@@ -71,7 +73,7 @@ public class DataChangeLogAspect {
         Map<String, String> afterData = this.queryForMap(tableName, businessId);
 
         // 保存数据变动日志
-        logDataChangeService.saveWhenMapChange(tableName, businessId, beforeData, afterData, IGNORE_COLUMNS);
+        logDataChangeService.saveWhenMapChange(tableName, businessId, beforeData, afterData, IGNORE_COLUMNS.toArray(new String[0]));
 
         return proceed;
     }

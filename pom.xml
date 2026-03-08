@@ -5,12 +5,12 @@
     <parent> 
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
+        <version>3.5.11</version>
         <relativePath/> 
     </parent>  
     <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
-    <version>2.0.0-M3</version>
+    <version>2.0.0-M4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>vita-parent</description>
@@ -20,7 +20,7 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <vita.version>2.0.0-M3</vita.version>
+        <vita.version>2.0.0-M4-SNAPSHOT</vita.version>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -30,7 +30,7 @@
         <mybatis-plus.version>3.5.16</mybatis-plus.version>
         <hutool.version>7.0.0-M4</hutool.version>
         <sa-token.version>1.44.0</sa-token.version>
-        <oshi.version>6.9.3</oshi.version>
+        <oshi.version>6.10.0</oshi.version>
         <zxing.version>3.5.4</zxing.version>
         <fesod-sheet.version>2.0.1-incubating</fesod-sheet.version>
         <ip2region.version>3.3.4</ip2region.version>
@@ -305,7 +305,7 @@
                     <allowSnapshots>true</allowSnapshots>
                     <processAllModules>true</processAllModules>
                     <generateBackupPoms>false</generateBackupPoms>
-                    <newVersion>2.0.0-M3</newVersion>
+                    <newVersion>2.0.0-M4-SNAPSHOT</newVersion>
                 </configuration>
             </plugin>
             <!-- 需要在 settings.xml 中配置 <server><id>central</id> ......其他配置 </server>           -->

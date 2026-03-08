@@ -1,14 +1,14 @@
-import { fileURLToPath, URL } from "node:url";
 import legacy from "@vitejs/plugin-legacy";
 import vue from "@vitejs/plugin-vue";
+import { fileURLToPath, URL } from "node:url";
 import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
-import { VueRouterAutoImports } from "unplugin-vue-router";
-import VueRouter from "unplugin-vue-router/vite";
 import { defineConfig, loadEnv } from "vite";
 import vueDevTools from "vite-plugin-vue-devtools";
 import svgLoader from "vite-svg-loader";
+import { VueRouterAutoImports } from "vue-router/unplugin";
+import VueRouter from "vue-router/vite";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {

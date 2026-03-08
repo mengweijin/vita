@@ -96,8 +96,9 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
      *
      * @param page         翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     * @deprecated since 2.0
      */
-    @Deprecated
+    @Deprecated(since = "2.0", forRemoval = true)
     public IPage<V> pageVo(IPage<T> page, Wrapper<T> queryWrapper) {
         return getBaseMapper().selectVoPage(page, queryWrapper);
     }

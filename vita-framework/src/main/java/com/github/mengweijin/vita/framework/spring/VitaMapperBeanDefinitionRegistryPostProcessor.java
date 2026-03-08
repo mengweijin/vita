@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * @author mengweijin
  * @since 2022/7/27
+ * @deprecated since 2.0
  */
 @Deprecated(since = "2.0", forRemoval = true)
 public class VitaMapperBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {

@@ -102,8 +102,9 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @param page         分页查询条件
      * @param queryWrapper 实体对象封装操作类（可以为 null）
      * @return VO Page
+     * @deprecated since 2.0
      */
-    @Deprecated
+    @Deprecated(since = "2.0", forRemoval = true)
     default IPage<V> selectVoPage(IPage<T> page, Wrapper<T> queryWrapper) {
         IPage<T> p = this.selectPage(page, queryWrapper);
         return this.toVoPage(p);

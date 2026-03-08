@@ -39,6 +39,7 @@ public class PageQuery<T> implements Serializable {
     /**
      * 查询数据列表
      */
+    @SuppressWarnings({"java:S1948"})
     private List<T> pageRecords;
 
     public PageQuery(final long pageCurrent, final long pageSize, final long pageTotal, final List<T> pageRecords) {

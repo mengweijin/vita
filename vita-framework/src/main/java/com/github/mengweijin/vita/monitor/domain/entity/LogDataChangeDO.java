@@ -49,7 +49,7 @@ public class LogDataChangeDO extends BaseEntity {
      */
     @JsonIgnore
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private JsonNode beforeData;
+    private transient JsonNode beforeData;
 
     /**
      * 数据变更后的数据。JSON
@@ -57,7 +57,7 @@ public class LogDataChangeDO extends BaseEntity {
      */
     @JsonIgnore
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private JsonNode afterData;
+    private transient JsonNode afterData;
 
     /**
      * 变更前后的数据。List<DiffModel> JSON。

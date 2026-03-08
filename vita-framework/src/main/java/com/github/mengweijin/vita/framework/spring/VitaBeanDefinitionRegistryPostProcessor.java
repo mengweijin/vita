@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 /**
  * @author mengweijin
  * @since 2022/7/27
+ * @deprecated since 2.0
  */
 @Deprecated(since = "2.0", forRemoval = true)
 public class VitaBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {

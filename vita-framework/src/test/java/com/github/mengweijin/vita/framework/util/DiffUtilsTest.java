@@ -47,14 +47,14 @@ class DiffUtilsTest {
     void diffMaps() {
         Map<String, String> m1 = MapUtil.map(BeanUtil.beanToMap(t1), (k, v) -> StrUtil.toStringOrNull(v));
         Map<String, String> m2 = MapUtil.map(BeanUtil.beanToMap(t2), (k, v) -> StrUtil.toStringOrNull(v));
-        List<DiffModel> list = DiffUtils.diffMaps(m1, m2, DataChangeLogAspect.IGNORE_FIELDS);
+        List<DiffModel> list = DiffUtils.diffMaps(m1, m2, DataChangeLogAspect.IGNORE_FIELDS.toArray(new String[0]));
         printChange(list);
         Assertions.assertEquals(2, list.size());
     }
 
     @Test
     void diffBeanBeanByApacheCommonsLang3() {
-        List<DiffModel> list = DiffUtils.diffBeans(t1, t2, DataChangeLogAspect.IGNORE_FIELDS);
+        List<DiffModel> list = DiffUtils.diffBeans(t1, t2, DataChangeLogAspect.IGNORE_FIELDS.toArray(new String[0]));
         printChange(list);
         Assertions.assertEquals(2, list.size());
     }
@@ -62,15 +62,15 @@ class DiffUtilsTest {
     @Test
     void diffBeanBeanByApacheCommonsLang3ThrowsNullPointerException() {
         TeacherVO t0 = new TeacherVO();
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(null, t0, DataChangeLogAspect.IGNORE_FIELDS));
-        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(t0, null, DataChangeLogAspect.IGNORE_FIELDS));
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(null, t0, DataChangeLogAspect.IGNORE_FIELDS.toArray(new String[0])));
+        Assertions.assertThrows(NullPointerException.class, () -> DiffUtils.diffBeans(t0, null, DataChangeLogAspect.IGNORE_FIELDS.toArray(new String[0])));
     }
 
     @Test
     void diffBeanBeanByApacheCommonsLang3Create() {
         TeacherVO t0 = new TeacherVO();
 
-        List<DiffModel> list = DiffUtils.diffBeans(t0, t2, DataChangeLogAspect.IGNORE_FIELDS);
+        List<DiffModel> list = DiffUtils.diffBeans(t0, t2, DataChangeLogAspect.IGNORE_FIELDS.toArray(new String[0]));
         printChange(list);
         Assertions.assertEquals(3, list.size());
     }
