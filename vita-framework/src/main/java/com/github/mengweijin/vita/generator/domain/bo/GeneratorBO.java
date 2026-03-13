@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.generator.domain.bo;
 
-import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.util.SpringBootMainClassUtils;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -25,16 +24,10 @@ public class GeneratorBO {
 
     private String author;
 
-    /**
-     * Optional.
-     */
-    private String baseEntity;
-
     public GeneratorBO() {
         this.tablePrefix = String.join(",", "VT_", "SYS_");
         this.packages = SpringBootMainClassUtils.getSpringBootApplicationClassPackage();
         this.moduleName = "system";
         this.author = "mengweijin";
-        this.baseEntity = BaseEntity.class.getName();
     }
 }

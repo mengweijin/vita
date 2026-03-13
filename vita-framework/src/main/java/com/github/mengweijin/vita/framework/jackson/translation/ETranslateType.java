@@ -13,14 +13,29 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ETranslateType implements IEnum<String> {
 
+    /**
+     * userId 转 username
+     */
     USER_ID_TO_USERNAME("USER_ID_TO_USERNAME"),
 
+    /**
+     * userId 转 nickname
+     */
     USER_ID_TO_NICKNAME("USER_ID_TO_NICKNAME"),
 
+    /**
+     * userId 转 用户图像
+     */
     USER_ID_TO_AVATAR("USER_ID_TO_AVATAR"),
 
+    /**
+     * 部门 id 转 部门名称
+     */
     DEPT_ID_TO_NAME("DEPT_ID_TO_NAME"),
 
+    /**
+     * 字典数据值 转 字典标签名
+     */
     DICT_DATA_TO_LABEL("DICT_DATA_TO_LABEL");
 
     private final String value;

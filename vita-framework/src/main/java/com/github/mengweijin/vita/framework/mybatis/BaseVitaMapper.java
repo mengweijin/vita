@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 
@@ -99,20 +98,6 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
     /**
      * 根据 entity 条件，查询全部 VO 记录（并翻页）
      *
-     * @param page         分页查询条件
-     * @param queryWrapper 实体对象封装操作类（可以为 null）
-     * @return VO Page
-     * @deprecated since 2.0
-     */
-    @Deprecated(since = "2.0", forRemoval = true)
-    default IPage<V> selectVoPage(IPage<T> page, Wrapper<T> queryWrapper) {
-        IPage<T> p = this.selectPage(page, queryWrapper);
-        return this.toVoPage(p);
-    }
-
-    /**
-     * 根据 entity 条件，查询全部 VO 记录（并翻页）
-     *
      * @param pageQuery     {@link PageQuery} 分页查询对象
      * @param queryWrapper 实体对象封装操作类（可以为 null）
      * @return VO Page
@@ -121,19 +106,6 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
         IPage<T> page = this.selectPage(pageQuery.toPage(), queryWrapper);
         return this.toVoPageQuery(page);
     }
-
-    /**
-     * IPage<T> 转 IPage<V>
-     * @param page IPage<T>
-     * @return IPage<V>
-     */
-    default IPage<V> toVoPage(IPage<T> page) {
-        IPage<V> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-        List<V> list = MapstructUtils.getInstance().convert(page.getRecords(), this.voClass());
-        voPage.setRecords(list);
-        return voPage;
-    }
-
 
     /**
      * IPage<T> 转 PageQuery<V>

@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.framework.validator.annotation;
 
 import com.github.mengweijin.vita.framework.validator.DictValidator;
+import com.github.mengweijin.vita.system.enums.EDictType;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -18,7 +19,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {DictValidator.class})
 public @interface Dict {
 
-    String code() default "";
+    EDictType dictType();
 
     String message() default "Dict data Check failed!";
 

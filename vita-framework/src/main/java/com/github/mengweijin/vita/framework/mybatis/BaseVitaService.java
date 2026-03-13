@@ -94,34 +94,11 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
     /**
      * 翻页查询
      *
-     * @param page         翻页对象
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     * @deprecated since 2.0
-     */
-    @Deprecated(since = "2.0", forRemoval = true)
-    public IPage<V> pageVo(IPage<T> page, Wrapper<T> queryWrapper) {
-        return getBaseMapper().selectVoPage(page, queryWrapper);
-    }
-
-    /**
-     * 翻页查询
-     *
      * @param pageQuery        {@link PageQuery} 翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
     public PageQuery<V> pageVo(PageQuery<T> pageQuery, Wrapper<T> queryWrapper) {
         return getBaseMapper().selectVoPage(pageQuery, queryWrapper);
-    }
-
-    /**
-     * 分页转换
-     * @deprecated See toVoPageQuery(IPage<T> page) method.
-     * @param page IPage<T>
-     * @return IPage<V>
-     */
-    @Deprecated
-    public IPage<V> toVoPage(IPage<T> page) {
-        return getBaseMapper().toVoPage(page);
     }
 
     /**

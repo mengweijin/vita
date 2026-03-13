@@ -26,6 +26,7 @@ import java.util.Set;
  * @author mengweijin
  * @since 2026/1/3
  */
+@SuppressWarnings({"java:S3776"})
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DiffUtils {
 

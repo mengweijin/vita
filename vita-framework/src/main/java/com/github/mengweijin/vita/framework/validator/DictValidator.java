@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.validator;
 
 import com.github.mengweijin.vita.framework.validator.annotation.Dict;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.enums.EDictType;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -24,11 +25,11 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
 
     private static final Log LOG = LoggerFactory.make(MethodHandles.lookup());
 
-    private String code;
+    private EDictType dictType;
 
     @Override
     public void initialize(Dict parameters) {
-        code = parameters.code();
+        dictType = parameters.dictType();
         validateParameters();
     }
 
@@ -39,12 +40,12 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
         }
 
         DictDataService dictDataService = SpringUtil.getBean(DictDataService.class);
-        List<DictDataDO> dictDataList = dictDataService.getByCode(code);
+        List<DictDataDO> dictDataList = dictDataService.getByCode(dictType.getValue());
         if(CollUtil.isEmpty(dictDataList)) {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();
             //自定义返回消息
-            context.buildConstraintViolationWithTemplate("No dict data was found by dict code=" + code).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("No dict data was found by dict code=" + dictType.getValue()).addConstraintViolation();
             return false;
         }
 
@@ -53,7 +54,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();
             String correctDictDataCode = dictDataList.stream().map(DictDataDO::getVal).collect(Collectors.joining());
-            String message = CharSequenceUtil.format("The dict_data_code[{}] of dict_type_code[{}] is incorrect! The correct dict_data_code should be in [{}]", value, code, correctDictDataCode);
+            String message = CharSequenceUtil.format("The dict_data_code[{}] of dict_type_code[{}] is incorrect! The correct dict_data_code should be in [{}]", value, dictType.getValue(), correctDictDataCode);
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }
@@ -62,8 +63,8 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
     }
 
     private void validateParameters() {
-        if (StrValidator.isBlankOrUndefined(code)) {
-            throw LOG.getAnnotationDoesNotContainAParameterException(Dict.class, "code");
+        if (StrValidator.isBlankOrUndefined(dictType.getValue())) {
+            throw LOG.getAnnotationDoesNotContainAParameterException(Dict.class, "dictType");
         }
     }
 

@@ -42,11 +42,13 @@ public class TemplateService {
     }
 
     /**
-     * @deprecated since 2.0
+     * @deprecated 此方法仅为示例，演示旧版逻辑，请勿在新代码中使用。
+     * 保留原因：供学习和参考使用。
      * @param list List<TemplateVO>
      * @param parentId parentId
      * @return tree
      */
+    @SuppressWarnings("java:S1133")
     @Deprecated(since = "2.0")
     private List<TemplateVO> treeTemplateVO(List<TemplateVO> list, String parentId) {
         Map<String, List<TemplateVO>> collect = list.stream().collect(Collectors.groupingBy(TemplateVO::getParentId));

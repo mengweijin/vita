@@ -2,14 +2,11 @@ package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.data.PasswdStrength;
-import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.core.date.TimeUtil;
-import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.crypto.digest.BCrypt;
 import cn.hutool.v7.crypto.digest.DigestUtil;
-import cn.hutool.v7.swing.img.ImgUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -49,10 +46,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -388,30 +381,6 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
                 .set(UserDO::getTotp, bo.getKey())
                 .eq(UserDO::getId, userId)
                 .update();
-    }
-
-    /**
-     *  这个方法只在 {@link EnvironmentChecker} isDevOrLocalOrTest() 环境下执行
-     * @deprecated 2.0
-     */
-    @Deprecated(since = "2.0", forRemoval = true)
-    public void writeTotpQrCodeToTempPath(String qrCode) {
-        if(environmentChecker.isDevOrLocalOrTest()) {
-            String base64Data = qrCode;
-            // 如果Base64字符串包含头信息，则分离头信息和实际数据
-            if (qrCode.contains(Const.COMMA)) {
-                base64Data = qrCode.split(Const.COMMA)[1];
-            }
-            BufferedImage image = ImgUtil.toImage(base64Data);
-            String location = multipartProperties.getLocation();
-            String fileName = IdUtil.fastSimpleUUID() + Const.DOT + ImgUtil.IMAGE_TYPE_JPG;
-            File file = FileUtil.file(String.join(File.separator, location, fileName));
-            try(FileOutputStream out = new FileOutputStream(file)) {
-                ImgUtil.writeJpg(image, out);
-            } catch (IOException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
     }
 
 }

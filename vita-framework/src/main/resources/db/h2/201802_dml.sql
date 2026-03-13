@@ -82,6 +82,7 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, '已读/未读', 'vt_message_viewed_status', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, '表单组件类型', 'vt_ext_prop_form_types', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, '差异类型', 'vt_diff_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, '二级认证模式', 'vt_safe_mode', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, '数据级别', 'vt_gbt_data_level', '参考：标准号：GB/T 43697-2024。中文标准名称：数据安全技术 数据分类分级规则。说明：GB: 强制性国家标准；GB/T：推荐性国家标准；GB/Z: 指导性技术文件。', 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：停用/启用
@@ -187,6 +188,9 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170001, 'vt_diff_type', 'ADDED', '新增', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170002, 'vt_diff_type', 'MODIFIED', '修改', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170003, 'vt_diff_type', 'REMOVED', '删除', 'danger', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：二级认证模式
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180001, 'vt_safe_mode', 'PASSWORD', '密码认证', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180002, 'vt_safe_mode', 'TOTP', 'TOTP 动态口令认证', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 数据级别
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100010001, 'vt_gbt_data_level', 'core', '核心', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100010002, 'vt_gbt_data_level', 'key', '重要', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());

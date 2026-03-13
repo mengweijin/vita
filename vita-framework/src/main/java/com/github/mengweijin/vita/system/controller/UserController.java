@@ -6,6 +6,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.core.util.EnumUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -21,6 +22,7 @@ import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
 import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.system.domain.bo.OpenSafeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
 import com.github.mengweijin.vita.system.domain.bo.TotpBO;
@@ -31,8 +33,12 @@ import com.github.mengweijin.vita.system.domain.entity.UserAvatarDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.TotpVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
+import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
+import com.github.mengweijin.vita.system.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.system.handler.opensafe.IOpenSafeValidateHandler;
+import com.github.mengweijin.vita.system.handler.opensafe.OpenSafeValidateHandleFactory;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import com.github.mengweijin.vita.system.service.UserService;
@@ -40,6 +46,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -212,6 +219,18 @@ public class UserController {
         return R.result(userService.removeByIds(list));
     }
 
+    @PostMapping("/openSafe")
+    public R<Void> openSafe(@RequestBody OpenSafeBO bo) {
+        UserSessionVO sessionUser = LoginHelper.getSessionUser();
+        ESafeMode safeMode = EnumUtil.fromString(ESafeMode.class, bo.getSafeMode());
+        IOpenSafeValidateHandler handler = OpenSafeValidateHandleFactory.getHandler(safeMode);
+        handler.validate(sessionUser, bo);
+
+        // 比对成功，为当前会话打开二级认证，有效期为 180 秒
+        StpUtil.openSafe(180);
+        return R.result(HttpStatus.OK.value(), "二级认证成功", null);
+    }
+
     /**
      * <p>
      * change password
@@ -223,6 +242,11 @@ public class UserController {
     @SaCheckPermission("system:user:changePassword")
     @PostMapping("/change-password")
     public R<Void> changePassword(@Validated @RequestBody PasswordChangeBO bo) {
+        // 先检查当前会话是否已完成二级认证
+        if(!StpUtil.isSafe()) {
+            return R.fail(HttpStatus.BAD_REQUEST.value(), "请完成二级认证后再次访问接口");
+        }
+
         String username = LoginHelper.getSessionUsername();
         boolean bool = userService.changePassword(username, bo.getPassword(), bo.getNewPassword());
         return R.result(bool);

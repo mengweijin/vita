@@ -11,7 +11,7 @@ import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorBO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -34,6 +34,8 @@ import java.util.Properties;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GeneratorUtils {
 
+    private static final Class<BaseEntity> BASE_ENTITY_CLASS = BaseEntity.class;
+
     public static final PropertyPlaceholderHelper PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
 
     /**
@@ -43,19 +45,8 @@ public class GeneratorUtils {
      * @return String
      */
     public static List<String> resolveBaseEntityColumns(GeneratorBO generatorArgs) {
-        String baseEntity = generatorArgs.getBaseEntity();
-        if (StrValidator.isBlank(baseEntity)) {
-            return new ArrayList<>();
-        }
-        try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            Class<?> cls = Class.forName(baseEntity, true, classLoader);
-            Field[] declaredFields = FieldUtil.getFieldsDirectly(cls, true);
-            return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).toList();
-        } catch (ClassNotFoundException e) {
-            log.error(e.getMessage(), e);
-            throw new ServerException(e);
-        }
+        Field[] declaredFields = FieldUtil.getFieldsDirectly(BASE_ENTITY_CLASS, true);
+        return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).toList();
     }
 
     public static String[] trimItems(String[] items) {
@@ -136,9 +127,9 @@ public class GeneratorUtils {
         objectMap.put("package", GeneratorUtils.getPackages(args.getPackages(), args.getModuleName()));
         objectMap.put("author", args.getAuthor());
         objectMap.put("date", DateUtil.format(LocalDateTime.now(), DateFormatPool.NORM_DATE_PATTERN));
-        objectMap.put("baseEntity", args.getBaseEntity());
-        objectMap.put("baseEntityPackage", CharSequenceUtil.subBefore(args.getBaseEntity(), ".", true));
-        objectMap.put("baseEntityName", CharSequenceUtil.subAfter(args.getBaseEntity(), ".", true));
+        objectMap.put("baseEntity", BASE_ENTITY_CLASS.getName());
+        objectMap.put("baseEntityPackage", CharSequenceUtil.subBefore(BASE_ENTITY_CLASS.getName(), ".", true));
+        objectMap.put("baseEntityName", CharSequenceUtil.subAfter(BASE_ENTITY_CLASS.getName(), ".", true));
         objectMap.put("baseEntityColumns", baseEntityColumns);
         objectMap.put("table", tableInfo);
         objectMap.put("idField", GeneratorUtils.getIdField(tableInfo));

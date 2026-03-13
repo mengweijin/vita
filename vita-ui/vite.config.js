@@ -63,6 +63,10 @@ export default defineConfig(({ mode }) => {
     },
     // 设为 false 可以避免 Vite 清屏而错过在终端中打印某些关键信息。
     clearScreen: false,
+    devtools: {
+      // 独立模式
+      enabled: true,
+    },
     plugins: [
       VueRouter({
         // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）

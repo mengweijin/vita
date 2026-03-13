@@ -52,6 +52,7 @@ public class DataChangeLogAspect {
 
     private static final List<String> IGNORE_COLUMNS = Arrays.asList("CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME");
 
+    @SuppressWarnings({"java:S2386"})
     public static final List<String> IGNORE_FIELDS = Arrays.asList("createBy", "createTime", "updateBy", "updateTime", "createByName", "updateByName");
 
     @Pointcut("@annotation(dataChangeLog)")

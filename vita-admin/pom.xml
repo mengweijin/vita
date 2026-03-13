@@ -17,7 +17,6 @@
         <dependency> 
             <groupId>com.github.mengweijin</groupId>
             <artifactId>vita-framework</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency> 
             <groupId>org.projectlombok</groupId>  

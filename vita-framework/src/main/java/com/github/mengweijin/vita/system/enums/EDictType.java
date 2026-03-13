@@ -70,7 +70,13 @@ public enum EDictType implements IEnum<String> {
     /**
      * 差异类型枚举
      */
-    VT_DIFF_TYPE("vt_diff_type");
+    VT_DIFF_TYPE("vt_diff_type"),
+
+    /**
+     * 二级认证模式
+     */
+    VT_SAFE_MODE("vt_safe_mode")
+    ;
 
     private final String value;
 
