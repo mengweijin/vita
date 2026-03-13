@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => {
     clearScreen: false,
     devtools: {
       // 独立模式
-      enabled: true,
+      enabled: false,
     },
     plugins: [
       VueRouter({
