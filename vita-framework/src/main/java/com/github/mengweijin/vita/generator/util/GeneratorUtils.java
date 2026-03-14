@@ -44,7 +44,7 @@ public class GeneratorUtils {
      *
      * @return String
      */
-    public static List<String> resolveBaseEntityColumns(GeneratorBO generatorArgs) {
+    public static List<String> resolveBaseEntityColumns() {
         Field[] declaredFields = FieldUtil.getFieldsDirectly(BASE_ENTITY_CLASS, true);
         return Arrays.stream(declaredFields).map(field -> CharSequenceUtil.toUnderlineCase(field.getName()).toUpperCase()).toList();
     }
@@ -109,7 +109,7 @@ public class GeneratorUtils {
     }
 
     public static Map<String, Object> getObjectMap(GeneratorBO args, TableInfo tableInfo) {
-        List<String> baseEntityColumns = GeneratorUtils.resolveBaseEntityColumns(args);
+        List<String> baseEntityColumns = GeneratorUtils.resolveBaseEntityColumns();
         String entityName = GeneratorUtils.resolveEntityName(tableInfo.getName(), args.getTablePrefix());
         List<TableField> entityFields = GeneratorUtils.resolveEntityFields(tableInfo, baseEntityColumns);
         List<TableField> commonFields = GeneratorUtils.resolveCommonFields(tableInfo, baseEntityColumns);
