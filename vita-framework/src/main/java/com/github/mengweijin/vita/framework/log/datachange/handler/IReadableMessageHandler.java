@@ -4,6 +4,7 @@ import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDataChangeDO;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,7 +38,9 @@ public interface IReadableMessageHandler {
      * @return 返回转换后的值
      */
     default List<String> toHumanReadable(Long businessId, List<DiffModel> changeData) {
-        ordered(changeData);
+        // 将不可变集合转为可变集合后再排序，避免 UnsupportedOperationException
+        ArrayList<DiffModel> diffModels = new ArrayList<>(changeData);
+        ordered(diffModels);
         return buildMessages(businessId, changeData);
     }
 
