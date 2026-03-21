@@ -8,7 +8,7 @@ const columns = reactive({
   disabled: { label: "状态", visible: true },
   seq: { label: "排序", visible: true },
   permission: { label: "权限字符", visible: true },
-  url: { label: "路由路径/UR", visible: true },
+  url: { label: "路由路径/URL", visible: true },
   createByName: { label: "创建者", visible: false },
   createTime: { label: "创建时间", visible: false },
   updateByName: { label: "更新者", visible: false },
