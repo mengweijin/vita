@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskLogBO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
-import com.github.mengweijin.vita.system.enums.dict.ESchedulingTaskStatus;
+import com.github.mengweijin.vita.framework.enums.dict.ESchedulingTaskStatus;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;

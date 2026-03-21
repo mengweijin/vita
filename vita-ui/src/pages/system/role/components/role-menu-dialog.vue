@@ -15,63 +15,63 @@ const treeRef = useTemplateRef("treeRef");
 const checkStrictly = ref(true);
 
 const treeProps = reactive({
-	children: "children",
-	disabled: (data, node) => data.disabled === "Y",
-	label: "title",
+  children: "children",
+  disabled: (data, node) => data.disabled === "Y",
+  label: "title",
 });
 
 const treeData = ref([]);
 
 const loadTreeData = async () => {
-	const menuList = await menuApi.list();
-	treeData.value = utils.toArrayTree(menuList, { sortKey: "seq" });
+  const menuList = await menuApi.list();
+  treeData.value = utils.toArrayTree(menuList, { sortKey: "seq" });
 };
 
 const keywords = ref("");
 
 const filterNodeMethod = (value, data, node) => {
-	if (!value) {
-		return true;
-	}
-	return data.title.includes(value);
+  if (!value) {
+    return true;
+  }
+  return data.title.includes(value);
 };
 
 const handleSearch = utils.debounce((val) => {
-	treeRef.value?.filter(val);
+  treeRef.value?.filter(val);
 }, 1000);
 
 watch(keywords, (val) => {
-	handleSearch(val);
+  handleSearch(val);
 });
 
 const onSubmit = () => {
-	// 获取全选节点 keys（包括父节点）
-	const checkedKeys = treeRef.value.getCheckedKeys(false);
-	// 获取半选节点 keys
-	const halfCheckedKeys = treeRef.value.getHalfCheckedKeys();
-	// 使用 ... 扩展运算符把两个数组合并为一个
-	roleApi.setPermission(data.value.id, [...checkedKeys, ...halfCheckedKeys]).then(() => {
-		onClosed();
-	});
+  // 获取全选节点 keys（包括父节点）
+  const checkedKeys = treeRef.value.getCheckedKeys(false);
+  // 获取半选节点 keys
+  const halfCheckedKeys = treeRef.value.getHalfCheckedKeys();
+  // 使用 ... 扩展运算符把两个数组合并为一个
+  roleApi.setPermissions(data.value.id, [...checkedKeys, ...halfCheckedKeys]).then(() => {
+    onClosed();
+  });
 };
 
 const defaultCheckedKeys = ref([]);
 
 const onOpened = async () => {
-	loading.value = true;
-	await loadTreeData();
-	checkStrictly.value = true;
-	defaultCheckedKeys.value = await menuApi.getMenuIdsByRoleId(data.value.id);
-	checkStrictly.value = false;
-	loading.value = false;
+  loading.value = true;
+  await loadTreeData();
+  checkStrictly.value = true;
+  defaultCheckedKeys.value = await menuApi.queryMenuIdsByRoleId(data.value.id);
+  checkStrictly.value = false;
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	defaultCheckedKeys.value = [];
-	checkStrictly.value = true;
-	keywords.value = null;
-	data.value = {};
+  visible.value = false;
+  defaultCheckedKeys.value = [];
+  checkStrictly.value = true;
+  keywords.value = null;
+  data.value = {};
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -112,6 +112,4 @@ defineExpose({ data, visible });
   </el-dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

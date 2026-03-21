@@ -33,17 +33,17 @@ public class GeneratorController {
 
     private GeneratorService generatorService;
 
-    @GetMapping("/table/list")
-    public List<TableInfoVO> getTableList(String name) {
+    @GetMapping("/list/tableInfo")
+    public List<TableInfoVO> listTableInfo(String name) {
         return generatorService.selectTableList(name);
     }
 
-    @GetMapping("/template/list")
+    @GetMapping("/list/template")
     public List<TemplateVO> getTemplateList() {
         return templateService.getTemplateList();
     }
 
-    @GetMapping("/args/default")
+    @GetMapping("/query/defaultArgs")
     public GeneratorBO getDefaultArgs() {
         return new GeneratorBO();
     }

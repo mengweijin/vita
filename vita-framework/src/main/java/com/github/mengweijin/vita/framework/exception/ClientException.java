@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Meng Wei Jin
  * Client Exception
  **/
-@SuppressWarnings({"unused"})
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Bad Request")
 public class ClientException extends RuntimeException {
 

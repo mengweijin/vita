@@ -1,4 +1,5 @@
 import { useLoginStore } from "@/store/login-store.js";
+import { useUserStore } from "@/store/user-store.js";
 import NProgress from "@/utils/nprogress.js";
 import utils from "@/utils/utils.js";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -121,6 +122,14 @@ router.beforeEach(async (to, _from) => {
     // 已登录但访问登录页。强制跳转到参数页或首页
     if (to.fullPath.startsWith("/login")) {
       return { path: to.query.redirect || "/" };
+    }
+
+    // 判断页面级权限
+    const userStore = useUserStore();
+    const permission = to?.meta?.permission;
+    if (permission && !userStore.hasPermission(permission)) {
+      console.error(`No permission [${permission}] to access this page!`);
+      return { path: "/error/403" };
     }
   } else {
     // 未登录且访问受保护路由，强制跳转登录页，并携带访问路径。（ to.fullPath = '/login?redirect=/home' ）

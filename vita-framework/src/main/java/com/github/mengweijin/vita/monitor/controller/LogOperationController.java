@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.LogOperationBO;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
@@ -80,7 +80,6 @@ public class LogOperationController {
      * @param id id
      * @return LogOperation
      */
-    @SaCheckPermission("monitor:logOperation:select")
     @GetMapping("/{id}")
     public LogOperationVO getById(@PathVariable("id") Long id) {
         return logOperationService.getVoById(id);

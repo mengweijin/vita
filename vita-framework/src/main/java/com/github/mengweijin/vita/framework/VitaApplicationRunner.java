@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.framework.runner;
+package com.github.mengweijin.vita.framework;
 
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.text.StrUtil;

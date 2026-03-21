@@ -5,14 +5,17 @@ import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.framework.scheduler.DynamicTaskManager;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.scheduler.SchedulingTaskFactory;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -32,11 +35,12 @@ public class SchedulingTaskService extends BaseVitaService<SchedulingTaskMapper,
 
     private SchedulingTaskFactory schedulingTaskFactory;
 
+    private DynamicTaskManager dynamicTaskManager;
+
     @Override
     public LambdaQueryWrapper<SchedulingTaskDO> buildQueryWrapper(SchedulingTaskDO schedulingTask) {
         LambdaQueryWrapper<SchedulingTaskDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(schedulingTask.getId() != null, SchedulingTaskDO::getId, schedulingTask.getId());
-        wrapper.eq(StrValidator.isNotBlank(schedulingTask.getExecuteAfterStarted()), SchedulingTaskDO::getExecuteAfterStarted, schedulingTask.getExecuteAfterStarted());
         wrapper.eq(StrValidator.isNotBlank(schedulingTask.getDisabled()), SchedulingTaskDO::getDisabled, schedulingTask.getDisabled());
         wrapper.eq(schedulingTask.getCreateBy() != null, SchedulingTaskDO::getCreateBy, schedulingTask.getCreateBy());
         wrapper.eq(schedulingTask.getUpdateBy() != null, SchedulingTaskDO::getUpdateBy, schedulingTask.getUpdateBy());
@@ -56,5 +60,28 @@ public class SchedulingTaskService extends BaseVitaService<SchedulingTaskMapper,
 
     public Set<String> getTaskBeanNames() {
         return schedulingTaskFactory.getSchedulingTaskMap().keySet();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void disableById(Long id) {
+        // 先改状态
+        this.lambdaUpdate()
+                .set(SchedulingTaskDO::getDisabled, EYesNo.Y.getValue())
+                .eq(SchedulingTaskDO::getId, id)
+                .update();
+        // 任务取消失败会抛出异常，事务回滚
+        dynamicTaskManager.cancelTask(String.valueOf(id));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void enableById(Long id) {
+        SchedulingTaskDO task = this.getById(id);
+        // 先改状态
+        this.lambdaUpdate()
+                .set(SchedulingTaskDO::getDisabled, EYesNo.N.getValue())
+                .eq(SchedulingTaskDO::getId, id)
+                .update();
+        // 如果任务已存在会抛出异常，事务回滚
+        dynamicTaskManager.scheduleCronTask(task);
     }
 }

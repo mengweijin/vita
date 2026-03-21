@@ -15,7 +15,6 @@ const form = reactive({
   beanName: undefined,
   cron: undefined,
   disabled: undefined,
-  executeAfterStarted: undefined,
   id: undefined,
   name: undefined,
   remark: undefined,
@@ -28,7 +27,6 @@ const init = () => {
   form.beanName = data.value.beanName ?? undefined;
   form.args = data.value.args ?? undefined;
   form.disabled = data.value.disabled ?? undefined;
-  form.executeAfterStarted = data.value.executeAfterStarted ?? undefined;
   form.remark = data.value.remark ?? undefined;
 };
 
@@ -102,17 +100,11 @@ defineExpose({ data, visible });
         <el-input v-model="form.args" type="textarea" maxlength="500" :autosize="{ minRows: 3, maxRows: 8 }" />
       </el-form-item>
 
-      <el-row :gutter="20">
+      <el-row :gutter="20" v-if="false">
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
             <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
               inactive-value="Y" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item prop="executeAfterStarted" label="启动时执行">
-            <el-switch v-model="form.executeAfterStarted" inline-prompt active-text="是" inactive-text="否"
-              active-value="Y" inactive-value="N" />
           </el-form-item>
         </el-col>
       </el-row>

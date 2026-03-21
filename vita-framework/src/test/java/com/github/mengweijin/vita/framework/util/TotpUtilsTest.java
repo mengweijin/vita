@@ -33,7 +33,7 @@ class TotpUtilsTest {
     /**
      * 这里仅作测试，使用下面代码生产随机的 secretKey。
      * String secretKey = TOTP.generateSecretKey(16);
-     * 生产环境：用户的共享密钥，每个用户一个单独的密钥。（生成后保存到数据库SYS_USER.otp_shared_key）
+     * 生产环境：用户的共享密钥，每个用户一个单独的密钥。
      */
     private static final String SECRET_KEY = "RI2XNPH3CKSFIYK7VIQ4YEGRGE======";
 

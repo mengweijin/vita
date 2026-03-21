@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.framework.scheduler.task;
 import cn.hutool.v7.core.io.file.FileUtil;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
+import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,6 @@ public class FileUploadEmptyDirectoryCleanTask implements ISchedulingTask {
         String uploadPath = vitaProperties.getUploadPath();
         File file = FileUtil.file(uploadPath);
         FileUtil.cleanEmpty(file);
-        return "The empty file directory were deleted.";
+        return I18nUtils.msg("system.scheduling.task.file.upload.empty.directory.clean.message");
     }
 }

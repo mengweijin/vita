@@ -57,7 +57,7 @@ public class DictDataService extends BaseVitaService<DictDataMapper, DictDataDO,
                 .orElse(null);
     }
 
-    public List<DictDataDO> getByCode(String code) {
+    public List<DictDataDO> queryByCode(String code) {
         return this.lambdaQuery()
                 .eq(DictDataDO::getCode, code)
                 .orderByAsc(DictDataDO::getSeq)

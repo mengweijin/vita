@@ -6,7 +6,7 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.vo.CacheVO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -41,15 +41,15 @@ public class CacheLocalController {
         this.cacheManager = cacheManager;
     }
 
-    @SaCheckPermission("monitor:cache:view")
-    @GetMapping("/names")
-    public Collection<String> getCacheNames() {
+    @SaCheckPermission("monitor:cacheLocal:view")
+    @GetMapping("/query/cacheNames")
+    public Collection<String> queryCacheNames() {
         Iterable<String> iterable = cacheManager.getCacheNames();
         return CollUtil.sortByPinyin(CollUtil.toCollection(iterable));
     }
 
-    @SaCheckPermission("monitor:cache:view")
-    @GetMapping("/query")
+    @SaCheckPermission("monitor:cacheLocal:view")
+    @GetMapping("/list/cache/by/name")
     public List<CacheVO> getCacheByName(@RequestParam("cacheName") String cacheName) {
         List<CacheVO> list = new ArrayList<>();
 
@@ -69,8 +69,8 @@ public class CacheLocalController {
         return list;
     }
 
-    @SaCheckPermission("monitor:cache:view")
-    @GetMapping("/queryCacheByNameAndKey")
+    @SaCheckPermission("monitor:cacheLocal:view")
+    @GetMapping("/query/cache/by/nameAndKey")
     public CacheVO getCacheByNameAndKey(@RequestParam("cacheName") String cacheName, @RequestParam("cacheKey") String cacheKey) {
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
@@ -80,7 +80,7 @@ public class CacheLocalController {
         return null;
     }
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("monitor:cache:remove")
+    @SaCheckPermission("monitor:cacheLocal:remove")
     @PostMapping("/remove")
     public R<Void> remove(@RequestParam("cacheName") String cacheName, @RequestParam(name = "cacheKey") Serializable cacheKey) {
         Cache cache = cacheManager.getCache(cacheName);
@@ -92,8 +92,8 @@ public class CacheLocalController {
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("monitor:cache:remove")
-    @PostMapping("/clear-by-name/{cacheName}")
+    @SaCheckPermission("monitor:cacheLocal:remove")
+    @PostMapping("/clear/by/name/{cacheName}")
     public R<Void> clearByName(@PathVariable("cacheName") String cacheName) {
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
@@ -103,10 +103,10 @@ public class CacheLocalController {
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("monitor:cache:remove")
+    @SaCheckPermission("monitor:cacheLocal:remove")
     @PostMapping("/clear")
     public R<Void> clear() {
-        Collection<String> cacheNames = this.getCacheNames();
+        Collection<String> cacheNames = this.queryCacheNames();
         for (String cacheName : cacheNames) {
             Cache cache = cacheManager.getCache(cacheName);
             if (cache != null) {

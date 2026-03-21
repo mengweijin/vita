@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.MessageBO;
@@ -46,18 +46,18 @@ public class MessageController {
 
     private MessageReceiverService messageReceiverService;
 
-    @GetMapping("/query/not-viewed-count")
-    public Long selectNotViewedCount() {
+    @GetMapping("/query/notViewedCount")
+    public Long queryNotViewedCount() {
         return messageReceiverService.selectNotViewedCount();
     }
 
-    @PostMapping("/set-viewed/{messageReceiverIds}")
+    @PostMapping("/set/viewed/{messageReceiverIds}")
     public R<Void> setViewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
         boolean bool = messageReceiverService.setViewed(Arrays.asList(messageReceiverIds));
         return R.result(bool);
     }
 
-    @PostMapping("/set-not-viewed/{messageReceiverIds}")
+    @PostMapping("/set/notViewed/{messageReceiverIds}")
     public R<Void> setNotViewed(@PathVariable("messageReceiverIds") Long[] messageReceiverIds) {
         boolean bool = messageReceiverService.setNotViewed(Arrays.asList(messageReceiverIds));
         return R.result(bool);
@@ -98,7 +98,6 @@ public class MessageController {
      * @param id id
      * @return Message
      */
-    @SaCheckPermission("system:message:select")
     @GetMapping("/{id}")
     public MessageVO getById(@PathVariable("id") Long id) {
         return messageService.getVoById(id);

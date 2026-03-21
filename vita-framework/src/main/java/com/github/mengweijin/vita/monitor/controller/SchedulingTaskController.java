@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
@@ -81,15 +81,13 @@ public class SchedulingTaskController {
      * @param id id
      * @return LogLogin
      */
-    @SaCheckPermission("monitor:schedulingTask:select")
     @GetMapping("/{id}")
     public SchedulingTaskVO getById(@PathVariable("id") Long id) {
         return schedulingTaskService.getVoById(id);
     }
 
-    @SaCheckPermission("monitor:schedulingTask:select")
-    @GetMapping("/getTaskBeanNames")
-    public Set<String> getTaskBeanNames() {
+    @GetMapping("/query/taskBeanNames")
+    public Set<String> queryTaskBeanNames() {
         return schedulingTaskService.getTaskBeanNames();
     }
 
@@ -119,6 +117,22 @@ public class SchedulingTaskController {
     public R<Void> update(@Valid @RequestBody SchedulingTaskBO bo) {
         boolean bool = schedulingTaskService.updateByBoById(bo);
         return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.DISABLE)
+    @SaCheckPermission("monitor:schedulingTask:update")
+    @PostMapping("/disable/{id}")
+    public R<Void> disable(@PathVariable("id") Long id) {
+        schedulingTaskService.disableById(id);
+        return R.ok();
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.ENABLE)
+    @SaCheckPermission("monitor:schedulingTask:update")
+    @PostMapping("/enable/{id}")
+    public R<Void> enable(@PathVariable("id") Long id) {
+        schedulingTaskService.enableById(id);
+        return R.ok();
     }
 
     /**

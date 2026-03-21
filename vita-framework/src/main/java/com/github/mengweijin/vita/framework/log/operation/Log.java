@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.log.operation;
 
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

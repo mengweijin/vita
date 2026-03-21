@@ -7,14 +7,14 @@ export const logDataChangeApi = {
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
+  listTableNames: () => http.get(`${URL_PREFIX}/list/tableNames`),
+
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
   pageByLoginUser: (args) =>
     http.get(`${URL_PREFIX}/page-by-login-user`, { params: args }),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
-
-  tableNames: () => http.get(`${URL_PREFIX}/tableNames`),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

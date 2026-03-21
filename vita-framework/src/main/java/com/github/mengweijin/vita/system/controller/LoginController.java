@@ -54,12 +54,6 @@ public class LoginController {
     }
 
     @SaIgnore
-    @GetMapping("/otpEnabled")
-    public boolean getOtpEnabled() {
-        return vitaProperties.getOtpEnabled();
-    }
-
-    @SaIgnore
     @RateLimit(duration = 3, max = 1, strategy = ERateLimitStrategy.IP)
     @GetMapping("/captcha")
     public String getCaptcha() {

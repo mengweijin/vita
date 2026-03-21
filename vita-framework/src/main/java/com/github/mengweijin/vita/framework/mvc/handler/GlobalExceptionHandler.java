@@ -3,11 +3,13 @@ package com.github.mengweijin.vita.framework.mvc.handler;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
+import cn.dev33.satoken.exception.NotSafeException;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import com.github.mengweijin.vita.framework.constant.ErrorCode;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,18 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
     ResponseEntity<R<Void>> handleClientException(Exception e, HttpServletRequest request) {
         log.warn(e.getMessage());
         R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
+    }
+
+    @ExceptionHandler({
+            NotSafeException.class
+    })
+    @ResponseBody
+    ResponseEntity<R<Void>> handleSecondaryAuthException(Exception e, HttpServletRequest request) {
+        log.warn(e.getMessage());
+        // 数据结果中返回业务上的异常状态码
+        R<Void> r = R.fail(ErrorCode.SECONDARY_AUTH_REQUIRED, e.getMessage());
+        // http 返回 400 状态码，不要返回 407，否则浏览器先一步处理 407，会导致 axios 无法拿到响应。
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 

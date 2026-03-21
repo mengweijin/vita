@@ -47,11 +47,6 @@ public class SchedulingTaskDO extends BaseEntity {
     private String args;
 
     /**
-     * 应用启动后是否立即执行一次。[Y, N]
-     */
-    private String executeAfterStarted;
-
-    /**
     * 是否禁用。[Y, N]
     */
     private String disabled;

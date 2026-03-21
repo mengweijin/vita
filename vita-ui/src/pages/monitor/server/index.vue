@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 应用监控
+  permission: monitor:server:view
 </route>
 
 <script setup>

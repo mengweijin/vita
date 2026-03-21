@@ -17,8 +17,4 @@ public class PasswordChangeBO implements Serializable {
     @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
     private String password;
 
-    @NotBlank
-    @Pattern(regexp = Regex.PWD_PATTERN, message = "{user.password.pattern}")
-    private String newPassword;
-
 }

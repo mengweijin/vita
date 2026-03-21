@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
@@ -58,7 +58,6 @@ public class CategoryController {
      * @param id id
      * @return Category
      */
-    @SaCheckPermission("system:category:select")
     @GetMapping("/{id}")
     public CategoryVO getById(@PathVariable("id") Long id) {
         return categoryService.getVoById(id);
@@ -102,7 +101,6 @@ public class CategoryController {
         boolean bool = categoryService.removeByIds(Arrays.asList(ids));
         return R.result(bool);
     }
-
 }
 
 

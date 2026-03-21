@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -14,7 +14,7 @@ import com.github.mengweijin.vita.system.domain.bo.RoleBO;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.vo.RoleVO;
-import com.github.mengweijin.vita.system.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import jakarta.validation.Valid;
@@ -90,18 +90,17 @@ public class RoleController {
      * @param userId userId
      * @return Role
      */
-    @GetMapping("/get-role-ids-by-user-id/{userId}")
-    public Set<Long> getRoleIdsByUserId(@PathVariable("userId") Long userId) {
+    @GetMapping("/query/roleIds/by/userId/{userId}")
+    public Set<Long> queryRoleIdsByUserId(@PathVariable("userId") Long userId) {
         return userRoleService.getRoleIdsByUserId(userId);
     }
 
-    @GetMapping("/get-default-role")
-    public RoleVO getDefaultRole() {
+    @GetMapping("/query/defaultRole")
+    public RoleVO queryDefaultRole() {
         String defaultRoleCode = vitaProperties.getUser().getDefaultRoleCode();
         RoleDO roleDO = roleService.getByCode(defaultRoleCode);
         return MapstructUtils.getInstance().convert(roleDO, RoleVO.class);
     }
-
 
     /**
      * <p>
@@ -110,7 +109,6 @@ public class RoleController {
      * @param id id
      * @return Role
      */
-    @SaCheckPermission("system:role:select")
     @GetMapping("/{id}")
     public RoleVO getById(@PathVariable("id") Long id) {
         return roleService.getVoById(id);
@@ -144,10 +142,10 @@ public class RoleController {
         return R.result(bool);
     }
 
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:role:update")
-    @PostMapping("/set-permission")
-    public R<Void> setPermission(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @SaCheckPermission("system:role:setPermissions")
+    @PostMapping("/set/permissions")
+    public R<Void> setPermissions(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
         boolean bool = roleService.setMenuPermission(rolePermissionBO);
         if(bool) {
             roleService.sendPermissionChangeMessageToOnlineUsers(rolePermissionBO.getRoleId());
@@ -155,12 +153,11 @@ public class RoleController {
         return R.result(bool);
     }
 
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:role:update")
-    @PostMapping("/add-users/{roleId}/{userIds}")
-    public R<Void> addUsers(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] userIds) {
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @SaCheckPermission("system:role:setUsers")
+    @PostMapping("/set/users/{roleId}/{userIds}")
+    public R<Void> setUsers(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] userIds) {
         return R.result(userRoleService.addUsers(roleId, Arrays.asList(userIds)));
-
     }
 
     /**
@@ -177,8 +174,8 @@ public class RoleController {
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("system:role:assignUser")
-    @PostMapping("/removeByRoleIdInUserIds/{roleId}/{userIds}")
+    @SaCheckPermission("system:role:setUsers")
+    @PostMapping("/remove/by/roleId/in/userIds/{roleId}/{userIds}")
     public R<Void> removeByRoleIdInUserIds(@PathVariable("roleId") Long roleId, @PathVariable("userIds") Long[] userIds) {
         return R.result(userRoleService.removeByRoleIdInUserIds(roleId, Arrays.asList(userIds)));
     }

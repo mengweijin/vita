@@ -3,17 +3,17 @@ import { useFullscreen } from "@vueuse/core";
 
 const router = useRouter();
 
-import { loginApi } from "@/api/login-api";
+import { loginApi } from "@/api/login-api.js";
 
-import { useLoginStore } from "@/store/login-store";
+import { useLoginStore } from "@/store/login-store.js";
 
 const loginStore = useLoginStore();
 
-import { useUserStore } from "@/store/user-store";
+import { useUserStore } from "@/store/user-store.js";
 
 const userStore = useUserStore();
 
-import { useAppStore } from "@/store/app-store";
+import { useAppStore } from "@/store/app-store.js";
 
 const appStore = useAppStore();
 const { sideMenuOpened } = storeToRefs(appStore);
@@ -57,7 +57,7 @@ import { useSseStore } from "@/store/sse-store.js";
 const sseStore = useSseStore();
 
 onMounted(async () => {
-  notViewedCount.value = await messageApi.selectNotViewedCount();
+  notViewedCount.value = await messageApi.queryNotViewedCount();
   sseStore.connect();
 });
 onUnmounted(() => {

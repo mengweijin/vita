@@ -21,13 +21,13 @@ public class HomeController {
 
     private HomeService homeService;
 
-    @GetMapping("/get-console-statistic")
-    public HomeConsoleStatisticVO getConsoleStatistic() {
-        return homeService.getConsoleStatistic();
+    @GetMapping("/query/console/statistic")
+    public HomeConsoleStatisticVO queryConsoleStatistic() {
+        return homeService.queryConsoleStatistic();
     }
 
-    @GetMapping("/get-console-chart")
-    public HomeConsoleChartVO getConsoleChart() {
-        return homeService.getConsoleChart();
+    @GetMapping("/query/console/chart")
+    public HomeConsoleChartVO queryConsoleChart() {
+        return homeService.queryConsoleChart();
     }
 }

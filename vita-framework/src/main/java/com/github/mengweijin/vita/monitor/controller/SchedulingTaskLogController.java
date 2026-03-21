@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskLogBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
@@ -80,7 +80,6 @@ public class SchedulingTaskLogController {
      * @param id id
      * @return SchedulingTaskLogDO
      */
-    @SaCheckPermission("monitor:schedulingTaskLog:select")
     @GetMapping("/{id}")
     public SchedulingTaskLogVO getById(@PathVariable("id") Long id) {
         return schedulingTaskLogService.getVoById(id);

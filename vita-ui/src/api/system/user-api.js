@@ -5,20 +5,24 @@ const URL_PREFIX = "/system/user";
 export const userApi = {
   /**
    * @typedef {Object} PasswordChangeBO
-   * @property {string} password - 旧密码
-   * @property {string} newPassword - 新密码
+   * @property {string} password - 新密码
    */
-
   /**
    * 修改密码
    * @param {PasswordChangeBO} data - 修改密码数据对象
    * @returns
    */
-  changePassword: (data) => http.post(`${URL_PREFIX}/change-password`, data),
+  changePassword: (data) => http.post(`${URL_PREFIX}/change/password`, data),
+
+  /**
+   * 检查当前会话是否已通过二级认证，如未通过则抛出异常。前端异常拦截后自动拉起二级认证弹框。
+   */
+  checkSafe: () =>
+    http.post(`${URL_PREFIX}/check/safe`, null, {
+      message: false,
+    }),
 
   create: (data) => http.post(`${URL_PREFIX}/create`, data),
-
-  validateTotpCode: (code) => http.post(`${URL_PREFIX}/validate/totp/${code}`),
 
   /**
    * @typedef {Object} TotpVO
@@ -29,32 +33,25 @@ export const userApi = {
    * 生成数字口令二维码
    * @returns {TotpVO}
    */
-  generateTotpQrcode: () => http.get(`${URL_PREFIX}/generate/totpQrcode`),
-
-  getSaTerminalInfoList: () =>
-    http.get(`${URL_PREFIX}/get-sa-terminal-info-list`),
-
-  getUserBOById: (id) => http.get(`${URL_PREFIX}/get-user-bo-by-id/${id}`),
-
-  getUserProfileVO: () => http.get(`${URL_PREFIX}/get-user-profile-vo`),
-
-  getUserStoreVO: () => http.get(`${URL_PREFIX}/get-user-store-vo`),
-
-  /**
-   * 判断用户是否已绑定数字口令
-   * @returns boolean
-   */
-  hasTotpKey: () => http.get(`${URL_PREFIX}/has/totpKey`),
+  generateTotpQrcode: () => http.get(`${URL_PREFIX}/generate/totp/qrcode`),
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
   pageByPost: (postId, args) =>
-    http.get(`${URL_PREFIX}/pageByPost/${postId}`, { params: args }),
+    http.get(`${URL_PREFIX}/page/by/post/${postId}`, { params: args }),
 
   pageByRole: (roleId, args) =>
-    http.get(`${URL_PREFIX}/pageByRole/${roleId}`, { params: args }),
+    http.get(`${URL_PREFIX}/page/by/role/${roleId}`, { params: args }),
+
+  queryTerminalInfo: () => http.get(`${URL_PREFIX}/query/terminalInfo`),
+
+  queryUserBO: (id) => http.get(`${URL_PREFIX}/query/bo/${id}`),
+
+  queryUserProfileVO: () => http.get(`${URL_PREFIX}/query/userProfileVO`),
+
+  queryUserStoreVO: () => http.get(`${URL_PREFIX}/query/userStoreVO`),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
@@ -69,18 +66,22 @@ export const userApi = {
    * @param {PasswordResetBO} data
    * @returns
    */
-  resetPassword: (data) => http.post(`${URL_PREFIX}/reset-password`, data),
+  resetPassword: (data) => http.post(`${URL_PREFIX}/reset/password`, data),
 
   /**
-   * @typedef {Object} TotpBO
-   * @property {string} key - 密钥
-   * @property {Number} code - 数字口令
+   * @typedef {Object} OpenSafeBO
+   * @property {string} safeMode - 二级认证模式，关联字典 vt_safe_mode
+   * @property {string} value - 值，密码或动态口令
    */
   /**
-   * 保存 totp 绑定
-   * @param {TotpBO} data
+   * 二级认证
+   * @param {OpenSafeBO} data
    */
-  saveTotp: (data) => http.post(`${URL_PREFIX}/save/totp`, data),
+  secondaryAuth: (data) =>
+    http.post(`${URL_PREFIX}/auth/secondary`, data, {
+      loading: false,
+      message: false,
+    }),
 
   /**
    * @typedef {Object} UserRoleBO
@@ -93,10 +94,15 @@ export const userApi = {
    * @param {UserRoleBO} data
    * @returns
    */
-  setRoles: (data) => http.post(`${URL_PREFIX}/set-roles`, data),
+  setRoles: (data) => http.post(`${URL_PREFIX}/set/roles`, data),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
   updateBasicInformation: (data) =>
-    http.post(`${URL_PREFIX}/updateBasicInformation`, data),
+    http.post(`${URL_PREFIX}/update/basicInformation`, data),
+
+  validateTotpCode: (code) =>
+    http.post(`${URL_PREFIX}/validate/totp/${code}`, null, {
+      message: false,
+    }),
 };

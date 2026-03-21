@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.bo.LogDataChangeBO;
 import com.github.mengweijin.vita.monitor.domain.entity.LogDataChangeDO;
@@ -80,15 +80,13 @@ public class LogDataChangeController {
      * @param id id
      * @return LogDO
      */
-    @SaCheckPermission("monitor:logDataChange:select")
     @GetMapping("/{id}")
     public LogDataChangeVO getById(@PathVariable("id") Long id) {
         return logDataChangeService.getVoById(id);
     }
 
-    @SaCheckPermission("monitor:logDataChange:select")
-    @GetMapping("/tableNames")
-    public List<String> getTableNames() {
+    @GetMapping("/list/tableNames")
+    public List<String> listTableNames() {
         return logDataChangeService.getTableNames();
     }
 

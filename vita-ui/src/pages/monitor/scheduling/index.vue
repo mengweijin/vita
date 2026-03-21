@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 调度任务
+  permission: monitor:schedulingTask:view
 </route>
 
 <script setup>
@@ -48,6 +49,18 @@ const loadTableData = () => {
   });
 };
 
+const handleEnableTask = (row) => {
+  schedulingTaskApi.enable(row.id).then(() => {
+    loadTableData();
+  });
+};
+
+const handleDisableTask = (row) => {
+  schedulingTaskApi.disable(row.id).then(() => {
+    loadTableData();
+  });
+};
+
 const handleViewTaskLog = (row) => {
   router.push(`/monitor/scheduling/${row.id}`);
 };
@@ -90,7 +103,7 @@ const taskBeanNames = ref([]);
 onMounted(() => {
   loadTableData();
 
-  schedulingTaskApi.getTaskBeanNames().then((res) => {
+  schedulingTaskApi.queryTaskBeanNames().then((res) => {
     taskBeanNames.value = res;
   });
 });
@@ -135,7 +148,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-if="false" v-show="selected.length">
+    <el-col :span="1.5" v-if="false" v-show="selected.length" v-permission="'monitor:schedulingTask:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -182,22 +195,35 @@ onMounted(() => {
           <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.executeAfterStarted.visible" prop="executeAfterStarted" label="启动时执行" width="100"
-        align="center">
-        <template #default="{ row }">
-          <VtTagDict :code="'vt_yes_no'" :value="row.executeAfterStarted" :size="size"></VtTagDict>
-        </template>
-      </el-table-column>
       <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="250">
         <template #default="scope">
           <div>
+            <el-tooltip content="启用" placement="top" v-if="scope.row.disabled === 'Y'">
+              <el-button type="primary" text :size="size" @click="handleEnableTask(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ant-design:check-circle-outlined"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="停用" placement="top" v-if="scope.row.disabled === 'N'">
+              <el-button type="primary" text :size="size" @click="handleDisableTask(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:forbid-line"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="执行日志" placement="top">
-              <el-button type="primary" text :size="size" @click="handleViewTaskLog(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                @click="handleViewTaskLog(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:tickets"></Icon>
@@ -206,7 +232,8 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="立即执行" placement="top">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleRunTask(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleRunTask(scope.row)"
+                v-permission="'monitor:schedulingTask:run'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:video-play"></Icon>
@@ -215,7 +242,8 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)"
+                v-permission="'monitor:schedulingTask:update'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -228,7 +256,7 @@ onMounted(() => {
                 <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'monitor:schedulingTask:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

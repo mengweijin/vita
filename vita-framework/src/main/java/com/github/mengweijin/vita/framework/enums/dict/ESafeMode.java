@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.enums.dict;
+package com.github.mengweijin.vita.framework.enums.dict;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;

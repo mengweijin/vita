@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserRoleVO;

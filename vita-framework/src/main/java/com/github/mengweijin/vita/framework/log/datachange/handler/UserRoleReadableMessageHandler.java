@@ -5,7 +5,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.service.RoleService;

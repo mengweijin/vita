@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -109,7 +109,6 @@ public class FileController {
      * @param id id
      * @return File
      */
-    @SaCheckPermission("system:file:select")
     @GetMapping("/{id}")
     public FileVO getById(@PathVariable("id") Long id) {
         return fileService.getVoById(id);

@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.mybatis.data.permission;
 
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import lombok.Getter;
 
 import java.lang.annotation.Documented;

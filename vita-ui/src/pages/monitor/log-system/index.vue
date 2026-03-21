@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 系统日志
+  permission: monitor:logSystem:view
 </route>
 
 <script setup>
@@ -114,7 +115,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-show="selected.length">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'monitor:logSystem:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的日志吗？`" confirm-button-text="确定"
         cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -171,7 +172,7 @@ onMounted(() => {
                 <el-popconfirm placement="left" width="400" :title="`确定删除日志吗？`" confirm-button-text="确定"
                   cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'monitor:logSystem:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

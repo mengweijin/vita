@@ -5,7 +5,7 @@ import cn.hutool.v7.core.collection.ListUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
-import com.github.mengweijin.vita.system.enums.dict.EDiffType;
+import com.github.mengweijin.vita.framework.enums.dict.EDiffType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.Diff;

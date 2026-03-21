@@ -4,12 +4,14 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DeptBO;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import com.github.mengweijin.vita.system.service.DeptService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -62,7 +64,6 @@ public class DeptController {
      * @param id id
      * @return Dept
      */
-    @SaCheckPermission("system:dept:select")
     @GetMapping("/{id}")
     public DeptVO getById(@PathVariable("id") Long id) {
         return deptService.getVoById(id);
@@ -98,8 +99,8 @@ public class DeptController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:dept:update")
-    @PostMapping("/setDisabled/{id}/{disabled}")
-    public R<Void> setDisabledValue(@PathVariable("id") Long id, @PathVariable("disabled") String disabled) {
+    @PostMapping("/set/disabled")
+    public R<Void> setDisabled(@NotNull Long id, @NotBlank String disabled) {
         boolean bool = deptService.setDisabled(id, disabled);
         return R.result(bool);
     }

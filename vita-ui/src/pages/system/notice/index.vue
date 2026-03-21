@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 系统公告
+  permission: system:notice:view
 </route>
 
 

@@ -134,6 +134,15 @@ const extendUtils = {
   pascalCase: (str) => extendUtils.upperFirst(XEUtils.camelCase(str)),
 
   /**
+   * 异步等待指定毫秒数
+   * @param {Number} ms
+   * @returns Promise
+   */
+  sleep: (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  },
+
+  /**
    * 秒数转 time ago 格式
    * @param {Long} seconds
    * @returns
@@ -187,15 +196,6 @@ const extendUtils = {
     return str && str.length > 0
       ? str.charAt(0).toUpperCase() + str.slice(1)
       : str;
-  },
-
-  /**
-   * 异步等待指定毫秒数
-   * @param {Number} ms
-   * @returns Promise
-   */
-  sleep: (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   },
 };
 

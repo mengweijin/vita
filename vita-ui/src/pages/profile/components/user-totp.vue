@@ -1,36 +1,12 @@
 <script setup>
 import { userApi } from '@/api/system/user-api.js';
 
-const form = reactive({
-  code: '',
-  key: '',
-});
-
+const form = reactive({});
 
 const formRef = useTemplateRef("formRef");
 
-const onSubmit = () => {
-  form.key = totpVO.value.key;
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields);
-      return;
-    }
-    userApi.saveTotp(form).then((r) => {
-      if(r.code === 200) {
-        hasTotpKey.value = true;
-      }
-    }).catch(() => {});
-  });
-};
-
-const rebindTotp = () => {
+const onValidate = () => {
   ElMessageBox.prompt('请输入动态口令', '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
-    inputPattern: /^\d{6}$/,
-    inputErrorMessage: '验证码必须是 6 位数字',
     beforeClose: async (action, instance, done) => {
       if (action === 'confirm') {
         const inputValue = instance.inputValue;
@@ -40,25 +16,34 @@ const rebindTotp = () => {
           instance.confirmButtonText = '确认';
           instance.confirmButtonLoading = false;
         });
-        if(bool) {
-          hasTotpKey.value = false;
+        if (bool) {
           done();
+          ElMessage.success({
+            duration: 5000,
+            message: "动态口令验证通过。",
+            showClose: true,
+          });
         }
       } else {
         done();
       }
     },
+    cancelButtonText: '取消',
+    confirmButtonText: '确认',
+    inputErrorMessage: '验证码必须是 6 位数字',
+    inputPattern: /^\d{6}$/,
   });
+};
+
+const bindTotp = async () => {
+  totpVO.value = await userApi.generateTotpQrcode();
 }
 
-const hasTotpKey = ref(false);
-
-const totpVO = ref({});
-
-onMounted(async () => {
-  hasTotpKey.value = await userApi.hasTotpKey();
-  totpVO.value = await userApi.generateTotpQrcode();
+const totpVO = ref({
+  key: null,
+  qrcode: null
 });
+
 </script>
 
 <template>
@@ -75,41 +60,32 @@ onMounted(async () => {
     </div>
   </div>
 
-  <div v-if="hasTotpKey">
-    <div style="margin-top: 10px; font-size: 18px; font-weight: bold;">
-      <span>当前用户已绑定动态口令。</span>
-      <el-button type="primary" @click="rebindTotp">重新绑定</el-button>
-    </div>
-  </div>
-  <div v-else>
+  <div>
     <el-row>
-      <el-col :span="9">
-        <el-image style="width: 300px; height: 300px" :src="totpVO.qrcode" :fit="'fill'" alt="已失效"/>
-        <div style="margin-left: 20px; margin-top: -5px;">{{ totpVO.key }}</div>
-      </el-col>
       <el-col :span="15">
         <div style="margin-top: 18px;">
           <h4>绑定步骤：</h4>
           <div>
             <ol style="line-height: 2;">
+              <li>点击【<strong>显示二维码</strong>】按钮，进行二级认证，认证通过后，再次点击【<strong>显示二维码</strong>】按钮；</li>
               <li>使用手机客户端（Microsoft Authenticator、数盾OTP）扫描二维码；</li>
-              <li>输入生成的数字验证码，点击【<strong>绑定验证</strong>】按钮。</li>
+              <li>输入生成的数字验证码，点击【<strong>验证</strong>】按钮。</li>
             </ol>
           </div>
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 10px; margin-left: 30px;">
             <el-form ref="formRef" :model="form" :inline="true">
-              <el-form-item prop="code" label="" :rules="[
-                { required: true, message: '必填', trigger: 'blur' },
-                { type: 'number', message: '动态口令只能是数字' },
-              ]">
-                <el-input v-model.number="form.code" placeholder="请输入动态口令" autocomplete="off" clearable />
-              </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">绑定验证</el-button>
+                <el-button type="primary" @click="bindTotp">显示二维码</el-button>
+                <el-button type="warning" @click="onValidate">验证</el-button>
               </el-form-item>
             </el-form>
           </div>
         </div>
+      </el-col>
+      <el-col :span="9" style="height: 350px;">
+        <el-image v-if="totpVO.qrcode" style="width: 300px; height: 300px" :src="totpVO.qrcode" :fit="'fill'"
+          alt="已失效" />
+        <div v-if="totpVO.key" style="margin-left: 20px; margin-top: -5px;">{{ totpVO.key }}</div>
       </el-col>
     </el-row>
   </div>

@@ -6,7 +6,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.util.AESUtils;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
@@ -56,7 +56,7 @@ public class UserOnlineController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
-    @PostMapping("/kick-out-by-username/{username}")
+    @PostMapping("/kickOut/by/username/{username}")
     public R<Void> kickOutByLoginId(@PathVariable("username") String loginId) {
         // 强制指定账号注销下线
         StpUtil.kickout(loginId);
@@ -65,7 +65,7 @@ public class UserOnlineController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.OFFLINE)
     @SaCheckPermission("monitor:userOnline:kickOut")
-    @PostMapping("/kick-out-by-token")
+    @PostMapping("/kickOut/by/token")
     public R<Void> kickOutByToken(@RequestBody SaTerminalInfoVO vo) {
         // 强制指定 Token 注销下线
         StpUtil.kickoutByTokenValue(AESUtils.getAES().decryptStr(vo.getEncryptTokenValue()));

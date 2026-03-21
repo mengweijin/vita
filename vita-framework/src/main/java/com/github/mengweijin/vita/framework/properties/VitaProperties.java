@@ -100,5 +100,13 @@ public class VitaProperties {
         @Max(Integer.MAX_VALUE)
         private Integer passwordChangeInterval = 90;
 
+        /**
+         * ${vita.user.secondary-auth-validity-period}
+         */
+        @NotNull
+        @Min(60)
+        @Max(Integer.MAX_VALUE)
+        private Long secondaryAuthValidityPeriod = 180L;
+
     }
 }

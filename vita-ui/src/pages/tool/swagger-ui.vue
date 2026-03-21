@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 接口文档
+  permission: tools:swagger-ui:view
 </route>
 
 <script setup>

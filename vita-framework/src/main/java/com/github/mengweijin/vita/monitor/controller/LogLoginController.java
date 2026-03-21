@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogLoginVO;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -60,7 +60,7 @@ public class LogLoginController {
         return logLoginService.pageVo(page, wrapper);
     }
 
-    @GetMapping("/page-by-login-user")
+    @GetMapping("/page/by/loginUser")
     public PageQuery<LogLoginVO> pageByLoginUser(PageQuery<LogLoginDO> pageQuery) {
         IPage<LogLoginDO> page = logLoginService.pageByLoginUser(pageQuery.toPage());
         return logLoginService.toVoPageQuery(page);
@@ -86,7 +86,6 @@ public class LogLoginController {
      * @param id id
      * @return LogLogin
      */
-    @SaCheckPermission("monitor:logLogin:select")
     @GetMapping("/{id}")
     public LogLoginVO getById(@PathVariable("id") Long id) {
         return logLoginService.getVoById(id);

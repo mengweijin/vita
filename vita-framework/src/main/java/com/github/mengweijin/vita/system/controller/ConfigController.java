@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.datachange.DataChangeLog;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -82,7 +82,6 @@ public class ConfigController {
      * @param id id
      * @return Config
      */
-    @SaCheckPermission("system:config:select")
     @GetMapping("/{id}")
     public ConfigVO getById(@PathVariable("id") Long id) {
         return configService.getVoById(id);
@@ -95,9 +94,8 @@ public class ConfigController {
      * @param code code
      * @return Config
      */
-    @SaCheckPermission("system:config:select")
-    @GetMapping("/get-by-code/{code}")
-    public ConfigVO getByCode(@PathVariable("code") String code) {
+    @GetMapping("/query/by/code/{code}")
+    public ConfigVO queryByCode(@PathVariable("code") String code) {
         ConfigDO configDO = configService.getByConfigKey(code);
         return MapstructUtils.getInstance().convert(configDO, ConfigVO.class);
     }
@@ -151,7 +149,7 @@ public class ConfigController {
      * 手动从数据库配置读取，并刷新被 @ConfigurationProperties 注解的类的属性的值
      */
     @SaCheckPermission("system:config:refresh")
-    @PostMapping("/manual-refresh")
+    @PostMapping("/refresh")
     public R<Void> refresh() {
         configService.publishEnvironmentChangeEvent();
         return R.ok();

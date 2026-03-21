@@ -51,6 +51,7 @@ public class SystemLogCleanTask implements ISchedulingTask {
         wrapper.le(LogSystemDO::getCreateTime, minusTime);
 
         int deleted = logSystemService.getBaseMapper().delete(wrapper);
-        return String.format("%s records before time [%s] were deleted.", deleted, TimeUtil.format(minusTime, DateFormatPool.NORM_DATETIME_FORMATTER));
+
+        return I18nUtils.msg("system.scheduling.task.system.log.clean.message", deleted, TimeUtil.format(minusTime, DateFormatPool.NORM_DATETIME_FORMATTER));
     }
 }

@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 用户管理
+  permission: system:user:view
 </route>
 
 <script setup>
@@ -166,7 +167,7 @@ onMounted(() => {
       <!-- 表格头-->
       <el-row :gutter="10" style="padding: 15px 0px">
         <!-- 左侧 -->
-        <el-col :span="1.5">
+        <el-col :span="1.5" v-permission="'system:user:create'">
           <el-button type="primary" @click="handleAdd(null)">
             <template #icon>
               <el-icon>
@@ -224,7 +225,7 @@ onMounted(() => {
               <div>
                 <el-tooltip content="设置角色" placement="top">
                   <el-button type="primary" text :size="size" style="margin-left: 0px;"
-                    @click="handleSetRoles(scope.row)">
+                    @click="handleSetRoles(scope.row)" v-permission="'system:user:setRoles'">
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ri:group-fill"></Icon>
@@ -234,7 +235,7 @@ onMounted(() => {
                 </el-tooltip>
                 <el-tooltip content="重置密码" placement="top">
                   <el-button type="primary" text :size="size" style="margin-left: 0px;"
-                    @click="handleResetPassword(scope.row)">
+                    @click="handleResetPassword(scope.row)" v-permission="'system:user:resetPassword'">
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ep:key"></Icon>
@@ -243,7 +244,8 @@ onMounted(() => {
                   </el-button>
                 </el-tooltip>
                 <el-tooltip content="编辑" placement="top">
-                  <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+                  <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)"
+                    v-permission="'system:user:update'">
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ep:edit"></Icon>
@@ -256,7 +258,7 @@ onMounted(() => {
                     <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.username}】吗？`"
                       confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                       <template #reference>
-                        <el-button type="danger" text :size="size">
+                        <el-button type="danger" text :size="size" v-permission="'system:user:remove'">
                           <template #icon>
                             <el-icon :size="size">
                               <Icon icon="ep:delete"></Icon>

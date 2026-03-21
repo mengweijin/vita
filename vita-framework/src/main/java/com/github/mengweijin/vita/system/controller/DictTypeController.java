@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictTypeBO;
 import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
@@ -79,7 +79,6 @@ public class DictTypeController {
      * @param id id
      * @return DictType
      */
-    @SaCheckPermission("system:dictType:select")
     @GetMapping("/{id}")
     public DictTypeVO getById(@PathVariable("id") Long id) {
         return dictTypeService.getVoById(id);

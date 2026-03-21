@@ -14,7 +14,7 @@ import com.github.mengweijin.vita.framework.sse.SseConnector;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
-import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

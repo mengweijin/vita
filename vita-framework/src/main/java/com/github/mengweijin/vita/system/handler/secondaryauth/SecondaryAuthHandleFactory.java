@@ -1,6 +1,6 @@
-package com.github.mengweijin.vita.system.handler.opensafe;
+package com.github.mengweijin.vita.system.handler.secondaryauth;
 
-import com.github.mengweijin.vita.system.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,15 +16,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class OpenSafeValidateHandleFactory implements InitializingBean {
+public class SecondaryAuthHandleFactory implements InitializingBean {
 
-    private final List<IOpenSafeValidateHandler> openSafeValidateList;
+    private final List<ISecondaryAuthHandler> openSafeValidateList;
 
-    private static final Map<ESafeMode, IOpenSafeValidateHandler> CACHE_MAP = new ConcurrentHashMap<>();
+    private static final Map<ESafeMode, ISecondaryAuthHandler> CACHE_MAP = new ConcurrentHashMap<>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        for (IOpenSafeValidateHandler validate : openSafeValidateList) {
+        for (ISecondaryAuthHandler validate : openSafeValidateList) {
             if(validate.supported() == null) {
                 log.warn("{} : was not set supported safeMode!", validate.getClass().getName());
             }
@@ -32,7 +32,7 @@ public class OpenSafeValidateHandleFactory implements InitializingBean {
         }
     }
 
-    public static IOpenSafeValidateHandler getHandler(ESafeMode safeMode) {
+    public static ISecondaryAuthHandler getHandler(ESafeMode safeMode) {
         return CACHE_MAP.get(safeMode);
     }
 

@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.framework.log.datachange;
 
-import com.github.mengweijin.vita.system.enums.dict.EDiffType;
+import com.github.mengweijin.vita.framework.enums.dict.EDiffType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

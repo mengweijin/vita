@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.system.enums.dict;
+package com.github.mengweijin.vita.framework.enums.dict;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
@@ -10,27 +10,27 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ELoginType implements IEnum<String> {
+public enum EMenuType implements IEnum<String> {
 
     /**
-     * 登入
+     * 目录
      */
-    LOGIN("LOGIN"),
+    DIR("DIR"),
 
     /**
-     * 注销
+     * 菜单
      */
-    LOGOUT("LOGOUT"),
+    MENU("MENU"),
 
     /**
-     * 被踢下线
+     * 按钮
      */
-    KICK_OUT("KICK_OUT"),
+    BTN("BTN"),
 
     /**
-     * 被顶下线
+     * URL
      */
-    REPLACED("REPLACED");
+    URL("URL");
 
     private final String value;
 

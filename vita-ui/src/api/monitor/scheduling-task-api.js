@@ -5,11 +5,15 @@ const URL_PREFIX = "/monitor/scheduling-task";
 export const schedulingTaskApi = {
   create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-  getTaskBeanNames: () => http.get(`${URL_PREFIX}/getTaskBeanNames`),
+  disable: (id) => http.post(`${URL_PREFIX}/disable/${id}`),
+
+  enable: (id) => http.post(`${URL_PREFIX}/enable/${id}`),
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+
+  queryTaskBeanNames: () => http.get(`${URL_PREFIX}/query/taskBeanNames`),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 

@@ -72,7 +72,7 @@ const onSubmit = () => {
 const emit = defineEmits(["refresh-table"]);
 
 const initEditInfo = (userId) => {
-  userApi.getUserBOById(userId).then((res) => {
+  userApi.queryUserBO(userId).then((res) => {
     form.id = res.id ?? undefined;
     form.deptId = res.deptId ?? undefined;
     form.username = res.username ?? undefined;
@@ -90,13 +90,13 @@ const initEditInfo = (userId) => {
 };
 
 const initDefaultPassword = () => {
-  configApi.getByCode("vita.user.default-password").then((res) => {
+  configApi.queryByCode("vita.user.default-password").then((res) => {
     form.password = res?.configValue ?? undefined;
   });
 };
 
 const initDefaultRole = () => {
-  roleApi.getDefaultRole().then((role) => {
+  roleApi.queryDefaultRole().then((role) => {
     form.roleIds.push(role?.id);
   });
 };

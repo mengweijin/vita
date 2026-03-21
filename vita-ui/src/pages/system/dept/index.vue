@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 部门管理
+  permission: system:dept:view
 </route>
 
 <script setup>
@@ -119,7 +120,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5">
+    <el-col :span="1.5" v-permission="'system:dept:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -129,7 +130,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-if="false" v-show="selected.length">
+    <el-col :span="1.5" v-if="false" v-show="selected.length" v-permission="'system:dept:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -178,7 +179,8 @@ onMounted(() => {
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
-              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)">
+              <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)"
+                v-permission="'system:dept:create'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:plus"></Icon>
@@ -187,7 +189,8 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)">
+              <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)"
+                v-permission="'system:dept:update'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -200,7 +203,7 @@ onMounted(() => {
                 <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'system:dept:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

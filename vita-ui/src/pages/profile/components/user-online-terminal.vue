@@ -11,7 +11,7 @@ const tableData = ref([]);
 
 const loadTableData = () => {
   loading.value = true;
-  userApi.getSaTerminalInfoList().then(res => {
+  userApi.queryTerminalInfo().then(res => {
     tableData.value = res;
     loading.value = false;
   });
@@ -23,8 +23,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="deviceId" height="100%" stripe border
-    show-overflow-tooltip highlight-current-row>
+  <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="deviceId" height="100%" stripe
+    border show-overflow-tooltip highlight-current-row>
     <el-table-column prop="index" label="会话索引" min-width="60" />
     <el-table-column prop="deviceId" label="设备唯一标识" min-width="220" />
     <el-table-column prop="deviceType" label="设备类型" min-width="80" />

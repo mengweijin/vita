@@ -59,6 +59,6 @@ public class MultipartLocationCleanTask implements ISchedulingTask {
         });
 
         String path = Paths.get(location).toAbsolutePath().toString();
-        return String.format("Cleaned [%s] files in multipart location [%s] before time [%s].", count, path, minusTime);
+        return I18nUtils.msg("system.scheduling.task.multipart.location.clean.message", path, count, minusTime);
     }
 }

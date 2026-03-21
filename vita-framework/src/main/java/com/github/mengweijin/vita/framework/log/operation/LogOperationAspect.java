@@ -11,7 +11,7 @@ import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
-import com.github.mengweijin.vita.system.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -103,7 +103,7 @@ public class LogOperationAspect {
 
             LogOperationDO logOperation = new LogOperationDO();
             logOperation.setTitle(logAnnotation.title());
-            logOperation.setOperationType(logAnnotation.operationType().name());
+            logOperation.setOperationType(logAnnotation.operationType().getValue());
             logOperation.setHttpMethod(request.getMethod());
             logOperation.setUrl(request.getRequestURI());
             logOperation.setMethodName(methodName);

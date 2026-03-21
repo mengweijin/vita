@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 消息管理
+  permission: system:message:view
 </route>
 
 <script setup>

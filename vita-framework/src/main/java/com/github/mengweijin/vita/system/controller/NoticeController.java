@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.NoticeBO;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import com.github.mengweijin.vita.system.domain.vo.NoticeVO;
-import com.github.mengweijin.vita.system.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.NoticeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +80,6 @@ public class NoticeController {
      * @param id id
      * @return Notice
      */
-    @SaCheckPermission("system:notice:select")
     @GetMapping("/{id}")
     public NoticeVO getById(@PathVariable("id") Long id) {
         return noticeService.getVoById(id);

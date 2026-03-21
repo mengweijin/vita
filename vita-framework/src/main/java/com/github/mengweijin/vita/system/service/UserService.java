@@ -14,7 +14,6 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
-import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
@@ -24,8 +23,7 @@ import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.system.constant.VitaConst;
-import com.github.mengweijin.vita.system.domain.bo.TotpBO;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
@@ -36,7 +34,7 @@ import com.github.mengweijin.vita.system.domain.vo.TotpVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
-import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -209,16 +207,6 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
     }
 
-    public boolean changePassword(String username, String password, String newPassword) {
-        UserDO user = this.getByUsername(username);
-        boolean checked = this.checkPassword(password, user.getPassword(), user.getSalt());
-        if (!checked) {
-            throw new ClientException("User or password check failed!");
-        }
-
-        return this.updatePassword(username, newPassword);
-    }
-
     public boolean updatePassword(String username, String newPassword) {
         String passwordLevel = PasswdStrength.getLevel(newPassword).name();
         String salt = BCrypt.gensalt();
@@ -359,8 +347,13 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     public TotpVO generateTotpQrcode() {
         UserDO user = this.getById(LoginHelper.getSessionUserId());
-        // 每次都重新创建 key, 如果用户又绑定了一次，之前的就作废。
-        String key = TotpUtils.generateSecretKey();
+        String key = user.getTotp();
+        if(StrUtil.isBlank(key)) {
+            key = TotpUtils.generateSecretKey();
+            // 保存 TOTP key
+            this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, user.getId()).update();
+        }
+
         String label = String.format("%s(%s)", user.getNickname(), user.getUsername());
         String qrcode = TotpUtils.generateQrCode(key, label, applicationProperties.getName());
         return new TotpVO(key, qrcode);
@@ -368,19 +361,11 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     public boolean validateTotp(Integer code) {
         UserDO user = this.getById(LoginHelper.getSessionUserId());
-        return TotpUtils.validate(user.getTotp(), code);
-    }
-
-    public boolean saveTotp(TotpBO bo) {
-        boolean validated = TotpUtils.validate(bo.getKey(), bo.getCode());
-        if(!validated) {
-            throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
+        if(StrUtil.isBlank(user.getTotp())) {
+            log.warn("The user has not bound the TOTP!");
+            return false;
         }
-        Long userId = LoginHelper.getSessionUserId();
-        return this.lambdaUpdate()
-                .set(UserDO::getTotp, bo.getKey())
-                .eq(UserDO::getId, userId)
-                .update();
+        return TotpUtils.validate(user.getTotp(), code);
     }
 
 }

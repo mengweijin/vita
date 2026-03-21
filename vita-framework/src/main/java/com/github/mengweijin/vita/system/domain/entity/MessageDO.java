@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.system.domain.bo.MessageBO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
-import com.github.mengweijin.vita.system.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;

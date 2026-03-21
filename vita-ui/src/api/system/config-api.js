@@ -3,14 +3,15 @@ import http from "@/utils/http";
 const URL_PREFIX = "/system/config";
 
 export const configApi = {
-	create: (data) => http.post(`${URL_PREFIX}/create`, data),
-	getByCode: (code) => http.get(`${URL_PREFIX}/get-by-code/${code}`, {}),
+  create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-	list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-	page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-	remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+  queryByCode: (code) => http.get(`${URL_PREFIX}/query/by/code/${code}`, {}),
 
-	update: (data) => http.post(`${URL_PREFIX}/update`, data),
+  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

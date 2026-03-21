@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -47,7 +47,7 @@ public class MenuController {
 
     private RoleMenuService roleMenuService;
 
-    @GetMapping("/listSideMenus")
+    @GetMapping("/list/sideMenus")
     public List<MenuVO> listSideMenus() {
         List<MenuDO> list = menuService.getSideMenuByUserId(LoginHelper.getSessionUserId());
         return MapstructUtils.getInstance().convert(list, MenuVO.class);
@@ -74,15 +74,13 @@ public class MenuController {
      * @param id id
      * @return Menu
      */
-    @SaCheckPermission("system:menu:select")
     @GetMapping("/{id}")
     public MenuVO getById(@PathVariable("id") Long id) {
         return menuService.getVoById(id);
     }
 
-    @SaCheckPermission("system:menu:select")
-    @GetMapping("/get-menu-id-by-role/{roleId}")
-    public Set<Long> getMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
+    @GetMapping("/query/menuIds/by/roleId/{roleId}")
+    public Set<Long> queryMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
         return roleMenuService.getMenuIdsByRoleId(roleId);
     }
 

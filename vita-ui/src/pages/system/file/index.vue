@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 文件管理
+  permission: system:file:view
 </route>
 
 <script setup>
@@ -132,7 +133,7 @@ onMounted(() => {
         </el-button>
       </el-upload>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'system:file:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -183,7 +184,7 @@ onMounted(() => {
                 <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'system:file:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

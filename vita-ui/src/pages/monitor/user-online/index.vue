@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 在线用户
+  permission: monitor:userOnline:view
 </route>
 
 <script setup>
@@ -146,7 +147,7 @@ onMounted(() => {
                   confirm-button-text="确定" cancel-button-text="取消"
                   @confirm="handleKickOutByUsername(scope.row.loginId)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'monitor:userOnline:kickOut'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ri:logout-box-line"></Icon>

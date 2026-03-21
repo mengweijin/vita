@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.framework.validator;
 
 import com.github.mengweijin.vita.framework.validator.annotation.Dict;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
-import com.github.mengweijin.vita.system.enums.EDictType;
+import com.github.mengweijin.vita.framework.enums.EDictType;
 import com.github.mengweijin.vita.system.service.DictDataService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -40,7 +40,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
         }
 
         DictDataService dictDataService = SpringUtil.getBean(DictDataService.class);
-        List<DictDataDO> dictDataList = dictDataService.getByCode(dictType.getValue());
+        List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getValue());
         if(CollUtil.isEmpty(dictDataList)) {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();

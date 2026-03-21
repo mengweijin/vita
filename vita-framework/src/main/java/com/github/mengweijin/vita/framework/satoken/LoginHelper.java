@@ -3,7 +3,7 @@ package com.github.mengweijin.vita.framework.satoken;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

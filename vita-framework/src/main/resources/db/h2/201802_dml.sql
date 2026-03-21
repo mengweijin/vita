@@ -2,9 +2,9 @@
 --changeset admin:2 splitStatements:true
 
 -- 用户
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,1,'admin','管理员','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,1,'vita','微塔','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,1,'guest','游客','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,1,'admin','管理员','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,1,'vita','微塔','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,1,'guest','游客','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
 
 -- 角色
 insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '管理员', 'admin', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -122,8 +122,10 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80006, 'vt_operation_log_type', 'EXPORT', '导出', 'warning', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80007, 'vt_operation_log_type', 'UPLOAD', '上传', 'success', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80008, 'vt_operation_log_type', 'DOWNLOAD', '下载', 'warning', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80009, 'vt_operation_log_type', 'OFFLINE', '强制下线', 'danger', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80010, 'vt_operation_log_type', 'OTHER', '其它', 'info', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80009, 'vt_operation_log_type', 'ENABLE', '启用', 'success', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80010, 'vt_operation_log_type', 'DISABLE', '停用', 'danger', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80011, 'vt_operation_log_type', 'OFFLINE', '强制下线', 'danger', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80099, 'vt_operation_log_type', 'OTHER', '其它', 'info', 99, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：http 请求方式
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90001, 'vt_http_request_type', 'GET', 'GET', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90002, 'vt_http_request_type', 'POST', 'POST', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -200,11 +202,11 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 -- 配置
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, 'vita.log-record-level', 'INFO', '系统日志记录到数据库的最低日志级别（不区分大小写）。可选值：[ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF]。注意：请勿设置过低，否则极度影响性能！', 1, current_timestamp(), 1, current_timestamp());
 insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, 'vita.login-captcha-enabled', 'true', '用户登录是否启用验证码。可选值：[ true, false ]。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'vita.otp-enabled', 'false', '是否启用系统动态口令二次验证。可选值：[ true, false ]。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, 'vita.user.default-password', 'aday.fun', '用户初始密码。密码长度应该在 8-18 位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, 'vita.user.password-change-interval', '90', '修改密码的时间间隔。单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, 'vita.user.default-role-code', 'general', '用户默认角色编码。创建用户时，用户所拥有的默认的角色编码，用户拥有该角色，即拥有对应的菜单权限。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, 'vita.role-code-for-admin', 'admin', '系统管理员角色编码。用以接收系统维护、告警等相关消息的角色编码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, 'vita.user.default-password', 'aday.fun', '用户初始密码。密码长度应该在 8-18 位之间，并且为数字、字母、符号的至少任意两种的组合。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, 'vita.user.password-change-interval', '90', '修改密码的时间间隔。单位：天。若用户 90 天未修改密码，则通过系统消息提醒用户修改密码。0 表示没有启用该限制。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, 'vita.user.default-role-code', 'general', '用户默认角色编码。创建用户时，用户所拥有的默认的角色编码，用户拥有该角色，即拥有对应的菜单权限。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, 'vita.role-code-for-admin', 'admin', '系统管理员角色编码。用以接收系统维护、告警等相关消息的角色编码。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_CONFIG (ID, CONFIG_KEY, CONFIG_VALUE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, 'vita.user.secondary-auth-validity-period', '120', '二次认证有效期，值不要小于 60 秒。单位：秒', 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 菜单
@@ -249,17 +251,16 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004002,10011004,'BTN','用户管理-创建','system:user:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004003,10011004,'BTN','用户管理-更新','system:user:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004004,10011004,'BTN','用户管理-删除','system:user:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004005,10011004,'BTN','用户管理-敏感信息查询','system:user:sensitive',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004006,10011004,'BTN','用户管理-设置角色','system:user:setRoles',null,6,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004007,10011004,'BTN','用户管理-修改密码','system:user:changePassword',null,7,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004008,10011004,'BTN','用户管理-重置密码','system:user:resetPassword',null,8,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004005,10011004,'BTN','用户管理-设置角色','system:user:setRoles',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011004006,10011004,'BTN','用户管理-重置密码','system:user:resetPassword',null,6,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005,10011,'MENU','角色管理','system:role:view','/system/role',5,'ri:group-fill','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005001,10011005,'BTN','角色管理-查询','system:role:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005002,10011005,'BTN','角色管理-创建','system:role:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005003,10011005,'BTN','角色管理-更新','system:role:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005004,10011005,'BTN','角色管理-删除','system:role:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005005,10011005,'BTN','角色管理-分配用户','system:role:assignUser',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005005,10011005,'BTN','角色管理-分配权限','system:role:setPermissions',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011005006,10011005,'BTN','角色管理-分配用户','system:role:setUsers',null,6,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011006,10011,'MENU','分类管理','system:category:view','/system/category',6,'ri:node-tree','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011006001,10011006,'BTN','分类管理-查询','system:category:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
@@ -282,6 +283,7 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011008002,10011008,'BTN','配置管理-创建','system:config:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011008003,10011008,'BTN','配置管理-更新','system:config:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011008004,10011008,'BTN','配置管理-删除','system:config:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011008005,10011008,'BTN','配置管理-刷新','system:config:refresh',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011009,10011,'MENU','文件管理','system:file:view','/system/file',9,'ep:folder-opened','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10011009001,10011009,'BTN','文件管理-查询','system:file:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
@@ -300,14 +302,12 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021001004,10021001,'BTN','调度任务-删除','monitor:schedulingTask:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021001005,10021001,'BTN','调度任务-执行','monitor:schedulingTask:run',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100210010011,10021001,'BTN','调度任务日志-查询','monitor:schedulingTaskLog:select',null,11,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100210010012,10021001,'BTN','调度任务日志-创建','monitor:schedulingTaskLog:create',null,12,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100210010013,10021001,'BTN','调度任务日志-更新','monitor:schedulingTaskLog:update',null,13,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100210010014,10021001,'BTN','调度任务日志-删除','monitor:schedulingTaskLog:remove',null,14,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100210010012,10021001,'BTN','调度任务日志-删除','monitor:schedulingTaskLog:remove',null,12,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021002,10021,'MENU','应用监控','monitor:server:view','/monitor/server',2,'ep:data-line','N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021003,10021,'MENU','本地缓存','monitor:cache:view','/monitor/cache-local',3,'ep:data-analysis','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021003001,10021003,'BTN','本地缓存-删除','monitor:cache:remove',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021003,10021,'MENU','本地缓存','monitor:cacheLocal:view','/monitor/cache-local',3,'ep:data-analysis','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021003001,10021003,'BTN','本地缓存-删除','monitor:cacheLocal:remove',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021004,10021,'MENU','在线用户','monitor:userOnline:view','/monitor/user-online',4,'ri:user-voice-fill','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021004001,10021004,'BTN','在线用户-查询','monitor:userOnline:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
@@ -347,84 +347,97 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 
 
 -- 调度任务
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','Y','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','Y','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
-insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,EXECUTE_AFTER_STARTED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,'文件上传存储路径下的空文件夹清理','0 20 3 ? * 1','fileUploadEmptyDirectoryCleanTask',null,'N','Y','文件上传存储路径下的空文件夹清理任务，防止文件删除后，遗留的空文件夹太多。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
+insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,'文件上传存储路径下的空文件夹清理','0 20 3 ? * 1','fileUploadEmptyDirectoryCleanTask',null,'N','文件上传存储路径下的空文件夹清理任务，防止文件删除后，遗留的空文件夹太多。',1,current_timestamp(),1,current_timestamp());
 
 
 -- 用户-角色
 insert into VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1876458459928420354,3,3,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2034125907099107330,2,2,1,current_timestamp(),1,current_timestamp());
 
 
 -- 角色-权限
-insert into VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values
-	 (1876458392433680385,3,1001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392433680386,3,1002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392496594945,3,10081,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392496594946,3,10091,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392496594947,3,10092,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703810,3,10093,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703811,3,10094,1,current_timestamp(),1,current_timestamp()),
-	 (1876458342563703811,3,10095,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703813,3,1001001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703814,3,1002001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703815,3,10021001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703816,3,10021002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703817,3,10081001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703818,3,10081002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703819,3,1001001001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392563703820,3,1001001002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618369,3,1001001003,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618370,3,1001001004,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618371,3,1002001001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618372,3,1002001002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618373,3,1002001003,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618374,3,1002001004,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618375,3,10011001001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618376,3,10011001002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618377,3,10011002001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618378,3,10011002002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618379,3,10011003001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618380,3,10011003002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618381,3,10011004001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618382,3,10011004002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618383,3,10011004003,1,current_timestamp(),1,current_timestamp()),
-     (1876345392612618381,3,10011004011,1,current_timestamp(),1,current_timestamp()),
-	 (1876345392612618382,3,10011004012,1,current_timestamp(),1,current_timestamp()),
-	 (1876345392612618383,3,10011004013,1,current_timestamp(),1,current_timestamp()),
-	 (1876345392612618384,3,10011004014,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392626618384,3,10011005001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727234,3,10011005002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727235,3,10011005003,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727236,3,10011006001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727237,3,10011006002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727238,3,10011007001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727239,3,10011007002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727240,3,10011007005,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727241,3,10011007006,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727242,3,10011008001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727243,3,10011008002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727244,3,10011009001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727245,3,10011009002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727246,3,10021003001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727247,3,10021004001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727248,3,10021005001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727249,3,10021006001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727250,3,10011001,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727251,3,10011,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392693727252,3,10011002,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836097,3,10011003,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836098,3,10011004,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836099,3,10011005,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836100,3,10011006,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836101,3,10011007,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836102,3,10011008,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836103,3,10011009,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836104,3,10021,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836105,3,10021003,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836106,3,10021004,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836107,3,10021005,1,current_timestamp(),1,current_timestamp()),
-	 (1876458392760836108,3,10021006,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280769,2,100);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280771,2,1001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280772,2,1002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280773,2,10091);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280774,2,10092);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280775,2,10093);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280776,2,10094);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280777,2,10095);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280770,2,1001001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858360389634,2,1002001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858360389633,2,1002002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280779,2,1002003);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280778,2,1002004);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761989,3,100);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761996,3,1001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761997,3,1002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653124,3,10011);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653129,3,10021);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761985,3,10081);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761998,3,10090);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761999,3,10091);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762000,3,10092);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762001,3,10093);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762002,3,10094);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762003,3,10095);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653130,3,1001001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653126,3,1002001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653150,3,10011001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761986,3,10011002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761987,3,10011003);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761990,3,10011004);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761992,3,10011005);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761993,3,10011006);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761994,3,10011007);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653122,3,10011008);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653123,3,10011009);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738565,3,10021001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738566,3,10021002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738567,3,10021003);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738568,3,10021004);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738569,3,10021005);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738570,3,10021006);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738571,3,10021007);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738562,3,10021008);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762004,3,10081002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738563,3,10090001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738564,3,10090002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653121,3,10011001001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653125,3,10011001002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653127,3,10011002001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653128,3,10011002002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653142,3,10011003001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653143,3,10011003002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653145,3,10011004001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653146,3,10011004002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762006,3,10011005001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762007,3,10011005002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950285824001,3,10011006001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950285824002,3,10011006002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653131,3,10011007001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653132,3,10011007002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653133,3,10011007005);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653134,3,10011007006);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653136,3,10011008001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653137,3,10011008002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653138,3,10011008005);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653148,3,10011009001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653149,3,10011009002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761995,3,10021001001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761991,3,10021001002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761988,3,10021001005);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653139,3,10021003001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653135,3,10021004001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738561,3,10021005001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762008,3,10021006001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653147,3,10021007001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653144,3,10021008001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653141,3,10090002001);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653140,3,10090002002);
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762005,3,100210010011);
 
 
 -- 系统公告

@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 数据变动日志
+  permission: monitor:logDataChange:view
 </route>
 
 <script setup>
@@ -74,7 +75,7 @@ const handleDetail = (row) => {
 const tableNames = ref([]);
 onMounted(() => {
   loadTableData();
-  logDataChangeApi.tableNames().then((res) => {
+  logDataChangeApi.listTableNames().then((res) => {
     tableNames.value = res;
   });
 });
@@ -116,7 +117,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-show="selected.length">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'monitor:logDataChange:remove'">
       <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
@@ -166,7 +167,7 @@ onMounted(() => {
                 <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size">
+                    <el-button type="danger" text :size="size" v-permission="'monitor:logDataChange:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

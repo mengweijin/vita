@@ -1,6 +1,7 @@
 <route lang="yaml">
 meta:
   title: 本地缓存
+  permission: monitor:cacheLocal:view
 </route>
 
 <script setup>
@@ -78,7 +79,7 @@ const refreshCacheByNameAndKey = (name, key) => {
 
 onMounted(async () => {
   loading.value = true;
-  cacheNameList.value = await cacheLocalApi.names();
+  cacheNameList.value = await cacheLocalApi.queryCacheNames();
   loading.value = false;
 });
 </script>
@@ -102,7 +103,8 @@ onMounted(async () => {
             </template>
             刷新
           </el-button>
-          <el-button type="danger" :disabled="utils.isEmpty(cacheName)" @click="clearByCacheName(cacheName)">
+          <el-button type="danger" :disabled="utils.isEmpty(cacheName)" @click="clearByCacheName(cacheName)"
+            v-permission="'monitor:cacheLocal:remove'">
             <template #icon>
               <el-icon>
                 <Icon icon="ep:delete"></Icon>
@@ -131,7 +133,7 @@ onMounted(async () => {
 
         <el-tooltip content="删除" placement="top">
           <el-button type="danger" text :disabled="utils.isEmpty(cacheName)" @click="removeCache(cacheName, item.key)"
-            style="float: right;margin-right: 2px;">
+            style="float: right;margin-right: 2px;" v-permission="'monitor:cacheLocal:remove'">
             <template #icon>
               <el-icon>
                 <Icon icon="ep:delete"></Icon>

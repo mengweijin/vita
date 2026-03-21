@@ -10,43 +10,43 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-	roleId: undefined,
-	userIds: [],
+  roleId: undefined,
+  userIds: [],
 });
 
 const init = () => {
-	form.roleId = data.value.id ?? undefined;
-	form.userIds = data.value?.userIds ?? [];
+  form.roleId = data.value.id ?? undefined;
+  form.userIds = data.value?.userIds ?? [];
 };
 
 const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-	formRef.value.validate((valid, fields) => {
-		if (!valid) {
-			// fields 只有在验证失败的情况下才有值
-			console.log(fields);
-			return;
-		}
-		roleApi.addUsers(form.roleId, form.userIds).then((r) => {
-			emit("refresh-table");
-			onClosed();
-		});
-	});
+  formRef.value.validate((valid, fields) => {
+    if (!valid) {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields);
+      return;
+    }
+    roleApi.setUsers(form.roleId, form.userIds).then((r) => {
+      emit("refresh-table");
+      onClosed();
+    });
+  });
 };
 
 const emit = defineEmits(["refresh-table"]);
 
 const onOpened = async () => {
-	loading.value = true;
-	init();
-	loading.value = false;
+  loading.value = true;
+  init();
+  loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
-	data.value = {};
-	init();
+  visible.value = false;
+  data.value = {};
+  init();
 };
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */

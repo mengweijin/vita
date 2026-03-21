@@ -8,7 +8,7 @@ import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.jdbc.template.ColumnUpperCaseMapRowMapper;
 import com.github.mengweijin.vita.framework.mybatis.MybatisMapperHelper;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

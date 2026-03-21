@@ -1,10 +1,9 @@
 import axios from "axios";
 import { stringify } from "qs";
-
 // 这里不要使用 const router = useRouter(); 否则登出后无法自动跳转到登录页
 import router from "@/router/index.js";
-
 import { useLoginStore } from "@/store/login-store.js";
+import { useSecondaryAuthStore } from "@/store/secondary-auth-store.js";
 import utils from "@/utils/utils.js";
 
 const { VITE_BASE_API } = import.meta.env;
@@ -17,6 +16,8 @@ const axiosConfig = {
   headers: { "Content-Type": "application/json;charset=utf-8" },
   // 自定义属性，是否启用全屏 loading
   loading: true,
+  // 自定义属性，是否启用响应操作成功的提示弹框。默认启用，POST 请求会提示“操作成功”，GET 请求不提示。
+  message: true,
   paramsSerializer: (params) => {
     return stringify(params, {
       // repeat：数组序列化为重复键名（ids=1&ids=2&ids=3）
@@ -52,7 +53,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // 添加响应拦截器
@@ -64,22 +65,33 @@ axiosInstance.interceptors.response.use(
       if (response.config.loading) {
         loadingInstance?.close();
       }
-      ElMessage.success({
-        duration: 3000,
-        message: "操作成功!",
-        showClose: true,
-      });
+      if (response.config.message) {
+        ElMessage.success({
+          duration: 3000,
+          message: "操作成功!",
+          showClose: true,
+        });
+      }
     }
     return response.data;
   },
 
   (error) => {
-    if (error.response.status) {
+    if (error.response?.status) {
       if (error.response.status !== 401) {
         console.error(error.response.data);
       }
 
-      switch (error.response.status) {
+      const statusCode = error.response?.data?.code || error.response.status;
+      switch (statusCode) {
+        case 400_1001: {
+          // 打开二级认证弹框
+          const { dialogSecondaryAuthVisible } = storeToRefs(
+            useSecondaryAuthStore(),
+          );
+          dialogSecondaryAuthVisible.value = true;
+          break;
+        }
         case 400:
           ElMessage.error({
             message: error.response.data?.msg,
@@ -141,7 +153,7 @@ axiosInstance.interceptors.response.use(
     }
     loadingInstance?.close();
     return Promise.reject(error);
-  }
+  },
 );
 
 /**
@@ -180,7 +192,7 @@ axiosInstance.download = (url, fileName = undefined) => {
       }
 
       const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: response.data.type })
+        new Blob([response.data], { type: response.data.type }),
       );
       const link = document.createElement("a");
       link.href = url;

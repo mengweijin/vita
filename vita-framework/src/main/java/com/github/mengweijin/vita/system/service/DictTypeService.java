@@ -37,7 +37,7 @@ public class DictTypeService extends BaseVitaService<DictTypeMapper, DictTypeDO,
     public boolean removeByIds(Collection<?> list) {
         for (Object id : list) {
             DictTypeDO dictType = this.getById((Long) id);
-            List<DictDataDO> dictDataList = dictDataService.getByCode(dictType.getCode());
+            List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getCode());
             if(CollUtil.isNotEmpty(dictDataList)) {
                 throw new ClientException("Please remove dict data first in dict type [" + dictType.getName() + "].");
             }

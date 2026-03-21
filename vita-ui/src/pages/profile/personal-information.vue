@@ -35,7 +35,7 @@ const activeTabName = ref("tab1");
 
 onMounted(() => {
   loading.value = true;
-  userApi.getUserProfileVO()
+  userApi.queryUserProfileVO()
     .then((res) => {
       userInfo.value = res;
       loading.value = false;

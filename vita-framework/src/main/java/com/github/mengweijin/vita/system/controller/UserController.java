@@ -1,11 +1,11 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckSafe;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.util.EnumUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,19 +13,19 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
-import com.github.mengweijin.vita.system.constant.VitaConst;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.OpenSafeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
-import com.github.mengweijin.vita.system.domain.bo.TotpBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.bo.UserRoleBO;
@@ -36,9 +36,9 @@ import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
-import com.github.mengweijin.vita.system.enums.dict.ESafeMode;
-import com.github.mengweijin.vita.system.handler.opensafe.IOpenSafeValidateHandler;
-import com.github.mengweijin.vita.system.handler.opensafe.OpenSafeValidateHandleFactory;
+import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.system.handler.secondaryauth.ISecondaryAuthHandler;
+import com.github.mengweijin.vita.system.handler.secondaryauth.SecondaryAuthHandleFactory;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import com.github.mengweijin.vita.system.service.UserService;
@@ -46,7 +46,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,6 +79,8 @@ public class UserController {
 
     private UserRoleService userRoleService;
 
+    private VitaProperties vitaProperties;
+
     /**
      * <p>
      * Get User page by User
@@ -96,15 +97,13 @@ public class UserController {
         return userService.pageVo(page, wrapper);
     }
 
-    @SaCheckPermission("system:user:select")
-    @GetMapping("/pageByRole/{roleId}")
+    @GetMapping("/page/by/role/{roleId}")
     public PageQuery<UserVO> pageByRole(@PathVariable("roleId") Long roleId, PageQuery<UserDO> pageQuery, UserDO user) {
         IPage<UserDO> userPage = userService.pageByRole(roleId, pageQuery.toPage(), user);
         return userService.toVoPageQuery(userPage);
     }
 
-    @SaCheckPermission("system:user:select")
-    @GetMapping("/pageByPost/{postId}")
+    @GetMapping("/page/by/post/{postId}")
     public PageQuery<UserVO> pageByPost(@PathVariable("postId") Long postId, PageQuery<UserDO> pageQuery, UserDO user) {
         IPage<UserDO> userPage = userService.pageByPost(postId, pageQuery.toPage(), user);
         return userService.toVoPageQuery(userPage);
@@ -132,19 +131,18 @@ public class UserController {
      * @param id id
      * @return User
      */
-    @SaCheckPermission("system:user:select")
     @GetMapping("/{id}")
     public UserVO getById(@PathVariable("id") Long id) {
         return userService.getVoById(id);
     }
 
-    @GetMapping("/get-user-store-vo")
-    public UserStoreVO getUserStoreVO() {
+    @GetMapping("/query/userStoreVO")
+    public UserStoreVO queryUserStoreVO() {
         return userService.getUserStoreVO();
     }
 
-    @GetMapping("/get-user-profile-vo")
-    public UserProfileVO getUserProfileVO() {
+    @GetMapping("/query/userProfileVO")
+    public UserProfileVO queryUserProfileVO() {
         Long userId = LoginHelper.getSessionUserId();
         return userService.getUserProfileVO(userId);
     }
@@ -180,13 +178,13 @@ public class UserController {
     }
 
     @SaCheckPermission("system:user:update")
-    @GetMapping("/get-user-bo-by-id/{id}")
-    public UserBO getUserBO(@PathVariable("id") Long id) {
+    @GetMapping("/query/bo/{id}")
+    public UserBO queryUserBO(@PathVariable("id") Long id) {
         return userService.getUserBO(id);
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
-    @PostMapping("/updateBasicInformation")
+    @PostMapping("/update/basicInformation")
     public R<Void> updateBasicInformation(@RequestBody UserBasicInformationBO bo) {
         boolean bool = userService.updateBasicInformation(bo);
         return R.result(bool);
@@ -194,7 +192,7 @@ public class UserController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("system:user:update")
-    @PostMapping("/set-disabled")
+    @PostMapping("/set/disabled")
     public R<Void> setDisabled(@NotNull Long id, @NotBlank String disabled) {
         boolean bool = userService.setDisabled(id, disabled);
         return R.result(bool);
@@ -219,36 +217,46 @@ public class UserController {
         return R.result(userService.removeByIds(list));
     }
 
-    @PostMapping("/openSafe")
+    /**
+     * 和 @SaCheckSafe 的功能作用一样，可替代使用。
+     * 检查当前会话是否已通过二级认证，如未通过则抛出异常。前端异常拦截后自动拉起二级认证弹框。
+     */
+    @PostMapping("/check/safe")
+    public R<Void> checkSafe() {
+        StpUtil.checkSafe();
+        return R.ok();
+    }
+
+    @PostMapping("/auth/secondary")
     public R<Void> openSafe(@RequestBody OpenSafeBO bo) {
         UserSessionVO sessionUser = LoginHelper.getSessionUser();
         ESafeMode safeMode = EnumUtil.fromString(ESafeMode.class, bo.getSafeMode());
-        IOpenSafeValidateHandler handler = OpenSafeValidateHandleFactory.getHandler(safeMode);
-        handler.validate(sessionUser, bo);
+        ISecondaryAuthHandler handler = SecondaryAuthHandleFactory.getHandler(safeMode);
+        boolean validated = handler.validate(sessionUser, bo);
+        if (validated) {
+            Long secondaryAuthValidityPeriod = vitaProperties.getUser().getSecondaryAuthValidityPeriod();
+            // 比对成功，为当前会话打开二级认证，有效期为 secondaryAuthValidityPeriod 秒
+            StpUtil.openSafe(secondaryAuthValidityPeriod);
+            return R.ok();
+        }
 
-        // 比对成功，为当前会话打开二级认证，有效期为 180 秒
-        StpUtil.openSafe(180);
-        return R.result(HttpStatus.OK.value(), "二级认证成功", null);
+        String msg = I18nUtils.msg("system.user.secondary.authentication.failed");
+        throw new ClientException(msg);
     }
 
     /**
      * <p>
-     * change password
+     * change password。需要先通过 @SaCheckSafe 来验证是否已通过二级认证。
      * </p>
      *
      * @param bo {@link PasswordChangeBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
-    @SaCheckPermission("system:user:changePassword")
-    @PostMapping("/change-password")
+    @SaCheckSafe
+    @PostMapping("/change/password")
     public R<Void> changePassword(@Validated @RequestBody PasswordChangeBO bo) {
-        // 先检查当前会话是否已完成二级认证
-        if(!StpUtil.isSafe()) {
-            return R.fail(HttpStatus.BAD_REQUEST.value(), "请完成二级认证后再次访问接口");
-        }
-
         String username = LoginHelper.getSessionUsername();
-        boolean bool = userService.changePassword(username, bo.getPassword(), bo.getNewPassword());
+        boolean bool = userService.updatePassword(username, bo.getPassword());
         return R.result(bool);
     }
 
@@ -261,7 +269,7 @@ public class UserController {
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE, saveRequestData = false)
     @SaCheckPermission("system:user:resetPassword")
-    @PostMapping("/reset-password")
+    @PostMapping("/reset/password")
     public R<Void> resetPassword(@Validated @RequestBody PasswordResetBO bo) {
         boolean bool = userService.updatePassword(bo.getUsername(), bo.getPassword());
         return R.result(bool);
@@ -274,8 +282,7 @@ public class UserController {
      *
      * @param userAvatar {@link UserAvatarDO}
      */
-    @SaCheckPermission("system:user:setAvatar")
-    @PostMapping("/set-avatar")
+    @PostMapping("/set/avatar")
     public R<Void> setAvatar(@Validated @RequestBody UserAvatarDO userAvatar) {
         boolean bool = userAvatarService.setAvatar(userAvatar);
         return R.result(bool);
@@ -289,16 +296,10 @@ public class UserController {
      * @param bo {@link UserRoleBO}
      */
     @SaCheckPermission("system:user:setRoles")
-    @PostMapping("/set-roles")
+    @PostMapping("/set/roles")
     public R<Void> setRoles(@Validated @RequestBody UserRoleBO bo) {
         userRoleService.setUserRoles(bo.getUserId(), bo.getRoleIds());
         return R.ok();
-    }
-
-    @GetMapping("/has/totpKey")
-    public boolean hasTotpKey() {
-        UserDO user = this.getById(LoginHelper.getSessionUserId());
-        return StrUtil.isNotBlank(user.getTotp());
     }
 
     @PostMapping("/validate/totp/{code}")
@@ -312,27 +313,17 @@ public class UserController {
     }
 
     /**
-     * 生成 TOTP 二维码
+     * 生成 TOTP 二维码。需要先通过 @SaCheckSafe 来验证是否已通过二级认证。
      * @return TotpVO
      */
-    @GetMapping("/generate/totpQrcode")
+    @SaCheckSafe
+    @GetMapping("/generate/totp/qrcode")
     public TotpVO generateTotpQrcode() {
         return userService.generateTotpQrcode();
     }
 
-    /**
-     * 保存 TOTP
-     * @param bo TotpBO
-     * @return R
-     */
-    @PostMapping("/save/totp")
-    public R<Void> saveTotp(@Validated @RequestBody TotpBO bo) {
-        boolean saved = userService.saveTotp(bo);
-        return R.result(saved);
-    }
-
-    @GetMapping("/get-sa-terminal-info-list")
-    public List<SaTerminalInfoVO> getSaTerminalInfoList() {
+    @GetMapping("/query/terminalInfo")
+    public List<SaTerminalInfoVO> queryTerminalInfo() {
         SaSession session = StpUtil.getSession();
         SaSessionVO sessionVO = new SaSessionVO(session);
         return sessionVO.getTerminalInfoList();

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.log.operation.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
@@ -78,16 +78,14 @@ public class DictDataController {
      * @param id id
      * @return DictData
      */
-    @SaCheckPermission("system:dictData:select")
     @GetMapping("/{id}")
     public DictDataVO getById(@PathVariable("id") Long id) {
         return dictDataService.getVoById(id);
     }
 
-    @SaCheckPermission("system:dictData:select")
-    @GetMapping("/get-by-code/{code}")
-    public List<DictDataVO> getByCode(@PathVariable("code") String code) {
-        List<DictDataDO> list = dictDataService.getByCode(code);
+    @GetMapping("/query/by/code/{code}")
+    public List<DictDataVO> queryByCode(@PathVariable("code") String code) {
+        List<DictDataDO> list = dictDataService.queryByCode(code);
         return MapstructUtils.getInstance().convert(list, DictDataVO.class);
     }
 

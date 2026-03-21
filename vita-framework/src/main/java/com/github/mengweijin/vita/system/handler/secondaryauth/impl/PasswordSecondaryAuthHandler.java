@@ -1,12 +1,11 @@
-package com.github.mengweijin.vita.system.handler.opensafe.impl;
+package com.github.mengweijin.vita.system.handler.secondaryauth.impl;
 
 import cn.hutool.v7.extra.spring.SpringUtil;
-import com.github.mengweijin.vita.framework.exception.ClientException;
-import com.github.mengweijin.vita.system.handler.opensafe.IOpenSafeValidateHandler;
 import com.github.mengweijin.vita.system.domain.bo.OpenSafeBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
-import com.github.mengweijin.vita.system.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.system.handler.secondaryauth.ISecondaryAuthHandler;
 import com.github.mengweijin.vita.system.service.UserService;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @since 2026/3/14
  */
 @Component
-public class PasswordOpenSafeValidateHandler implements IOpenSafeValidateHandler {
+public class PasswordSecondaryAuthHandler implements ISecondaryAuthHandler {
 
     @Override
     public ESafeMode supported() {
@@ -24,12 +23,9 @@ public class PasswordOpenSafeValidateHandler implements IOpenSafeValidateHandler
     }
 
     @Override
-    public void validate(UserSessionVO sessionUser, OpenSafeBO bo) throws ClientException {
+    public boolean validate(UserSessionVO sessionUser, OpenSafeBO bo) {
         UserService userService = SpringUtil.getBean(UserService.class);
         UserDO user = userService.getById(sessionUser.getUserId());
-        boolean checked = userService.checkPassword(bo.getValue(), user.getPassword(), user.getSalt());
-        if (!checked) {
-            throw new ClientException("二级认证失败，密码错误");
-        }
+        return userService.checkPassword(bo.getValue(), user.getPassword(), user.getSalt());
     }
 }

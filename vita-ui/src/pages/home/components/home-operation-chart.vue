@@ -45,7 +45,7 @@ const initChart = (category, activeUsers, userOperations) => {
 };
 
 onMounted(() => {
-	homeApi.getConsoleChart().then((res) => {
+	homeApi.queryConsoleChart().then((res) => {
 		initChart(res.category, res.activeUsers, res.userOperations);
 	});
 });

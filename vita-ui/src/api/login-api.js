@@ -8,11 +8,10 @@ export const loginApi = {
   getCaptchaEnabled: () =>
     http.get(`${URL_PREFIX}/captchaEnabled`, { params: {} }),
 
-  getOtpEnabled: () => http.get(`${URL_PREFIX}/otpEnabled`, { params: {} }),
+  login: (data) =>
+    http.post(`${URL_PREFIX}/login`, data, { loading: false, message: false }),
 
-  login: (data) => http.post(`${URL_PREFIX}/login`, data, { loading: false }),
-
-  logout: () => http.post(`${URL_PREFIX}/logout`),
+  logout: () => http.post(`${URL_PREFIX}/logout`, null, { message: false }),
 
   tokenValid: (tokenValue) =>
     http.get(`${URL_PREFIX}/token-valid`, { params: { token: tokenValue } }),

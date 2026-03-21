@@ -57,7 +57,7 @@ spring:
     # @Async Spring异步任务。TaskExecutionProperties.java
     execution:
       # 默认为：task-
-      thread-name-prefix: task-
+      thread-name-prefix: task-async-
       pool:
         # 核心线程数，线程池创建时候初始化的线程数。默认为 8
         core-size: 32

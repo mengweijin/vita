@@ -1,33 +1,31 @@
-package com.github.mengweijin.vita.system.enums.dict;
+package com.github.mengweijin.vita.framework.enums.dict;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 差异类型枚举。字典：vt_diff_type
  * @author mengweijin
  * @since 2023/5/20
  */
 @Getter
 @AllArgsConstructor
-public enum EDiffType implements IEnum<String> {
+public enum ESchedulingTaskStatus implements IEnum<String> {
 
     /**
-     * 新增
+     * 未开始
      */
-    ADDED("ADDED"),
+    NOT_STARTED("not_started"),
 
     /**
-     * 修改
+     * 执行中
      */
-    MODIFIED("MODIFIED"),
+    RUNNING("running"),
 
     /**
-     * 删除
+     * 已完成
      */
-    REMOVED("REMOVED");
+    FINISHED("finished");
 
     private final String value;
-
 }

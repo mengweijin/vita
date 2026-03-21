@@ -32,7 +32,7 @@ public class HomeService {
 
     private SchedulingTaskLogService schedulingTaskLogService;
 
-    public HomeConsoleStatisticVO getConsoleStatistic() {
+    public HomeConsoleStatisticVO queryConsoleStatistic() {
         HomeConsoleStatisticVO vo = new HomeConsoleStatisticVO();
         vo.setDailyUserLoginCount(logLoginService.getDailyUserLoginCount());
         vo.setDailyUserOperationCount(logOperationService.getDailyUserOperationCount());
@@ -43,7 +43,7 @@ public class HomeService {
         return vo;
     }
 
-    public HomeConsoleChartVO getConsoleChart() {
+    public HomeConsoleChartVO queryConsoleChart() {
         long days = 6;
         LocalDate now = LocalDate.now();
         LocalDateTime startTime = now.minusDays(days).atTime(LocalTime.MIN);

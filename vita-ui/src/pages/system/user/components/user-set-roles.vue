@@ -40,7 +40,7 @@ const onOpened = async () => {
   loading.value = true;
   roleList.value = await roleApi.list({ disabled: "N" });
   init();
-  form.roleIds = await roleApi.getRoleIdsByUserId(data.value.id);
+  form.roleIds = await roleApi.queryRoleIdsByUserId(data.value.id);
   loading.value = false;
 };
 
