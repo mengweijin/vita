@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.generator.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
 import com.github.mengweijin.vita.framework.domain.R;
@@ -33,29 +34,34 @@ public class GeneratorController {
 
     private GeneratorService generatorService;
 
+    @SaCheckPermission("tools:generator:view")
     @GetMapping("/list/tableInfo")
     public List<TableInfoVO> listTableInfo(String name) {
         return generatorService.selectTableList(name);
     }
 
+    @SaCheckPermission("tools:generator:view")
     @GetMapping("/list/template")
-    public List<TemplateVO> getTemplateList() {
+    public List<TemplateVO> listTemplate() {
         return templateService.getTemplateList();
     }
 
-    @GetMapping("/query/defaultArgs")
-    public GeneratorBO getDefaultArgs() {
+    @SaCheckPermission("tools:generator:view")
+    @GetMapping("/query/args/default")
+    public GeneratorBO queryDefaultArgs() {
         return new GeneratorBO();
     }
 
+    @SaCheckPermission("tools:generator:view")
     @PostMapping("/run")
     public R<ContentVO> run(@RequestBody GeneratorBO bo) {
         ContentVO contentVO = generatorService.generate(bo);
         return R.ok(contentVO);
     }
 
-    @PostMapping("/download")
-    public void download(@RequestBody GeneratorBO bo, HttpServletResponse response) {
+    @SaCheckPermission("tools:generator:view")
+    @GetMapping("/download")
+    public void download(GeneratorBO bo, HttpServletResponse response) {
         File file = generatorService.download(bo);
         ServletUtil.write(response, file);
         FileUtil.del(file);

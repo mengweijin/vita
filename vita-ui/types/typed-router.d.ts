@@ -215,6 +215,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/tool/generator/': RouteRecordInfo<
+      '/tool/generator/',
+      '/tool/generator',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/tool/swagger-ui': RouteRecordInfo<
       '/tool/swagger-ui',
       '/tool/swagger-ui',
@@ -394,6 +401,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/user/index.vue': {
       routes:
         | '/system/user/'
+      views:
+        | never
+    }
+    'src/pages/tool/generator/index.vue': {
+      routes:
+        | '/tool/generator/'
       views:
         | never
     }

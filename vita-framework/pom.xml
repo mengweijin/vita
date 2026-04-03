@@ -64,7 +64,15 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
-        <dependency> 
+        <dependency>
+            <groupId>org.dromara.warm</groupId>
+            <artifactId>warm-flow-mybatis-plus-sb3-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dromara.warm</groupId>
+            <artifactId>warm-flow-plugin-ui-sb-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.gavlyukovskiy</groupId>  
             <artifactId>p6spy-spring-boot-starter</artifactId> 
         </dependency>

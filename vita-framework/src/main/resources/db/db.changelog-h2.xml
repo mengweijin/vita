@@ -4,8 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <include file="./h2/201801_ddl.sql" relativeToChangelogFile="true"/>
-    <include file="./h2/201802_dml.sql" relativeToChangelogFile="true"/>
-    <include file="./h2/201803_dev.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201801_warm-flow-all.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201901_vita-ddl.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/201902_vita-dml.sql" relativeToChangelogFile="true"/>
+    <include file="./h2/999901_vita-dev.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

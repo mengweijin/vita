@@ -24,10 +24,18 @@ import java.io.IOException;
 @Configuration
 public class SaTokenConfig implements WebMvcConfigurer, InitializingBean {
 
+    /**
+     * 白名单。
+     * warm-flow-ui 默认访问地址：ip:port/warm-flow-ui/index.html?id=${definitionId}&onlyDesignShow=${onlyDesignShow}&disabled=${disabled}&Authorization=${token}
+     * warm-flow-ui 示例：localhost:8080/warm-flow-ui/index.html?id=&onlyDesignShow=false&disabled=false&Authorization=Bearer%20${token}
+     */
     private static final String[] WHITE_LIST = new String[]{
             "/swagger-ui/index.html",
             "/webjars/**",
             "/v3/api-docs/**",
+
+            "/warm-flow-ui/**",
+            // "/warm-flow/**",
 
             "/",
             "/**/*.css",

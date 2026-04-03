@@ -5,7 +5,7 @@
     <parent> 
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.11</version>
+        <version>3.5.13</version>
         <relativePath/> 
     </parent>  
     <groupId>com.github.mengweijin</groupId>
@@ -28,8 +28,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <mybatis-plus.version>3.5.16</mybatis-plus.version>
-        <hutool.version>7.0.0-M4</hutool.version>
-        <sa-token.version>1.44.0</sa-token.version>
+        <warm-flow.version>1.8.5</warm-flow.version>
+        <hutool.version>7.0.0-M5</hutool.version>
+        <sa-token.version>1.45.0</sa-token.version>
         <oshi.version>6.10.0</oshi.version>
         <zxing.version>3.5.4</zxing.version>
         <fesod-sheet.version>2.0.1-incubating</fesod-sheet.version>
@@ -136,6 +137,16 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.warm</groupId>
+                <artifactId>warm-flow-mybatis-plus-sb3-starter</artifactId>
+                <version>${warm-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.warm</groupId>
+                <artifactId>warm-flow-plugin-ui-sb-web</artifactId>
+                <version>${warm-flow.version}</version>
             </dependency>
             <dependency> 
                 <groupId>com.github.gavlyukovskiy</groupId>  

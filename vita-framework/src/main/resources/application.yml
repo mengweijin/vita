@@ -153,6 +153,10 @@ sa-token:
   is-log: false
   # 是否打印控制台 banner
   is-print: off
+# warm-flow工作流配置。WarmFlow.java
+warm-flow:
+  ## 工作流共享业务系统权限，默认 Authorization，如果有多个 token，用逗号分隔
+  token-name: ${sa-token.token-name}
 # Spring Boot的 actuator（健康监控）功能，访问：http://localhost:8080/actuator
 # management.server: ManagementServerProperties.java
 # WebEndpointProperties 默认：http://localhost:8080/actuator/health，返回：{"status":"UP"}

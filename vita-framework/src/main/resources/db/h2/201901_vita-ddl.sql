@@ -1,10 +1,9 @@
 --liquibase formatted sql
---changeset admin:1 splitStatements:true
+--changeset admin:1001 splitStatements:true
 
 -- 与 MySQL 区别
 -- 1、h2 中，创建表最后面不能添加 COMMENT = '表注释'；
--- 2、h2 中，int/bigint 类型不能限制位数，比如：int(4) 会报错，需要去掉；
--- 3、h2 中，文本大字段用 clob；mysql 中用 text；
+-- 2、h2 中，tinyint/int/bigint 类型不能限制位数，比如：int(4) 会报错，需要去掉；
 
 drop table IF EXISTS VT_NOTICE;
 create TABLE VT_NOTICE (
@@ -18,6 +17,7 @@ create TABLE VT_NOTICE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_NOTICE is '通知/公告表';
 
 
 drop table IF EXISTS VT_MESSAGE;
@@ -32,6 +32,7 @@ create TABLE VT_MESSAGE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_MESSAGE is '消息管理表';
 
 
 drop table IF EXISTS VT_MESSAGE_RECEIVER;
@@ -47,6 +48,7 @@ create TABLE VT_MESSAGE_RECEIVER (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_MESSAGE_RECEIVER is '系统消息与接收人关系表';
 
 
 drop table IF EXISTS VT_CONFIG;
@@ -61,6 +63,7 @@ create TABLE VT_CONFIG (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_CONFIG is '配置管理表';
 create unique index UIDX_VT_CONFIG_KEY on VT_CONFIG(CONFIG_KEY);
 
 
@@ -79,6 +82,7 @@ create TABLE VT_CATEGORY (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_CATEGORY is '分类管理表';
 create unique index UIDX_VT_CATEGORY_CODE on VT_CATEGORY(CODE);
 
 
@@ -94,6 +98,7 @@ create TABLE VT_DICT_TYPE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_DICT_TYPE is '字典类型表';
 create unique index UIDX_VT_DICT_TYPE_CODE on VT_DICT_TYPE(CODE);
 
 
@@ -113,6 +118,7 @@ create TABLE VT_DICT_DATA (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_DICT_DATA is '字典数据表';
 create unique index UIDX_VT_DICT_DATA_CODE_VAL on VT_DICT_DATA(CODE, VAL);
 
 
@@ -130,6 +136,7 @@ create TABLE VT_LOG_SYSTEM (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_LOG_SYSTEM is '系统日志表';
 
 
 drop table IF EXISTS VT_LOG_OPERATION;
@@ -151,6 +158,7 @@ create TABLE VT_LOG_OPERATION (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_LOG_OPERATION is '操作日志表';
 
 
 drop table IF EXISTS VT_LOG_DATA_CHANGE;
@@ -168,6 +176,7 @@ create TABLE VT_LOG_DATA_CHANGE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_LOG_DATA_CHANGE is '数据变动日志表';
 create index UIDX_VT_LDC_TABLE_ID on VT_LOG_DATA_CHANGE(TABLE_NAME, BUSINESS_ID);
 
 
@@ -189,6 +198,7 @@ create TABLE VT_LOG_LOGIN (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_LOG_LOGIN is '登录日志表';
 
 
 drop table IF EXISTS VT_FILE;
@@ -205,6 +215,7 @@ create TABLE VT_FILE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_FILE is '文件管理表';
 create index IDX_VT_FILE_MD5 on VT_FILE(MD5);
 
 drop table IF EXISTS VT_MENU;
@@ -224,6 +235,7 @@ create TABLE VT_MENU (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_MENU is '菜单管理表';
 
 
 drop table IF EXISTS VT_DEPT;
@@ -241,6 +253,7 @@ create TABLE VT_DEPT (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_DEPT is '部门管理表';
 create unique index UIDX_VT_DEPT_CODE on VT_DEPT(CODE);
 
 
@@ -258,6 +271,7 @@ create TABLE VT_ROLE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_ROLE is '角色管理表';
 create unique index UIDX_VT_ROLE_CODE on VT_ROLE(CODE);
 
 
@@ -275,6 +289,7 @@ create TABLE VT_POST (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_POST is '岗位管理表';
 create unique index UIDX_VT_POST_CODE on VT_POST(CODE);
 
 drop table IF EXISTS VT_USER;
@@ -301,6 +316,7 @@ create TABLE VT_USER (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_USER is '用户管理表';
 create unique index UIDX_VT_USER_USERNAME on VT_USER(USERNAME);
 
 
@@ -315,6 +331,7 @@ create TABLE VT_USER_AVATAR (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_USER_AVATAR is '用户与图像关系表';
 create unique index UIDX_VT_USER_AVATAR_UID on VT_USER_AVATAR(USER_ID);
 
 
@@ -329,6 +346,7 @@ create TABLE VT_USER_POST (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_USER_POST is '用户与岗位关系表';
 create unique index UIDX_VT_USER_POST_UPID on VT_USER_POST(USER_ID, POST_ID);
 
 
@@ -343,6 +361,7 @@ create TABLE VT_USER_ROLE (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_USER_ROLE is '用户与角色关系表';
 create unique index UIDX_VT_USER_ROLE_URID on VT_USER_ROLE(USER_ID, ROLE_ID);
 
 
@@ -357,6 +376,7 @@ create TABLE VT_ROLE_MENU (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_ROLE_MENU is '用户与菜单关系表';
 create unique index UIDX_VT_ROLE_MENU_RMID on VT_ROLE_MENU(ROLE_ID, MENU_ID);
 
 
@@ -375,6 +395,7 @@ create TABLE VT_SCHEDULING_TASK (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_SCHEDULING_TASK is '调度任务表';
 create unique index UIDX_SCHEDULING_TASK_NAME on VT_SCHEDULING_TASK(NAME);
 create unique index UIDX_SCHEDULING_TASK_BEAN_NAME on VT_SCHEDULING_TASK(BEAN_NAME);
 
@@ -394,9 +415,9 @@ create TABLE VT_SCHEDULING_TASK_LOG (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_SCHEDULING_TASK_LOG is '调度任务日志表';
 
 
--- 扩展属性定义表
 drop table IF EXISTS VT_EXT_PROP_DEFINITION;
 create TABLE VT_EXT_PROP_DEFINITION (
   ID                            bigint NOT NULL comment '主键ID',
@@ -416,4 +437,5 @@ create TABLE VT_EXT_PROP_DEFINITION (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
+comment on table VT_EXT_PROP_DEFINITION is '扩展属性定义表';
 create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEFINITION(TABLE_NAME, PROP_NAME);
