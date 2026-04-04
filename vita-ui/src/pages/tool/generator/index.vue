@@ -7,6 +7,7 @@ meta:
 <script setup>
 import { generatorApi } from "@/api/tool/generator-api.js";
 import { columns } from "./columns.js";
+import GeneratorDialog from "./components/generator-dialog.vue";
 
 const loading = ref(true);
 
@@ -41,8 +42,11 @@ const loadTableData = () => {
 /** selected rows */
 const selected = ref([]);
 
+const generatorDialogRef = useTemplateRef("generatorDialogRef");
+
 const handleOpenTemplateDialog = (row) => {
-  alert(row.name);
+  generatorDialogRef.value.visible = true;
+  generatorDialogRef.value.data = { ...row };
 };
 
 onMounted(() => {
@@ -123,6 +127,8 @@ onMounted(() => {
       </el-table-column>
     </el-table>
   </div>
+
+  <GeneratorDialog ref="generatorDialogRef" />
 </template>
 
 <style scoped>

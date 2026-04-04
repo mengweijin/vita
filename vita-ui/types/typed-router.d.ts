@@ -17,7 +17,8 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers: never
+    ParamParsers:
+      | never
   }
 }
 
@@ -43,6 +44,13 @@ declare module 'vue-router/auto-routes' {
     '/error/404': RouteRecordInfo<
       '/error/404',
       '/error/404',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/flow/warm/': RouteRecordInfo<
+      '/flow/warm/',
+      '/flow/warm',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -257,6 +265,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/error/404.vue': {
       routes:
         | '/error/404'
+      views:
+        | never
+    }
+    'src/pages/flow/warm/index.vue': {
+      routes:
+        | '/flow/warm/'
       views:
         | never
     }

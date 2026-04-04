@@ -31,5 +31,5 @@ export const generatorApi = {
 
   queryDefaultArgs: () => http.get(`${URL_PREFIX}/query/args/default`),
 
-  run: (data) => http.post(`${URL_PREFIX}/run`, data),
+  run: (data) => http.post(`${URL_PREFIX}/run`, data, { message: false}),
 };

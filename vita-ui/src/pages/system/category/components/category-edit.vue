@@ -1,5 +1,5 @@
 <script setup>
-import { categoryApi } from "@/api/system/category-api";
+import { categoryApi } from "@/api/system/category-api.js";
 import utils from "@/utils/utils.js";
 
 const loading = ref(true);

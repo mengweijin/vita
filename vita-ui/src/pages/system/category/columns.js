@@ -7,7 +7,7 @@ const columns = reactive({
   code: { label: "分类编码", visible: true },
   disabled: { label: "状态", visible: true },
   seq: { label: "排序", visible: true },
-  remark: { label: "备注", visible: true },
+  remark: { label: "备注", visible: false },
   createByName: { label: "创建者", visible: false },
   createTime: { label: "创建时间", visible: false },
   updateByName: { label: "更新者", visible: true },

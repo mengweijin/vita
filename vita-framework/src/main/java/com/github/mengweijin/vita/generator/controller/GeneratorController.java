@@ -3,7 +3,6 @@ package com.github.mengweijin.vita.generator.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
-import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorBO;
 import com.github.mengweijin.vita.generator.domain.vo.ContentVO;
 import com.github.mengweijin.vita.generator.domain.vo.TableInfoVO;
@@ -54,9 +53,8 @@ public class GeneratorController {
 
     @SaCheckPermission("tools:generator:view")
     @PostMapping("/run")
-    public R<ContentVO> run(@RequestBody GeneratorBO bo) {
-        ContentVO contentVO = generatorService.generate(bo);
-        return R.ok(contentVO);
+    public ContentVO run(@RequestBody GeneratorBO bo) {
+        return generatorService.generate(bo);
     }
 
     @SaCheckPermission("tools:generator:view")
