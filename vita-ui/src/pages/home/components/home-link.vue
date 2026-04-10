@@ -1,9 +1,9 @@
 <script setup>
 const openBlankUrl = (url) => {
-	window.open(url, "_blank");
+  window.open(url, "_blank");
 };
 
-onMounted(() => {});
+onMounted(() => { });
 </script>
 
 <template>
@@ -14,12 +14,12 @@ onMounted(() => {});
 
       <div class="vt-home-link-item">
         <el-button type="primary" class="vt-home-link-item-button" @click="openBlankUrl('https://aday.fun')">
-          <img src="/favicon.svg" style="width: 30px; height: 30px;" /> &nbsp;个人博客</el-button>
+          <img src="/favicon.png" style="width: 30px; height: 30px;" /> &nbsp;个人博客</el-button>
       </div>
 
       <div class="vt-home-link-item">
         <el-button type="success" class="vt-home-link-item-button" @click="openBlankUrl('https://vita.aday.fun')">
-          <img src="/favicon.svg" style="width: 30px; height: 30px;" /> &nbsp;Vita 在线演示</el-button>
+          <img src="/favicon.png" style="width: 30px; height: 30px;" /> &nbsp;Vita 在线演示</el-button>
       </div>
 
       <div class="vt-home-link-item">

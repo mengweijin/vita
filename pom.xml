@@ -31,17 +31,17 @@
         <warm-flow.version>1.8.5</warm-flow.version>
         <hutool.version>7.0.0-M5</hutool.version>
         <sa-token.version>1.45.0</sa-token.version>
-        <oshi.version>6.10.0</oshi.version>
+        <oshi.version>6.11.0</oshi.version>
         <zxing.version>3.5.4</zxing.version>
         <fesod-sheet.version>2.0.1-incubating</fesod-sheet.version>
-        <ip2region.version>3.3.4</ip2region.version>
+        <ip2region.version>3.3.7</ip2region.version>
         <velocity.version>2.4.1</velocity.version>
         <mapstruct-plus.version>1.4.8</mapstruct-plus.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <p6spy-spring-boot-starter.version>1.12.1</p6spy-spring-boot-starter.version>
-        <springdoc.version>2.8.14</springdoc.version>
+        <springdoc.version>2.8.16</springdoc.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
     </properties>
     <profiles>
         <profile>
@@ -289,10 +289,7 @@
                     <doclint>none</doclint>
                 </configuration>
             </plugin>  
-            <!-- GPG
-                1. 需要安装 gpg4win-4.4.1.exe，并创建要给 OpenPGP 密钥对证书（邮箱填写中央仓库账号的邮箱），并右键【在服务器上发布】。
-                2. 配置系统环境变量：MAVEN_GPG_PASSPHRASE=<证书的 passphrase>
-            -->
+            <!-- GPG 需要配置系统环境变量：MAVEN_GPG_PASSPHRASE=<证书的 passphrase> -->
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>  
                 <artifactId>maven-gpg-plugin</artifactId>  
