@@ -15,12 +15,12 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  templateId: undefined,
+  author: undefined,
+  moduleName: undefined,
+  packages: undefined,
   tableName: undefined,
   tablePrefix: undefined,
-  packages: undefined,
-  moduleName: undefined,
-  author: undefined,
+  templateId: undefined,
 });
 
 const init = () => {
@@ -60,7 +60,10 @@ const onOpened = () => {
 
 const onClosed = () => {
 	visible.value = false;
+  templateList.value = [];
+  defaultArgs.value = {};
   data.value = {};
+  contentPreview.value = {};
 };
 
 const treeRef = useTemplateRef("treeRef");
@@ -78,6 +81,12 @@ const treeData = computed(() => {
 const contentPreview = ref({});
 
 const handleTreeNodeClick = (data, node) => {
+  // 判断是否为叶子节点
+  const isLeaf = !data.children || data.children.length === 0;
+  if (!isLeaf) {
+    return;
+  }
+  
   form.templateId = data.id;
   generatorApi.run(form).then((res) => {
     contentPreview.value = res;
@@ -90,8 +99,8 @@ defineExpose({ data, visible });
 
 <template>
   <el-dialog v-model="visible" :title="`表 [${data?.name}] 生成代码`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" fullscreen width="100%">
-    <el-container v-loading="loading">
+    @closed="onClosed" width="90%">
+    <el-container v-loading="loading" class="vt-height">
       <el-aside width="300px">
         <el-scrollbar>
           <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
@@ -115,8 +124,7 @@ defineExpose({ data, visible });
           </el-form-item>
         </el-form>
 
-        <!-- <el-divider style="margin: -5px 0 0 0;" /> -->
-        <VtCodeHighlight :code="contentPreview?.content" language="java" />
+        <VtCodeHighlight :code="contentPreview?.content" />
       </el-main>
     </el-container>
 
@@ -154,10 +162,11 @@ defineExpose({ data, visible });
 <style scoped>
 .vt-tree {
   margin-right: 20px;
+  background-color: var(--vt-main-background-color);
 }
 
 .vt-height {
-  height: calc(var(--vt-tab-content-height)) !important;
+  height: var(--vt-tab-content-height);
 }
 
 .el-main {

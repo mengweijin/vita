@@ -1,109 +1,96 @@
 <script setup>
 import hljs from 'highlight.js';
-import { onMounted, watch } from 'vue';
-// 核心：引入所有语言支持（支持任意语言）
-import 'highlight.js/lib/common';
 // 深色主题（ONE DARK 风格，最常用深色）
 import 'highlight.js/styles/atom-one-dark.css';
 
 const props = defineProps({
-  // 代码内容（必填）
+  // 要高亮的代码内容
   code: {
-    type: String,
-    required: true,
-    default: ''
+    default: '', 
+    type: String
   },
-  // 代码语言（如 java、js、vue、python 等）
+  // 手动指定语言（不填则自动检测）
   language: {
-    type: String,
-    default: 'plaintext' // 默认纯文本
-  },
-  // 是否显示语言标签头部
-  showHeader: {
-    type: Boolean,
-    default: true
+    default: '', 
+    type: String
   }
-})
+});
 
-const codeRef = useTemplateRef("codeRef");
+// 直接计算高亮后的 HTML
+const highlightedHtml = computed(() => {
+  if (!props.code) return '';
 
-// 高亮代码核心方法
-const highlight = () => {
-  if (!codeRef.value) { 
-	return;
+  // 保持与原来一致的格式化（加换行并去首尾空白）
+  const codeText = `\n${props.code.trim()}`;
+
+  try {
+    if (props.language) {
+      const result = hljs.highlight(codeText, {
+        ignoreIllegals: true,   // 避免语法错误导致中断
+        language: props.language
+      });
+      return result.value;
+    } else {
+      const result = hljs.highlightAuto(codeText);
+      return result.value;
+    }
+  } catch (e) {
+    // 出错时至少做 HTML 转义，防止 XSS
+    return codeText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
-  // 赋值代码
-  codeRef.value.textContent = props.code;
-  // 自动高亮
-  hljs.highlightElement(codeRef.value);
-}
-
-// 初始化高亮
-onMounted(() => highlight());
-
-// 代码/语言变化时自动重新高亮
-watch(
-  () => [props.code, props.language],
-  () => highlight(),
-  { deep: true }
-)
+  });
 </script>
 
 <template>
-  <div class="vt-code-box">
-    <!-- 代码头部：显示语言类型 -->
-    <div class="code-header" v-if="showHeader">
-      <span class="lang-tag">{{ language.toUpperCase() }}</span>
-    </div>
-    <!-- 代码内容区域 -->
-    <pre class="code-pre">
-      <code 
-        ref="codeRef" 
-        :class="`language-${language}`" 
-        class="code-block"
-      ></code>
-    </pre>
+  <div class="vt-code-header">
+    <el-tooltip content="复制代码" placement="top">
+      <el-button type="primary" text :size="'small'">
+        <template #icon>
+          <el-icon :size="'small'">
+            <Icon icon="ep:document-copy"></Icon>
+          </el-icon>
+        </template>
+      </el-button>
+    </el-tooltip>
+    <el-tooltip content="下载代码" placement="top">
+      <el-button type="primary" text :size="'small'">
+        <template #icon>
+          <el-icon :size="'small'">
+            <Icon icon="ep:download"></Icon>
+          </el-icon>
+        </template>
+      </el-button>
+    </el-tooltip>
+  </div>
+  <div style="height: calc(100% - 90px);">
+    <el-scrollbar>
+      <pre class="vt-code-pre">
+        <code class="vt-code" v-html="highlightedHtml"></code>
+      </pre>
+    </el-scrollbar>
   </div>
 </template>
 
 <style scoped>
-.vt-code-box {
-  /* margin: 12px 0; */
-  border-radius: 8px;
-  overflow: auto;
-  /* 深色背景统一 */
-  background: #282c34; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  height: 100%;
+.vt-code-header {
+  padding-left: 15px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 8px 8px 0 0;
+  color: white;
+  background: #313131;
 }
 
-/* 语言标签头部 */
-.code-header {
-  padding: 8px 16px;
-  background: #21252b;
-  border-bottom: 1px solid #333842;
+.vt-code-pre {
+  margin: 0 0 0 0;
+  padding: 0 1em 0 1em;
+  background: #1e1e1e;
+  overflow-x: auto;
+  height: calc(var(--vt-tab-content-height) - 90px);
 }
-
-.lang-tag {
-  font-size: 12px;
-  color: #abb2bf;
-  font-family: 'Consolas', monospace;
-}
-
-/* 代码区域样式 */
-.code-pre {
-  margin: 0;
-  /* padding: 16px; */
-  /* 长代码自动横向滚动 */
-  /* overflow-x: auto;  */
-  overflow: auto;
-}
-
-.code-block {
+.vt-code {
+  font-family: Consolas, "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
-  font-family: 'Consolas', 'Monaco', monospace;
-  color: #abb2bf;
-  overflow: auto;
 }
 </style>
