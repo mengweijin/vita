@@ -68,7 +68,7 @@ onUnmounted(() => {
 <template>
   <el-menu mode="horizontal" :ellipsis="false">
     <el-menu-item index="0" style="width: 200px; ">
-      <img src="/logo.svg" alt="logo" />
+      <img src="/logo.png" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="appStore.toggleSideMenuOpened" class="vt-icon-padding">
       <Icon icon="ep:fold" width="24" height="24" v-if="sideMenuOpened" />

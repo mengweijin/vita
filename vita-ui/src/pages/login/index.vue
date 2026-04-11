@@ -132,8 +132,8 @@ onBeforeUnmount(() => {
           <el-form-item>
             <div style="width: 100%;text-align: center; padding: 10px;"><img src="/logo.svg" /></div>
           </el-form-item>
-          <el-form-item style="margin-top: -15px;">
-            <div class="vt-login-title">微塔（Vita）管理系统</div>
+          <el-form-item style="margin-top: -25px;">
+            <div class="vt-login-title"><img src="/favicon.png" style="width: 64px;" />&nbsp;微塔管理系统</div>
           </el-form-item>
           <el-form-item prop="username" style="margin-top: 0px;">
             <el-input v-model="form.username" maxlength="30" clearable placeholder="请输入用户名">
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
 .vt-login-title {
   width: 100%;
   text-align: center;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
   color: var(--vt-primary-color);
 }
