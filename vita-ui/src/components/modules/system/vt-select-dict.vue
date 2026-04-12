@@ -20,6 +20,10 @@ const props = defineProps({
 		default: false,
 		type: Boolean,
 	},
+	showDisabled: {
+		default: true,
+		type: Boolean,
+	},
 	size: {
 		default: "default",
 		type: String,
@@ -42,8 +46,14 @@ onMounted(() => {
 <template>
 	<el-select v-model="selectValue" :clearable="props.clearable" :filterable="props.filterable"
 		:multiple="props.multiple" :size="props.size" :style="props.style" placeholder="请选择">
-		<el-option v-for="item in options" :key="item.val" :label="item.label" :value="item.val"
-			:disabled="item.disabled === 'Y'" />
+		<template v-for="item in options" :key="item.val">
+			<template v-if="item.disabled === 'Y'">
+				<el-option :label="item.label" :value="item.val" :disabled="true" v-show="props.showDisabled"/>
+			</template>
+			<template v-else>
+				<el-option :label="item.label" :value="item.val" :disabled="false"/>
+			</template>
+		</template>
 	</el-select>
 </template>
 

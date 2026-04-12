@@ -1,5 +1,5 @@
 <script setup>
-import { workflowFormApi } from "@/api/workflow/workflow-form-api.js";
+import { ${entityPropertyName}Api } from "@/api/${module}/${entityNameSymbolCase}-api.js";
 
 const loading = ref(true);
 
@@ -9,17 +9,17 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  formPath: undefined,
-	id: undefined,
-  name: undefined,
-  type: undefined,
+  id: undefined,
+#foreach($field in ${entityFields})
+  ${field.propertyName}: undefined,
+#end
 });
 
 const init = () => {
-	form.id = data.value.id ?? undefined;
-  form.name = data.value.name ?? undefined;
-  form.type = data.value.type ?? undefined;
-  form.formPath = data.value.formPath ?? undefined;
+  form.id = data.value.id ?? undefined;
+#foreach($field in ${entityFields})
+  form.${field.propertyName} = data.value.${field.propertyName} ?? undefined;
+#end
 };
 
 const formRef = useTemplateRef("formRef");
@@ -32,12 +32,12 @@ const onSubmit = () => {
 			return;
 		}
 		if (form.id) {
-			workflowFormApi.update(form).then((r) => {
+			${entityPropertyName}Api.update(form).then((r) => {
 				emit("refresh-table");
 				onClosed();
 			});
 		} else {
-			workflowFormApi.create(form).then((r) => {
+			${entityPropertyName}Api.create(form).then((r) => {
 				emit("refresh-table");
 				onClosed();
 			});
@@ -59,6 +59,7 @@ const onClosed = () => {
 	init();
 };
 
+/** 暴露给父组件，父组件可通过 editRef.value.visible = true; 来赋值 */
 defineExpose({ data, visible });
 </script>
 
@@ -66,15 +67,11 @@ defineExpose({ data, visible });
   <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="40%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="type" label="表单类型" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <VtSelectDict v-model="form.type" :code="'vt_flow_form_type'"></VtSelectDict>
-      </el-form-item>
-      <el-form-item prop="name" label="表单名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-          <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
-      </el-form-item>
-      <el-form-item prop="formPath" label="表单路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-          <el-input v-model="form.formPath" clearable maxlength="300" autocomplete="off" />
-      </el-form-item>
+#foreach($field in ${entityFields})
+    <el-form-item prop="${field.propertyName}" label="${field.propertyName}" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+        <el-input v-model="form.${field.propertyName}" clearable maxlength="30" autocomplete="off" />
+    </el-form-item>
+#end
     </el-form>
     <template #footer>
       <div>

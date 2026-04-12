@@ -447,7 +447,6 @@ create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEFINITION(TABLE_NAME, PROP_NA
 drop table IF EXISTS VT_WORKFLOW_FORM;
 create TABLE VT_WORKFLOW_FORM (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID                     bigint NOT NULL comment '父表单ID',
   NAME                          varchar(255) NOT NULL comment '表单名称',
   TYPE                          varchar(64) NOT NULL comment '表单类型。关联字典：vt_flow_form_type',
   FORM_PATH                     varchar(225) NOT NULL comment '表单路由路径',

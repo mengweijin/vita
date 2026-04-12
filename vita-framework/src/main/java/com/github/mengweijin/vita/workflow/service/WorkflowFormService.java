@@ -27,12 +27,11 @@ public class WorkflowFormService extends BaseVitaService<WorkflowFormMapper, Wor
     public LambdaQueryWrapper<WorkflowFormDO> buildQueryWrapper(WorkflowFormDO workflowForm) {
         LambdaQueryWrapper<WorkflowFormDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(workflowForm.getId() != null, WorkflowFormDO::getId, workflowForm.getId());
-        wrapper.eq(workflowForm.getParentId() != null, WorkflowFormDO::getParentId, workflowForm.getParentId());
-        wrapper.eq(StrUtil.isNotBlank(workflowForm.getName()), WorkflowFormDO::getName, workflowForm.getName());
         wrapper.eq(StrUtil.isNotBlank(workflowForm.getType()), WorkflowFormDO::getType, workflowForm.getType());
-        wrapper.eq(StrUtil.isNotBlank(workflowForm.getFormPath()), WorkflowFormDO::getFormPath, workflowForm.getFormPath());
         wrapper.gt(workflowForm.getStartCreateTime() != null, WorkflowFormDO::getCreateTime, workflowForm.getStartCreateTime());
         wrapper.le(workflowForm.getEndCreateTime() != null, WorkflowFormDO::getCreateTime, workflowForm.getEndCreateTime());
+        wrapper.like(StrUtil.isNotBlank(workflowForm.getName()), WorkflowFormDO::getName, workflowForm.getName());
+        wrapper.like(StrUtil.isNotBlank(workflowForm.getFormPath()), WorkflowFormDO::getFormPath, workflowForm.getFormPath());
         return wrapper;
     }
 }

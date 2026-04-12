@@ -26,11 +26,6 @@ import lombok.EqualsAndHashCode;
 public class WorkflowFormDO extends BaseEntity {
 
     /**
-    * 父表单ID
-    */
-    private Long parentId;
-
-    /**
     * 表单名称
     */
     private String name;

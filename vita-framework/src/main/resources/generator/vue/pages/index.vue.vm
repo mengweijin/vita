@@ -1,13 +1,13 @@
 <route lang="yaml">
 meta:
-  title: 流程表单
-  permission: workflow:workflowForm:view
+  title: ${entityName} 管理
+  permission: ${module}:${entityPropertyName}:view
 </route>
 
 <script setup>
-import { workflowFormApi } from "@/api/workflow/workflow-form-api.js";
+import { ${entityPropertyName}Api } from "@/api/${module}/${entityNameSymbolCase}-api.js";
 import { columns } from "./columns.js";
-import WorkflowFormEdit from "./components/workflow-form-edit.vue";
+import ${entityName}Edit from "./components/${entityNameSymbolCase}-edit.vue";
 
 const loading = ref(true);
 
@@ -21,12 +21,12 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  id: undefined,
-  name: undefined,
+#foreach($field in ${entityFields})
+  ${field.propertyName}: undefined,
+#end
   pageCurrent: 1,
   pageSize: 10,
   pageTotal: 0,
-  type: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -38,31 +38,31 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  workflowFormApi.page(queryParams).then((res) => {
+  ${entityPropertyName}Api.page(queryParams).then((res) => {
     tableData.value = res.pageRecords;
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
 
-const workflowFormEditRef = useTemplateRef("workflowFormEditRef");
+const ${entityPropertyName}EditRef = useTemplateRef("${entityPropertyName}EditRef");
 
 const handleAdd = () => {
-  workflowFormEditRef.value.data = {};
-  workflowFormEditRef.value.visible = true;
+  ${entityPropertyName}EditRef.value.data = {};
+  ${entityPropertyName}EditRef.value.visible = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  workflowFormEditRef.value.data = { ...row };
-  workflowFormEditRef.value.visible = true;
+  ${entityPropertyName}EditRef.value.data = { ...row };
+  ${entityPropertyName}EditRef.value.visible = true;
 };
 
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  workflowFormApi.remove(ids).then(() => {
+  ${entityPropertyName}Api.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -88,15 +88,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="id" label="ID" v-show="false">
-      <el-input v-model="queryParams.id" placeholder="" clearable />
+#foreach($field in ${entityFields})
+    <el-form-item prop="${field.propertyName}" label="${field.propertyName}">
+      <el-input v-model="queryParams.${field.propertyName}" placeholder="" clearable />
     </el-form-item>
-    <el-form-item prop="name" label="表单名称">
-      <el-input v-model="queryParams.name" placeholder="" clearable />
-    </el-form-item>
-        <el-form-item prop="type" label="表单类型">
-      <VtSelectDict v-model="queryParams.type" :code="'vt_flow_form_type'"></VtSelectDict>
-    </el-form-item>
+#end
     <el-form-item>
       <el-button type="primary" native-type="submit">
         <template #icon>
@@ -122,7 +118,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'workflow:workflowForm:create'">
+    <el-col :span="1.5" v-permission="'${module}:${entityPropertyName}:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -132,8 +128,8 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:workflowForm:remove'">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.name).join()}】吗？`"
+    <el-col :span="1.5" v-show="selected.length" v-permission="'${module}:${entityPropertyName}:remove'">
+      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【#[[${selected.map(i => i.name).join()}]]#】吗？`"
         confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
         <template #reference>
           <el-button type="danger">
@@ -158,13 +154,9 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.name.visible" prop="name" label="表单名称" min-width="160" fixed="left" />
-      <el-table-column v-if="columns.type.visible" prop="type" label="表单类型" width="100" align="center">
-        <template #default="scope">
-          <VtTagDict :code="'vt_flow_form_type'" :value="scope.row.type" :size="'default'"></VtTagDict>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="columns.formPath.visible" prop="formPath" label="表单路径" min-width="200"/>
+#foreach($field in ${entityFields})
+      <el-table-column v-if="columns.${field.propertyName}.visible" prop="${field.propertyName}" label="${field.propertyName}" min-width="100" />
+#end
       <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
@@ -174,7 +166,7 @@ onMounted(() => {
           <div>
             <el-tooltip content="新增" placement="top" v-if="false">
               <el-button type="primary" text :size="size" @click="handleAdd(scope.row.id)"
-                v-permission="'workflow:workflowForm:create'">
+                v-permission="'${module}:${entityPropertyName}:create'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:plus"></Icon>
@@ -184,7 +176,7 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button type="primary" text :size="size" style="margin-left: 0px;" @click="handleEdit(scope.row)"
-                v-permission="'workflow:workflowForm:update'">
+                v-permission="'${module}:${entityPropertyName}:update'">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:edit"></Icon>
@@ -194,10 +186,10 @@ onMounted(() => {
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"
+                <el-popconfirm placement="left" width="400" :title="`确定删除【#[[${scope.row.name}]]#】吗？`"
                   confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'workflow:workflowForm:remove'">
+                    <el-button type="danger" text :size="size" v-permission="'${module}:${entityPropertyName}:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -218,7 +210,7 @@ onMounted(() => {
       :total="queryParams.pageTotal" @change="handlePageChange" />
   </div>
 
-  <WorkflowFormEdit ref="workflowFormEditRef" @refresh-table="loadTableData"></WorkflowFormEdit>
+  <${entityName}Edit ref="${entityPropertyName}EditRef" @refresh-table="loadTableData"></${entityName}Edit>
 </template>
 
 <style scoped></style>
