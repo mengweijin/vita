@@ -66,7 +66,7 @@
 
 
 
-<img src="vita-ui/public/favicon-64x37-white-bg.png" /> 微塔：是一款**轻量级单机部署快速开发平台应用系统**。
+<img src="vita-ui/public/favicon-64x37-white-bg.png" /> **微塔**：是一款**轻量级单机部署快速开发平台应用系统**。
 
 基于 SpringBoot 3、sa-token、mybatis-plus、vite、vue 3、element-plus、纯 javascript 等技术，不依赖任何第三方服务。
 
