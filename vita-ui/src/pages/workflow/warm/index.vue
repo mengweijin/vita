@@ -1,12 +1,13 @@
 <route lang="yaml">
 meta:
   title: warmflow 原生页面
-  permission: flow:menu:view
+  permission: workflow:menu:view
 </route>
 
 <script setup>
 import { useLoginStore } from '@/store/login-store.js';
 import utils from '@/utils/utils.js';
+
 const loginStore = useLoginStore();
 
 const { VITE_BASE_API } = import.meta.env;

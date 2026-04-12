@@ -2,7 +2,7 @@
 -- postgres
 -- mysql
 -- oracle: 把 current_timestamp() 修改为 sysdate
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (${generatedId}00,null,'MENU','${entityName}管理','${module}:${entityPropertyName}:view','/${requestMapping}',1,'ep:grid','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (${generatedId}00,null,'MENU','${entityName}管理','${module}:${entityPropertyName}:view','${requestMapping}',1,'ep:grid','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (${generatedId}01,${generatedId}00,'BTN','${entityName}-查询','${module}:${entityPropertyName}:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (${generatedId}02,${generatedId}00,'BTN','${entityName}-创建','${module}:${entityPropertyName}:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (${generatedId}03,${generatedId}00,'BTN','${entityName}-更新','${module}:${entityPropertyName}:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());

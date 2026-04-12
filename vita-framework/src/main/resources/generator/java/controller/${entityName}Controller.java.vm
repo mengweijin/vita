@@ -2,17 +2,16 @@ package ${package}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import ${package}.domain.bo.${entityName}BO;
 import ${package}.domain.entity.${entityName}DO;
 import ${package}.domain.vo.${entityName}VO;
 import ${package}.service.${entityName}Service;
-import com.github.mengweijin.vita.system.domain.entity.PostDO;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -82,7 +81,7 @@ public class ${entityName}Controller {
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @SaCheckPermission("${module}:${entityPropertyName}:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ${entityName}Bo ${entityPropertyName}) {
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ${entityName}BO ${entityPropertyName}) {
         boolean bool = ${entityPropertyName}Service.saveByBo(${entityPropertyName});
         return R.result(bool);
     }
@@ -94,7 +93,7 @@ public class ${entityName}Controller {
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @SaCheckPermission("${module}:${entityPropertyName}:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ${entityName}Bo ${entityPropertyName}) {
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ${entityName}BO ${entityPropertyName}) {
         boolean bool = ${entityPropertyName}Service.updateByBoById(${entityPropertyName});
         return R.result(bool);
     }

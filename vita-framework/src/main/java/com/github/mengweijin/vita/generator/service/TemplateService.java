@@ -23,8 +23,6 @@ public class TemplateService {
     public List<TemplateVO> getTemplateList() {
         List<JarFileUtils.ContentInfo> list = JarFileUtils.loadContentInfo(TEMPLATE_DIR);
 
-        list.forEach(item -> log.debug(item.toString()));
-
         List<TemplateVO> templateVOList = list.stream()
                 .map(TemplateVO::new)
                 .toList();

@@ -48,13 +48,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/flow/warm/': RouteRecordInfo<
-      '/flow/warm/',
-      '/flow/warm',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/home/': RouteRecordInfo<
       '/home/',
       '/home',
@@ -237,6 +230,27 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/workflow/definition/': RouteRecordInfo<
+      '/workflow/definition/',
+      '/workflow/definition',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/workflow/form/': RouteRecordInfo<
+      '/workflow/form/',
+      '/workflow/form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/workflow/warm/': RouteRecordInfo<
+      '/workflow/warm/',
+      '/workflow/warm',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -265,12 +279,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/error/404.vue': {
       routes:
         | '/error/404'
-      views:
-        | never
-    }
-    'src/pages/flow/warm/index.vue': {
-      routes:
-        | '/flow/warm/'
       views:
         | never
     }
@@ -427,6 +435,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/tool/swagger-ui.vue': {
       routes:
         | '/tool/swagger-ui'
+      views:
+        | never
+    }
+    'src/pages/workflow/definition/index.vue': {
+      routes:
+        | '/workflow/definition/'
+      views:
+        | never
+    }
+    'src/pages/workflow/form/index.vue': {
+      routes:
+        | '/workflow/form/'
+      views:
+        | never
+    }
+    'src/pages/workflow/warm/index.vue': {
+      routes:
+        | '/workflow/warm/'
       views:
         | never
     }

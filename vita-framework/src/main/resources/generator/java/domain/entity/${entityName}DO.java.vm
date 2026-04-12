@@ -7,8 +7,6 @@ import ${baseEntity};
 #end
 import ${package}.domain.bo.${entityName}BO;
 import ${package}.domain.vo.${entityName}VO;
-import com.github.mengweijin.vita.system.domain.bo.DeptBO;
-import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
