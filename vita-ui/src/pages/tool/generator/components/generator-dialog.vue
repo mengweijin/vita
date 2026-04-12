@@ -94,6 +94,13 @@ const handleTreeNodeClick = (data, node) => {
   });
 };
 
+const removeVelocitySuffix = (fileName) => {
+  if(utils.isBlank(fileName)) {
+    return "";
+  }
+  return fileName.replace(".vm", "");
+};
+
 /** 暴露给父组件，父组件可通过 generatorDialogRef.value.visible = true; 来赋值 */
 defineExpose({ data, visible });
 </script>
@@ -102,7 +109,7 @@ defineExpose({ data, visible });
   <el-dialog v-model="visible" :title="`表 [${data?.name}] 生成代码`" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="90%">
     <el-container v-loading="loading" class="vt-height">
-      <el-aside width="320px">
+      <el-aside width="360px">
         <el-scrollbar>
           <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
             :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
@@ -125,7 +132,7 @@ defineExpose({ data, visible });
           </el-form-item>
         </el-form>
 
-        <VtCodeHighlight :code="contentPreview?.content" :file-name="contentPreview?.fileName" />
+        <VtCodeHighlight :code="contentPreview?.content" :file-name="removeVelocitySuffix(contentPreview?.fileName)" />
       </el-main>
     </el-container>
 
