@@ -1,8 +1,8 @@
 package ${package}.domain.bo;
 
+import ${package}.domain.entity.${entityName}DO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ${package}.domain.entity.${entityName};
 
 /**
  * ${entityName} BO
@@ -12,6 +12,6 @@ import ${package}.domain.entity.${entityName};
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ${entityName}BO extends ${entityName} {
+public class ${entityName}BO extends ${entityName}DO {
 
 }

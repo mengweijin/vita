@@ -1,14 +1,19 @@
 package ${package}.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 #if("$!{baseEntity}" != "")
 import ${baseEntity};
 #else
-import java.io.Serializable;
 #end
+import ${package}.domain.bo.${entityName}BO;
+import ${package}.domain.vo.${entityName}VO;
+import com.github.mengweijin.vita.system.domain.bo.DeptBO;
+import com.github.mengweijin.vita.system.domain.vo.DeptVO;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 
 /**
  * $!{table.comment}
@@ -16,6 +21,10 @@ import java.io.Serializable;
  * @author ${author}
  * @since ${date}
  */
+@AutoMappers({
+        @AutoMapper(target = ${entityName}BO.class),
+        @AutoMapper(target = ${entityName}VO.class),
+})
 @Data
 #if("$!{baseEntity}" != "")
 @EqualsAndHashCode(callSuper = true)

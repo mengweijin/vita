@@ -1,6 +1,7 @@
 <script setup>
 import hljs from 'highlight.js';
 // 深色主题（ONE DARK 风格，最常用深色）
+import utils from '@/utils/utils.js';
 import 'highlight.js/styles/atom-one-dark.css';
 
 const props = defineProps({
@@ -9,6 +10,10 @@ const props = defineProps({
     default: '', 
     type: String
   },
+  fileName: {
+    default: 'download.txt', 
+    type: String
+  }, 
   // 手动指定语言（不填则自动检测）
   language: {
     default: '', 
@@ -38,13 +43,26 @@ const highlightedHtml = computed(() => {
     // 出错时至少做 HTML 转义，防止 XSS
     return codeText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
+});
+
+const handleCopy = () => {
+  navigator.clipboard.writeText(props.code).then(() => {
+    ElMessage.success('代码已复制到剪贴板');
+  }).catch(() => {
+    ElMessage.error('复制失败，请手动复制');
   });
+};
+
+const handleDownload = () => {
+  utils.download(props.code, props.fileName);
+};
 </script>
 
 <template>
   <div class="vt-code-header">
+    <span style="margin-right: 15px;" v-if="utils.isNotBlank(props.code)">{{ props.fileName }}</span>
     <el-tooltip content="复制代码" placement="top">
-      <el-button type="primary" text :size="'small'">
+      <el-button type="primary" text :size="'small'" @click="handleCopy" :disabled="utils.isBlank(props.code)">
         <template #icon>
           <el-icon :size="'small'">
             <Icon icon="ep:document-copy"></Icon>
@@ -53,7 +71,7 @@ const highlightedHtml = computed(() => {
       </el-button>
     </el-tooltip>
     <el-tooltip content="下载代码" placement="top">
-      <el-button type="primary" text :size="'small'">
+      <el-button type="primary" text :size="'small'" @click="handleDownload" :disabled="utils.isBlank(props.code)">
         <template #icon>
           <el-icon :size="'small'">
             <Icon icon="ep:download"></Icon>

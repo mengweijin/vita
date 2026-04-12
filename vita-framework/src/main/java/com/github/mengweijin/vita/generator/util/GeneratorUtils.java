@@ -135,6 +135,7 @@ public class GeneratorUtils {
         objectMap.put("idField", GeneratorUtils.getIdField(tableInfo));
         objectMap.put("entityName", entityName);
         objectMap.put("entityPropertyName", CharSequenceUtil.lowerFirst(entityName));
+        objectMap.put("entityNameSymbolCase", StrUtil.toSymbolCase(CharSequenceUtil.lowerFirst(entityName), '-'));
         objectMap.put("entityFields", entityFields);
         objectMap.put("commonFields", commonFields);
         objectMap.put("allFields", CollUtil.addAll(new ArrayList<>(entityFields), new ArrayList<>(commonFields)));

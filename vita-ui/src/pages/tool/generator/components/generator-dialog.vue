@@ -75,7 +75,8 @@ const treeProps = reactive({
 });
 
 const treeData = computed(() => {
-  return utils.toArrayTree(templateList.value, { sortKey: "name" });
+  const tree = utils.toArrayTree(templateList.value, { sortKey: "name" });
+  return tree[0]?.children || [];
 });
 
 const contentPreview = ref({});
@@ -101,7 +102,7 @@ defineExpose({ data, visible });
   <el-dialog v-model="visible" :title="`表 [${data?.name}] 生成代码`" destroy-on-close align-center @opened="onOpened"
     @closed="onClosed" width="90%">
     <el-container v-loading="loading" class="vt-height">
-      <el-aside width="300px">
+      <el-aside width="320px">
         <el-scrollbar>
           <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
             :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
@@ -124,7 +125,7 @@ defineExpose({ data, visible });
           </el-form-item>
         </el-form>
 
-        <VtCodeHighlight :code="contentPreview?.content" />
+        <VtCodeHighlight :code="contentPreview?.content" :file-name="contentPreview?.fileName" />
       </el-main>
     </el-container>
 
