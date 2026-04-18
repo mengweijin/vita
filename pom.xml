@@ -6,11 +6,10 @@
         <groupId>org.springframework.boot</groupId>  
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.13</version>
-        <relativePath/> 
     </parent>  
     <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
-    <version>2.0.0-M5</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>vita-parent</description>
@@ -20,7 +19,7 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <vita.version>2.0.0-M5</vita.version>
+        <revision>2.0.0-M5-SNAPSHOT</revision>
         <java.version>17</java.version>  
         <maven.compiler.source>${java.version}</maven.compiler.source>  
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -42,6 +41,7 @@
         <springdoc.version>2.8.16</springdoc.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
     </properties>
     <profiles>
         <profile>
@@ -109,12 +109,12 @@
             <dependency>
                 <groupId>com.github.mengweijin</groupId>
                 <artifactId>vita-admin</artifactId>
-                <version>${vita.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.mengweijin</groupId>
                 <artifactId>vita-framework</artifactId>
-                <version>${vita.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -305,17 +305,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- 统一更新 pom.xml 中的版本 -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <configuration>
-                    <allowSnapshots>true</allowSnapshots>
-                    <processAllModules>true</processAllModules>
-                    <generateBackupPoms>false</generateBackupPoms>
-                    <newVersion>2.0.0-M5</newVersion>
-                </configuration>
-            </plugin>
             <!-- 需要在 settings.xml 中配置 <server><id>central</id> ......其他配置 </server>           -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
@@ -327,6 +316,35 @@
                     <autoPublish>true</autoPublish>
                     <waitUntil>validated</waitUntil>
                 </configuration>
+            </plugin>
+            <!-- 使用 flatten-maven-plugin 解决版本占位符 ${revision} 问题 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <!-- 确保更新最终的 pom 文件 -->
+                    <updatePomFile>true</updatePomFile>
+                    <!-- 只解析CI友好变量，保留其他内容不变，推荐配置 -->
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <!-- 在 process-resources 阶段执行 -->
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins> 
     </build>  

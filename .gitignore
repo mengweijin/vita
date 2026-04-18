@@ -15,5 +15,6 @@ logs
 /cache
 /uploads
 /temp
+.flattened-pom.xml
 
 application-local.yml
