@@ -35,8 +35,8 @@ public final class ObjectUtils {
                         return true;
                     }
                     // 字符串：判断空白
-                    if (value instanceof String) {
-                        return StrUtil.isBlank((String) value);
+                    if (value instanceof String str) {
+                        return StrUtil.isBlank(str);
                     }
                     // 包装类型（Integer/Long）：!=null → 非空
                     return false;

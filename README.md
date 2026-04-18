@@ -1,7 +1,7 @@
 <p align="center">
 	<img alt="logo" src="vita-ui/public/favicon.png" width="100">
 </p>
-<h1 align="center" style="margin: -15px 0 30px 0;">Vita（微塔）管理系统</h1>
+<h1 align="center" style="margin: -15px 0 35px 0;">Vita（微塔）管理系统</h1>
 <p align="center">
     <a target="_blank" href="https://github.com/mengweijin/vita">
 		<img src="https://img.shields.io/badge/repo-Github-purple" />
@@ -65,14 +65,14 @@
 </p>
 
 <p align="center">
-   <span>**Vita（微塔）**：是一款**轻量级快速开发平台应用系统**。</span><br>
+   <span><strong>Vita（微塔）</strong>：是一款<strong>轻量级快速开发平台应用系统</strong>。</span><br>
    <span>基于 SpringBoot、sa-token、mybatis-plus、vue、element-plus 等技术，不依赖任何第三方服务。</span>
 </p>
 <p style="text-indent:2em;">
-   有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西（如：redis, minio/fastdfs，数据库等），和很复杂的配置文件，自己从零搭建又太耗费时间，**真的太麻烦了！**
+   有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西（如：redis, minio/fastdfs，数据库等），和很复杂的配置文件，自己从零搭建又太耗费时间，<strong>真的太麻烦了！</strong>
 </p>
 <p style="text-indent:2em;">
-   于是，就有了 **Vita（微塔）**，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。
+   于是，就有了 <strong>Vita（微塔）</strong>，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。
 </p>
 
 ## 在线演示
