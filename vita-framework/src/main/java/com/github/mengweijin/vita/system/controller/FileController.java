@@ -54,7 +54,7 @@ public class FileController {
     @PostMapping("/upload")
     public List<FileVO> upload(HttpServletRequest request) {
         List<FileDO> fileList = fileService.upload(request);
-        return MapstructUtils.getInstance().convert(fileList, FileVO.class);
+        return MapstructUtils.getConverter().convert(fileList, FileVO.class);
     }
 
     /**
@@ -125,7 +125,7 @@ public class FileController {
     @PostMapping("/create")
     public R<FileVO> create(@RequestPart("file") MultipartFile file) {
         FileDO fileDO = fileService.upload(file);
-        return R.ok(MapstructUtils.getInstance().convert(fileDO, FileVO.class));
+        return R.ok(MapstructUtils.getConverter().convert(fileDO, FileVO.class));
     }
 
     /**

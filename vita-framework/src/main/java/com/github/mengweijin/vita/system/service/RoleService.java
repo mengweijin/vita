@@ -84,6 +84,16 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
         return this.getBaseMapper().getRoleCodeByUserId(userId);
     }
 
+
+    public Set<Long> getRoleIdsByUserId(Long userId) {
+        UserService userService = SpringUtil.getBean(UserService.class);
+        UserDO user = userService.getById(userId);
+        if (LoginHelper.isAdmin(user.getId(), user.getUsername())) {
+            return this.list().stream().map(RoleDO::getId).collect(Collectors.toSet());
+        }
+        return userRoleService.getRoleIdsByUserId(userId);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public boolean setMenuPermission(RolePermissionBO bo) {
         Set<Long> beforeMenuIds = roleMenuService.getMenuIdsByRoleId(bo.getRoleId());
@@ -135,4 +145,5 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
         String messageContent = I18nUtils.msg("system.message.role.permission.change.content");
         messageService.sendMessageToUsersAsync(EMessageCategory.SYSTEM, messageTitle, messageContent, userIds);
     }
+
 }

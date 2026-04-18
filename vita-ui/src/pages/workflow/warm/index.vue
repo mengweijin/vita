@@ -17,7 +17,7 @@ const onlyDesignShow = ref(false);
 const disabled = ref(false);
 
 const url = ref(`/warm-flow-ui/index.html?id=${id.value}&onlyDesignShow=${onlyDesignShow.value}&disabled=${disabled.value}&Authorization=${loginStore.getBearerToken()}`);
-if(VITE_BASE_API !== "/" && utils.isNotBlank(VITE_BASE_API)) {
+if (VITE_BASE_API !== "/" && utils.isNotBlank(VITE_BASE_API)) {
   url.value = `${VITE_BASE_API}${url.value}`;
 }
 

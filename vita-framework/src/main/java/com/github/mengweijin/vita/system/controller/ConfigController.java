@@ -97,7 +97,7 @@ public class ConfigController {
     @GetMapping("/query/by/code/{code}")
     public ConfigVO queryByCode(@PathVariable("code") String code) {
         ConfigDO configDO = configService.getByConfigKey(code);
-        return MapstructUtils.getInstance().convert(configDO, ConfigVO.class);
+        return MapstructUtils.getConverter().convert(configDO, ConfigVO.class);
     }
     /**
      * <p>

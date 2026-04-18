@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.system.domain.vo.user;
 
+import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
+import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,8 +36,10 @@ public class UserStoreVO {
      */
     private Long deptId;
 
+    @Translation(translateType = ETranslateType.DEPT_ID_TO_NAME, field = "deptId")
     private String deptName;
 
+    @Translation(translateType = ETranslateType.USER_ID_TO_AVATAR, field = "id")
     private String avatar;
 
     /**

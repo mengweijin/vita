@@ -48,10 +48,11 @@ const onSubmit = () => {
 
 <template>
 	<el-dialog v-model="dialogSecondaryAuthVisible" v-loading="loading" :title="'二级认证'" destroy-on-close align-center
-		@closed="onClosed" width="400px" style="height: 210px;">
+		@closed="onClosed" width="500px" style="height: 210px;">
 		<el-form v-loading="loading" ref="formRef" :model="form" label-width="80px">
 			<el-form-item prop="safeMode" label="认证模式">
-				<VtSelectDict v-model="form.safeMode" :clearable="false" :code="'vt_safe_mode'"></VtSelectDict>
+				<VtRadioDict :code="'vt_safe_mode'" v-model="form.safeMode" />
+				<!-- <VtSelectDict v-model="form.safeMode" :clearable="false" :code="'vt_safe_mode'"></VtSelectDict> -->
 			</el-form-item>
 			<el-form-item prop="value" :label="valueLabel"
 				:rules="[{ required: true, message: '必填', trigger: 'blur' }]">

@@ -32,4 +32,8 @@ public class UserSessionVO implements Serializable {
      */
     private String token;
 
+    /**
+     * 部门 ID
+     */
+    private Long deptId;
 }

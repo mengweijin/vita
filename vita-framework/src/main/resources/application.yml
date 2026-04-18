@@ -105,6 +105,7 @@ spring:
       # 问题类似于：https://blog.csdn.net/qq_34859327/article/details/108872894
       # 源码参考：org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder.rebind(name, applicationContext) 方法
       never-refreshable: com.zaxxer.hikari.HikariDataSource,com.github.gavlyukovskiy.boot.jdbc.decorator.DecoratedDataSource
+# MybatisPlusProperties.java
 mybatis-plus:
   # MyBatis Mapper 所对应的 XML 文件位置，如果您在 Mapper 中有自定义方法（XML 中有自定义实现），需要进行该配置，告诉 Mapper 所对应的 XML 文件位置。
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -127,6 +128,7 @@ mybatis-plus:
     # 对JavaBean中属性开启自动驼峰命名规则（camel case）映射，默认对返回类型为Map的对象的key不起作用，所以需要使用自定义 MybatisMapWrapperFactory 类来处理
     map-underscore-to-camel-case: true
 ############## Sa-Token 配置 (SaTokenConfig.java & 文档: https://sa-token.cc) 可以零配置启动项目 ##############
+# SaTokenConfig.java
 sa-token:
   # token名称 (同时也是cookie名称)
   token-name: Authorization
@@ -153,10 +155,13 @@ sa-token:
   is-log: false
   # 是否打印控制台 banner
   is-print: off
-# warm-flow工作流配置。WarmFlow.java
+# warm-flow工作流配置。WarmFlowProperties.java
 warm-flow:
+  banner: false
   ## 工作流共享业务系统权限，默认 Authorization，如果有多个 token，用逗号分隔
   token-name: ${sa-token.token-name}
+  # 是否显示流程图顶部文字，默认为true：显示
+  top-text-show: true
 # Spring Boot的 actuator（健康监控）功能，访问：http://localhost:8080/actuator
 # management.server: ManagementServerProperties.java
 # WebEndpointProperties 默认：http://localhost:8080/actuator/health，返回：{"status":"UP"}

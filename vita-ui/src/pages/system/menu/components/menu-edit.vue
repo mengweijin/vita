@@ -64,7 +64,7 @@ const emit = defineEmits(["refresh-table"]);
 const menuTypeOptions = computed(() => {
   const menuTypes = dictStore.get("vt_menu_type");
   return menuTypes.map((item) => {
-    item.disabled = item.disabled === "Y" ? true : false;
+    item.disabled = item.disabled === "Y";
     return item;
   });
 });
@@ -106,7 +106,7 @@ defineExpose({ data, visible });
 
 <template>
   <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+    @closed="onClosed" width="50%">
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
         <el-segmented v-model="form.type" :options="menuTypeOptions"
@@ -134,12 +134,13 @@ defineExpose({ data, visible });
       <el-form-item prop="permission">
         <template #label>
           <div class="vt-question-icon-container">
-            <el-tooltip placement="top" content="权限格式：以冒号分隔，比如：system:user:view">
+            <span>权限</span>
+            <el-tooltip placement="top">
+              <template #content>权限格式：以冒号分隔，比如：system:user:view</template>
               <el-icon class="vt-question-icon">
                 <Icon icon="ep:question-filled" width="24" height="24" />
               </el-icon>
             </el-tooltip>
-            <span>权限</span>
           </div>
         </template>
         <el-input v-model="form.permission" clearable autocomplete="off" />
@@ -149,13 +150,16 @@ defineExpose({ data, visible });
         v-if="form.type === 'MENU' || form.type === 'URL'">
         <template #label>
           <div class="vt-question-icon-container">
-            <el-tooltip placement="top"
-              content="vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。比如：/system/menu 或 https://aday.fun">
+            <span>路由路径/URL</span>
+            <el-tooltip placement="top">
+              <template #content>
+                vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。<br>
+                比如：/system/menu 或 https://aday.fun
+              </template>
               <el-icon class="vt-question-icon">
                 <Icon icon="ep:question-filled" width="24" height="24" />
               </el-icon>
             </el-tooltip>
-            <span>路由路径/URL</span>
           </div>
         </template>
         <el-input v-model="form.url" clearable autocomplete="off"></el-input>

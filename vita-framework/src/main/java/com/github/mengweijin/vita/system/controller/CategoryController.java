@@ -2,9 +2,10 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
@@ -37,6 +38,29 @@ public class CategoryController {
     private static final String LOG_TITLE = "分类管理";
 
     private CategoryService categoryService;
+
+    @SaCheckPermission("system:category:select")
+    @GetMapping("/page/root")
+    public PageQuery<CategoryVO> pageRootNode(PageQuery<CategoryDO> page, CategoryDO category) {
+        LambdaQueryWrapper<CategoryDO> wrapper = categoryService.buildRootQueryWrapper(category);
+        return categoryService.pageVo(page, wrapper);
+    }
+
+    @SaCheckPermission("system:category:select")
+    @GetMapping("/list/children/by/parentId/{parentId}")
+    public List<CategoryVO> listChildrenByParentId(@PathVariable("parentId") Long parentId) {
+        return categoryService.listChildrenByParentId(parentId);
+    }
+
+    @GetMapping("/list/children/by/parentCode/{code}")
+    public List<CategoryVO> listChildrenByParentCode(@PathVariable("code") String code) {
+        return categoryService.listChildrenByParentCode(code);
+    }
+
+    @GetMapping("/list/childrenWithParent/by/code/{code}")
+    public List<CategoryVO> listChildrenWithParentByCode(@PathVariable("code") String code) {
+        return categoryService.listChildrenWithParentByCode(code);
+    }
 
     /**
      * Get Category list by Category

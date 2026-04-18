@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.domain;
 
 import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.Data;
+import org.dromara.warm.flow.core.dto.ApiResult;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -76,6 +77,10 @@ public class R<T> implements Serializable {
 
     public static <T> R<T> result(int i) {
         return R.result(i > 0);
+    }
+
+    public static R<Void> of(ApiResult<Void> apiResult) {
+        return R.result(apiResult.getCode(), apiResult.getMsg(), apiResult.getData());
     }
 
     /**

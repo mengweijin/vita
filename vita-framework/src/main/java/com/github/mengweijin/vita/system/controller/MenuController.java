@@ -50,7 +50,7 @@ public class MenuController {
     @GetMapping("/list/sideMenus")
     public List<MenuVO> listSideMenus() {
         List<MenuDO> list = menuService.getSideMenuByUserId(LoginHelper.getSessionUserId());
-        return MapstructUtils.getInstance().convert(list, MenuVO.class);
+        return MapstructUtils.getConverter().convert(list, MenuVO.class);
     }
 
     /**

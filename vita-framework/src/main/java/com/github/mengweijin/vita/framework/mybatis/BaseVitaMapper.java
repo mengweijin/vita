@@ -46,7 +46,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      */
     default V selectVoById(Serializable id) {
         T t = this.selectById(id);
-        return MapstructUtils.getInstance().convert(t, this.voClass());
+        return MapstructUtils.getConverter().convert(t, this.voClass());
     }
 
     /**
@@ -57,7 +57,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      */
     default List<V> selectVoByIds(Collection<? extends Serializable> idList) {
         List<T> list = this.selectByIds(idList);
-        return MapstructUtils.getInstance().convert(list, this.voClass());
+        return MapstructUtils.getConverter().convert(list, this.voClass());
     }
 
     /**
@@ -81,7 +81,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      */
     default V selectVoOne(Wrapper<T> queryWrapper, boolean throwEx) {
         T t = this.selectOne(queryWrapper, throwEx);
-        return MapstructUtils.getInstance().convert(t, this.voClass());
+        return MapstructUtils.getConverter().convert(t, this.voClass());
     }
 
     /**
@@ -92,7 +92,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      */
     default List<V> selectVoList(Wrapper<T> queryWrapper) {
         List<T> list = this.selectList(queryWrapper);
-        return MapstructUtils.getInstance().convert(list, this.voClass());
+        return MapstructUtils.getConverter().convert(list, this.voClass());
     }
 
     /**
@@ -113,7 +113,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @return PageQuery<V>
      */
     default PageQuery<V> toVoPageQuery(IPage<T> page) {
-        List<V> list = MapstructUtils.getInstance().convert(page.getRecords(), this.voClass());
+        List<V> list = MapstructUtils.getConverter().convert(page.getRecords(), this.voClass());
         return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), list);
     }
 
@@ -124,7 +124,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @return count
      */
     default <B> int insertByBo(B bo) {
-        T t = MapstructUtils.getInstance().convert(bo, this.entityClass());
+        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.insert(t);
     }
 
@@ -136,7 +136,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @param <B> BO Class Type
      */
     default <B> boolean insertOrUpdateByBo(B bo) {
-        T t = MapstructUtils.getInstance().convert(bo, this.entityClass());
+        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.insertOrUpdate(t);
     }
 
@@ -148,7 +148,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @return count
      */
     default <B> int updateByBoById(B bo) {
-        T t = MapstructUtils.getInstance().convert(bo, this.entityClass());
+        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.updateById(t);
     }
 

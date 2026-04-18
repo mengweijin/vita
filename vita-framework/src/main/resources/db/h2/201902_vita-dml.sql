@@ -55,11 +55,11 @@ insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TI
 
 
 -- 分类
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,      null,'vt_flow',                        '流程类别',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,      1,'vt_flow_finance',                  '财务类',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'vt_flow_staff',                   '人事类',             null,         2,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1003,      1,'vt_flow_rd',                     '研发类',             null,         3,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10099,      1,'vt_flow_other',                     '其他',             null,         99,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,      null,'vt_workflow',                        '流程类别',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,      1,'vt_workflow_finance',                  '财务类',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'vt_workflow_staff',                   '人事类',             null,         2,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1003,      1,'vt_workflow_rd',                     '研发类',             null,         3,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10099,      1,'vt_workflow_other',                     '其他',             null,         99,'N',1,current_timestamp(),1,current_timestamp());
 
 
 -- 字典类型
@@ -82,7 +82,12 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, '差异类型', 'vt_diff_type', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, '二级认证模式', 'vt_safe_mode', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, '数据级别', 'vt_gbt_data_level', '参考：标准号：GB/T 43697-2024。中文标准名称：数据安全技术 数据分类分级规则。说明：GB: 强制性国家标准；GB/T：推荐性国家标准；GB/Z: 指导性技术文件。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, '流程表单类型', 'vt_flow_form_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, '表单类型', 'vt_form_type', null, 1, current_timestamp(), 1, current_timestamp());
+-- Warm-Flow
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001, 'Warm-Flow 流程是否发布', 'vt_warmflow_publish', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002, 'Warm-Flow 审批表单是否自定义', 'vt_warmflow_form_custom', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003, 'Warm-Flow 流程激活状态', 'vt_warmflow_activity_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004, 'Warm-Flow 流程设计器模型', 'vt_warmflow_designer_model', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：停用/启用
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, 'vt_disabled', 'N', '启用', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -197,8 +202,20 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190002, 'vt_gbt_data_level', 'key', '重要', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190003, 'vt_gbt_data_level', 'general', '一般', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 流程表单类型
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200001, 'vt_flow_form_type', 'static_form', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200002, 'vt_flow_form_type', 'dynamic_form', '动态表单', 'warning', 2, 'Y', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200001, 'vt_form_type', 'static', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200002, 'vt_form_type', 'dynamic', '动态表单', 'warning', 2, 'Y', null, 1, current_timestamp(), 1, current_timestamp());
+-- Warm-Flow 流程是否发布
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010001, 'vt_warmflow_publish', '0', '未发布', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010002, 'vt_warmflow_publish', '1', '已发布', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- Warm-Flow 审批表单是否自定义
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10020001, 'vt_warmflow_form_custom', 'Y', '是', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10020002, 'vt_warmflow_form_custom', 'N', '否', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- Warm-Flow 流程激活状态
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030001, 'vt_warmflow_activity_status', '0', '挂起', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030002, 'vt_warmflow_activity_status', '1', '激活', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- Warm-Flow 流程设计器模型
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10040001, 'vt_warmflow_designer_model', 'CLASSICS', '经典模型', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10040002, 'vt_warmflow_designer_model', 'MIMIC', '仿钉钉模型', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 配置
@@ -331,20 +348,20 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021008001,10021008,'BTN','数据变动日志-查询','monitor:logDataChange:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10021008004,10021008,'BTN','数据变动日志-删除','monitor:logDataChange:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031,null,'DIR','流程管理','workflow:menu:view',null,31,'ri:flow-chart','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001,10031,'MENU','流程表单','workflow:workflowForm:view','/workflow/form',1,'ri:input-field','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001001,10031001,'BTN','流程表单-查询','workflow:workflowForm:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001002,10031001,'BTN','流程表单-创建','workflow:workflowForm:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001003,10031001,'BTN','流程表单-更新','workflow:workflowForm:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001004,10031001,'BTN','流程表单-删除','workflow:workflowForm:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031,null,'MENU','表单管理','form:menu:view','/form/manage',31,'ri:input-field','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031001,10031,'BTN','表单-查询','form:manage:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002,10031,'BTN','表单-创建','form:manage:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031003,10031,'BTN','表单-更新','form:manage:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031004,10031,'BTN','表单-删除','form:manage:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002,10031,'MENU','流程定义','workflow:workflowDefinition:view','/workflow/definition',2,'ri:align-item-vertical-center-line','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002001,10031002,'BTN','流程定义-查询','workflow:workflowDefinition:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002002,10031002,'BTN','流程定义-创建','workflow:workflowDefinition:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002003,10031002,'BTN','流程定义-更新','workflow:workflowDefinition:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031002004,10031002,'BTN','流程定义-删除','workflow:workflowDefinition:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041,null,'DIR','流程管理','workflow:menu:view',null,41,'ri:flow-chart','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001,10041,'MENU','流程定义','workflow:flowDefinition:view','/workflow/definition',2,'ri:align-item-vertical-center-line','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001001,10041001,'BTN','流程定义-查询','workflow:flowDefinition:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001002,10041001,'BTN','流程定义-创建','workflow:flowDefinition:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001003,10041001,'BTN','流程定义-更新','workflow:flowDefinition:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001004,10041001,'BTN','流程定义-删除','workflow:flowDefinition:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
 
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10031003,10031,'MENU','warm-flow','workflow:warm-flow:view','/workflow/warm',999,'ri:apps-line','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100410099,10041,'MENU','warm-flow','workflow:warm-flow:view','/workflow/warm',99,'ri:apps-line','N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10081,null,'DIR','开发工具','tools:menu:view',null,81,'ri:tools-fill','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10081001,10081,'MENU','代码生成器','tools:generator:view','/tool/generator',1,'ri:ai-generate-text','N',1,current_timestamp(),1,current_timestamp());
@@ -456,10 +473,10 @@ INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653141,3,1009
 INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653140,3,10090002002);
 INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762005,3,100210010011);
 
--- 流程表单
-INSERT INTO VT_WORKFLOW_FORM (ID,NAME,"TYPE",FORM_PATH,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705602,'行政-员工请假-流程发起-表单','static_form','/pages/workflow/form/inst/staff-leave-form.vue',1,current_timestamp(),1,current_timestamp());
-INSERT INTO VT_WORKFLOW_FORM (ID,NAME,"TYPE",FORM_PATH,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705603,'行政-员工离职-流程发起-表单','static_form','/pages/workflow/form/inst/staff-dimission-form.vue',1,current_timestamp(),1,current_timestamp());
-INSERT INTO VT_WORKFLOW_FORM (ID,NAME,"TYPE",FORM_PATH,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705604,'财务-出差报销-流程发起-表单','static_form','/pages/workflow/form/inst/staff-travel-reimbursement-form.vue',1,current_timestamp(),1,current_timestamp());
+-- 表单管理
+INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_FORM_PATH,DYNAMIC_FORM_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'工作流-行政-员工请假-表单','static','/pages/form/workflow/staff-leave/start-form.vue',null,null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_FORM_PATH,DYNAMIC_FORM_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705601,2043270536503705600,'部门领导审批-表单','static','/pages/form/workflow/staff-leave/dept-leader-approve-form.vue',null,null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_FORM_PATH,DYNAMIC_FORM_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705602,2043270536503705600,'人力资源确认-表单','static','/pages/form/workflow/staff-leave/hr-confirm-form.vue',null,null,1,current_timestamp(),1,current_timestamp());
 
 
 -- 系统公告

@@ -53,7 +53,7 @@ public class VitaApplicationRunner implements ApplicationRunner {
         Connection connection = SqlSessionUtils.getSqlSession(sqlSessionFactory).getConnection();
         DatabaseMetaData metaData = connection.getMetaData();
         String databaseProductName = metaData.getDatabaseProductName();
-        log.info("The database name is: {}", databaseProductName);
+        log.info("Database Name: {}", databaseProductName);
     }
 
     /**
@@ -73,7 +73,7 @@ public class VitaApplicationRunner implements ApplicationRunner {
                 FileUtil.mkdir(location);
                 log.info("The multipart location has been created.");
             }
-            log.info("Multipart location: {}", path);
+            log.info("Multipart Location: {}", path);
         }
     }
 

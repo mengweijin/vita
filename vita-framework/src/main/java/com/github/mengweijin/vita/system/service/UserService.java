@@ -107,7 +107,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(UserBO userBO) {
-        UserDO userDO = MapstructUtils.getInstance().convert(userBO, UserDO.class);
+        UserDO userDO = MapstructUtils.getConverter().convert(userBO, UserDO.class);
         // 用户
         if(userBO.getId() == null) {
             // 新增
@@ -259,8 +259,6 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         vo.setRoles(LoginHelper.getRoleList());
         vo.setPermissions(LoginHelper.getPermissionList());
         vo.setToken(LoginHelper.getToken());
-        vo.setDeptName(deptService.getNameById(user.getDeptId()));
-        vo.setAvatar(AopUtils.getAopProxy(this).getAvatarById(user.getId()));
         return vo;
     }
 
@@ -268,7 +266,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         UserDO user = this.getById(id);
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(id);
         Set<Long> postIds = userPostService.getPostIdsByUserId(id);
-        UserBO bo = MapstructUtils.getInstance().convert(user, UserBO.class);
+        UserBO bo = MapstructUtils.getConverter().convert(user, UserBO.class);
         bo.setRoleIds(new ArrayList<>(roleIds));
         bo.setPostIds(new ArrayList<>(postIds));
         return bo;
@@ -279,7 +277,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         UserDO user = this.getById(id);
         Set<Long> roleIds = userRoleService.getRoleIdsByUserId(id);
         Set<Long> postIds = userPostService.getPostIdsByUserId(id);
-        UserProfileVO vo = MapstructUtils.getInstance().convert(user, UserProfileVO.class);
+        UserProfileVO vo = MapstructUtils.getConverter().convert(user, UserProfileVO.class);
         vo.setRoleIds(roleIds);
         vo.setPostIds(postIds);
 
@@ -333,7 +331,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
             key = "#bo.id + ''")
     @Transactional(rollbackFor = Exception.class)
     public boolean updateBasicInformation(UserBasicInformationBO bo) {
-        UserDO userDO = MapstructUtils.getInstance().convert(bo, UserDO.class);
+        UserDO userDO = MapstructUtils.getConverter().convert(bo, UserDO.class);
         boolean bool = AopUtils.getAopProxy(this).updateById(userDO);
 
         if(StrUtil.isNotBlank(bo.getAvatar())) {

@@ -19,6 +19,8 @@ const tableRef = useTemplateRef("tableRef");
 const treeProps = reactive({
   // 父子节点默认联动
   checkStrictly: false,
+  children: 'children',
+  hasChildren: 'hasChildren',
 });
 
 const tableData = ref([]);
@@ -30,6 +32,9 @@ const queryParams = reactive({
   code: undefined,
   disabled: undefined,
   name: undefined,
+  pageCurrent: 1,
+  pageSize: 10,
+  pageTotal: 0,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -41,9 +46,28 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  categoryApi.list(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
+  categoryApi.pageRoot(queryParams).then((res) => {
+    tableData.value = res.pageRecords;
+    tableData.value.forEach((item) => {
+      // 只有根节点才有 hasChildren 属性，子节点没有该属性。
+      item.hasChildren = true;
+    });
+    queryParams.pageTotal = res.pageTotal;
     loading.value = false;
+  });
+};
+
+/**
+ * 加载子节点数据
+ * @param row 父节点数据
+ * @param treeNode 树节点对象
+ * @param resolve 加载完成回调函数，参数为子节点数据数组
+ */
+const loadNodeData = (row, treeNode, resolve) => {
+  categoryApi.listChildrenByParentId(row.id).then((res) => {
+    // 转树
+    let tree = utils.toArrayTree(res, { sortKey: "seq" });
+    resolve(tree);
   });
 };
 
@@ -76,6 +100,12 @@ const handleDelete = (ids) => {
 const handleBatchDelete = () => {
   const ids = selected.value.map((item) => item.id).join();
   handleDelete(ids);
+};
+
+const handlePageChange = (currentPage, pageSize) => {
+  queryParams.pageCurrent = currentPage;
+  queryParams.pageSize = pageSize;
+  loadTableData();
 };
 
 onMounted(() => {
@@ -156,8 +186,8 @@ onMounted(() => {
 
   <!-- 表格 -->
   <div class="vt-table">
-    <el-table ref="tableRef" v-loading="loading" :data="tableData" :tree-props="treeProps" :size="size" row-key="id"
-      height="100%" stripe border show-overflow-tooltip highlight-current-row
+    <el-table ref="tableRef" v-loading="loading" :data="tableData" lazy :tree-props="treeProps" :size="size"
+      row-key="id" :load="loadNodeData" height="100%" stripe border show-overflow-tooltip highlight-current-row
       @selection-change="(val) => selected = val">
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
@@ -219,14 +249,14 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination background layout="total, sizes, prev, pager, next, jumper"
+      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal" @change="handlePageChange" />
   </div>
 
   <CategoryEdit ref="categoryEditRef" @refresh-table="loadTableData"></CategoryEdit>
 </template>
 
-<style scoped>
-.vt-table {
-  /* 分页组件：42px; */
-  height: calc(var(--vt-table-height) + 42px);
-}
-</style>
+
+<style scoped></style>

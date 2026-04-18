@@ -1,0 +1,35 @@
+package com.github.mengweijin.vita.workflow.warm;
+
+import com.github.mengweijin.vita.form.domain.vo.FormVO;
+import com.github.mengweijin.vita.form.service.FormService;
+import lombok.AllArgsConstructor;
+import org.dromara.warm.flow.core.dto.Tree;
+import org.dromara.warm.flow.ui.service.FormPathService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ *
+ * @author mengweijin
+ * @since 2026/4/12
+ */
+@Service
+@AllArgsConstructor
+public class WarmFlowFormPathServiceImpl implements FormPathService {
+
+    private FormService formService;
+
+    @Override
+    public List<Tree> queryFormPath() {
+        List<FormVO> list = formService.listVo();
+        return list.stream().map(f -> {
+            Tree tree = new Tree();
+            tree.setId(f.getId().toString());
+            tree.setName(f.getName());
+            tree.setParentId(f.getParentId() == null ? null : f.getParentId().toString());
+            tree.setChildren(null);
+            return tree;
+        }).toList();
+    }
+}

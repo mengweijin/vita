@@ -99,7 +99,7 @@ public class RoleController {
     public RoleVO queryDefaultRole() {
         String defaultRoleCode = vitaProperties.getUser().getDefaultRoleCode();
         RoleDO roleDO = roleService.getByCode(defaultRoleCode);
-        return MapstructUtils.getInstance().convert(roleDO, RoleVO.class);
+        return MapstructUtils.getConverter().convert(roleDO, RoleVO.class);
     }
 
     /**

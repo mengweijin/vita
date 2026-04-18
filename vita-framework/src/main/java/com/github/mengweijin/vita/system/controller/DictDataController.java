@@ -86,7 +86,7 @@ public class DictDataController {
     @GetMapping("/query/by/code/{code}")
     public List<DictDataVO> queryByCode(@PathVariable("code") String code) {
         List<DictDataDO> list = dictDataService.queryByCode(code);
-        return MapstructUtils.getInstance().convert(list, DictDataVO.class);
+        return MapstructUtils.getConverter().convert(list, DictDataVO.class);
     }
 
     /**

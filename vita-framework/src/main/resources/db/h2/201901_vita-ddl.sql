@@ -442,18 +442,21 @@ create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEFINITION(TABLE_NAME, PROP_NA
 
 
 ------------------------------------------------
--- VT_WORKFLOW_ 表
+-- 表单管理表
 ------------------------------------------------
-drop table IF EXISTS VT_WORKFLOW_FORM;
-create TABLE VT_WORKFLOW_FORM (
+drop table IF EXISTS VT_FORM;
+create TABLE VT_FORM (
   ID                            bigint NOT NULL comment '主键ID',
+  PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
   NAME                          varchar(255) NOT NULL comment '表单名称',
-  TYPE                          varchar(64) NOT NULL comment '表单类型。关联字典：vt_flow_form_type',
-  FORM_PATH                     varchar(225) NOT NULL comment '表单路由路径',
+  TYPE                          varchar(64) NOT NULL comment '表单类型。关联字典：vt_form_type',
+  STATIC_FORM_PATH              varchar(225) DEFAULT NULL comment '静态表单路由路径',
+  DYNAMIC_FORM_ID               bigint DEFAULT NULL comment '动态表单 ID',
+  REMARK                        varchar(500) DEFAULT NULL comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-comment on table VT_WORKFLOW_FORM is '流程表单表';
+comment on table VT_FORM is '表单管理表';

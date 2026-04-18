@@ -28,4 +28,5 @@ public final class CacheNames {
 
     public static final String CAPTCHA = "CAPTCHA#1m";
 
+    public static final String CATEGORY_ID_TO_NAME = "CATEGORY_ID_TO_NAME#1d";
 }

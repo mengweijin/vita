@@ -14,7 +14,7 @@ public final class MapstructUtils {
 
     private static volatile Converter instance = null;
 
-    public static Converter getInstance() {
+    public static Converter getConverter() {
         if (instance == null) {
             synchronized (MapstructUtils.class) {
                 if (instance == null) {

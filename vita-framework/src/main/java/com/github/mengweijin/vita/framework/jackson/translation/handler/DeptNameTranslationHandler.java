@@ -1,9 +1,12 @@
 package com.github.mengweijin.vita.framework.jackson.translation.handler;
 
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.system.service.DeptService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Component;
  * @author mengweijin
  * @since 2023/5/20
  */
+@Slf4j
 @Component
 @AllArgsConstructor
 public class DeptNameTranslationHandler implements ITranslationHandler {
@@ -25,10 +29,13 @@ public class DeptNameTranslationHandler implements ITranslationHandler {
 
     @Override
     public String translation(Object value, Translation translation) {
-        if (value instanceof Long id) {
+        try {
+            long id = NumberUtil.parseLong(StrUtil.toStringOrNull(value));
             return deptService.getNameById(id);
+        } catch (NumberFormatException e) {
+            log.error(e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 
 }

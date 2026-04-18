@@ -44,6 +44,10 @@ public class LoginHelper {
         return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getUsername).orElse(null);
     }
 
+    public static Long getSessionUserDeptId() {
+        return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getDeptId).orElse(null);
+    }
+
     public static String getToken() {
         return StpUtil.getTokenValue();
     }

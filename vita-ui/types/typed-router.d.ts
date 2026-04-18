@@ -48,6 +48,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/form/manage/': RouteRecordInfo<
+      '/form/manage/',
+      '/form/manage',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/home/': RouteRecordInfo<
       '/home/',
       '/home',
@@ -237,13 +244,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/workflow/form/': RouteRecordInfo<
-      '/workflow/form/',
-      '/workflow/form',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/workflow/warm/': RouteRecordInfo<
       '/workflow/warm/',
       '/workflow/warm',
@@ -279,6 +279,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/error/404.vue': {
       routes:
         | '/error/404'
+      views:
+        | never
+    }
+    'src/pages/form/manage/index.vue': {
+      routes:
+        | '/form/manage/'
       views:
         | never
     }
@@ -441,12 +447,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/workflow/definition/index.vue': {
       routes:
         | '/workflow/definition/'
-      views:
-        | never
-    }
-    'src/pages/workflow/form/index.vue': {
-      routes:
-        | '/workflow/form/'
       views:
         | never
     }

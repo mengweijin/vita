@@ -105,6 +105,7 @@ public class LoginService {
         loginUser.setUsername(user.getUsername());
         loginUser.setNickname(user.getNickname());
         loginUser.setToken(StpUtil.getTokenValue());
+        loginUser.setDeptId(user.getDeptId());
         return loginUser;
     }
 

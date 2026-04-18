@@ -36,7 +36,12 @@ public enum ETranslateType implements IEnum<String> {
     /**
      * 字典数据值 转 字典标签名
      */
-    DICT_DATA_TO_LABEL("DICT_DATA_TO_LABEL");
+    DICT_DATA_TO_LABEL("DICT_DATA_TO_LABEL"),
+
+    /**
+     * 分类 id 转 名称
+     */
+    CATEGORY_ID_TO_NAME("CATEGORY_ID_TO_NAME");
 
     private final String value;
 

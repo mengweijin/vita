@@ -26,14 +26,13 @@ const props = defineProps({
 const options = ref([]);
 
 const values = computed(() => {
-	if (!props.value || utils.isEmpty(props.value)) {
+	if (utils.isBlank(props.value)) {
 		return [];
 	}
 	if (Array.isArray(props.value)) {
 		return props.value;
-	} else {
-		return String(props.value).split(props.separator);
 	}
+	return String(props.value).split(props.separator);
 });
 
 onMounted(() => {

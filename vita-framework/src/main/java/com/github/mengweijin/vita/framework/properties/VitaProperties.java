@@ -76,6 +76,9 @@ public class VitaProperties {
     @Valid
     private UserProperties user = new UserProperties();
 
+    @Valid
+    private WebHookProperties webhook = new WebHookProperties();
+
     @Data
     public static class UserProperties {
 
@@ -108,5 +111,20 @@ public class VitaProperties {
         @Max(Integer.MAX_VALUE)
         private Long secondaryAuthValidityPeriod = 180L;
 
+    }
+
+    @Data
+    public static class WebHookProperties {
+        /**
+         * 是否启用 webhook 功能。${vita.webhook.enabled}
+         */
+        @NotNull
+        private Boolean enabled = false;
+
+        /**
+         * 企业微信 Webhook 地址。${vita.webhook.wechat}
+         * 格式：<a href="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx">https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx</a>
+         */
+        private String wechat;
     }
 }
