@@ -292,7 +292,7 @@ onMounted(() => {
                 >
                   <template #icon>
                     <el-icon :size="size">
-                      <Icon icon="ep:circle-check-filled"></Icon>
+                      <Icon icon="ri:checkbox-circle-line"></Icon>
                     </el-icon>
                   </template>
                 </el-button>
@@ -310,7 +310,7 @@ onMounted(() => {
                 >
                   <template #icon>
                     <el-icon :size="size">
-                      <Icon icon="ep:circle-close-filled"></Icon>
+                      <Icon icon="ri:prohibited-2-line"></Icon>
                     </el-icon>
                   </template>
                 </el-button>
