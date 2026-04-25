@@ -24,7 +24,7 @@ public abstract class BaseController {
      * 设置请求参数
      * 建议使用Restful风格提供接口获取数据，前后端分离，而不是在后台通过在request中获取数据
      */
-    public void setAttribute(String key, Object value){
+    public void setAttribute(String key, Object value) {
         ServletUtils.getRequest().setAttribute(key, value);
     }
 

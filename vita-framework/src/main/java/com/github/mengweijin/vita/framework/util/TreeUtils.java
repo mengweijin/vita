@@ -1,14 +1,14 @@
 package com.github.mengweijin.vita.framework.util;
 
+import cn.hutool.v7.core.bean.BeanUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import cn.hutool.v7.core.bean.BeanUtil;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.core.math.NumberUtil;
-import cn.hutool.v7.core.text.StrUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,10 +97,10 @@ public class TreeUtils {
     }
 
     private static Integer parseInt(Object sortKeyValue) {
-        if(sortKeyValue == null) {
+        if (sortKeyValue == null) {
             return Integer.MAX_VALUE;
         }
-        if(!NumberUtil.isNumber(StrUtil.toString(sortKeyValue))) {
+        if (!NumberUtil.isNumber(StrUtil.toString(sortKeyValue))) {
             throw new ServerException("The sortKey value is not a Integer! Please check your data or config[TreeConfig]!");
         }
         return (Integer) sortKeyValue;

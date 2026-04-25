@@ -5,10 +5,10 @@ import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.UserRoleDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserRoleVO;
@@ -78,7 +78,7 @@ public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO,
 
         this.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
 
-        if(CollUtil.isEmpty(roleIds)) {
+        if (CollUtil.isEmpty(roleIds)) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO,
         }).toList();
         boolean saved = AopUtils.getAopProxy(this).saveBatch(list, Constants.DEFAULT_BATCH_SIZE);
 
-        if(saved) {
+        if (saved) {
             // 保存用户角色变动日志
             for (Long userId : addIds) {
                 logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userId, List.of(), List.of(roleId));
@@ -123,7 +123,7 @@ public class UserRoleService extends BaseVitaService<UserRoleMapper, UserRoleDO,
     public boolean removeByRoleIdInUserIds(Long roleId, List<Long> userIds) {
         boolean removed = this.lambdaUpdate().eq(UserRoleDO::getRoleId, roleId).in(UserRoleDO::getUserId, userIds).remove();
 
-        if(removed) {
+        if (removed) {
             // 保存用户角色变动日志
             for (Long userId : userIds) {
                 logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userId, List.of(roleId), List.of());

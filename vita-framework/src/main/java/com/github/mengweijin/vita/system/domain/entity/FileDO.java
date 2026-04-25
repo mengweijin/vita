@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -28,28 +28,24 @@ import lombok.EqualsAndHashCode;
 public class FileDO extends BaseEntity {
 
     /**
-    * 原始文件名称
-    */
-    private String name;
-
-    /**
-    * 文件后缀
-    */
-    private String suffix;
-
-    /**
-    * 文件存储路径
-    */
-    private String storagePath;
-
-    /**
-     * MD5 码
-     */
-    private String md5;
-
-    /**
      * 逻辑删除。[Y, N]
      */
     @TableLogic
     protected String deleted;
+    /**
+     * 原始文件名称
+     */
+    private String name;
+    /**
+     * 文件后缀
+     */
+    private String suffix;
+    /**
+     * 文件存储路径
+     */
+    private String storagePath;
+    /**
+     * MD5 码
+     */
+    private String md5;
 }

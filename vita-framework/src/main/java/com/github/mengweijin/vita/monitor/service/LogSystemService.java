@@ -16,8 +16,8 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * <p>
- *  Logs Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Logs Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

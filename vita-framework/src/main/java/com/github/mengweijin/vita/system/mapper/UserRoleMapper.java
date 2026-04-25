@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  UserRole Mapper
+ * UserRole Mapper
  * </p>
  *
  * @author mengweijin

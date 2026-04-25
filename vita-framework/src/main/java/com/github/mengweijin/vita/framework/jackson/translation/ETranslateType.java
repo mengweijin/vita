@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * 翻译类型枚举
+ *
  * @author mengweijin
  * @since 2023/5/20
  */

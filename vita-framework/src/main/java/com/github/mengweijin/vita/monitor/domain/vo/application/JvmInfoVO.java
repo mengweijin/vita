@@ -1,8 +1,5 @@
 package com.github.mengweijin.vita.monitor.domain.vo.application;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import cn.hutool.v7.core.date.DateFormatPool;
 import cn.hutool.v7.core.date.TimeUtil;
 import cn.hutool.v7.core.io.file.FileUtil;
@@ -10,6 +7,9 @@ import cn.hutool.v7.extra.management.JavaRuntimeInfo;
 import cn.hutool.v7.extra.management.JvmInfo;
 import cn.hutool.v7.extra.management.RuntimeInfo;
 import cn.hutool.v7.extra.management.UserInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;

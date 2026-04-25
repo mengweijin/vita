@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  LogLogin Mapper
+ * LogLogin Mapper
  * </p>
  *
  * @author mengweijin
@@ -22,8 +22,9 @@ public interface LogLoginMapper extends BaseVitaMapper<LogLoginDO, LogLoginVO> {
 
     /**
      * 查询时间范围内的日用户登录次数
+     *
      * @param startTime 开始时间
-     * @param endTime 结束时间
+     * @param endTime   结束时间
      * @return List {@link HomeConsoleChartDataVO}
      */
     List<HomeConsoleChartDataVO> selectDailyUserLoginCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime);

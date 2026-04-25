@@ -14,6 +14,7 @@ import java.util.Set;
 
 /**
  * 自定义权限验证接口扩展
+ *
  * @author mengweijin
  * @since 2023/6/22
  */

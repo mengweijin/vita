@@ -4,8 +4,8 @@ import cn.hutool.v7.core.array.ArrayUtil;
 import cn.hutool.v7.crypto.SecureUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.framework.exception.ClientException;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -96,14 +96,14 @@ public class LocalCacheRepeatSubmitAspect {
         boolean flag = false;
         if (obj instanceof Collection<?> collection) {
             for (Object value : collection) {
-                if(value instanceof MultipartFile) {
+                if (value instanceof MultipartFile) {
                     flag = true;
                     break;
                 }
             }
         } else if (obj instanceof Map map) {
             for (Object value : map.values()) {
-                if(value instanceof MultipartFile) {
+                if (value instanceof MultipartFile) {
                     flag = true;
                     break;
                 }

@@ -4,8 +4,8 @@ import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.collection.ListUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.framework.enums.dict.EDiffType;
+import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.Diff;
@@ -59,15 +59,15 @@ public final class DiffUtils {
 
     public static List<DiffModel> diffMaps(Map<String, String> m1, Map<String, String> m2, String... ignoreKeys) {
         List<DiffModel> diff = new ArrayList<>();
-        if(m1 == null && m2 == null) {
+        if (m1 == null && m2 == null) {
             return diff;
         }
 
         List<String> ignoreKeyList = ListUtil.of(ignoreKeys);
 
-        if(m1 == null) {
+        if (m1 == null) {
             for (Map.Entry<String, String> entry : m2.entrySet()) {
-                if(!ignoreKeyList.contains(entry.getKey())) {
+                if (!ignoreKeyList.contains(entry.getKey())) {
                     DiffModel diffModel = new DiffModel();
                     diffModel.setDiffType(EDiffType.ADDED);
                     diffModel.setFieldName(entry.getKey());
@@ -79,9 +79,9 @@ public final class DiffUtils {
             return diff;
         }
 
-        if(m2 == null) {
+        if (m2 == null) {
             for (Map.Entry<String, String> entry : m1.entrySet()) {
-                if(!ignoreKeyList.contains(entry.getKey())) {
+                if (!ignoreKeyList.contains(entry.getKey())) {
                     DiffModel diffModel = new DiffModel();
                     diffModel.setDiffType(EDiffType.REMOVED);
                     diffModel.setFieldName(entry.getKey());
@@ -107,7 +107,7 @@ public final class DiffUtils {
                 continue;
             }
 
-            if(v1 == null) {
+            if (v1 == null) {
                 diff.add(new DiffModel(EDiffType.ADDED, key, null, v2));
             } else if (v2 == null) {
                 diff.add(new DiffModel(EDiffType.REMOVED, key, v1, null));
@@ -143,9 +143,9 @@ public final class DiffUtils {
 
     private static @NonNull DiffModel getDiffModel(Diff<?> diff) {
         DiffModel diffModel = new DiffModel();
-        if(diff.getLeft() == null) {
+        if (diff.getLeft() == null) {
             diffModel.setDiffType(EDiffType.ADDED);
-        } else if(diff.getRight() == null) {
+        } else if (diff.getRight() == null) {
             diffModel.setDiffType(EDiffType.REMOVED);
         } else {
             diffModel.setDiffType(EDiffType.MODIFIED);

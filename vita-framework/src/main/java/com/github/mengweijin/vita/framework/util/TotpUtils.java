@@ -14,6 +14,7 @@ import java.time.Instant;
 
 /**
  * 手机客户端可以使用：Microsoft Authenticator
+ *
  * @author mengweijin
  * @since 2023/4/16
  */
@@ -29,8 +30,8 @@ public class TotpUtils {
     /**
      *
      * @param secretKey 共享密钥。由 generateSecretKey() 生成共享密钥的Base32表示形式。
-     * @param label 可以填写用户的名字、或登录名。可以在客户端可以清楚的标识用户信息。
-     * @param issuer 代表应用名称，系统名称、代号等，比如 Google。
+     * @param label     可以填写用户的名字、或登录名。可以在客户端可以清楚的标识用户信息。
+     * @param issuer    代表应用名称，系统名称、代号等，比如 Google。
      * @return 图片 Base64 编码字符串
      */
     public static String generateQrCode(String secretKey, String label, String issuer) {

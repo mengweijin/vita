@@ -2,9 +2,9 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.domain.bo.MessageBO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -33,12 +33,12 @@ public class MessageDO extends BaseEntity {
     private String category;
 
     /**
-    * 名称
-    */
+     * 名称
+     */
     private String title;
 
     /**
-    * 内容
-    */
+     * 内容
+     */
     private String content;
 }

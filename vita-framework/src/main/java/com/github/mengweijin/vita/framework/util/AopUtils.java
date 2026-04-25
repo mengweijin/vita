@@ -7,7 +7,8 @@ import org.springframework.aop.framework.AopContext;
  */
 public final class AopUtils {
 
-    private AopUtils() {}
+    private AopUtils() {
+    }
 
     /**
      * 获取 aop 代理对象。

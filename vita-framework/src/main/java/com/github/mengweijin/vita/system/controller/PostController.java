@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.PostBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Post Controller
+ * Post Controller
  * </p>
  *
  * @author mengweijin
@@ -47,6 +47,7 @@ public class PostController {
      * <p>
      * Get Post page by Post
      * </p>
+     *
      * @param page page
      * @param post {@link PostDO}
      * @return Page<Post>
@@ -62,6 +63,7 @@ public class PostController {
      * <p>
      * Get Post list by Post
      * </p>
+     *
      * @param post {@link PostDO}
      * @return List<Post>
      */
@@ -75,6 +77,7 @@ public class PostController {
      * <p>
      * Get Post by id
      * </p>
+     *
      * @param id id
      * @return Post
      */
@@ -87,6 +90,7 @@ public class PostController {
      * <p>
      * Add Post
      * </p>
+     *
      * @param post {@link PostBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -101,6 +105,7 @@ public class PostController {
      * <p>
      * Update Post
      * </p>
+     *
      * @param post {@link PostBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -115,6 +120,7 @@ public class PostController {
      * <p>
      * Delete Post by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  LogLogin Mapper
+ * LogLogin Mapper
  * </p>
  *
  * @author mengweijin

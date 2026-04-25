@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Oss Mapper
+ * Oss Mapper
  * </p>
  *
  * @author mengweijin

@@ -7,14 +7,14 @@ import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.http.server.servlet.ServletUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
@@ -125,9 +125,9 @@ public class LocalCacheRateLimitAspect {
         String cacheKey = CACHE_NAME_PREFIX + strategy.name() + Const.UNDERSCORE;
         HttpServletRequest request = ServletUtils.getRequest();
 
-        if(strategy == ERateLimitStrategy.API) {
+        if (strategy == ERateLimitStrategy.API) {
             cacheKey += joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()";
-        } else if(strategy == ERateLimitStrategy.IP) {
+        } else if (strategy == ERateLimitStrategy.IP) {
             cacheKey += ServletUtil.getClientIP(request);
         }
         return cacheKey;

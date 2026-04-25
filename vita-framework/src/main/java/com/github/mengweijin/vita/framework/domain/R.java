@@ -89,6 +89,6 @@ public class R<T> implements Serializable {
      * @param message message
      */
     public void appendMessage(String message) {
-        this.msg = this.msg == null ? message : (this.msg +  " | " + message);
+        this.msg = this.msg == null ? message : (this.msg + " | " + message);
     }
 }

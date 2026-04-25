@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,27 +27,27 @@ import lombok.EqualsAndHashCode;
 public class RoleDO extends BaseEntity {
 
     /**
-    * 角色名称
-    */
+     * 角色名称
+     */
     private String name;
 
     /**
-    * 角色编码
-    */
+     * 角色编码
+     */
     private String code;
 
     /**
-    * 展示顺序
-    */
+     * 展示顺序
+     */
     private Integer seq;
 
     /**
-    * 是否禁用。[Y, N]
-    */
+     * 是否禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

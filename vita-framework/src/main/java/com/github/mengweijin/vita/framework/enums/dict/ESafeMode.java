@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * 二级认证模式
+ *
  * @author mengweijin
  * @since 2023/5/20
  */

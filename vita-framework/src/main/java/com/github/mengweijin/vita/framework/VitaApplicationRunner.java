@@ -66,10 +66,10 @@ public class VitaApplicationRunner implements ApplicationRunner {
      */
     private void initMultipartTempLocation() {
         String location = multipartProperties.getLocation();
-        if(StrUtil.isNotBlank(location)) {
+        if (StrUtil.isNotBlank(location)) {
             String path = Paths.get(location).toAbsolutePath().toString();
             File tempLocation = FileUtil.file(location);
-            if(!tempLocation.exists()) {
+            if (!tempLocation.exists()) {
                 FileUtil.mkdir(location);
                 log.info("The multipart location has been created.");
             }

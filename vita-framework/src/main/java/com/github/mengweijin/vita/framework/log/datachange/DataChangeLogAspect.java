@@ -3,12 +3,12 @@ package com.github.mengweijin.vita.framework.log.datachange;
 import cn.hutool.v7.core.map.MapUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.jdbc.template.ColumnUpperCaseMapRowMapper;
 import com.github.mengweijin.vita.framework.mybatis.MybatisMapperHelper;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -40,23 +40,18 @@ import java.util.Map;
 @AllArgsConstructor
 public class DataChangeLogAspect {
 
-    private JdbcTemplate jdbcTemplate;
-
-    private MybatisMapperHelper mybatisMapperHelper;
-
-    private LogDataChangeService logDataChangeService;
-
-    private static final SpelExpressionParser SPEL_EXPRESSION_PARSER = new SpelExpressionParser();
-
-    private static final String SQL_TEMPLATE = "SELECT * FROM {} WHERE {} = ?";
-
-    private static final List<String> IGNORE_COLUMNS = Arrays.asList("CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME");
-
     @SuppressWarnings({"java:S2386"})
     public static final List<String> IGNORE_FIELDS = Arrays.asList("createBy", "createTime", "updateBy", "updateTime", "createByName", "updateByName");
+    private static final SpelExpressionParser SPEL_EXPRESSION_PARSER = new SpelExpressionParser();
+    private static final String SQL_TEMPLATE = "SELECT * FROM {} WHERE {} = ?";
+    private static final List<String> IGNORE_COLUMNS = Arrays.asList("CREATE_BY", "CREATE_TIME", "UPDATE_BY", "UPDATE_TIME");
+    private JdbcTemplate jdbcTemplate;
+    private MybatisMapperHelper mybatisMapperHelper;
+    private LogDataChangeService logDataChangeService;
 
     @Pointcut("@annotation(dataChangeLog)")
-    public void pointCut(DataChangeLog dataChangeLog) {}
+    public void pointCut(DataChangeLog dataChangeLog) {
+    }
 
     @Around("pointCut(dataChangeLog)")
     public Object around(ProceedingJoinPoint joinPoint, DataChangeLog dataChangeLog) throws Throwable {

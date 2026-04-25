@@ -7,6 +7,7 @@ import org.springframework.cache.interceptor.SimpleKeyGenerator;
 /**
  * Key 默认生成规则参考：{@link SimpleKeyGenerator}
  * UNLESS 默认不加的好处是，也缓存为空的结果，来避免缓存穿透。
+ *
  * @author mengweijin
  * @since 2022/9/3
  */

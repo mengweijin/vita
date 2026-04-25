@@ -31,7 +31,7 @@ import java.util.Arrays;
 
 /**
  * 流程定义表 FlowDefinition Controller
- *
+ * <p>
  * {@link org.dromara.warm.flow.ui.controller.WarmFlowController}
  *
  * @author mengweijin
@@ -49,7 +49,8 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     /**
      * Get FlowDefinitionVO page by FlowDefinitionDO
-     * @param pageQuery pageQuery
+     *
+     * @param pageQuery      pageQuery
      * @param flowDefinition {@link FlowDefinition}
      * @return PageQuery<FlowDefinitionVO>
      */
@@ -71,6 +72,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     /**
      * Add FlowDefinition
+     *
      * @param flowDefinition {@link FlowDefinition}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -83,6 +85,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     /**
      * Update FlowDefinition
+     *
      * @param flowDefinition {@link FlowDefinition}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -95,6 +98,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     /**
      * Remove FlowDefinition by id(s), Multiple ids can be separated by commas ",".
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

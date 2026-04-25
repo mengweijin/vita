@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- *  Role Menu Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Role Menu Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

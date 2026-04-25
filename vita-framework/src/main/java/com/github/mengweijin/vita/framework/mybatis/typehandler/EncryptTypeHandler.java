@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 /**
  * 自动加解密类型处理器。写入时加密，读取时解密。
+ *
  * @author mengweijin
  * @since 2026/4/4
  */

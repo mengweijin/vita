@@ -39,7 +39,7 @@ public class SseConnector {
     public SseEmitter connect(Long userId) {
         Cache cache = CacheFactory.getSseEmitterMessageCache();
         SseEmitter sseEmitter = cache.get(userId, SseEmitter.class);
-        if(sseEmitter != null) {
+        if (sseEmitter != null) {
             // 如果存在旧的连接，重新 put 以刷新过期时间
             cache.put(userId, sseEmitter);
             return sseEmitter;

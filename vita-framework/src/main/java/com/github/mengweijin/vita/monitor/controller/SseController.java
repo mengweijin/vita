@@ -25,6 +25,7 @@ public class SseController {
 
     /**
      * 订阅 SSE 连接
+     *
      * @return SseEmitter
      */
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

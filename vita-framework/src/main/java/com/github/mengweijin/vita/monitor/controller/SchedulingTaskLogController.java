@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskLogBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskLogVO;
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  SchedulingTaskLog Controller
+ * SchedulingTaskLog Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class SchedulingTaskLogController {
      * <p>
      * Get SchedulingTaskLogDO page by SchedulingTaskLogDO
      * </p>
-     * @param page page
+     *
+     * @param page              page
      * @param schedulingTaskLog {@link SchedulingTaskLogDO}
      * @return Page<SchedulingTaskLogDO>
      */
@@ -64,6 +65,7 @@ public class SchedulingTaskLogController {
      * <p>
      * Get SchedulingTaskLogDO list by SchedulingTaskLogDO
      * </p>
+     *
      * @param schedulingTaskLog {@link SchedulingTaskLogDO}
      * @return List<SchedulingTaskLogDO>
      */
@@ -77,6 +79,7 @@ public class SchedulingTaskLogController {
      * <p>
      * Get LogLogin by id
      * </p>
+     *
      * @param id id
      * @return SchedulingTaskLogDO
      */
@@ -89,6 +92,7 @@ public class SchedulingTaskLogController {
      * <p>
      * Add SchedulingTaskLogDO
      * </p>
+     *
      * @param bo {@link SchedulingTaskLogBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -103,6 +107,7 @@ public class SchedulingTaskLogController {
      * <p>
      * Update SchedulingTaskLogDO
      * </p>
+     *
      * @param bo {@link SchedulingTaskLogBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -117,6 +122,7 @@ public class SchedulingTaskLogController {
      * <p>
      * Delete SchedulingTaskLogDO by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

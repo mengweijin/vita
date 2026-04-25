@@ -33,10 +33,10 @@ class UserNickNameInnerInterceptorTest {
     @Test
     void plainSelectTest() throws JSQLParserException {
         String sql = """
-            select * from SYS_DEPT 
-            where TYPE = 'AA' AND CODE = '1001' 
-            order by SEQ DESC
-        """;
+                    select * from SYS_DEPT 
+                    where TYPE = 'AA' AND CODE = '1001' 
+                    order by SEQ DESC
+                """;
 
         Statement statement = CCJSqlParserUtil.parse(sql);
 
@@ -79,10 +79,10 @@ class UserNickNameInnerInterceptorTest {
     @Test
     void plainSelectLeftJoinTest() throws JSQLParserException {
         String sql = """
-            select dict.*, user.nick_name 
-            from SYS_DICT dict 
-            left join SYS_USER user on user.id = dict.create_by
-        """;
+                    select dict.*, user.nick_name 
+                    from SYS_DICT dict 
+                    left join SYS_USER user on user.id = dict.create_by
+                """;
 
         Statement statement = CCJSqlParserUtil.parse(sql);
 
@@ -118,13 +118,13 @@ class UserNickNameInnerInterceptorTest {
     @Test
     void plainSelectLeftJoinWithSubQueryTest() throws JSQLParserException {
         String sql = """
-            select t1.*, user.nick_name from (
-                select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
-                where TYPE = 'AA' AND CODE = '1001' 
-                order by SEQ DESC
-            ) as t1
-            left join SYS_USER user on user.id = t1.create_by
-        """;
+                    select t1.*, user.nick_name from (
+                        select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
+                        where TYPE = 'AA' AND CODE = '1001' 
+                        order by SEQ DESC
+                    ) as t1
+                    left join SYS_USER user on user.id = t1.create_by
+                """;
 
         Statement statement = CCJSqlParserUtil.parse(sql);
 
@@ -151,10 +151,10 @@ class UserNickNameInnerInterceptorTest {
     @Test
     void plainSelectAddLeftJoinWithSubQueryTest() throws JSQLParserException {
         String sql = """
-            select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
-            where TYPE = 'AA' AND CODE = '1001' 
-            order by SEQ DESC
-        """;
+                    select ID, NAME, CODE, CREATE_BY, CREATE_TIME from SYS_DEPT 
+                    where TYPE = 'AA' AND CODE = '1001' 
+                    order by SEQ DESC
+                """;
 
         Statement statement = CCJSqlParserUtil.parse(sql);
 

@@ -18,22 +18,21 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 public class SecondaryAuthHandleFactory implements InitializingBean {
 
+    private static final Map<ESafeMode, ISecondaryAuthHandler> CACHE_MAP = new ConcurrentHashMap<>();
     private final List<ISecondaryAuthHandler> openSafeValidateList;
 
-    private static final Map<ESafeMode, ISecondaryAuthHandler> CACHE_MAP = new ConcurrentHashMap<>();
+    public static ISecondaryAuthHandler getHandler(ESafeMode safeMode) {
+        return CACHE_MAP.get(safeMode);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         for (ISecondaryAuthHandler validate : openSafeValidateList) {
-            if(validate.supported() == null) {
+            if (validate.supported() == null) {
                 log.warn("{} : was not set supported safeMode!", validate.getClass().getName());
             }
             CACHE_MAP.put(validate.supported(), validate);
         }
-    }
-
-    public static ISecondaryAuthHandler getHandler(ESafeMode safeMode) {
-        return CACHE_MAP.get(safeMode);
     }
 
 }

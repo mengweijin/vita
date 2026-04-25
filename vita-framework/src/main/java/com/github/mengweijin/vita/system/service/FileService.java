@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
@@ -17,7 +18,6 @@ import com.github.mengweijin.vita.framework.util.AopUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.system.domain.entity.FileDO;
 import com.github.mengweijin.vita.system.domain.vo.FileVO;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.mapper.FileMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ import java.util.function.Supplier;
 
 /**
  * <p>
- *  File Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * File Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin
@@ -47,6 +47,22 @@ import java.util.function.Supplier;
 public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
 
     private VitaProperties vitaProperties;
+
+    public static void copyFile(MultipartFile multipartFile, String path) {
+        try {
+            FileUtil.copy(multipartFile.getInputStream(), FileUtil.file(path));
+        } catch (IOException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public static String getStoragePath(String dir, String suffix) {
+        LocalDateTime now = LocalDateTime.now();
+        String year = String.valueOf(now.getYear());
+        String month = CharSequenceUtil.padPre(String.valueOf(now.getMonthValue()), 2, "0");
+        String day = CharSequenceUtil.padPre(String.valueOf(now.getDayOfMonth()), 2, "0");
+        return dir + String.join(File.separator, year, month, day, IdUtil.simpleUUID()) + Const.DOT + suffix;
+    }
 
     @Override
     public LambdaQueryWrapper<FileDO> buildQueryWrapper(FileDO fileDO) {
@@ -100,22 +116,6 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
         return fileEntity;
     }
 
-    public static void copyFile(MultipartFile multipartFile, String path) {
-        try {
-            FileUtil.copy(multipartFile.getInputStream(), FileUtil.file(path));
-        } catch (IOException e) {
-            throw new ServerException(e);
-        }
-    }
-
-    public static String getStoragePath(String dir, String suffix) {
-        LocalDateTime now = LocalDateTime.now();
-        String year = String.valueOf(now.getYear());
-        String month = CharSequenceUtil.padPre(String.valueOf(now.getMonthValue()), 2, "0");
-        String day = CharSequenceUtil.padPre(String.valueOf(now.getDayOfMonth()), 2, "0");
-        return dir + String.join(File.separator, year, month, day, IdUtil.simpleUUID()) + Const.DOT + suffix;
-    }
-
     public Supplier<FileDO> getFileSupplierById(Long id) {
         return () -> {
             FileDO fileDO = this.getById(id);
@@ -135,7 +135,7 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
         List<FileDO> fileList = this.lambdaQuery().in(FileDO::getId, list).list();
 
         boolean removed = super.removeByIds(list);
-        if(removed) {
+        if (removed) {
             // 从磁盘物理删除文件
             fileList.forEach(f -> FileUtil.del(f.getStoragePath()));
         }

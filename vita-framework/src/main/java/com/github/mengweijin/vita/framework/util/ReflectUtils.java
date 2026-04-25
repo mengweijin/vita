@@ -1,15 +1,16 @@
 package com.github.mengweijin.vita.framework.util;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import cn.hutool.v7.core.reflect.ReflectUtil;
 import cn.hutool.v7.core.reflect.method.MethodUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Method;
 
 /**
  * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
+ *
  * @author mengweijin
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

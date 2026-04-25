@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 字典翻译
+ *
  * @author mengweijin
  * @since 2023/5/20
  */
@@ -29,7 +30,7 @@ public class DictDataLabelTranslationHandler implements ITranslationHandler {
     public String translation(Object value, Translation translation) {
         try {
             String dictValue = StrUtil.toStringOrNull(value);
-            if(StrUtil.isNotBlank(dictValue)) {
+            if (StrUtil.isNotBlank(dictValue)) {
                 return dictDataService.getLabelByCodeAndVal(translation.dictType(), dictValue);
             }
             return null;

@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.repeatable;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -7,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
@@ -17,8 +17,9 @@ import java.io.IOException;
  * <p>
  * 使用：
  * if (request instanceof RepeatedlyRequestWrapper wrapper) {
- *    String read = IoUtil.read(wrapper.getInputStream(), StandardCharsets.UTF_8);
+ * String read = IoUtil.read(wrapper.getInputStream(), StandardCharsets.UTF_8);
  * }
+ *
  * @author mengweijin
  */
 public class RepeatableFilter implements Filter {

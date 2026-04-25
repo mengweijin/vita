@@ -5,13 +5,13 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import cn.hutool.v7.json.JSONUtil;
-import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.jackson.wrapper.AbstractObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.framework.util.ServletUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -55,7 +55,8 @@ public class LogOperationAspect {
     private static final String REQUEST_BODY = "requestBody";
 
     @Pointcut("@annotation(logAnnotation)")
-    public void pointCut(Log logAnnotation) {}
+    public void pointCut(Log logAnnotation) {
+    }
 
     /**
      * Before 中要获取自定义注解参数，方法参数中的变量名称可以为任意值，但必须和 @annotation(logAnnotation) 中的值一致。
@@ -86,7 +87,7 @@ public class LogOperationAspect {
      * 拦截异常操作
      *
      * @param joinPoint 切点
-     * @param e 异常
+     * @param e         异常
      */
     @AfterThrowing(value = "pointCut(logAnnotation)", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Log logAnnotation, Exception e) {

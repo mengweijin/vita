@@ -31,6 +31,7 @@ public class IpRegionUtils {
 
     /**
      * ip 地址查询
+     *
      * @param ip ip
      * @return 国家|省|市|运营商。返回示例：中国|河北省|石家庄市|联通
      */
@@ -68,9 +69,9 @@ public class IpRegionUtils {
 
 
     private static Ip2Region initIp2Region() {
-        if(ip2Region == null) {
+        if (ip2Region == null) {
             synchronized (IpRegionUtils.class) {
-                if(ip2Region == null) {
+                if (ip2Region == null) {
                     ip2Region = build();
                 }
             }
@@ -81,6 +82,7 @@ public class IpRegionUtils {
     /**
      * 备注：Xdb 三种初始化输入的优先级：XdbInputStream -> XdbFile -> XdbPath
      * setXdbInputStream 仅方便使用者从 jar 包中加载 xdb 文件内容，这时 cachePolicy 只能设置为 Config.BufferCache
+     *
      * @return {@link Ip2Region}
      */
     private static Ip2Region build() {

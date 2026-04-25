@@ -9,8 +9,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *  LogDataChangeDO human readable 转换接口
- *  {@link LogDataChangeDO}
+ * LogDataChangeDO human readable 转换接口
+ * {@link LogDataChangeDO}
  *
  * @author mengweijin
  * @since 2023/5/20
@@ -25,6 +25,7 @@ public interface IReadableMessageHandler {
 
     /**
      * 是否支持
+     *
      * @param tableName {@link LogDataChangeDO} 的 table name
      * @return true/false
      */
@@ -46,22 +47,24 @@ public interface IReadableMessageHandler {
 
     /**
      * 构建消息
+     *
      * @param businessId 业务ID
      * @param changeData List<DiffModel>
      * @return List<String>
      */
     default List<String> buildMessages(Long businessId, List<DiffModel> changeData) {
         return changeData.stream().map(i ->
-            switch (i.getDiffType()) {
-                case ADDED -> I18nUtils.msg(I18N_KEY_ADDED, i.getFieldName(), i.getNewValue());
-                case REMOVED -> I18nUtils.msg(I18N_KEY_REMOVED, i.getFieldName(), i.getOldValue());
-                default -> I18nUtils.msg(I18N_KEY_MODIFIED, i.getFieldName(), i.getOldValue(), i.getNewValue());
-            }
+                switch (i.getDiffType()) {
+                    case ADDED -> I18nUtils.msg(I18N_KEY_ADDED, i.getFieldName(), i.getNewValue());
+                    case REMOVED -> I18nUtils.msg(I18N_KEY_REMOVED, i.getFieldName(), i.getOldValue());
+                    default -> I18nUtils.msg(I18N_KEY_MODIFIED, i.getFieldName(), i.getOldValue(), i.getNewValue());
+                }
         ).toList();
     }
 
     /**
      * 排序
+     *
      * @param changeData List<DiffModel>
      */
     default void ordered(List<DiffModel> changeData) {

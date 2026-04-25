@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * vt_form_type
+ *
  * @author mengweijin
  * @since 2023/5/20
  */

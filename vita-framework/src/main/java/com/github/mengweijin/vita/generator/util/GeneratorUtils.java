@@ -34,9 +34,8 @@ import java.util.Properties;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GeneratorUtils {
 
-    private static final Class<BaseEntity> BASE_ENTITY_CLASS = BaseEntity.class;
-
     public static final PropertyPlaceholderHelper PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
+    private static final Class<BaseEntity> BASE_ENTITY_CLASS = BaseEntity.class;
 
     /**
      * If the user configured superEntityColumns, the configuration will prevail;

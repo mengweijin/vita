@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Menu Mapper
+ * Menu Mapper
  * </p>
  *
  * @author mengweijin

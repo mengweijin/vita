@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.exception.ServerException;
 import cn.hutool.v7.core.reflect.ClassUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
@@ -16,7 +16,8 @@ import java.util.Optional;
  */
 public class ClassUtils {
 
-    private ClassUtils() {}
+    private ClassUtils() {
+    }
 
     public static Class<?> getMainClass() {
         try {

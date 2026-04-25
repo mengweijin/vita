@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  UserPost Mapper
+ * UserPost Mapper
  * </p>
  *
  * @author mengweijin

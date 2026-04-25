@@ -11,8 +11,9 @@ import org.springframework.cache.CacheManager;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CacheFactory {
-    
+
     private static final CacheManager CACHE_MANAGER = SpringUtil.getBean(CacheManager.class);
+
     public static Cache getRepeatSubmitCache() {
         return CACHE_MANAGER.getCache(CacheNames.REPEAT_SUBMIT);
     }

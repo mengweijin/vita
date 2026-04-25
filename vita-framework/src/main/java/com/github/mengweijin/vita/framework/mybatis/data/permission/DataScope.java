@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * Can only be used in *Mapper.java. More detail refer to {@link BaseDataPermissionHandler}
+ *
  * @author mengweijin
  * @since 2022/11/20
  */
@@ -26,7 +27,8 @@ public @interface DataScope {
      * DEPT: dept_id
      * ROLE: role_id
      * USER: create_by
-     * */
+     *
+     */
     String tableColumnName() default "";
 
     Scope scope() default Scope.USER;

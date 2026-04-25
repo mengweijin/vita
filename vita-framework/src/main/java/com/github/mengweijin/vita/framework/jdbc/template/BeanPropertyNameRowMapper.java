@@ -17,14 +17,16 @@ public class BeanPropertyNameRowMapper<T> extends BeanPropertyRowMapper<T> {
 
     /**
      * 调用前必须指定 mappedClass
+     *
      * @param mappedClass 比如：User.class
      */
-    public BeanPropertyNameRowMapper(Class<T> mappedClass){
+    public BeanPropertyNameRowMapper(Class<T> mappedClass) {
         super(mappedClass);
     }
 
     /**
      * 自定义数据库字段到实体类属性的映射规则。额外增加驼峰命名规则的映射。
+     *
      * @param pd the property descriptor discovered on initialization
      * @return a set of mapped names
      */

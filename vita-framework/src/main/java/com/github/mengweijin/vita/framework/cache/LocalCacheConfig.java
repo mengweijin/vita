@@ -23,8 +23,9 @@ import java.time.Duration;
  * <p>
  * 2、使用 {@link CacheFactory}
  * 3、指定缓存管理器。不指定默认为 @Primary 注解的默认缓存管理器。
- *     - @Cacheable(cacheManager = "caffeineCacheManager")
- *     - @Cacheable(cacheManager = "redisCacheManager")
+ * - @Cacheable(cacheManager = "caffeineCacheManager")
+ * - @Cacheable(cacheManager = "redisCacheManager")
+ *
  * @author mengweijin
  * @since 2025/12/14
  */

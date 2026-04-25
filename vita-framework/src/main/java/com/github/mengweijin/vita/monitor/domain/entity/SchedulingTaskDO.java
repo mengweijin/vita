@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,8 +27,8 @@ import lombok.EqualsAndHashCode;
 public class SchedulingTaskDO extends BaseEntity {
 
     /**
-    * 任务名称
-    */
+     * 任务名称
+     */
     private String name;
 
     /**
@@ -47,12 +47,12 @@ public class SchedulingTaskDO extends BaseEntity {
     private String args;
 
     /**
-    * 是否禁用。[Y, N]
-    */
+     * 是否禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

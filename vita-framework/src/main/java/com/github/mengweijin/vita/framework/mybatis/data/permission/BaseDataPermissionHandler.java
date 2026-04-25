@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.framework.mybatis.data.permission;
 
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.mybatis.data.MapperUtils;
@@ -11,19 +13,34 @@ import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.schema.Column;
-import cn.hutool.v7.core.collection.CollUtil;
-import cn.hutool.v7.core.text.StrValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * {@link DataScope} Can only be used in *Mapper.java.
+ *
  * @author mengweijin
  * @since 2022/11/20
  */
 @Slf4j
 public abstract class BaseDataPermissionHandler implements DataPermissionHandler {
+
+    /**
+     * 构建Column
+     *
+     * @param dataScope dataScope
+     * @return 带表别名字段
+     */
+    protected static Column buildColumn(DataScope dataScope) {
+        String tableColumnName = dataScope.tableColumnName();
+        if (StrValidator.isBlank(tableColumnName)) {
+            tableColumnName = dataScope.scope().getColumnName();
+        }
+        String tableAlias = dataScope.tableAlias();
+        tableAlias = StrValidator.isBlank(tableAlias) ? Const.EMPTY : tableAlias + Const.DOT;
+        return new Column(tableAlias + tableColumnName);
+    }
 
     @Override
     public Expression getSqlSegment(Expression where, String mappedStatementId) {
@@ -88,41 +105,29 @@ public abstract class BaseDataPermissionHandler implements DataPermissionHandler
 
     /**
      * 获取当前登录用户 ID
+     *
      * @return userId
      */
     protected abstract Long getLoginUserId();
 
     /**
      * 当前登录用户是否为超级管理员
+     *
      * @return true/false
      */
     protected abstract boolean isAdmin();
 
     /**
      * 当前用户所在的部门 id 的集合
+     *
      * @return List<Long>
      */
     protected abstract List<Long> getLoginUserDeptIdList();
 
     /**
      * 当前用户所拥有的角色 id 的集合
+     *
      * @return List<Long>
      */
     protected abstract List<Long> getLoginUserRoleIdList();
-
-    /**
-     * 构建Column
-     *
-     * @param dataScope dataScope
-     * @return 带表别名字段
-     */
-    protected static Column buildColumn(DataScope dataScope) {
-        String tableColumnName = dataScope.tableColumnName();
-        if(StrValidator.isBlank(tableColumnName)) {
-            tableColumnName = dataScope.scope().getColumnName();
-        }
-        String tableAlias = dataScope.tableAlias();
-        tableAlias = StrValidator.isBlank(tableAlias) ? Const.EMPTY : tableAlias + Const.DOT;
-        return new Column(tableAlias + tableColumnName);
-    }
 }

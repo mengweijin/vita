@@ -1,13 +1,14 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
+import com.github.mengweijin.vita.framework.enums.EDictType;
 import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import com.github.mengweijin.vita.framework.validator.annotation.Dict;
-import com.github.mengweijin.vita.framework.enums.EDictType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
  * 开启二级认证 BO
+ *
  * @author mengweijin
  * @since 2026/3/14
  */

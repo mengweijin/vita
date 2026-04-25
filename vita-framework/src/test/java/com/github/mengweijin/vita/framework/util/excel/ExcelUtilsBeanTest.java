@@ -22,6 +22,37 @@ class ExcelUtilsBeanTest {
 
     public static final String TARGET = System.getProperty("user.dir") + "/target/export.xlsx";
 
+    /**
+     * Hutool工具类ExcelWriter导出Excel列宽自适应：
+     * 官方已经提供了解决方案，可以直接调用：writer.autoSizeColumnAll();
+     * 这一行代码一定要在写出内容后调用，即：如果你的代码中有类似writer.write(list)的片段，一定要放在这个片段之后，否则不会生效！
+     * <p>
+     * 同时，在 hutool 低版本中 autoSizeColumn() 对于中文的支持并不完美，会出现宽度不足的情况。解决方法如下。
+     * 使用这个方法，就可以不用再使用官方提供的方法了。
+     * <p>
+     * 如果使用新版本，直接使用官方方法即可。
+     *
+     * @param writer ExcelWriter
+     */
+    public static void autoSizeColumn(ExcelWriter writer) {
+        // 单元格最大宽度有限制，超过会报错
+        int maxWith = 256 * 255;
+
+        Sheet sheet = writer.getSheet();
+        for (int i = 0; i < writer.getColumnCount(); i++) {
+            int orgWidth = sheet.getColumnWidth(i);
+            // 调整每一列宽度
+            sheet.autoSizeColumn(i);
+            // 解决自动设置列宽中文不准确的问题
+            int newWidth = sheet.getColumnWidth(i) * 2;
+            if (newWidth > maxWith) {
+                sheet.setColumnWidth(i, maxWith);
+            } else {
+                sheet.setColumnWidth(i, Math.max(newWidth, orgWidth));
+            }
+        }
+    }
+
     @Test
     void export() {
         FileUtil.del(TARGET);
@@ -56,37 +87,6 @@ class ExcelUtilsBeanTest {
 
         // 关闭writer，释放内存
         writer.close();
-    }
-
-    /**
-     * Hutool工具类ExcelWriter导出Excel列宽自适应：
-     * 官方已经提供了解决方案，可以直接调用：writer.autoSizeColumnAll();
-     * 这一行代码一定要在写出内容后调用，即：如果你的代码中有类似writer.write(list)的片段，一定要放在这个片段之后，否则不会生效！
-     * <p>
-     * 同时，在 hutool 低版本中 autoSizeColumn() 对于中文的支持并不完美，会出现宽度不足的情况。解决方法如下。
-     * 使用这个方法，就可以不用再使用官方提供的方法了。
-     * <p>
-     * 如果使用新版本，直接使用官方方法即可。
-     *
-     * @param writer ExcelWriter
-     */
-    public static void autoSizeColumn(ExcelWriter writer) {
-        // 单元格最大宽度有限制，超过会报错
-        int maxWith = 256 * 255;
-
-        Sheet sheet = writer.getSheet();
-        for (int i = 0; i < writer.getColumnCount(); i++) {
-            int orgWidth = sheet.getColumnWidth(i);
-            // 调整每一列宽度
-            sheet.autoSizeColumn(i);
-            // 解决自动设置列宽中文不准确的问题
-            int newWidth = sheet.getColumnWidth(i) * 2;
-            if (newWidth > maxWith) {
-                sheet.setColumnWidth(i, maxWith);
-            } else {
-                sheet.setColumnWidth(i, Math.max(newWidth, orgWidth));
-            }
-        }
     }
 
     private List<TestBean> testData() {

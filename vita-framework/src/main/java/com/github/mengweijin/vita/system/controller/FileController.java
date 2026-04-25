@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.DownLoadUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 
 /**
  * <p>
- *  File Controller
+ * File Controller
  * </p>
  *
  * @author mengweijin
@@ -77,7 +77,8 @@ public class FileController {
      * <p>
      * Get File page by File
      * </p>
-     * @param page page
+     *
+     * @param page       page
      * @param fileEntity {@link FileDO}
      * @return Page<File>
      */
@@ -93,6 +94,7 @@ public class FileController {
      * <p>
      * Get File list by File
      * </p>
+     *
      * @param fileEntity {@link FileDO}
      * @return List<File>
      */
@@ -106,6 +108,7 @@ public class FileController {
      * <p>
      * Get File by id
      * </p>
+     *
      * @param id id
      * @return File
      */
@@ -118,6 +121,7 @@ public class FileController {
      * <p>
      * Add File
      * </p>
+     *
      * @param file {@link MultipartFile}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -132,6 +136,7 @@ public class FileController {
      * <p>
      * Update File
      * </p>
+     *
      * @param fileEntity {@link FileDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -146,6 +151,7 @@ public class FileController {
      * <p>
      * Delete File by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
 

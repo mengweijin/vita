@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 定时清理 ${spring.servlet.multipart.location} 临时目录，避免临时目录堆积过多无用文件。
+ *
  * @author mengweijin
  * @since 2025/6/22
  */
@@ -38,7 +39,7 @@ public class MultipartLocationCleanTask implements ISchedulingTask {
     @Override
     public String run(SchedulingTaskDO task, Map<?, ?> args) {
         String hoursString = StrUtil.toStringOrNull(args.get(HOURS));
-        if(!NumberUtil.isNumber(hoursString)) {
+        if (!NumberUtil.isNumber(hoursString)) {
             String msg = I18nUtils.msg("system.scheduling.task.config.incorrect", task.getName(), task.getBeanName(), task.getArgs());
             throw new ServerException(msg);
         }
@@ -49,9 +50,9 @@ public class MultipartLocationCleanTask implements ISchedulingTask {
         AtomicReference<Long> count = new AtomicReference<>(0L);
         FileUtil.loopFiles(location).forEach(f -> {
             LocalDateTime lastModified = TimeUtil.of(f.lastModified());
-            if(f.isFile() && lastModified.isBefore(minusTime)) {
+            if (f.isFile() && lastModified.isBefore(minusTime)) {
                 boolean deleted = f.delete();
-                if(deleted) {
+                if (deleted) {
                     count.getAndSet(count.get() + 1);
                     log.debug("Deleted file: {}, file last modified time: {}", f.getAbsolutePath(), lastModified);
                 }

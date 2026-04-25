@@ -7,18 +7,18 @@ import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleMenuDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.RoleVO;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.RoleMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- *  Role Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Role Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin
@@ -55,7 +55,7 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
     @Override
     public boolean removeByIds(Collection<?> roleIds) {
         long userCount = userRoleService.countUserInRoleIds(roleIds);
-        if(userCount > 0) {
+        if (userCount > 0) {
             throw new ClientException(I18nUtils.msg("system.role.delete.hasUser"));
         }
         return super.removeByIds(roleIds);
@@ -106,7 +106,7 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
             roleMenu.setMenuId(menuId);
             return roleMenu;
         }).collect(Collectors.toList());
-        if(!collect.isEmpty()) {
+        if (!collect.isEmpty()) {
             roleMenuService.saveBatch(collect, Constants.DEFAULT_BATCH_SIZE);
         }
 

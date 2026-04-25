@@ -75,8 +75,7 @@ public enum EDictType implements IEnum<String> {
     /**
      * 二级认证模式
      */
-    VT_SAFE_MODE("vt_safe_mode")
-    ;
+    VT_SAFE_MODE("vt_safe_mode");
 
     private final String value;
 

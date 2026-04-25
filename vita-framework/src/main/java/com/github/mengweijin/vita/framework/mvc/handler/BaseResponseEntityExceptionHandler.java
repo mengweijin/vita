@@ -66,7 +66,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
      *
      * @param e             Throwable
      * @param bindingResult bindingResult
-     * @param status    HttpStatusCode
+     * @param status        HttpStatusCode
      * @return ResponseEntity<Object>
      */
     private ResponseEntity<Object> errorBindingResultResponseEntity(Exception e, BindingResult bindingResult, HttpStatusCode status) {
@@ -97,7 +97,7 @@ public abstract class BaseResponseEntityExceptionHandler extends ResponseEntityE
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status,WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return errorResponseEntity(ex, status);
     }
 

@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.MessageBO;
@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Message Controller
+ * Message Controller
  * </p>
  *
  * @author mengweijin
@@ -67,7 +67,8 @@ public class MessageController {
      * <p>
      * Get Message page by Message
      * </p>
-     * @param page page
+     *
+     * @param page    page
      * @param message {@link MessageVO}
      * @return Page<MessageVO>
      */
@@ -82,6 +83,7 @@ public class MessageController {
      * <p>
      * Get Message list by Message
      * </p>
+     *
      * @param message {@link MessageDO}
      * @return List<Message>
      */
@@ -95,6 +97,7 @@ public class MessageController {
      * <p>
      * Get Message by id
      * </p>
+     *
      * @param id id
      * @return Message
      */
@@ -107,6 +110,7 @@ public class MessageController {
      * <p>
      * Add Message
      * </p>
+     *
      * @param message {@link MessageDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -121,6 +125,7 @@ public class MessageController {
      * <p>
      * Update Message
      * </p>
+     *
      * @param message {@link MessageDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -135,6 +140,7 @@ public class MessageController {
      * <p>
      * Delete Message by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

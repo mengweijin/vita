@@ -4,6 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.scheduler.DynamicTaskManager;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
@@ -11,7 +12,6 @@ import com.github.mengweijin.vita.framework.scheduler.SchedulingTaskFactory;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
 import com.github.mengweijin.vita.monitor.mapper.SchedulingTaskMapper;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import java.util.Set;
 
 /**
  * <p>
- *  Scheduling Task Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Scheduling Task Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

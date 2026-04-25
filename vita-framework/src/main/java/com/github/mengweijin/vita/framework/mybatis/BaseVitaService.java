@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * BaseService 实现类（ 泛型：M 是 mapper 对象，T 是实体，V 是实体对应的 VO ）
+ *
  * @author mengweijin
  * @since 2026/1/11
  */
@@ -21,6 +22,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
 
     /**
      * 构建自定义 Lambda 语法查询 Wrapper
+     *
      * @param entity 实体
      * @return LambdaQueryWrapper<T>
      */
@@ -28,6 +30,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
 
     /**
      * 默认等值 Lambda 语法查询 Wrapper
+     *
      * @param entity 实体
      * @return LambdaQueryWrapper<T>
      */
@@ -94,7 +97,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
     /**
      * 翻页查询
      *
-     * @param pageQuery        {@link PageQuery} 翻页对象
+     * @param pageQuery    {@link PageQuery} 翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
     public PageQuery<V> pageVo(PageQuery<T> pageQuery, Wrapper<T> queryWrapper) {
@@ -103,6 +106,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
 
     /**
      * 分页转换
+     *
      * @param page IPage<T>
      * @return PageQuery<V>
      */

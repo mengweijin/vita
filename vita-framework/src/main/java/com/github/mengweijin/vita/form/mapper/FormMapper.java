@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.form.mapper;
 
-import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import com.github.mengweijin.vita.form.domain.entity.FormDO;
 import com.github.mengweijin.vita.form.domain.vo.FormVO;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

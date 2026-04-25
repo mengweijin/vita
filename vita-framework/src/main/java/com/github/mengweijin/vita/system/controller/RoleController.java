@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -14,7 +15,6 @@ import com.github.mengweijin.vita.system.domain.bo.RoleBO;
 import com.github.mengweijin.vita.system.domain.bo.RolePermissionBO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.domain.vo.RoleVO;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.RoleService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  Role Controller
+ * Role Controller
  * </p>
  *
  * @author mengweijin
@@ -58,6 +58,7 @@ public class RoleController {
      * <p>
      * Get Role page by Role
      * </p>
+     *
      * @param page page
      * @param role {@link RoleDO}
      * @return Page<Role>
@@ -73,6 +74,7 @@ public class RoleController {
      * <p>
      * Get Role list by Role
      * </p>
+     *
      * @param role {@link RoleDO}
      * @return List<Role>
      */
@@ -106,6 +108,7 @@ public class RoleController {
      * <p>
      * Get Role by id
      * </p>
+     *
      * @param id id
      * @return Role
      */
@@ -118,6 +121,7 @@ public class RoleController {
      * <p>
      * Add Role
      * </p>
+     *
      * @param role {@link RoleBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -132,6 +136,7 @@ public class RoleController {
      * <p>
      * Update Role
      * </p>
+     *
      * @param role {@link RoleBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -147,7 +152,7 @@ public class RoleController {
     @PostMapping("/set/permissions")
     public R<Void> setPermissions(@Valid @RequestBody RolePermissionBO rolePermissionBO) {
         boolean bool = roleService.setMenuPermission(rolePermissionBO);
-        if(bool) {
+        if (bool) {
             roleService.sendPermissionChangeMessageToOnlineUsers(rolePermissionBO.getRoleId());
         }
         return R.result(bool);
@@ -164,6 +169,7 @@ public class RoleController {
      * <p>
      * Delete Role by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

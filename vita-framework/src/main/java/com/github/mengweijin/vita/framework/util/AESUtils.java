@@ -1,14 +1,14 @@
 package com.github.mengweijin.vita.framework.util;
 
-import com.github.mengweijin.vita.framework.exception.ServerException;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.crypto.KeyUtil;
 import cn.hutool.v7.crypto.SecureUtil;
 import cn.hutool.v7.crypto.symmetric.AES;
 import cn.hutool.v7.crypto.symmetric.SymmetricAlgorithm;
+import com.github.mengweijin.vita.framework.exception.ServerException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -25,6 +25,7 @@ import java.security.SecureRandom;
  * encrypt(InputStream in, OutputStream out)
  * decrypt(InputStream in, OutputStream out)
  * <p>
+ *
  * @author mengweijin
  * @since 2021/12/24
  */
@@ -119,6 +120,7 @@ public class AESUtils {
 
     /**
      * 使用 generateSecretKey 方法来代替。这里仅做原生的写法展示。
+     *
      * @deprecated
      */
     @SuppressWarnings({"java:S1133"})

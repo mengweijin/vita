@@ -17,17 +17,16 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DatabasePropertySourceLoader implements ApplicationListener<ApplicationReadyEvent> {
 
-    private ConfigurableEnvironment environment;
-
-    private ConfigService configService;
-
     DatabasePropertySource databasePropertySource;
+    private ConfigurableEnvironment environment;
+    private ConfigService configService;
 
     /**
      * 也可以添加 DatabasePropertySource 到最优先位置：
-     *      environment.getPropertySources().addFirst(databasePropertySource);
+     * environment.getPropertySources().addFirst(databasePropertySource);
      * 或者优先级高于 application.yml 但低于命令行参数：
-     *      environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, databasePropertySource);
+     * environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, databasePropertySource);
+     *
      * @param event ApplicationReadyEvent
      */
     @Override

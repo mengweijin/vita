@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  LogOperation Mapper
+ * LogOperation Mapper
  * </p>
  *
  * @author mengweijin
@@ -22,8 +22,9 @@ public interface LogOperationMapper extends BaseVitaMapper<LogOperationDO, LogOp
 
     /**
      * 查询时间范围内的日用户操作次数
+     *
      * @param startTime 开始时间
-     * @param endTime 结束时间
+     * @param endTime   结束时间
      * @return List {@link HomeConsoleChartDataVO}
      */
     List<HomeConsoleChartDataVO> selectDailyUserOperationCountBetweenTime(LocalDateTime startTime, LocalDateTime endTime);

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  DictType Mapper
+ * DictType Mapper
  * </p>
  *
  * @author mengweijin

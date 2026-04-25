@@ -56,6 +56,7 @@ public class WarmFlowPermissionHandler implements PermissionHandler {
 
     /**
      * 获取当前办理人
+     *
      * @return 当前办理人
      */
     @Override
@@ -66,17 +67,18 @@ public class WarmFlowPermissionHandler implements PermissionHandler {
 
     /**
      * 转换办理人，比如设计器中预设了能办理的人，如果其中包含角色或者部门id等，可以通过此接口进行转换成用户id
+     *
      * @return permissions：{role:1,dept:1}
      */
     @Override
     public List<String> convertPermissions(List<String> permissions) {
         Set<Long> userIds = new HashSet<>();
         // 把角色，部门转换成用户
-        permissions.forEach( p -> {
-            if(p.startsWith(ROLE_PREFIX)) {
+        permissions.forEach(p -> {
+            if (p.startsWith(ROLE_PREFIX)) {
                 Set<Long> userIdsInRole = userRoleService.getUserIdsByRoleId(Long.valueOf(p.substring(ROLE_PREFIX.length())));
                 userIds.addAll(userIdsInRole);
-            } else if(p.startsWith(DEPT_PREFIX)) {
+            } else if (p.startsWith(DEPT_PREFIX)) {
                 Set<Long> userIdsInDept = userService.getUserIdsInDeptId(Long.valueOf(p.substring(DEPT_PREFIX.length())));
                 userIds.addAll(userIdsInDept);
             } else {

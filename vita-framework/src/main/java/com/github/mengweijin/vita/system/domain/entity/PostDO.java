@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -32,22 +32,22 @@ public class PostDO extends BaseEntity {
     private String code;
 
     /**
-    * 岗位名称
-    */
+     * 岗位名称
+     */
     private String name;
 
     /**
-    * 展示顺序
-    */
+     * 展示顺序
+     */
     private Integer seq;
 
     /**
-    * 是否禁用。[Y, N]
-    */
+     * 是否禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

@@ -1,15 +1,15 @@
 package com.github.mengweijin.vita.framework.validator;
 
-import com.github.mengweijin.vita.framework.validator.annotation.Dict;
-import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
-import com.github.mengweijin.vita.framework.enums.EDictType;
-import com.github.mengweijin.vita.system.service.DictDataService;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.github.mengweijin.vita.framework.enums.EDictType;
+import com.github.mengweijin.vita.framework.validator.annotation.Dict;
+import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
+import com.github.mengweijin.vita.system.service.DictDataService;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.hibernate.validator.internal.util.logging.Log;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * 自定义典数据校验注解实现
+ *
  * @author mengweijin
  */
 public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
@@ -41,7 +42,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
 
         DictDataService dictDataService = SpringUtil.getBean(DictDataService.class);
         List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getValue());
-        if(CollUtil.isEmpty(dictDataList)) {
+        if (CollUtil.isEmpty(dictDataList)) {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();
             //自定义返回消息
@@ -50,7 +51,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
         }
 
         boolean anyMatch = dictDataList.stream().map(DictDataDO::getVal).anyMatch(item -> item.equals(value.toString()));
-        if(!anyMatch) {
+        if (!anyMatch) {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();
             String correctDictDataCode = dictDataList.stream().map(DictDataDO::getVal).collect(Collectors.joining());

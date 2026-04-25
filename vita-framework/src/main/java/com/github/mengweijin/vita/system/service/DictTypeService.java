@@ -19,8 +19,8 @@ import java.util.List;
 
 /**
  * <p>
- *  DictType Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * DictType Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin
@@ -38,7 +38,7 @@ public class DictTypeService extends BaseVitaService<DictTypeMapper, DictTypeDO,
         for (Object id : list) {
             DictTypeDO dictType = this.getById((Long) id);
             List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getCode());
-            if(CollUtil.isNotEmpty(dictDataList)) {
+            if (CollUtil.isNotEmpty(dictDataList)) {
                 throw new ClientException("Please remove dict data first in dict type [" + dictType.getName() + "].");
             }
         }

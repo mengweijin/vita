@@ -63,7 +63,7 @@ public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO,
     }
 
     public LambdaQueryWrapper<CategoryDO> buildRootQueryWrapper(CategoryDO category) {
-        if(ObjectUtils.isAllFieldsBlank(category)) {
+        if (ObjectUtils.isAllFieldsBlank(category)) {
             // 未携带任何参数时，查询 parent id 为 null 的，即为根节点
             LambdaQueryWrapper<CategoryDO> wrapper = Wrappers.lambdaQuery();
             wrapper.isNull(CategoryDO::getParentId);
@@ -75,7 +75,7 @@ public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO,
 
     public List<CategoryVO> listChildrenByParentId(Long parentId) {
         List<Long> idList = this.getBaseMapper().selectChildrenIdsById(parentId);
-        if(CollUtil.isEmpty(idList)){
+        if (CollUtil.isEmpty(idList)) {
             return Collections.emptyList();
         }
         List<CategoryDO> list = this.lambdaQuery().in(CategoryDO::getId, idList).list();

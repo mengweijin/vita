@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -68,12 +68,12 @@ public class LogOperationDO extends BaseEntity {
     private Long costTime;
 
     /**
-    * 操作是否成功。[Y, N]
-    */
+     * 操作是否成功。[Y, N]
+     */
     private String success;
 
     /**
-    * 失败信息
-    */
+     * 失败信息
+     */
     private String errorMsg;
 }

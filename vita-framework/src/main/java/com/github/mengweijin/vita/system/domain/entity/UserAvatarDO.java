@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -28,13 +28,13 @@ import lombok.EqualsAndHashCode;
 public class UserAvatarDO extends BaseEntity {
 
     /**
-    * 用户ID
-    */
+     * 用户ID
+     */
     @NotNull
     private Long userId;
 
     /**
-    * 用户头像，以 Base64 文本存储的大字段。
-    */
+     * 用户头像，以 Base64 文本存储的大字段。
+     */
     private String avatar;
 }

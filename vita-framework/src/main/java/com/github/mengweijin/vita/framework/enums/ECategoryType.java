@@ -15,8 +15,7 @@ public enum ECategoryType implements IEnum<String> {
     /**
      * 流程分类
      */
-    VT_WORKFLOW("vt_workflow")
-    ;
+    VT_WORKFLOW("vt_workflow");
 
     private final String value;
 

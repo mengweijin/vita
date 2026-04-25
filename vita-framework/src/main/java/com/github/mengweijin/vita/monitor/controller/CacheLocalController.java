@@ -5,8 +5,8 @@ import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.vo.CacheVO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -58,7 +58,7 @@ public class CacheLocalController {
         if (cache != null) {
             // 获取 Caffeine Cache 底层的 Native Cache，并调用 asMap()
             Object object = cache.getNativeCache();
-            if(object instanceof com.github.benmanes.caffeine.cache.Cache<?, ?> nativeCache) {
+            if (object instanceof com.github.benmanes.caffeine.cache.Cache<?, ?> nativeCache) {
                 cacheMap = new HashMap<>(nativeCache.asMap());
             }
         }
@@ -79,6 +79,7 @@ public class CacheLocalController {
         }
         return null;
     }
+
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @SaCheckPermission("monitor:cacheLocal:remove")
     @PostMapping("/remove")

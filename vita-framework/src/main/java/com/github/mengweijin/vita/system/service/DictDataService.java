@@ -20,8 +20,8 @@ import java.util.Optional;
 
 /**
  * <p>
- *  DictData Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * DictData Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

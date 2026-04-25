@@ -20,16 +20,6 @@ import java.util.Map;
  */
 class TreeUtilsTest {
 
-    @Test
-    void build() {
-        List<CategoryDO> list = categoryDataList();
-        List<Map<String, Object>> treeList = TreeUtils.buildByBeanList(list);
-        Assertions.assertEquals(3, treeList.size());
-
-        treeList = TreeUtils.buildByBeanList(list, TreeUtils.createTreeConfig().setStrict(true).setSortKey("seq"));
-        Assertions.assertEquals(3, treeList.size());
-    }
-
     private static List<CategoryDO> categoryDataList() {
         CategoryDO node1 = new CategoryDO();
         node1.setId(1L);
@@ -94,20 +84,6 @@ class TreeUtilsTest {
         return list;
     }
 
-    @Test
-    void hutoolTreeNodeBuild() {
-        List<MapTree<Integer>> treeList = TreeUtil.build(dataList(), 0);
-        Assertions.assertEquals(2, treeList.size());
-    }
-
-    @Test
-    void getTypeArgument() {
-        List<String> list = new ArrayList<>();
-        list.add("aaa");
-        Type type = TypeUtil.getTypeArgument(list.getClass().getGenericSuperclass(), 0);
-        Assertions.assertEquals("E", type.getTypeName());
-    }
-
     private static List<TreeNode<Integer>> dataList() {
         TreeNode<Integer> node1 = new TreeNode<>(1, 0, "陕西省", 1);
         node1.setExtra(MapUtil.of("code", "shaanxi"));
@@ -141,5 +117,29 @@ class TreeUtilsTest {
         list.add(node2002);
 
         return list;
+    }
+
+    @Test
+    void build() {
+        List<CategoryDO> list = categoryDataList();
+        List<Map<String, Object>> treeList = TreeUtils.buildByBeanList(list);
+        Assertions.assertEquals(3, treeList.size());
+
+        treeList = TreeUtils.buildByBeanList(list, TreeUtils.createTreeConfig().setStrict(true).setSortKey("seq"));
+        Assertions.assertEquals(3, treeList.size());
+    }
+
+    @Test
+    void hutoolTreeNodeBuild() {
+        List<MapTree<Integer>> treeList = TreeUtil.build(dataList(), 0);
+        Assertions.assertEquals(2, treeList.size());
+    }
+
+    @Test
+    void getTypeArgument() {
+        List<String> list = new ArrayList<>();
+        list.add("aaa");
+        Type type = TypeUtil.getTypeArgument(list.getClass().getGenericSuperclass(), 0);
+        Assertions.assertEquals("E", type.getTypeName());
     }
 }

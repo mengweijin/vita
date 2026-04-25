@@ -2,13 +2,13 @@ package com.github.mengweijin.vita.framework.scheduler;
 
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.github.mengweijin.vita.framework.enums.dict.ESchedulingTaskStatus;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskLogDO;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskLogService;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskService;
-import com.github.mengweijin.vita.framework.enums.dict.ESchedulingTaskStatus;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,7 @@ public interface ISchedulingTask {
 
     /**
      * 运行指定调度任务接口方法，以供子类实现。
+     *
      * @param task {@link SchedulingTaskDO}
      * @param args 调度任务执行所需要的执行参数
      * @return 返回自定义消息内容，以便记录到任务执行日志中。
@@ -34,6 +35,7 @@ public interface ISchedulingTask {
 
     /**
      * 根据调度任务的 id 来执行任务
+     *
      * @param taskId 调度任务 ID
      */
     default void execute(Long taskId) {
@@ -52,14 +54,14 @@ public interface ISchedulingTask {
         stopWatch.start();
         try {
             HashMap<?, ?> args = new HashMap<>(16);
-            if(StrUtil.isNotBlank(task.getArgs())) {
+            if (StrUtil.isNotBlank(task.getArgs())) {
                 args = ObjectMapperUtils.getObjectMapperWrapper().readValue(task.getArgs(), HashMap.class);
             }
             String result = run(task, args);
 
             taskLog.setSuccess(EYesNo.Y.getValue());
             taskLog.setMessage(result);
-        } catch (Throwable e){
+        } catch (Throwable e) {
             taskLog.setSuccess(EYesNo.N.getValue());
             taskLog.setMessage(e.getMessage());
             log.error(e.getMessage(), e);

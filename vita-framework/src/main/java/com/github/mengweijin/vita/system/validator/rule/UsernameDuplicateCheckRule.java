@@ -1,10 +1,10 @@
 package com.github.mengweijin.vita.system.validator.rule;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.extra.spring.SpringUtil;
 import com.github.mengweijin.vita.framework.validator.CheckValidator;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.service.UserService;
-import cn.hutool.v7.core.text.CharSequenceUtil;
-import cn.hutool.v7.extra.spring.SpringUtil;
 
 /**
  * @author mengweijin

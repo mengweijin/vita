@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  DictData Controller
+ * DictData Controller
  * </p>
  *
  * @author mengweijin
@@ -47,7 +47,8 @@ public class DictDataController {
      * <p>
      * Get DictData page by DictData
      * </p>
-     * @param page page
+     *
+     * @param page     page
      * @param dictData {@link DictDataDO}
      * @return Page<DictData>
      */
@@ -62,6 +63,7 @@ public class DictDataController {
      * <p>
      * Get DictData list by DictData
      * </p>
+     *
      * @param dictData {@link DictDataDO}
      * @return List<DictData>
      */
@@ -75,6 +77,7 @@ public class DictDataController {
      * <p>
      * Get DictData by id
      * </p>
+     *
      * @param id id
      * @return DictData
      */
@@ -93,6 +96,7 @@ public class DictDataController {
      * <p>
      * Add DictData
      * </p>
+     *
      * @param bo {@link DictDataDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -108,6 +112,7 @@ public class DictDataController {
      * <p>
      * Update DictData
      * </p>
+     *
      * @param bo {@link DictDataDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -123,6 +128,7 @@ public class DictDataController {
      * <p>
      * Delete DictData by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.validator.annotation;
 
-import com.github.mengweijin.vita.framework.validator.DictValidator;
 import com.github.mengweijin.vita.framework.enums.EDictType;
+import com.github.mengweijin.vita.framework.validator.DictValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义字典数据校验注解
+ *
  * @author mengweijin
  */
 @Retention(RetentionPolicy.RUNTIME)

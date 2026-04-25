@@ -43,7 +43,7 @@ public class UserPostService extends BaseVitaService<UserPostMapper, UserPostDO,
     public void setUserPosts(Long userId, List<Long> postIds) {
         this.lambdaUpdate().eq(UserPostDO::getUserId, userId).remove();
 
-        if(CollUtil.isEmpty(postIds)) {
+        if (CollUtil.isEmpty(postIds)) {
             return;
         }
 

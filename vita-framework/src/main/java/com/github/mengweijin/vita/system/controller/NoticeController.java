@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.NoticeBO;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import com.github.mengweijin.vita.system.domain.vo.NoticeVO;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.system.service.NoticeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Notice Controller
+ * Notice Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class NoticeController {
      * <p>
      * Get Notice page by Notice
      * </p>
-     * @param page page
+     *
+     * @param page   page
      * @param notice {@link NoticeDO}
      * @return Page<Notice>
      */
@@ -64,6 +65,7 @@ public class NoticeController {
      * <p>
      * Get Notice list by Notice
      * </p>
+     *
      * @param notice {@link NoticeDO}
      * @return List<Notice>
      */
@@ -77,6 +79,7 @@ public class NoticeController {
      * <p>
      * Get Notice by id
      * </p>
+     *
      * @param id id
      * @return Notice
      */
@@ -89,6 +92,7 @@ public class NoticeController {
      * <p>
      * Add Notice
      * </p>
+     *
      * @param notice {@link NoticeDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -103,6 +107,7 @@ public class NoticeController {
      * <p>
      * Update Notice
      * </p>
+     *
      * @param notice {@link NoticeDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -117,6 +122,7 @@ public class NoticeController {
      * <p>
      * Delete Notice by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

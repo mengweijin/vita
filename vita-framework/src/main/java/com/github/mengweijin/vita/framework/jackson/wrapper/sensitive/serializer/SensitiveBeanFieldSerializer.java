@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -8,7 +9,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;

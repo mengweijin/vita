@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Log-Data-Change Controller
+ * Log-Data-Change Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class LogDataChangeController {
      * <p>
      * Get Log-Data-Change page by LogDO
      * </p>
-     * @param page page
+     *
+     * @param page            page
      * @param logDataChangeDO {@link LogDataChangeDO}
      * @return Page<LogDO>
      */
@@ -64,6 +65,7 @@ public class LogDataChangeController {
      * <p>
      * Get Log-Data-Change list by LogDO
      * </p>
+     *
      * @param logDataChangeDO {@link LogDataChangeDO}
      * @return List<LogDO>
      */
@@ -77,6 +79,7 @@ public class LogDataChangeController {
      * <p>
      * Get Log-Data-Change by id
      * </p>
+     *
      * @param id id
      * @return LogDO
      */
@@ -94,6 +97,7 @@ public class LogDataChangeController {
      * <p>
      * Add Log-Data-Change
      * </p>
+     *
      * @param bo {@link LogDataChangeBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -108,6 +112,7 @@ public class LogDataChangeController {
      * <p>
      * Update Log-Data-Change
      * </p>
+     *
      * @param bo {@link LogDataChangeBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -122,6 +127,7 @@ public class LogDataChangeController {
      * <p>
      * Delete Log-Data-Change by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.monitor.domain.vo.application;
 
-import lombok.Data;
 import cn.hutool.v7.extra.management.oshi.CpuInfo;
 import cn.hutool.v7.extra.management.oshi.OshiUtil;
+import lombok.Data;
 
 import java.io.Serializable;
 

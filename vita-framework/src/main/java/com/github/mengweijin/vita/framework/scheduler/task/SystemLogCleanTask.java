@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * 系统日志定时清理任务，防止数据库日志增长过大。
+ *
  * @author mengweijin
  * @since 2025/6/22
  */
@@ -40,7 +41,7 @@ public class SystemLogCleanTask implements ISchedulingTask {
     @Override
     public String run(SchedulingTaskDO task, Map<?, ?> args) {
         String daysString = StrUtil.toStringOrNull(args.get(DAYS));
-        if(!NumberUtil.isNumber(daysString)) {
+        if (!NumberUtil.isNumber(daysString)) {
             String msg = I18nUtils.msg("system.scheduling.task.config.incorrect", task.getName(), task.getBeanName(), task.getArgs());
             throw new ServerException(msg);
         }

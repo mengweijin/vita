@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,18 +27,18 @@ import lombok.EqualsAndHashCode;
 public class DictDataDO extends BaseEntity {
 
     /**
-    * 字典类型编码。
-    */
+     * 字典类型编码。
+     */
     private String code;
 
     /**
      * 字典数据值
-    */
+     */
     private String val;
 
     /**
-    * 字典数据标签名称
-    */
+     * 字典数据标签名称
+     */
     private String label;
 
     /**
@@ -47,17 +47,17 @@ public class DictDataDO extends BaseEntity {
     private String tag;
 
     /**
-    * 展示顺序
-    */
+     * 展示顺序
+     */
     private Integer seq;
 
     /**
-    * 是否已禁用。[Y, N]
-    */
+     * 是否已禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

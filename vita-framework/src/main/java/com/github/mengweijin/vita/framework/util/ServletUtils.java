@@ -31,22 +31,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 /**
- * @author
- * Servlet工具类
+ * @author Servlet工具类
  **/
 public class ServletUtils extends ServletUtil {
 
     /**
      * 获取 UserAgent
      */
-    public static UserAgent getUserAgent(HttpServletRequest request){
+    public static UserAgent getUserAgent(HttpServletRequest request) {
         return UserAgentUtil.parse(request.getHeader("User-Agent"));
     }
 
     /**
      * 获取 UserAgent
      */
-    public static UserAgent getUserAgent(){
+    public static UserAgent getUserAgent() {
         return getUserAgent(getRequest());
     }
 
@@ -113,10 +112,10 @@ public class ServletUtils extends ServletUtil {
     /**
      * 是否包含某个参数名
      */
-    public static boolean containsParameter(HttpServletRequest request, String parameterName){
+    public static boolean containsParameter(HttpServletRequest request, String parameterName) {
         Enumeration<String> enumeration = request.getParameterNames();
-        while(enumeration.hasMoreElements()) {
-            if(enumeration.nextElement().equals(parameterName)){
+        while (enumeration.hasMoreElements()) {
+            if (enumeration.nextElement().equals(parameterName)) {
                 return true;
             }
         }
@@ -149,7 +148,7 @@ public class ServletUtils extends ServletUtil {
 
     public static void initHeader(HttpServletRequest request, HttpServletResponse response, String fileName, boolean isAttachment) {
         String contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-        if(StrUtil.isNotBlank(fileName)) {
+        if (StrUtil.isNotBlank(fileName)) {
             contentType = request.getServletContext().getMimeType(fileName);
         }
 

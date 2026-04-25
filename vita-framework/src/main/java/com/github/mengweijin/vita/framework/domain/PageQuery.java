@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 分页查询对象。在 {@link Page} 对象的属性的基础上增加 page 前缀，尽最大可能的避免与业务字段歧义。
+ *
  * @author mengweijin
  * @since 2026/1/17
  */
@@ -49,13 +50,13 @@ public class PageQuery<T> implements Serializable {
         this.pageRecords = pageRecords;
     }
 
+    public static <E extends Serializable> PageQuery<E> of(IPage<E> page) {
+        return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
+    }
+
     public IPage<T> toPage() {
         IPage<T> page = new Page<>(this.pageCurrent, this.pageSize, this.pageTotal);
         page.setRecords(this.pageRecords);
         return page;
-    }
-
-    public static <E extends Serializable> PageQuery<E> of(IPage<E> page) {
-        return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
     }
 }

@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
  * <p>
  * 使用 @ComponentScan("com.github.mengweijin.vita") 扫描自身工程，以便工程 SDK 化。
  * <p>
+ *
  * @author mengweijin
  */
 @EnableAspectJAutoProxy(exposeProxy = true)
@@ -40,6 +41,7 @@ public class VitaConfiguration {
 
     /**
      * 四则运算验证码生成器
+     *
      * @return MathGenerator
      */
     @Bean

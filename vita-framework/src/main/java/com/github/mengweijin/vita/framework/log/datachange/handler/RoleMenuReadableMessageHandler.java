@@ -3,9 +3,9 @@ package com.github.mengweijin.vita.framework.log.datachange.handler;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.entity.MenuDO;
 import com.github.mengweijin.vita.system.domain.entity.RoleDO;
 import com.github.mengweijin.vita.system.service.MenuService;
@@ -45,10 +45,10 @@ public class RoleMenuReadableMessageHandler implements IReadableMessageHandler {
 
         Set<Long> menuIdSet = new HashSet<>();
         for (DiffModel model : changeData) {
-            if(model.getOldValue() != null) {
+            if (model.getOldValue() != null) {
                 menuIdSet.add(NumberUtil.parseLong(model.getOldValue()));
             }
-            if(model.getNewValue() != null) {
+            if (model.getNewValue() != null) {
                 menuIdSet.add(NumberUtil.parseLong(model.getNewValue()));
             }
         }
@@ -67,7 +67,7 @@ public class RoleMenuReadableMessageHandler implements IReadableMessageHandler {
     }
 
     private String formatMessage(List<MenuDO> menuList, Long menuId) {
-        if(menuId == null) {
+        if (menuId == null) {
             return null;
         }
         return menuList.stream()

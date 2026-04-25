@@ -65,7 +65,7 @@ public class LogDataChangeService extends BaseVitaService<LogDataChangeMapper, L
     }
 
     public void saveWhenBeanChange(String tableName, Long businessId, Object beforeData, Object afterData, String... ignoreFields) {
-        if(!beforeData.getClass().equals(afterData.getClass())) {
+        if (!beforeData.getClass().equals(afterData.getClass())) {
             String message = StrUtil.format("beforeData and afterData must be the same class. beforeData: {}, afterData: {}", beforeData.getClass(), afterData.getClass());
             log.error(message);
             throw new ServerException(message);
@@ -75,7 +75,7 @@ public class LogDataChangeService extends BaseVitaService<LogDataChangeMapper, L
     }
 
     private void saveChanges(String tableName, Long businessId, Object beforeObject, Object afterObject, List<DiffModel> changeData) {
-        if(changeData.isEmpty()) {
+        if (changeData.isEmpty()) {
             log.info("No data change, no need to save logDataChangeDO.");
         } else {
             LogDataChangeDO logDataChangeDO = this.buildLogDataChangeDO(tableName, businessId, beforeObject, afterObject, changeData);

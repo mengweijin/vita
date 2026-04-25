@@ -13,7 +13,7 @@ public class CaptchaMandatoryCheckRule implements CheckValidator.CheckRule {
     @Override
     public boolean isValid(CharSequence value) {
         VitaProperties vitaProperties = SpringUtil.getBean(VitaProperties.class);
-        if(vitaProperties.getLoginCaptchaEnabled()) {
+        if (vitaProperties.getLoginCaptchaEnabled()) {
             return StrValidator.isNotBlank(value);
         }
         return true;

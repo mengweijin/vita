@@ -1,10 +1,10 @@
 package com.github.mengweijin.vita.system.handler.secondaryauth.impl;
 
 import cn.hutool.v7.extra.spring.SpringUtil;
+import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import com.github.mengweijin.vita.system.domain.bo.OpenSafeBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
-import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import com.github.mengweijin.vita.system.handler.secondaryauth.ISecondaryAuthHandler;
 import com.github.mengweijin.vita.system.service.UserService;
 import org.springframework.stereotype.Component;

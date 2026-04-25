@@ -7,6 +7,7 @@ import org.springframework.scheduling.support.CronExpression;
 
 /**
  * cron 表达式校验注解实现
+ *
  * @author mengweijin
  */
 public class CronValidator implements ConstraintValidator<Cron, String> {

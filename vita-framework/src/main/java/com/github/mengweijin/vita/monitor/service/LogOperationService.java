@@ -20,8 +20,8 @@ import java.util.List;
 
 /**
  * <p>
- *  LogOperation Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * LogOperation Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

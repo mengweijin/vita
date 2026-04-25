@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jackson.sensitive.serializer;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -9,7 +10,6 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.github.mengweijin.vita.framework.jackson.sensitive.ESensitiveStrategy;
 import com.github.mengweijin.vita.framework.jackson.sensitive.Sensitive;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -27,7 +27,7 @@ public class SensitiveAnnotationSerializer extends JsonSerializer<String> implem
     @Override
     public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         ESensitiveStrategy strategy = sensitive.strategy();
-        if(strategy == null) {
+        if (strategy == null) {
             log.warn("Desensitization strategies don't exist! Default hide all value!");
             gen.writeString(CharSequenceUtil.hide(value, 0, CharSequenceUtil.length(value)));
         } else {

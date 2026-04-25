@@ -16,8 +16,8 @@ import java.time.LocalTime;
 
 /**
  * <p>
- *  Scheduling Task Log Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Scheduling Task Log Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

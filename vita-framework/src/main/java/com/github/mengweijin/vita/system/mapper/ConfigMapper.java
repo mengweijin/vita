@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Config Mapper
+ * Config Mapper
  * </p>
  *
  * @author mengweijin

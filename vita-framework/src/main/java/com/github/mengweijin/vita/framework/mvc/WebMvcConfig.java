@@ -30,6 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * 原因：当项目中存在自定义拦截器时，请求会先进入拦截器，导致跨域响应头未添加。
      * 解决：改用 CorsFilter 过滤器（优先级高于拦截器）。
      * 因此这里使用 CorsFilter 配置。
+     *
      * @return CorsFilter
      */
     @Bean
@@ -45,7 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 缓存时间
         config.setMaxAge(Duration.ofHours(1));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",  config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 

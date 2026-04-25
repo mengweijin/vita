@@ -24,19 +24,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class MybatisMapperHelper implements ApplicationContextAware {
 
-    private ApplicationContext applicationContext;
-
     /**
      * 缓存实体类与 Mapper 的对应关系
      */
     private final Map<Class<?>, BaseMapper<?>> mapperCache = new ConcurrentHashMap<>();
-
     /**
      * 缓存 Mapper 接口与其对应的实体类型
      * key: entityClass
      * value: MapperClass
      */
     private final Map<Class<?>, Class<?>> entityCache = new ConcurrentHashMap<>();
+    private ApplicationContext applicationContext;
 
     /**
      * 获取实体类对应的表名
@@ -71,11 +69,11 @@ public class MybatisMapperHelper implements ApplicationContextAware {
     }
 
     public <T> Class<?> getEntityClassByMapper(BaseMapper<T> mapper) {
-        return getGenericTypeByMapper(mapper,0);
+        return getGenericTypeByMapper(mapper, 0);
     }
 
     public <T> Class<?> getVoClassByMapper(BaseMapper<T> mapper) {
-        return getGenericTypeByMapper(mapper,1);
+        return getGenericTypeByMapper(mapper, 1);
     }
 
     private <T> Class<?> getGenericTypeByMapper(BaseMapper<T> mapper, int index) {

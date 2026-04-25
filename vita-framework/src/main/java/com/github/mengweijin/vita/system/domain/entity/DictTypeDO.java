@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -31,20 +31,20 @@ import lombok.EqualsAndHashCode;
 public class DictTypeDO extends BaseEntity {
 
     /**
-    * 字典名称
-    */
+     * 字典名称
+     */
     @NotBlank
     private String name;
 
     /**
-    * 字典类型编码。
-    */
+     * 字典类型编码。
+     */
     @NotBlank(groups = Group.Create.class)
     @Check(groups = Group.Create.class, rules = DictTypeCodeDuplicateCheckRule.class)
     private String code;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

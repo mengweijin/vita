@@ -37,11 +37,11 @@ public class TemplateService {
     }
 
     /**
-     * @deprecated 此方法仅为示例，演示旧版逻辑，请勿在新代码中使用。
-     * 保留原因：供学习和参考使用。
-     * @param list List<TemplateVO>
+     * @param list     List<TemplateVO>
      * @param parentId parentId
      * @return tree
+     * @deprecated 此方法仅为示例，演示旧版逻辑，请勿在新代码中使用。
+     * 保留原因：供学习和参考使用。
      */
     @SuppressWarnings("java:S1133")
     @Deprecated(since = "2.0")

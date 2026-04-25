@@ -17,8 +17,8 @@ import java.util.Collection;
 
 /**
  * <p>
- *  Post Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Post Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin
@@ -34,7 +34,7 @@ public class PostService extends BaseVitaService<PostMapper, PostDO, PostVO> {
     @Override
     public boolean removeByIds(Collection<?> postIds) {
         long userCount = userPostService.countUserInPostIds(postIds);
-        if(userCount > 0) {
+        if (userCount > 0) {
             throw new ClientException(I18nUtils.msg("system.post.delete.hasUser"));
         }
         return super.removeByIds(postIds);

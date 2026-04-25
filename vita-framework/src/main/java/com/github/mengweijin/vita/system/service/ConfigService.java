@@ -38,7 +38,7 @@ public class ConfigService extends BaseVitaService<ConfigMapper, ConfigDO, Confi
     @Override
     public boolean save(ConfigDO entity) {
         boolean saved = super.save(entity);
-        if(saved) {
+        if (saved) {
             // 发布配置更新事件以动态刷新配置
             this.publishEnvironmentChangeEvent(entity.getConfigKey());
         }
@@ -48,7 +48,7 @@ public class ConfigService extends BaseVitaService<ConfigMapper, ConfigDO, Confi
     @Override
     public boolean updateById(ConfigDO config) {
         boolean updated = super.updateById(config);
-        if(updated) {
+        if (updated) {
             ConfigDO latestConfig = this.getById(config.getId());
             // 发布配置更新事件以动态刷新配置
             this.publishEnvironmentChangeEvent(latestConfig.getConfigKey());
@@ -80,7 +80,7 @@ public class ConfigService extends BaseVitaService<ConfigMapper, ConfigDO, Confi
         databasePropertySource.refresh();
 
         Set<String> changeKeys = SetUtil.of(keys);
-        if(ArrayUtil.isEmpty(changeKeys)) {
+        if (ArrayUtil.isEmpty(changeKeys)) {
             changeKeys = databasePropertySource.getAllKeys();
         }
 

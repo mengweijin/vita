@@ -10,10 +10,12 @@ import cn.hutool.v7.core.util.EnumUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
+import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -22,7 +24,6 @@ import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.monitor.domain.vo.SaSessionVO;
 import com.github.mengweijin.vita.monitor.domain.vo.SaTerminalInfoVO;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.OpenSafeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordChangeBO;
 import com.github.mengweijin.vita.system.domain.bo.PasswordResetBO;
@@ -36,7 +37,6 @@ import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
-import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import com.github.mengweijin.vita.system.handler.secondaryauth.ISecondaryAuthHandler;
 import com.github.mengweijin.vita.system.handler.secondaryauth.SecondaryAuthHandleFactory;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
@@ -306,7 +306,7 @@ public class UserController {
     public boolean validateTotpCode(@PathVariable("code") Integer code) {
         UserDO user = this.getById(LoginHelper.getSessionUserId());
         boolean validated = TotpUtils.validate(user.getTotp(), code);
-        if(validated) {
+        if (validated) {
             return true;
         }
         throw new ClientException(I18nUtils.msg("system.user.totp.code.invalid"));
@@ -314,6 +314,7 @@ public class UserController {
 
     /**
      * 生成 TOTP 二维码。需要先通过 @SaCheckSafe 来验证是否已通过二级认证。
+     *
      * @return TotpVO
      */
     @SaCheckSafe

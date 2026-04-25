@@ -16,26 +16,25 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class TranslationHandlerFactory {
 
+    private static final Map<ETranslateType, ITranslationHandler> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
     private final List<ITranslationHandler> translationList;
 
     public TranslationHandlerFactory(List<ITranslationHandler> translationList) {
         this.translationList = translationList;
     }
 
-    private static final Map<ETranslateType, ITranslationHandler> TRANSLATION_STRATEGY_MAP = new ConcurrentHashMap<>();
+    public static ITranslationHandler getTranslationStrategy(ETranslateType translateType) {
+        return TRANSLATION_STRATEGY_MAP.get(translateType);
+    }
 
     @SuppressWarnings({"unused"})
     @PostConstruct
     public void init() {
         for (ITranslationHandler handler : translationList) {
-            if(handler.translateType() == null) {
+            if (handler.translateType() == null) {
                 log.warn("{} : was not set translationType!", handler.getClass().getName());
             }
             TRANSLATION_STRATEGY_MAP.put(handler.translateType(), handler);
         }
-    }
-
-    public static ITranslationHandler getTranslationStrategy(ETranslateType translateType) {
-        return TRANSLATION_STRATEGY_MAP.get(translateType);
     }
 }

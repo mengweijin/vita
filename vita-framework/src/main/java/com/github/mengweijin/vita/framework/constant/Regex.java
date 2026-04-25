@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework.constant;
 
+import cn.hutool.v7.core.regex.RegexPool;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import cn.hutool.v7.core.regex.RegexPool;
 
 /**
  * @author mengweijin

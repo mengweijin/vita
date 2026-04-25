@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -29,22 +29,22 @@ import java.time.LocalDateTime;
 public class MessageReceiverDO extends BaseEntity {
 
     /**
-    * 消息ID
-    */
+     * 消息ID
+     */
     private Long messageId;
 
     /**
      * 消息接收者用户ID
-    */
+     */
     private Long userId;
 
     /**
      * 是否已查看。[Y, N]
-    */
+     */
     private String viewed;
 
     /**
      * 查看时间
-    */
+     */
     private LocalDateTime viewedTime;
 }

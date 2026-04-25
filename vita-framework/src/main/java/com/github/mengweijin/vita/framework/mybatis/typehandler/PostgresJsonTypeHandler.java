@@ -26,7 +26,8 @@ public class PostgresJsonTypeHandler extends JacksonTypeHandler {
 
     /**
      * 自 mybatis-plus 3.5.6 版本开始支持泛型,需要加上此构造.
-     * @param type type
+     *
+     * @param type  type
      * @param field field
      */
     public PostgresJsonTypeHandler(Class<?> type, Field field) {

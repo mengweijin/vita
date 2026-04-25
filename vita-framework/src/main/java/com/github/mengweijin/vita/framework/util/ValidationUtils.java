@@ -21,15 +21,15 @@ public final class ValidationUtils {
     public static void validate(Object object) throws IllegalArgumentException {
         LocalValidatorFactoryBean validator = SpringUtil.getBean(LocalValidatorFactoryBean.class);
         Set<ConstraintViolation<Object>> set = validator.validate(object);
-        if(!set.isEmpty()) {
-                String className = object.getClass().getName();
-                // 拼接错误信息
-                String errors = set.stream()
-                        .map(v -> v.getPropertyPath()  + ": " + v.getMessage())
-                        .collect(Collectors.joining(";  "));
+        if (!set.isEmpty()) {
+            String className = object.getClass().getName();
+            // 拼接错误信息
+            String errors = set.stream()
+                    .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                    .collect(Collectors.joining(";  "));
 
-                String message = StrUtil.format("Bean Class [{}] validate failed: {}", className, errors);
-                throw new IllegalArgumentException(message);
+            String message = StrUtil.format("Bean Class [{}] validate failed: {}", className, errors);
+            throw new IllegalArgumentException(message);
         }
     }
 

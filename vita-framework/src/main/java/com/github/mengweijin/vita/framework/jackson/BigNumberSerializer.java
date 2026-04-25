@@ -14,11 +14,9 @@ import java.io.IOException;
 @JacksonStdImpl
 public class BigNumberSerializer extends NumberSerializer {
 
-    private static final long JS_MAX_SAFE_INTEGER = 9007199254740991L;
-
-    private static final long JS_MIN_SAFE_INTEGER = -9007199254740991L;
-
     public static final BigNumberSerializer BIG_NUMBER_SERIALIZER_INSTANCE = new BigNumberSerializer();
+    private static final long JS_MAX_SAFE_INTEGER = 9007199254740991L;
+    private static final long JS_MIN_SAFE_INTEGER = -9007199254740991L;
 
     public BigNumberSerializer() {
         super(Number.class);

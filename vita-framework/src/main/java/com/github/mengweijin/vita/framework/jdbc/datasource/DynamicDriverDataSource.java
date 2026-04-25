@@ -50,6 +50,38 @@ public class DynamicDriverDataSource implements DataSource {
         this.password = password;
     }
 
+    public static void deregisterAllDriverShim() {
+        try {
+            Enumeration<Driver> enumeration = DriverManager.getDrivers();
+            while (enumeration.hasMoreElements()) {
+                Object element = enumeration.nextElement();
+                if (element.getClass() == DriverShim.class) {
+                    DriverManager.deregisterDriver((DriverShim) element);
+                }
+            }
+        } catch (Exception e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public static List<String> listRegisteredDrivers() {
+        List<String> list = new ArrayList<>();
+
+        Enumeration<Driver> enumeration = DriverManager.getDrivers();
+        String driverName;
+        while (enumeration.hasMoreElements()) {
+            Driver element = enumeration.nextElement();
+            if (element.getClass() == DriverShim.class) {
+                driverName = ((DriverShim) element).getDriver().getClass().getName();
+            } else {
+                driverName = element.getClass().getName();
+            }
+            list.add(driverName);
+        }
+
+        return list;
+    }
+
     @Override
     public Connection getConnection() throws SQLException {
         return this.getConnection(this.username, this.password);
@@ -89,13 +121,13 @@ public class DynamicDriverDataSource implements DataSource {
     }
 
     @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        DriverManager.setLoginTimeout(seconds);
+    public int getLoginTimeout() throws SQLException {
+        return DriverManager.getLoginTimeout();
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
-        return DriverManager.getLoginTimeout();
+    public void setLoginTimeout(int seconds) throws SQLException {
+        DriverManager.setLoginTimeout(seconds);
     }
 
     @Override
@@ -130,37 +162,5 @@ public class DynamicDriverDataSource implements DataSource {
         } catch (Exception e) {
             throw new ServerException(e);
         }
-    }
-
-    public static void deregisterAllDriverShim() {
-        try {
-            Enumeration<Driver> enumeration = DriverManager.getDrivers();
-            while (enumeration.hasMoreElements()) {
-                Object element = enumeration.nextElement();
-                if (element.getClass() == DriverShim.class) {
-                    DriverManager.deregisterDriver((DriverShim) element);
-                }
-            }
-        } catch (Exception e) {
-            throw new ServerException(e);
-        }
-    }
-
-    public static List<String> listRegisteredDrivers() {
-        List<String> list = new ArrayList<>();
-
-        Enumeration<Driver> enumeration = DriverManager.getDrivers();
-        String driverName;
-        while (enumeration.hasMoreElements()) {
-            Driver element = enumeration.nextElement();
-            if (element.getClass() == DriverShim.class) {
-                driverName = ((DriverShim) element).getDriver().getClass().getName();
-            } else {
-                driverName = element.getClass().getName();
-            }
-            list.add(driverName);
-        }
-
-        return list;
     }
 }

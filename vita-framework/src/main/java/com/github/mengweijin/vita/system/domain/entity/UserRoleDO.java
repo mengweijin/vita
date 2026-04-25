@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,12 +27,12 @@ import lombok.EqualsAndHashCode;
 public class UserRoleDO extends BaseEntity {
 
     /**
-    * 用户ID
-    */
+     * 用户ID
+     */
     private Long userId;
 
     /**
-    * 角色ID
-    */
+     * 角色ID
+     */
     private Long roleId;
 }

@@ -26,7 +26,7 @@ public class DatabasePropertySource extends PropertySource<Map<String, String>> 
     public static final String PROPERTY_SOURCE_NAME = "databasePropertySource";
 
     private final JdbcTemplate jdbcTemplate;
-    
+
     public DatabasePropertySource(JdbcTemplate jdbcTemplate) {
         super(PROPERTY_SOURCE_NAME, new ConcurrentHashMap<>());
         this.jdbcTemplate = jdbcTemplate;

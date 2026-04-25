@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 public class ApplicationProperties {
 
     @NotBlank
-    private String name ="vita-admin";
+    private String name = "vita-admin";
 
     @NotBlank
     private String version = "2.0.0-SNAPSHOT";

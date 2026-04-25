@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,17 +27,17 @@ import lombok.EqualsAndHashCode;
 public class NoticeDO extends BaseEntity {
 
     /**
-    * 标题
-    */
+     * 标题
+     */
     private String title;
 
     /**
-    * 内容
-    */
+     * 内容
+     */
     private String description;
 
     /**
-    * 是否已发布。[Y, N]
-    */
+     * 是否已发布。[Y, N]
+     */
     private String released;
 }

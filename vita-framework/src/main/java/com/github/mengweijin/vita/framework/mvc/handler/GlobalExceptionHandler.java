@@ -51,21 +51,21 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
     }
 
-    @ExceptionHandler({ NotLoginException.class })
+    @ExceptionHandler({NotLoginException.class})
     @ResponseBody
     ResponseEntity<R<Void>> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
         R<Void> r = R.fail(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(r);
     }
 
-    @ExceptionHandler({ NotPermissionException.class })
+    @ExceptionHandler({NotPermissionException.class})
     @ResponseBody
     ResponseEntity<R<Void>> handleNotPermissionException(NotPermissionException e, HttpServletRequest request) {
         R<Void> r = R.fail(HttpStatus.FORBIDDEN.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(r);
     }
 
-    @ExceptionHandler({ NotRoleException.class })
+    @ExceptionHandler({NotRoleException.class})
     @ResponseBody
     ResponseEntity<R<Void>> handleNotRoleException(NotRoleException e, HttpServletRequest request) {
         R<Void> r = R.fail(HttpStatus.FORBIDDEN.value(), e.getMessage());

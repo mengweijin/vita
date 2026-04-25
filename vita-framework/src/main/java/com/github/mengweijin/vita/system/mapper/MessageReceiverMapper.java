@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- *  MessageReceiver Mapper
+ * MessageReceiver Mapper
  * </p>
  *
  * @author mengweijin
@@ -21,7 +21,8 @@ public interface MessageReceiverMapper extends BaseVitaMapper<MessageReceiverDO,
 
     /**
      * 自定义分页
-     * @param page page
+     *
+     * @param page    page
      * @param message MessageVO
      * @return IPage
      */

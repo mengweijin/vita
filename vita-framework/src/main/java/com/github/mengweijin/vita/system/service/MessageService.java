@@ -8,13 +8,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.sse.SseConnector;
 import com.github.mengweijin.vita.system.domain.entity.MessageDO;
 import com.github.mengweijin.vita.system.domain.entity.MessageReceiverDO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,13 +41,10 @@ import java.util.concurrent.ExecutorService;
 @AllArgsConstructor
 public class MessageService extends BaseVitaService<MessageMapper, MessageDO, MessageVO> {
 
-    private MessageReceiverService messageReceiverService;
-
-    private TransactionTemplate transactionTemplate;
-
-    private SseConnector sseConnector;
-
     private final ExecutorService executorService = ThreadUtil.newFixedExecutor(Const.PROCESSORS * 2, "thread-pool-message-", true);
+    private MessageReceiverService messageReceiverService;
+    private TransactionTemplate transactionTemplate;
+    private SseConnector sseConnector;
 
     @Override
     public LambdaQueryWrapper<MessageDO> buildQueryWrapper(MessageDO message) {

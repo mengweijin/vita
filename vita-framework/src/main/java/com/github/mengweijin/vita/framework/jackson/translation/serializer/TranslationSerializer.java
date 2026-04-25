@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jackson.translation.serializer;
 
+import cn.hutool.v7.core.text.StrValidator;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -10,7 +11,6 @@ import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import com.github.mengweijin.vita.framework.jackson.translation.TranslationHandlerFactory;
 import com.github.mengweijin.vita.framework.jackson.translation.handler.ITranslationHandler;
 import com.github.mengweijin.vita.framework.util.ReflectUtils;
-import cn.hutool.v7.core.text.StrValidator;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class TranslationSerializer extends JsonSerializer<Object> implements Con
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         ITranslationHandler translationStrategy = TranslationHandlerFactory.getTranslationStrategy(translation.translateType());
-        if(translationStrategy == null) {
+        if (translationStrategy == null) {
             gen.writeObject(value);
         } else {
             // 优先取配置的映射字段属性值

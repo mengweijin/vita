@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.entity.LogLoginDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogLoginVO;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  LogLogin Controller
+ * LogLogin Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class LogLoginController {
      * <p>
      * Get LogLogin page by LogLogin
      * </p>
-     * @param page page
+     *
+     * @param page     page
      * @param logLogin {@link LogLoginDO}
      * @return Page<LogLogin>
      */
@@ -70,6 +71,7 @@ public class LogLoginController {
      * <p>
      * Get LogLogin list by LogLogin
      * </p>
+     *
      * @param logLogin {@link LogLoginDO}
      * @return List<LogLogin>
      */
@@ -83,6 +85,7 @@ public class LogLoginController {
      * <p>
      * Get LogLogin by id
      * </p>
+     *
      * @param id id
      * @return LogLogin
      */
@@ -95,6 +98,7 @@ public class LogLoginController {
      * <p>
      * Add LogLogin
      * </p>
+     *
      * @param logLogin {@link LogLoginDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -109,6 +113,7 @@ public class LogLoginController {
      * <p>
      * Update LogLogin
      * </p>
+     *
      * @param logLogin {@link LogLoginDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -123,6 +128,7 @@ public class LogLoginController {
      * <p>
      * Delete LogLogin by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

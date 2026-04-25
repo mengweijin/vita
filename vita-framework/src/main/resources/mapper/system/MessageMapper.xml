@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.github.mengweijin.vita.system.domain.entity.MessageDO">
-        <result column="CATEGORY" property="category" />
-        <result column="TITLE" property="title" />
-        <result column="CONTENT" property="content" />
-        <result column="ID" property="id" />
-        <result column="CREATE_BY" property="createBy" />
-        <result column="CREATE_TIME" property="createTime" />
-        <result column="UPDATE_BY" property="updateBy" />
-        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="CATEGORY" property="category"/>
+        <result column="TITLE" property="title"/>
+        <result column="CONTENT" property="content"/>
+        <result column="ID" property="id"/>
+        <result column="CREATE_BY" property="createBy"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_BY" property="updateBy"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

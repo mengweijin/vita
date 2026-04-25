@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.monitor.domain.vo.application;
 
-import lombok.Data;
 import cn.hutool.v7.extra.management.oshi.OshiUtil;
+import lombok.Data;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.PhysicalMemory;
 

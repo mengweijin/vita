@@ -18,10 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class MybatisMapperHelperTest {
 
+    private static MybatisMapperHelper mybatisMapperHelper;
     @Mock
     private UserMapper userMapper;
-
-    private static MybatisMapperHelper mybatisMapperHelper;
 
     @BeforeAll
     static void beforeAll() {

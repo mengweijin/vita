@@ -28,9 +28,9 @@ import java.io.File;
  * 2. 直接使用 @ConfigurationProperties，并不需要加 @RefreshScope 就能实现动态更新。
  * - @ConfigurationProperties实现动态刷新的原理：
  * - @ConfigurationProperties有 {@link org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder} 这个监听器，
- *         监听着 {@link org.springframework.cloud.context.environment.EnvironmentChangeEvent} 事件。
- *         当发生 EnvironmentChangeEvent 事件后，会重新构造原来的加了 @ConfigurationProperties 注解的 Bean 对象。
- *         这个是 Spring Cloud 的默认实现。
+ * 监听着 {@link org.springframework.cloud.context.environment.EnvironmentChangeEvent} 事件。
+ * 当发生 EnvironmentChangeEvent 事件后，会重新构造原来的加了 @ConfigurationProperties 注解的 Bean 对象。
+ * 这个是 Spring Cloud 的默认实现。
  *
  * @author Meng Wei Jin
  **/

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * {@link CacheSpecification}
+ *
  * @author mengweijin
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

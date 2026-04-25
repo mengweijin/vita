@@ -15,6 +15,7 @@ public interface ITranslationHandler {
 
     /**
      * 支持的翻译类型
+     *
      * @return ETranslateType
      */
     ETranslateType translateType();
@@ -22,7 +23,7 @@ public interface ITranslationHandler {
     /**
      * 数据翻译
      *
-     * @param value 需要被翻译的值
+     * @param value       需要被翻译的值
      * @param translation 注解 {@link Translation}
      * @return 返回转换后的值
      */

@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义业务校验注解
+ *
  * @author mengweijin
  */
 @Retention(RetentionPolicy.RUNTIME)

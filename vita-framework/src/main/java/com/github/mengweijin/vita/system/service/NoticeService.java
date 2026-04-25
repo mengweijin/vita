@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  Notice Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Notice Service
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  * </p>
  *
  * @author mengweijin

@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.framework.util;
 
+import cn.hutool.v7.extra.spring.SpringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import cn.hutool.v7.extra.spring.SpringUtil;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -24,12 +24,12 @@ public final class I18nUtils {
      * <p>
      * 建议开启以下配置：
      * spring:
-     *   # MessageSourceProperties.java
-     *   messages:
-     *     # 指向 classpath 目录下的 /i18n/messages.properties
-     *     basename: i18n/messages
-     *     # 消息未找到时，是否返回原始键。默认为 false，这里改为 true 以避免抛出 NoSuchMessageException 异常
-     *     use-code-as-default-message: true
+     * # MessageSourceProperties.java
+     * messages:
+     * # 指向 classpath 目录下的 /i18n/messages.properties
+     * basename: i18n/messages
+     * # 消息未找到时，是否返回原始键。默认为 false，这里改为 true 以避免抛出 NoSuchMessageException 异常
+     * use-code-as-default-message: true
      *
      * @param key  message key in messages.properties
      * @param args args

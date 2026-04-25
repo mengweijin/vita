@@ -48,7 +48,7 @@ public enum ESensitiveStrategy {
         if (s == null || s.length() == 1) {
             return MaskingUtil.firstMask(s);
         }
-        if(s.length() == 2) {
+        if (s.length() == 2) {
             return s.charAt(0) + MaskingManager.DEFAULT_MASK_CHAR + Const.EMPTY;
         }
         int partLength = s.length() / 3;

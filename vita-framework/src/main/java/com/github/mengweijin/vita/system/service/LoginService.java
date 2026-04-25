@@ -10,6 +10,8 @@ import cn.hutool.v7.swing.captcha.AbstractCaptcha;
 import cn.hutool.v7.swing.captcha.CaptchaUtil;
 import cn.hutool.v7.swing.captcha.generator.MathGenerator;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
+import com.github.mengweijin.vita.framework.enums.dict.ELoginType;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -18,8 +20,6 @@ import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.system.domain.bo.LoginBO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserSessionVO;
-import com.github.mengweijin.vita.framework.enums.dict.ELoginType;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -69,7 +69,7 @@ public class LoginService {
             throw new ClientException(msg);
         }
 
-        if(EYesNo.Y.getValue().equalsIgnoreCase(user.getDisabled())) {
+        if (EYesNo.Y.getValue().equalsIgnoreCase(user.getDisabled())) {
             String msg = I18nUtils.msg("system.login.account.disabled");
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
             throw new ClientException(msg);
@@ -85,7 +85,7 @@ public class LoginService {
                 .setIsLastingCookie(loginBO.isRemember())
                 .setDeviceId(loginBO.getDeviceId())
                 .setDeviceType(platformName);
-        if(loginBO.isRemember()) {
+        if (loginBO.isRemember()) {
             // 7 天免登录（7 * 24 * 60 * 60）。覆盖 sa-token.timeout 配置。
             saLoginParameter.setTimeout(604800);
             saLoginParameter.setActiveTimeout(604800);

@@ -35,6 +35,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 添加 Cron 表达式任务
+     *
      * @param task SchedulingTaskDO
      * @throws ServerException 任务已存在则抛出异常。
      */
@@ -50,6 +51,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 添加 Cron 表达式任务
+     *
      * @param taskId         任务唯一标识
      * @param task           执行逻辑
      * @param cronExpression Cron 表达式
@@ -63,6 +65,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 固定延迟任务（上一次执行结束后延迟指定时间）
+     *
      * @param taskId 任务标识
      * @param task   执行逻辑
      * @param delay  完成一次执行和开始下一次执行之间的延迟
@@ -75,6 +78,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 固定频率任务（不考虑上一次执行是否完成）
+     *
      * @param taskId 任务标识
      * @param task   执行逻辑
      * @param period 连续执行任务之间的间隔
@@ -87,6 +91,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 一次性任务（指定时间执行）
+     *
      * @param taskId    任务标识
      * @param task      执行逻辑
      * @param startTime 任务的期望执行时间（如果是过去的时间，任务将立即执行，即尽快执行）
@@ -99,6 +104,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 取消任务
+     *
      * @param taskId 任务标识
      * @throws ServerException 任务取消失败则抛出异常。
      */
@@ -133,6 +139,7 @@ public class DynamicTaskManager implements DisposableBean {
 
     /**
      * 检查任务是否已存在
+     *
      * @param taskId 任务标识
      * @throws ServerException 任务已存在则抛出异常。
      */

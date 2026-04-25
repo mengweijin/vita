@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.modifier;
 
+import cn.hutool.v7.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -10,7 +11,6 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.github.mengweijin.vita.framework.jackson.wrapper.SensitiveObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer.SensitiveBeanFieldSerializer;
 import com.github.mengweijin.vita.framework.jackson.wrapper.sensitive.serializer.SensitiveMapSerializer;
-import cn.hutool.v7.core.text.CharSequenceUtil;
 
 import java.util.List;
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * VitaBaseMapper 类（ 泛型：T 是实体, V 是实体对应的 VO ）
+ *
  * @author mengweijin
  * @since 2026/1/11
  */
@@ -98,7 +99,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
     /**
      * 根据 entity 条件，查询全部 VO 记录（并翻页）
      *
-     * @param pageQuery     {@link PageQuery} 分页查询对象
+     * @param pageQuery    {@link PageQuery} 分页查询对象
      * @param queryWrapper 实体对象封装操作类（可以为 null）
      * @return VO Page
      */
@@ -109,6 +110,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
 
     /**
      * IPage<T> 转 PageQuery<V>
+     *
      * @param page IPage<T>
      * @return PageQuery<V>
      */
@@ -131,9 +133,9 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
     /**
      * 主键存在更新记录，否则插入一条记录
      *
-     * @param bo bo
-     * @return boolean
+     * @param bo  bo
      * @param <B> BO Class Type
+     * @return boolean
      */
     default <B> boolean insertOrUpdateByBo(B bo) {
         T t = MapstructUtils.getConverter().convert(bo, this.entityClass());

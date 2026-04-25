@@ -3,8 +3,8 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -29,7 +29,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  Menu Controller
+ * Menu Controller
  * </p>
  *
  * @author mengweijin
@@ -57,6 +57,7 @@ public class MenuController {
      * <p>
      * Get Menu list by Menu
      * </p>
+     *
      * @param menu {@link MenuDO}
      * @return List<Menu>
      */
@@ -71,6 +72,7 @@ public class MenuController {
      * <p>
      * Get Menu by id
      * </p>
+     *
      * @param id id
      * @return Menu
      */
@@ -88,6 +90,7 @@ public class MenuController {
      * <p>
      * Add Menu
      * </p>
+     *
      * @param menu {@link MenuDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -102,6 +105,7 @@ public class MenuController {
      * <p>
      * Update Menu
      * </p>
+     *
      * @param menu {@link MenuDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -116,6 +120,7 @@ public class MenuController {
      * <p>
      * Delete Menu by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

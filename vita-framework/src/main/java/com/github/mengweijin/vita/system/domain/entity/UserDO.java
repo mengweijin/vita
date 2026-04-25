@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -40,18 +40,18 @@ public class UserDO extends BaseEntity {
     private Long deptId;
 
     /**
-    * 用户登录名（字母数字下划线）
-    */
+     * 用户登录名（字母数字下划线）
+     */
     private String username;
 
     /**
-    * 用户昵称
-    */
+     * 用户昵称
+     */
     private String nickname;
 
     /**
-    * 登录密码
-    */
+     * 登录密码
+     */
     @JsonIgnore
     private String password;
 
@@ -74,40 +74,40 @@ public class UserDO extends BaseEntity {
     private LocalDateTime passwordChangeTime;
 
     /**
-    * 身份证号
-    */
+     * 身份证号
+     */
     @JsonIgnore
     private String citizenId;
 
     /**
-    * 性别。关联数据字典：vt_user_gender
-    */
+     * 性别。关联数据字典：vt_user_gender
+     */
     private String gender;
 
     /**
-    * 电子邮箱
-    */
+     * 电子邮箱
+     */
     private String email;
 
     /**
-    * 移动电话
-    */
+     * 移动电话
+     */
     private String mobile;
 
     /**
      * TOTP 动态口令验证密钥
-    */
+     */
     @JsonIgnore
     private String totp;
 
     /**
-    * 是否禁用。[Y, N]
-    */
+     * 是否禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 逻辑删除。[Y, N]
-    */
+     * 逻辑删除。[Y, N]
+     */
     @TableLogic
     private String deleted;
 

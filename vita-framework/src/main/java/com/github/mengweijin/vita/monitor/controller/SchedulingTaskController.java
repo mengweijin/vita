@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.bo.SchedulingTaskBO;
 import com.github.mengweijin.vita.monitor.domain.entity.SchedulingTaskDO;
 import com.github.mengweijin.vita.monitor.domain.vo.SchedulingTaskVO;
@@ -28,7 +28,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  SchedulingTask Controller
+ * SchedulingTask Controller
  * </p>
  *
  * @author mengweijin
@@ -49,7 +49,8 @@ public class SchedulingTaskController {
      * <p>
      * Get SchedulingTask page by SchedulingTask
      * </p>
-     * @param page page
+     *
+     * @param page           page
      * @param schedulingTask {@link SchedulingTaskDO}
      * @return Page<SchedulingTaskDO>
      */
@@ -65,6 +66,7 @@ public class SchedulingTaskController {
      * <p>
      * Get SchedulingTaskDO list by SchedulingTaskDO
      * </p>
+     *
      * @param schedulingTask {@link SchedulingTaskDO}
      * @return List<SchedulingTaskDO>
      */
@@ -78,6 +80,7 @@ public class SchedulingTaskController {
      * <p>
      * Get LogLogin by id
      * </p>
+     *
      * @param id id
      * @return LogLogin
      */
@@ -95,6 +98,7 @@ public class SchedulingTaskController {
      * <p>
      * Add SchedulingTaskDO
      * </p>
+     *
      * @param bo {@link SchedulingTaskBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -109,6 +113,7 @@ public class SchedulingTaskController {
      * <p>
      * Update SchedulingTaskDO
      * </p>
+     *
      * @param bo {@link SchedulingTaskBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -139,6 +144,7 @@ public class SchedulingTaskController {
      * <p>
      * Delete SchedulingTaskDO by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

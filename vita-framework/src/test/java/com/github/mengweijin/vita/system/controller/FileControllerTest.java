@@ -56,8 +56,8 @@ class FileControllerTest {
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         // 文件资源
         // body.add("file",  new FileSystemResource(file));
-        body.add("file",  new ClassPathResource("mapper/system/ConfigMapper.xml"));
-        body.add("fileName",  "NewConfigMapper.xml");
+        body.add("file", new ClassPathResource("mapper/system/ConfigMapper.xml"));
+        body.add("fileName", "NewConfigMapper.xml");
 
         // 设置请求头
         HttpHeaders headers = new HttpHeaders();
@@ -68,8 +68,9 @@ class FileControllerTest {
         ResponseEntity<String> response = restTemplate.postForEntity(UPLOAD_URL, httpEntity, String.class);
 
         String str = response.getBody();
-        if(response.getStatusCode().is2xxSuccessful()) {
-            R<FileVO> r = objectMapper.readValue(str, new TypeReference<>() {});
+        if (response.getStatusCode().is2xxSuccessful()) {
+            R<FileVO> r = objectMapper.readValue(str, new TypeReference<>() {
+            });
             FileVO fileVO = r.getData();
 
             Assertions.assertNotNull(fileVO);
@@ -83,11 +84,11 @@ class FileControllerTest {
     }
 
     @SneakyThrows
-    public String login(){
+    public String login() {
         // 构建请求体
         Map<String, String> body = new HashMap<>();
-        body.put("username",  "admin");
-        body.put("password",  "aday.fun");
+        body.put("username", "admin");
+        body.put("password", "aday.fun");
 
         // 设置请求头
         HttpHeaders headers = new HttpHeaders();
@@ -97,9 +98,10 @@ class FileControllerTest {
         ResponseEntity<String> response = restTemplate.postForEntity(LOGIN_URL, httpEntity, String.class);
 
         String str = response.getBody();
-        if(response.getStatusCode().is2xxSuccessful()) {
+        if (response.getStatusCode().is2xxSuccessful()) {
             // TypeReference ✅ 解决泛型擦除
-            R<HashMap<String, String>> r = objectMapper.readValue(str, new TypeReference<>() {});
+            R<HashMap<String, String>> r = objectMapper.readValue(str, new TypeReference<>() {
+            });
             String tokenString = r.getData().get("tokenString");
             Assertions.assertNotNull(tokenString);
             log.info("token={}", tokenString);
@@ -115,7 +117,8 @@ class FileControllerTest {
      */
     @SuppressWarnings("unused")
     private void parameterizedTypeReference(HttpEntity<Object> httpEntity) {
-        ParameterizedTypeReference<R<HashMap<String, String>>> typeRef = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<R<HashMap<String, String>>> typeRef = new ParameterizedTypeReference<>() {
+        };
         ResponseEntity<R<HashMap<String, String>>> response = restTemplate.exchange(LOGIN_URL, HttpMethod.POST, httpEntity, typeRef);
 
     }

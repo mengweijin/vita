@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Message Mapper
+ * Message Mapper
  * </p>
  *
  * @author mengweijin

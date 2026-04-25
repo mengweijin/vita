@@ -14,6 +14,7 @@ import java.util.Optional;
 /**
  * {@link StpUtil}
  * {@link cn.dev33.satoken.stp.StpLogic}
+ *
  * @author mengweijin
  */
 @SuppressWarnings({"unused"})
@@ -30,7 +31,7 @@ public class LoginHelper {
         } catch (SaTokenException e) {
             return null;
         }
-        if(saSession == null) {
+        if (saSession == null) {
             return null;
         }
         return (UserSessionVO) saSession.get(SaSession.USER);
@@ -67,7 +68,7 @@ public class LoginHelper {
      */
     public static boolean isAdmin() {
         UserSessionVO loginUser = getSessionUser();
-        if(loginUser != null) {
+        if (loginUser != null) {
             return isAdmin(loginUser.getUserId(), loginUser.getUsername());
         }
         return false;

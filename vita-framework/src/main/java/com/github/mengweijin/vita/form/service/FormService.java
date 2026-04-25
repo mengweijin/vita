@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 流程表单表 WorkflowForm Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  *
  * @author mengweijin
  * @since 2026-04-12
@@ -45,7 +45,7 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
     }
 
     public LambdaQueryWrapper<FormDO> buildRootQueryWrapper(FormDO form) {
-        if(ObjectUtils.isAllFieldsBlank(form)) {
+        if (ObjectUtils.isAllFieldsBlank(form)) {
             // 未携带任何参数时，查询 parent id 为 null 的，即为根节点
             LambdaQueryWrapper<FormDO> wrapper = Wrappers.lambdaQuery();
             wrapper.isNull(FormDO::getParentId);
@@ -58,7 +58,7 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
 
     public List<FormVO> listChildrenByParentId(Long parentId) {
         List<Long> idList = this.getBaseMapper().selectChildrenIdsById(parentId);
-        if(CollUtil.isEmpty(idList)){
+        if (CollUtil.isEmpty(idList)) {
             return Collections.emptyList();
         }
         List<FormDO> list = this.lambdaQuery().in(FormDO::getId, idList).list();

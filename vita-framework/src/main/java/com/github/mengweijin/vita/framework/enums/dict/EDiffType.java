@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * 差异类型枚举。字典：vt_diff_type
+ *
  * @author mengweijin
  * @since 2023/5/20
  */

@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.datachange.DataChangeLog;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.datachange.DataChangeLog;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Config Controller
+ * Config Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class ConfigController {
      * <p>
      * Get Config page by Config
      * </p>
-     * @param page page
+     *
+     * @param page   page
      * @param config {@link ConfigDO}
      * @return Page<Config>
      */
@@ -64,6 +65,7 @@ public class ConfigController {
      * <p>
      * Get Config list by Config
      * </p>
+     *
      * @param config {@link ConfigDO}
      * @return List<Config>
      */
@@ -79,6 +81,7 @@ public class ConfigController {
      * <p>
      * Get Config by id
      * </p>
+     *
      * @param id id
      * @return Config
      */
@@ -91,6 +94,7 @@ public class ConfigController {
      * <p>
      * Get Config by code
      * </p>
+     *
      * @param code code
      * @return Config
      */
@@ -99,10 +103,12 @@ public class ConfigController {
         ConfigDO configDO = configService.getByConfigKey(code);
         return MapstructUtils.getConverter().convert(configDO, ConfigVO.class);
     }
+
     /**
      * <p>
      * Add Config
      * </p>
+     *
      * @param bo {@link ConfigDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -119,6 +125,7 @@ public class ConfigController {
      * <p>
      * Update Config
      * </p>
+     *
      * @param bo {@link ConfigDO}
      */
     @DataChangeLog(entityClass = ConfigDO.class, businessId = "#bo.id")
@@ -136,6 +143,7 @@ public class ConfigController {
      * <p>
      * Delete Config by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

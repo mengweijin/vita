@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  Role Mapper
+ * Role Mapper
  * </p>
  *
  * @author mengweijin
@@ -20,6 +20,7 @@ public interface RoleMapper extends BaseVitaMapper<RoleDO, RoleVO> {
 
     /**
      * get role code by username
+     *
      * @param username username
      * @return roles
      */
@@ -27,6 +28,7 @@ public interface RoleMapper extends BaseVitaMapper<RoleDO, RoleVO> {
 
     /**
      * get role code by userId
+     *
      * @param userId userId
      * @return roles
      */

@@ -11,6 +11,7 @@ import java.util.Set;
  * 监听器实现的两种方式：
  * 1. 方法（参数为 ApplicationEvent 对象）上添加 @EventListener 注解。
  * 2. 实现 ApplicationListener 接口
+ *
  * @author mengweijin
  * @since 2025/9/14
  */

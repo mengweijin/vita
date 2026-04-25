@@ -1,11 +1,11 @@
 package com.github.mengweijin.vita.framework.mybatis;
 
+import cn.hutool.v7.core.func.LambdaUtil;
+import cn.hutool.v7.core.func.SerFunction;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
-import cn.hutool.v7.core.func.LambdaUtil;
-import cn.hutool.v7.core.func.SerFunction;
 
 import java.time.LocalDateTime;
 
@@ -22,23 +22,23 @@ import java.time.LocalDateTime;
  */
 public class BaseEntityMetaObjectHandler implements MetaObjectHandler {
 
-    private static final String CREATE_BY = LambdaUtil.getFieldName((SerFunction<BaseEntity, Long>)BaseEntity::getCreateBy);
-    private static final String UPDATE_BY = LambdaUtil.getFieldName((SerFunction<BaseEntity, Long>)BaseEntity::getUpdateBy);
+    private static final String CREATE_BY = LambdaUtil.getFieldName((SerFunction<BaseEntity, Long>) BaseEntity::getCreateBy);
+    private static final String UPDATE_BY = LambdaUtil.getFieldName((SerFunction<BaseEntity, Long>) BaseEntity::getUpdateBy);
 
-    private static final String CREATE_TIME = LambdaUtil.getFieldName((SerFunction<BaseEntity, LocalDateTime>)BaseEntity::getCreateTime);
-    private static final String UPDATE_TIME = LambdaUtil.getFieldName((SerFunction<BaseEntity, LocalDateTime>)BaseEntity::getUpdateTime);
+    private static final String CREATE_TIME = LambdaUtil.getFieldName((SerFunction<BaseEntity, LocalDateTime>) BaseEntity::getCreateTime);
+    private static final String UPDATE_TIME = LambdaUtil.getFieldName((SerFunction<BaseEntity, LocalDateTime>) BaseEntity::getUpdateTime);
 
     @Override
     public void insertFill(MetaObject metaObject) {
         Object originalObject = metaObject.getOriginalObject();
-        if(originalObject instanceof BaseEntity) {
+        if (originalObject instanceof BaseEntity) {
             LocalDateTime localDateTime = LocalDateTime.now();
             this.strictInsertFill(metaObject, CREATE_TIME, LocalDateTime.class, localDateTime);
             this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, localDateTime);
 
             // session LOGIN USER
             Long userId = LoginHelper.getSessionUserId();
-            if(userId != null) {
+            if (userId != null) {
                 this.strictInsertFill(metaObject, CREATE_BY, Long.class, userId);
                 this.strictInsertFill(metaObject, UPDATE_BY, Long.class, userId);
             }
@@ -48,12 +48,12 @@ public class BaseEntityMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         Object originalObject = metaObject.getOriginalObject();
-        if(originalObject instanceof BaseEntity) {
+        if (originalObject instanceof BaseEntity) {
             LocalDateTime localDateTime = LocalDateTime.now();
             this.strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime.class, localDateTime);
 
             Long userId = LoginHelper.getSessionUserId();
-            if(userId != null) {
+            if (userId != null) {
                 this.strictUpdateFill(metaObject, UPDATE_BY, Long.class, userId);
             }
         }

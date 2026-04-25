@@ -25,15 +25,6 @@ import java.util.TimeZone;
 @SuppressWarnings({"unused"})
 public class JacksonConfig {
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        return builder -> {
-            builder.modules(javaTimeModule());
-            builder.timeZone(TimeZone.getDefault());
-            log.info("init jackson config completed.");
-        };
-    }
-
     public static JavaTimeModule javaTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(Long.class, BigNumberSerializer.BIG_NUMBER_SERIALIZER_INSTANCE);
@@ -44,6 +35,15 @@ public class JacksonConfig {
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         return javaTimeModule;
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+        return builder -> {
+            builder.modules(javaTimeModule());
+            builder.timeZone(TimeZone.getDefault());
+            log.info("init jackson config completed.");
+        };
     }
 
 }

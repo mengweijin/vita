@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.monitor.domain.bo.LogOperationBO;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  LogOperation Controller
+ * LogOperation Controller
  * </p>
  *
  * @author mengweijin
@@ -48,7 +48,8 @@ public class LogOperationController {
      * <p>
      * Get LogOperation page by LogOperation
      * </p>
-     * @param page page
+     *
+     * @param page         page
      * @param logOperation {@link LogOperationDO}
      * @return Page<LogOperation>
      */
@@ -64,6 +65,7 @@ public class LogOperationController {
      * <p>
      * Get LogOperation list by LogOperation
      * </p>
+     *
      * @param logOperation {@link LogOperationDO}
      * @return List<LogOperation>
      */
@@ -77,6 +79,7 @@ public class LogOperationController {
      * <p>
      * Get LogOperation by id
      * </p>
+     *
      * @param id id
      * @return LogOperation
      */
@@ -89,6 +92,7 @@ public class LogOperationController {
      * <p>
      * Add LogOperation
      * </p>
+     *
      * @param logOperation {@link LogOperationDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -103,6 +107,7 @@ public class LogOperationController {
      * <p>
      * Update LogOperation
      * </p>
+     *
      * @param logOperation {@link LogOperationDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -117,6 +122,7 @@ public class LogOperationController {
      * <p>
      * Delete LogOperation by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

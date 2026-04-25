@@ -22,7 +22,7 @@ import java.util.Scanner;
 class TotpUtilsTest {
     /**
      * 这里仅作测试。生产环境可以取用户登录名。或者系统名称+用户登录名。
-     *
+     * <p>
      * account 在 Microsoft Authenticator 软件中，表示用户账户名称，仅作标识。
      * StrUtil.format("otpauth://totp/{}?secret={}", account, secretKey);
      * 比如：admin，也可以随意定义，比如加上系统名称：vita_admin

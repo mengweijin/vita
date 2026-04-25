@@ -65,7 +65,7 @@ public class GeneratorService {
 
     public List<TableInfoVO> selectTableList(@Nullable String tableName) {
         List<TableInfoVO> list = this.getAllTableInfoVOList();
-        if(StrValidator.isNotBlank(tableName)) {
+        if (StrValidator.isNotBlank(tableName)) {
             list = list.stream().filter(table -> CharSequenceUtil.containsIgnoreCase(table.getName(), tableName)).toList();
         }
         return list.stream().sorted(Comparator.comparing(TableInfoVO::getName)).collect(Collectors.toList());

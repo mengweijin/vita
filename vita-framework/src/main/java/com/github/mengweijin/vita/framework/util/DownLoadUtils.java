@@ -51,7 +51,7 @@ public class DownLoadUtils {
         String fileName = fileDO.getName();
 
         File file = FileUtil.file(fileDO.getStoragePath());
-        if(!file.exists()) {
+        if (!file.exists()) {
             throw new ServerException("No file exists in storage path " + fileDO.getStoragePath());
         }
 
