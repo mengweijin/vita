@@ -23,6 +23,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -179,19 +180,21 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
 
     public boolean enable(Long id) {
         List<Long> ids = this.getChildrenIds(id);
-        ids.add(id);
+        ArrayList<Long> list = new ArrayList<>(ids);
+        list.add(id);
         return this.lambdaUpdate()
                 .set(DeptDO::getDisabled, EYesNo.N.getValue())
-                .in(DeptDO::getId, ids)
+                .in(DeptDO::getId, list)
                 .update();
     }
 
     public boolean disable(Long id) {
         List<Long> ids = this.getChildrenIds(id);
-        ids.add(id);
+        ArrayList<Long> list = new ArrayList<>(ids);
+        list.add(id);
         return this.lambdaUpdate()
                 .set(DeptDO::getDisabled, EYesNo.Y.getValue())
-                .in(DeptDO::getId, ids)
+                .in(DeptDO::getId, list)
                 .update();
     }
 }
