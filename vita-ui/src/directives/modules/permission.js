@@ -27,9 +27,9 @@ export default {
 
     if (value) {
       const anyMatch = !utils.isEmpty(modifiers) && modifiers.any;
-
-      !userStore.hasPermission(value, anyMatch) &&
+      if (!userStore.hasPermission(value, anyMatch)) {
         el.parentNode?.removeChild(el);
+      }
     } else {
       throw new Error(
         "[Directive: v-permission]: need permission! Like v-permission=\"['system:user:create','system:user:update']\"",

@@ -1,0 +1,31 @@
+name: oxlint
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions: {}
+
+jobs:
+  oxlint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # 关键：所有 run 命令都在 vita-ui 目录执行
+        working-directory: vita-ui
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+          # 关键：缓存路径指向 vita-ui 目录里的 lockfile
+          cache-dependency-path: vita-ui/pnpm-lock.yaml
+
+      # alternatively use npm install / yarn install here
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint:github

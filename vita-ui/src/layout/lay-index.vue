@@ -1,5 +1,5 @@
 <script setup>
-import { useAppStore } from "@/store/app-store";
+import { useAppStore } from "@/store/app-store.js";
 import TabsView from "./components/tabs-view.vue";
 import LayFooter from "./lay-footer.vue";
 import LayHeader from "./lay-header.vue";

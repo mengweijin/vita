@@ -1,5 +1,5 @@
 <script setup>
-import { noticeApi } from "@/api/system/notice-api";
+import { noticeApi } from "@/api/system/notice-api.js";
 import NoticeDetail from "@/pages/system/notice/components/notice-detail.vue";
 import utils from "@/utils/utils.js";
 

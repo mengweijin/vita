@@ -12,13 +12,13 @@ insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TI
 insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '游客', 'guest', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 部门
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1,     null, 'company',      '微塔科技',   1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001,     1, 'dept_finance',      '财务部',     1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002,     1, 'dept_development',  '研发部',   2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003,     1, 'dept_sales',        '销售部',     3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004,     1, 'dept_hr',           '人力资源部',   4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1005,     1, 'dept_legal',        '法务部',   5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DEPT (ID, PARENT_ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1006,     1, 'dept_compensation', '薪酬管理部',   6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1,        0, '/',  'company',           '微塔科技',    1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001,     1, '/1/', 'dept_finance',      '财务部',      1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002,     1, '/1/', 'dept_development',  '研发部',      2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003,     1, '/1/', 'dept_sales',        '销售部',      3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004,     1, '/1/', 'dept_hr',           '人力资源部',   4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1005,     1, '/1/', 'dept_legal',        '法务部',       5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1006,     1, '/1/', 'dept_compensation', '薪酬管理部',   6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 岗位
@@ -374,10 +374,6 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10090002002,10090002,'MENU','404','demo:page:view', '/error/404',1,'ri:error-warning-fill','N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10091,null,'URL','个人博客','aday:fun:view','https://aday.fun',91,'ep:link','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10092,null,'URL','Vita Admin','aday:fun:view','https://vita.aday.fun',92,'ep:link','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10093,null,'URL','Vitality（Layui 版）','aday:fun:view','https://layui.aday.fun',94,'ep:link','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10094,null,'URL','GitHub','aday:fun:view','https://github.com/mengweijin/vita',95,'ri:github-fill','N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10095,null,'URL','Gitee','aday:fun:view','https://gitee.com/mengweijin/vita',96,'simple-icons:gitee','N',1,current_timestamp(),1,current_timestamp());
 
 
 -- 调度任务

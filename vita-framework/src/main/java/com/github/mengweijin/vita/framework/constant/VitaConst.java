@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class VitaConst {
 
+    public static final long ROOT_PARENT_ID = 0L;
+
     // region ----- User
 
     public static final long USER_ADMIN_ID = 1L;

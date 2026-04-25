@@ -1,4 +1,5 @@
 import { useUserStore } from "@/store/user-store.js";
+import utils from "@/utils/utils.js";
 
 /**
  * 使用（在元素上增加指令）：
@@ -26,7 +27,9 @@ export default {
 
     if (value) {
       const anyMatch = !utils.isEmpty(modifiers) && modifiers.any;
-      !userStore.hasRole(value, anyMatch) && el.parentNode?.removeChild(el);
+      if (!userStore.hasRole(value, anyMatch)) {
+        el.parentNode?.removeChild(el);
+      }
     } else {
       throw new Error(
         "[Directive: v-role]: need roles! Like v-role=\"['role_admin','role_guest']\"",

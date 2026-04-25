@@ -28,7 +28,7 @@ export const useSseStore = defineStore(
       const url =
         `${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`.replace(
           "//",
-          "/"
+          "/",
         );
 
       // 创建SSE连接，关键步骤：在 headers 中传递 Token
@@ -42,7 +42,7 @@ export const useSseStore = defineStore(
         withCredentials: true,
       });
 
-      eventSource.value.addEventListener("open", (event) => {
+      eventSource.value.addEventListener("open", (_event) => {
         // 后台第一次有消息时才打开连接，在这之前 eventSource.value.readyState = 0;
         console.log("Connection established");
       });
@@ -98,5 +98,5 @@ export const useSseStore = defineStore(
     persist: {
       storage: sessionStorage,
     },
-  }
+  },
 );

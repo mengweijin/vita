@@ -1,20 +1,19 @@
 {
-	"recommendations": [
-		"vue.volar",
-		"christian-kohler.path-intellisense",
-		"warmthsea.vscode-custom-code-color",
-		"vscode-icons-team.vscode-icons",
-		"davidanson.vscode-markdownlint",
-		"ms-azuretools.vscode-docker",
-		"stylelint.vscode-stylelint",
-		"bradlc.vscode-tailwindcss",
-		"csstools.postcss",
-		"mikestead.dotenv",
-		"eamodio.gitlens",
-		"antfu.iconify",
-		"lokalise.i18n-ally",
-		"redhat.vscode-yaml",
-		"biomejs.biome",
-		"markosth09.color-picker"
-	]
+  "recommendations": [
+    "vue.volar",
+    "warmthsea.vscode-custom-code-color",
+    "vscode-icons-team.vscode-icons",
+    "davidanson.vscode-markdownlint",
+    "ms-azuretools.vscode-docker",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss",
+    "csstools.postcss",
+    "mikestead.dotenv",
+    "eamodio.gitlens",
+    "antfu.iconify",
+    "lokalise.i18n-ally",
+    "redhat.vscode-yaml",
+    "oxc.oxc-vscode",
+    "markosth09.color-picker"
+  ]
 }

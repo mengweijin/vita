@@ -1,21 +1,19 @@
 // jsconfig.json 是 JavaScript 项目的配置文件，主要用于指定项目的根目录和提供代码智能感知支持。
 {
-	"compilerOptions": {
-		// 指定基础目录，所有相对路径都基于此目录
-		"baseUrl": ".",
-		"checkJs": true, // 为 .js 文件启用类型检查
-		// 路径别名映射
-		"paths": {
-			// 将 @ 符号映射到 src 目录。使用示例：import User from '@/components/User'
-			"@/*": ["./src/*"]
-		}
-	},
-	// 排除的文件。通常排除构建输出目录和依赖目录，排除后，编辑器不会对这些文件进行智能感知。
-	"exclude": ["node_modules", "dist"],
-	// 指定要包含在项目中的文件/目录
-	// ./src/**/*：包含 src 目录下的所有文件
-	// types/**/*.d.ts：包含特定类型声明文件。
-	"include": ["./src/**/*", "types/**/*.d.ts"],
-	// 指定类型定义文件的查找根目录
-	"typeRoots": ["./node_modules/@types", "./types"]
+  "compilerOptions": {
+    "checkJs": false, // 不要为我的 .js 文件启用类型检查
+    // 路径别名映射
+    "paths": {
+      // 将 @ 符号映射到 src 目录。使用示例：import User from '@/components/User'
+      "@/*": ["./src/*"]
+    }
+  },
+  // 排除的文件。通常排除构建输出目录和依赖目录，排除后，编辑器不会对这些文件进行智能感知。
+  "exclude": ["node_modules", "dist"],
+  // 指定要包含在项目中的文件/目录
+  // ./src/**/*：包含 src 目录下的所有文件
+  // types/**/*.d.ts：包含特定类型声明文件。
+  "include": ["./src/**/*", "types/**/*.d.ts"],
+  // 指定类型定义文件的查找根目录
+  "typeRoots": ["./node_modules/@types", "./types"]
 }

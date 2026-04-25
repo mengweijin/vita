@@ -65,6 +65,19 @@ const handleEdit = (row) => {
 /** selected rows */
 const selected = ref([]);
 
+
+const handleEnable = (id) => {
+  deptApi.enable(id).then(() => {
+    loadTableData();
+  });
+}
+
+const handleDisable = (id) => {
+  deptApi.disable(id).then(() => {
+    loadTableData();
+  });
+}
+
 const handleDelete = (ids) => {
   deptApi.remove(ids).then(() => {
     // 清空已选择
@@ -175,7 +188,7 @@ onMounted(() => {
       <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
       <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
       <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="240">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
@@ -198,6 +211,30 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+            <template v-if="scope.row.disabled === 'Y'">
+              <el-tooltip content="启用" placement="top">
+                <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                  @click="handleEnable(scope.row.id)" v-permission="'system:dept:update'">
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ep:circle-check-filled"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
+            <template v-else>
+              <el-tooltip content="停用" placement="top">
+                <el-button type="primary" text :size="size" style="margin-left: 0px;"
+                  @click="handleDisable(scope.row.id)" v-permission="'system:dept:update'">
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ep:circle-close-filled"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
             <el-tooltip content="删除" placement="top" v-if="scope.row.children?.length <= 0">
               <div style="display: inline-block;">
                 <el-popconfirm placement="left" width="400" :title="`确定删除【${scope.row.name}】吗？`"

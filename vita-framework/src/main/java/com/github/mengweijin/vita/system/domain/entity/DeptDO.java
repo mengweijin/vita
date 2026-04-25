@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mengweijin
@@ -27,9 +27,14 @@ import lombok.EqualsAndHashCode;
 public class DeptDO extends BaseEntity {
 
     /**
-    * 父部门ID
-    */
+     * 父部门ID
+     */
     private Long parentId;
+
+    /**
+     * 祖级列表
+     */
+    private String ancestors;
 
     /**
      * 部门编码
@@ -37,22 +42,22 @@ public class DeptDO extends BaseEntity {
     private String code;
 
     /**
-    * 部门名称
-    */
+     * 部门名称
+     */
     private String name;
 
     /**
-    * 展示顺序
-    */
+     * 展示顺序
+     */
     private Integer seq;
 
     /**
-    * 是否禁用。[Y, N]
-    */
+     * 是否禁用。[Y, N]
+     */
     private String disabled;
 
     /**
-    * 备注
-    */
+     * 备注
+     */
     private String remark;
 }

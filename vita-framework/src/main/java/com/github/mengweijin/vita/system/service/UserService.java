@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
+import com.github.mengweijin.vita.framework.constant.VitaConst;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
@@ -23,7 +25,6 @@ import com.github.mengweijin.vita.framework.util.I18nUtils;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.TotpUtils;
 import com.github.mengweijin.vita.monitor.service.LogDataChangeService;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.entity.PostDO;
@@ -34,7 +35,6 @@ import com.github.mengweijin.vita.system.domain.vo.TotpVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +94,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     @Override
     public boolean save(UserDO user) {
-        if(StrUtil.isBlank(user.getPassword())) {
+        if (StrUtil.isBlank(user.getPassword())) {
             String defaultPassword = vitaProperties.getUser().getDefaultPassword();
             user.setPassword(defaultPassword);
         }
@@ -109,7 +109,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     public void saveOrUpdate(UserBO userBO) {
         UserDO userDO = MapstructUtils.getConverter().convert(userBO, UserDO.class);
         // 用户
-        if(userBO.getId() == null) {
+        if (userBO.getId() == null) {
             // 新增
             this.save(userDO);
         } else {
@@ -135,7 +135,8 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     public LambdaQueryWrapper<UserDO> buildQueryWrapper(UserDO user) {
         List<Long> deptIds = new ArrayList<>();
         if (!Objects.isNull(user.getDeptId())) {
-            deptIds = deptService.selectChildrenIdsWithCurrentIdById(user.getDeptId());
+            deptIds = deptService.getChildrenIds(user.getDeptId());
+            deptIds.add(user.getDeptId());
         }
 
         LambdaQueryWrapper<UserDO> wrapper = Wrappers.lambdaQuery();
@@ -161,7 +162,8 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     }
 
     public Set<Long> getUserIdsInDeptId(Long deptId) {
-        List<Long> deptIds = deptService.selectChildrenIdsWithCurrentIdById(deptId);
+        List<Long> deptIds = deptService.getChildrenIds(deptId);
+        deptIds.add(deptId);
         List<UserDO> list = this.lambdaQuery().select(UserDO::getId).in(UserDO::getDeptId, deptIds).list();
         return list.stream().map(UserDO::getId).collect(Collectors.toSet());
     }
@@ -281,12 +283,12 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         vo.setRoleIds(roleIds);
         vo.setPostIds(postIds);
 
-        if(CollUtil.isNotEmpty(roleIds)) {
+        if (CollUtil.isNotEmpty(roleIds)) {
             List<RoleDO> roleList = roleService.listByIds(roleIds);
             vo.setRoleList(roleList);
         }
 
-        if(CollUtil.isNotEmpty(postIds)) {
+        if (CollUtil.isNotEmpty(postIds)) {
             List<PostDO> postList = postService.listByIds(postIds);
             vo.setPostList(postList);
         }
@@ -296,7 +298,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     public IPage<UserDO> pageByRole(Long roleId, IPage<UserDO> page, UserDO user) {
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
-        if(CollUtil.isEmpty(userIds)) {
+        if (CollUtil.isEmpty(userIds)) {
             return page;
         }
         LambdaQueryWrapper<UserDO> wrapper = this.buildQueryWrapper(user);
@@ -306,7 +308,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     public IPage<UserDO> pageByPost(Long postId, IPage<UserDO> page, UserDO user) {
         Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
-        if(CollUtil.isEmpty(userIds)) {
+        if (CollUtil.isEmpty(userIds)) {
             return page;
         }
         LambdaQueryWrapper<UserDO> wrapper = this.buildQueryWrapper(user);
@@ -334,19 +336,19 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         UserDO userDO = MapstructUtils.getConverter().convert(bo, UserDO.class);
         boolean bool = AopUtils.getAopProxy(this).updateById(userDO);
 
-        if(StrUtil.isNotBlank(bo.getAvatar())) {
+        if (StrUtil.isNotBlank(bo.getAvatar())) {
             UserAvatarDO userAvatar = new UserAvatarDO();
             userAvatar.setUserId(bo.getId());
             userAvatar.setAvatar(bo.getAvatar());
             userAvatarService.setAvatar(userAvatar);
         }
-        return  bool;
+        return bool;
     }
 
     public TotpVO generateTotpQrcode() {
         UserDO user = this.getById(LoginHelper.getSessionUserId());
         String key = user.getTotp();
-        if(StrUtil.isBlank(key)) {
+        if (StrUtil.isBlank(key)) {
             key = TotpUtils.generateSecretKey();
             // 保存 TOTP key
             this.lambdaUpdate().set(UserDO::getTotp, key).eq(UserDO::getId, user.getId()).update();
@@ -359,7 +361,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     public boolean validateTotp(Integer code) {
         UserDO user = this.getById(LoginHelper.getSessionUserId());
-        if(StrUtil.isBlank(user.getTotp())) {
+        if (StrUtil.isBlank(user.getTotp())) {
             log.warn("The user has not bound the TOTP!");
             return false;
         }

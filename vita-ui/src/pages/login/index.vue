@@ -5,13 +5,13 @@ meta:
 </route>
 
 <script setup>
-import { loginApi } from "@/api/login-api";
+import { loginApi } from "@/api/login-api.js";
 import LayFooter from "@/layout/lay-footer.vue";
 
 const router = useRouter();
 const route = useRoute();
 
-import { useLoginStore } from "@/store/login-store";
+import { useLoginStore } from "@/store/login-store.js";
 
 const loginStore = useLoginStore();
 

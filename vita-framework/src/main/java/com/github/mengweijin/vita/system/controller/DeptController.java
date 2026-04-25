@@ -3,15 +3,13 @@ package com.github.mengweijin.vita.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DeptBO;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.domain.vo.DeptVO;
 import com.github.mengweijin.vita.system.service.DeptService;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Dept Controller
+ * Dept Controller
  * </p>
  *
  * @author mengweijin
@@ -47,6 +45,7 @@ public class DeptController {
      * <p>
      * Get Dept list by Dept
      * </p>
+     *
      * @param dept {@link DeptDO}
      * @return List<Dept>
      */
@@ -61,6 +60,7 @@ public class DeptController {
      * <p>
      * Get Dept by id
      * </p>
+     *
      * @param id id
      * @return Dept
      */
@@ -73,6 +73,7 @@ public class DeptController {
      * <p>
      * Add Dept
      * </p>
+     *
      * @param bo {@link DeptDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -87,6 +88,7 @@ public class DeptController {
      * <p>
      * Update Dept
      * </p>
+     *
      * @param bo {@link DeptBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -97,18 +99,11 @@ public class DeptController {
         return R.result(bool);
     }
 
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:dept:update")
-    @PostMapping("/set/disabled")
-    public R<Void> setDisabled(@NotNull Long id, @NotBlank String disabled) {
-        boolean bool = deptService.setDisabled(id, disabled);
-        return R.result(bool);
-    }
-
     /**
      * <p>
      * Delete Dept by id(s), Multiple ids can be separated by commas ",".
      * </p>
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
@@ -118,5 +113,20 @@ public class DeptController {
         return R.result(deptService.removeByIds(Arrays.asList(ids)));
     }
 
+    @Log(title = LOG_TITLE, operationType = EOperationType.ENABLE)
+    @SaCheckPermission("system:dept:update")
+    @PostMapping("/enable/{id}")
+    public R<Void> enable(@PathVariable("id") Long id) {
+        boolean bool = deptService.enable(id);
+        return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.DISABLE)
+    @SaCheckPermission("system:dept:update")
+    @PostMapping("/disable/{id}")
+    public R<Void> disable(@PathVariable("id") Long id) {
+        boolean bool = deptService.disable(id);
+        return R.result(bool);
+    }
 }
 

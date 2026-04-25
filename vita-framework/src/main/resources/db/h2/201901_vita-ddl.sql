@@ -241,7 +241,8 @@ comment on table VT_MENU is '菜单管理表';
 drop table IF EXISTS VT_DEPT;
 create TABLE VT_DEPT (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID              		bigint DEFAULT NULL comment '父部门ID',
+  PARENT_ID              		bigint NOT NULL DEFAULT 0 comment '父部门ID',
+  ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
   CODE 		                    varchar(64) NOT NULL comment '部门编码',
   NAME 		                    varchar(64) NOT NULL comment '部门名称',
   SEQ 		                    int DEFAULT 1 comment '展示顺序',
@@ -255,6 +256,7 @@ create TABLE VT_DEPT (
 );
 comment on table VT_DEPT is '部门管理表';
 create unique index UIDX_VT_DEPT_CODE on VT_DEPT(CODE);
+create index IDX_VT_DEPT_ANCESTORS on VT_DEPT(ANCESTORS);
 
 
 drop table IF EXISTS VT_ROLE;

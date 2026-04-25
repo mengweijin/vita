@@ -1,5 +1,5 @@
 <script setup>
-import { homeApi } from "@/api/home-api";
+import { homeApi } from "@/api/home-api.js";
 
 const data = ref({});
 
