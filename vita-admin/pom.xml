@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
-    <modelVersion>4.0.0</modelVersion>  
-    <parent> 
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
         <groupId>com.github.mengweijin</groupId>
         <artifactId>vita-parent</artifactId>
         <version>${revision}</version>
@@ -13,57 +14,57 @@
     <name>${project.artifactId}</name>
 
     <dependencies>
-        <dependency> 
+        <dependency>
             <groupId>com.github.mengweijin</groupId>
             <artifactId>vita-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency> 
-            <groupId>org.projectlombok</groupId>  
-            <artifactId>lombok</artifactId>  
-            <scope>provided</scope> 
-        </dependency>  
-        <dependency> 
-            <groupId>com.h2database</groupId>  
-            <artifactId>h2</artifactId>  
-            <scope>runtime</scope> 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
-        <dependency> 
-            <groupId>org.springframework.boot</groupId>  
-            <artifactId>spring-boot-starter-test</artifactId>  
-            <scope>test</scope> 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
-    </dependencies>  
-    <build> 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
         <plugins>
-            <plugin> 
-                <groupId>org.springframework.boot</groupId>  
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration> 
+                <configuration>
                     <includeSystemScope>true</includeSystemScope>
                     <!-- 设置为 true 时会跳过 repackage，生成普通 Jar。可在发布到中央仓库时设置为 true 来去掉依赖包减小体积。-->
                     <skip>false</skip>
-                </configuration> 
+                </configuration>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>  
-                <artifactId>dockerfile-maven-plugin</artifactId>  
-                <version>1.4.13</version>  
-                <executions> 
-                    <execution> 
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
                         <id>default</id>
-                    </execution> 
-                </executions>  
-                <configuration> 
-                    <repository>mengweijin/${project.artifactId}</repository>  
-                    <tag>${project.version}</tag>  
-                    <buildArgs> 
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE> 
-                    </buildArgs> 
-                </configuration> 
-            </plugin> 
-        </plugins>  
-        <!-- 最终打出来的Jar的名称 -->  
-         <finalName>${project.artifactId}</finalName>
-    </build> 
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>mengweijin/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!-- 最终打出来的Jar的名称 -->
+        <finalName>${project.artifactId}</finalName>
+    </build>
 </project>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
-    <modelVersion>4.0.0</modelVersion>  
-    <parent> 
-        <groupId>org.springframework.boot</groupId>  
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.13</version>
-    </parent>  
+    </parent>
     <groupId>com.github.mengweijin</groupId>
     <artifactId>vita-parent</artifactId>
     <version>${revision}</version>
@@ -14,16 +15,16 @@
     <name>${project.artifactId}</name>
     <description>vita-parent</description>
     <url>https://github.com/mengweijin/vita</url>
-    <modules> 
+    <modules>
         <module>vita-admin</module>
         <module>vita-framework</module>
     </modules>
     <properties>
         <revision>2.0.0-M5-SNAPSHOT</revision>
-        <java.version>17</java.version>  
-        <maven.compiler.source>${java.version}</maven.compiler.source>  
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <mybatis-plus.version>3.5.16</mybatis-plus.version>
@@ -96,15 +97,15 @@
                 <logging.level>debug</logging.level>
             </properties>
         </profile>
-        <profile> 
-            <id>prod</id>  
-            <properties> 
-                <profiles.active>prod</profiles.active>  
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
                 <logging.level>info</logging.level>
-            </properties> 
-        </profile> 
-    </profiles>  
-    <dependencyManagement> 
+            </properties>
+        </profile>
+    </profiles>
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.github.mengweijin</groupId>
@@ -148,35 +149,35 @@
                 <artifactId>warm-flow-plugin-ui-sb-web</artifactId>
                 <version>${warm-flow.version}</version>
             </dependency>
-            <dependency> 
-                <groupId>com.github.gavlyukovskiy</groupId>  
-                <artifactId>p6spy-spring-boot-starter</artifactId>  
-                <version>${p6spy-spring-boot-starter.version}</version> 
-            </dependency>  
-            <dependency> 
-                <groupId>cn.dev33</groupId>  
-                <artifactId>sa-token-spring-boot3-starter</artifactId>  
-                <version>${sa-token.version}</version> 
+            <dependency>
+                <groupId>com.github.gavlyukovskiy</groupId>
+                <artifactId>p6spy-spring-boot-starter</artifactId>
+                <version>${p6spy-spring-boot-starter.version}</version>
             </dependency>
-            <dependency> 
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>cn.hutool.v7</groupId>
-                <artifactId>hutool-all</artifactId>  
-                <version>${hutool.version}</version> 
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
-            <dependency> 
-                <groupId>com.github.oshi</groupId>  
-                <artifactId>oshi-core</artifactId>  
-                <version>${oshi.version}</version> 
-            </dependency>  
-            <dependency> 
-                <groupId>com.google.zxing</groupId>  
-                <artifactId>core</artifactId>  
-                <version>${zxing.version}</version> 
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
             </dependency>
-            <dependency> 
-                <groupId>org.lionsoul</groupId>  
-                <artifactId>ip2region</artifactId>  
-                <version>${ip2region.version}</version> 
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.fesod</groupId>
@@ -198,32 +199,32 @@
                 <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
                 <version>${mapstruct-plus.version}</version>
             </dependency>
-        </dependencies> 
-    </dependencyManagement>  
-    <!-- 开源许可证 -->  
-    <licenses> 
-        <license> 
-            <name>The Apache Software License, Version 2.0</name>  
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url> 
-        </license> 
-    </licenses>  
-    <!-- 开发者信息 -->  
-    <developers> 
-        <developer> 
-            <name>Meng Wei Jin</name>  
+        </dependencies>
+    </dependencyManagement>
+    <!-- 开源许可证 -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <name>Meng Wei Jin</name>
             <email>aday.fun@outlook.com</email>
-        </developer> 
-    </developers>  
-    <!--开源地址-->  
-    <scm> 
+        </developer>
+    </developers>
+    <!--开源地址-->
+    <scm>
         <url>https://github.com/mengweijin/vita</url>
-    </scm>  
-    <!--  Issue地址  -->  
-    <issueManagement> 
+    </scm>
+    <!--  Issue地址  -->
+    <issueManagement>
         <system>Github Issue</system>
         <url>https://github.com/mengweijin/vita/issues</url>
-    </issueManagement>  
-    <build> 
+    </issueManagement>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -259,8 +260,8 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin> 
-                <groupId>org.apache.maven.plugins</groupId>  
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
@@ -270,10 +271,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>  
-            <!-- Javadoc -->  
-            <plugin> 
-                <groupId>org.apache.maven.plugins</groupId>  
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <executions>
                     <execution>
@@ -288,11 +289,11 @@
                     <!-- 禁用严格的文档检查 -->
                     <doclint>none</doclint>
                 </configuration>
-            </plugin>  
+            </plugin>
             <!-- GPG 需要配置系统环境变量：MAVEN_GPG_PASSPHRASE=<证书的 passphrase> -->
-            <plugin> 
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-gpg-plugin</artifactId>  
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven-gpg-plugin.version}</version>
                 <executions>
                     <execution>
@@ -346,8 +347,8 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins> 
-    </build>  
+        </plugins>
+    </build>
 
     <repositories>
         <repository>
@@ -359,10 +360,10 @@
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
     </repositories>
-    <pluginRepositories> 
+    <pluginRepositories>
         <pluginRepository>
             <id>aliyun</id>
             <url>https://maven.aliyun.com/repository/public</url>
-        </pluginRepository> 
-    </pluginRepositories> 
+        </pluginRepository>
+    </pluginRepositories>
 </project>
