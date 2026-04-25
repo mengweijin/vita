@@ -77,6 +77,5 @@
 		"clean": "rimraf pnpm-lock.yaml && rimraf node_modules && pnpm store prune",
 		"preinstall": "npx only-allow pnpm",
 		"check": "npm-check -u"
-	},
-	"packageManager": "pnpm@10.6.2"
+	}
 }
