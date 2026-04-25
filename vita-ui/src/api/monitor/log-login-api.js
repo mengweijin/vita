@@ -8,8 +8,7 @@ export const logLoginApi = {
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  pageByLoginUser: (args) =>
-    http.get(`${URL_PREFIX}/page/by/loginUser`, { params: args }),
+  pageByLoginUser: (args) => http.get(`${URL_PREFIX}/page/by/loginUser`, { params: args }),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 

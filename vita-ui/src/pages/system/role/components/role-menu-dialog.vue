@@ -79,18 +79,33 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色【${data.name}】授权`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="350px">
+  <el-dialog
+    v-model="visible"
+    :title="`角色【${data.name}】授权`"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="350px"
+  >
     <div v-loading="loading">
       <el-checkbox v-model="checkStrictly">父子节点不联动</el-checkbox>
-      <el-input v-model="keywords" placeholder="筛选" style="margin-bottom: 5px;" />
+      <el-input v-model="keywords" placeholder="筛选" style="margin-bottom: 5px" />
       <el-scrollbar max-height="300px">
-        <el-tree ref="treeRef" :node-key="'id'" :show-checkbox="true" :check-strictly="checkStrictly" :props="treeProps"
-          :data="treeData" :default-checked-keys="defaultCheckedKeys" :filter-node-method="filterNodeMethod" />
+        <el-tree
+          ref="treeRef"
+          :node-key="'id'"
+          :show-checkbox="true"
+          :check-strictly="checkStrictly"
+          :props="treeProps"
+          :data="treeData"
+          :default-checked-keys="defaultCheckedKeys"
+          :filter-node-method="filterNodeMethod"
+        />
       </el-scrollbar>
     </div>
     <template #footer>
-      <div style="margin-top: 15px;">
+      <div style="margin-top: 15px">
         <el-button type="primary" @click="onSubmit">
           <template #icon>
             <el-icon>

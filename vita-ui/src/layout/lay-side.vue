@@ -25,8 +25,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <el-menu :collapse="!sideMenuOpened" :collapse-transition="false" :unique-opened="true" :router="false"
-    :default-active="activeMenu" class="vt-menu">
+  <el-menu
+    :collapse="!sideMenuOpened"
+    :collapse-transition="false"
+    :unique-opened="true"
+    :router="false"
+    :default-active="activeMenu"
+    class="vt-menu"
+  >
     <MenuTree :menu-list="menuTreeList" />
   </el-menu>
 </template>
@@ -39,8 +45,8 @@ onMounted(async () => {
   scrollbar-width: none;
 }
 
-.el-menu-item>span,
-.el-sub-menu__title>span {
+.el-menu-item > span,
+.el-sub-menu__title > span {
   padding-left: 5px;
 }
 </style>

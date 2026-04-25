@@ -17,7 +17,7 @@ const asideWidth = computed(() => (sideMenuOpened.value ? "200px" : "64px"));
       <LayHeader />
     </el-header>
     <el-container>
-      <el-aside :width="asideWidth" style="transition: width 0.3s;">
+      <el-aside :width="asideWidth" style="transition: width 0.3s">
         <LaySide />
       </el-aside>
       <el-container>

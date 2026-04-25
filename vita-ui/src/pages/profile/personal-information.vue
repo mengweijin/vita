@@ -35,11 +35,10 @@ const activeTabName = ref("tab1");
 
 onMounted(() => {
   loading.value = true;
-  userApi.queryUserProfileVO()
-    .then((res) => {
-      userInfo.value = res;
-      loading.value = false;
-    });
+  userApi.queryUserProfileVO().then((res) => {
+    userInfo.value = res;
+    loading.value = false;
+  });
 });
 </script>
 
@@ -63,7 +62,11 @@ onMounted(() => {
               {{ userInfo?.deptName }}
             </el-descriptions-item>
             <el-descriptions-item label="性别" label-align="right">
-              <VtTagDict :code="'vt_user_gender'" :value="userInfo?.gender" :size="size"></VtTagDict>
+              <VtTagDict
+                :code="'vt_user_gender'"
+                :value="userInfo?.gender"
+                :size="size"
+              ></VtTagDict>
             </el-descriptions-item>
             <el-descriptions-item label="邮箱" label-align="right">
               {{ userInfo?.email }}
@@ -89,7 +92,7 @@ onMounted(() => {
               </template>
             </el-descriptions-item>
             <el-descriptions-item label="备注" label-align="right">
-              <div style="white-space: pre-wrap;">
+              <div style="white-space: pre-wrap">
                 {{ userInfo?.remark }}
               </div>
             </el-descriptions-item>
@@ -98,7 +101,10 @@ onMounted(() => {
         <el-main>
           <el-tabs v-model="activeTabName" type="border-card">
             <el-tab-pane label="基本资料" name="tab1">
-              <BasicInformation v-model:user="userInfo" v-if="activeTabName === 'tab1'"></BasicInformation>
+              <BasicInformation
+                v-model:user="userInfo"
+                v-if="activeTabName === 'tab1'"
+              ></BasicInformation>
             </el-tab-pane>
             <el-tab-pane label="修改密码" name="tab2">
               <UserChangePassword v-if="activeTabName === 'tab2'"></UserChangePassword>
@@ -120,7 +126,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.el-tag+.el-tag {
+.el-tag + .el-tag {
   margin-left: 5px;
 }
 

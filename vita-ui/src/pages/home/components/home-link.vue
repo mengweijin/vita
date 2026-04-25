@@ -3,7 +3,7 @@ const openBlankUrl = (url) => {
   window.open(url, "_blank");
 };
 
-onMounted(() => { });
+onMounted(() => {});
 </script>
 
 <template>
@@ -11,39 +11,56 @@ onMounted(() => { });
     <div>链接</div>
 
     <div class="vt-home-link-content">
-
       <div class="vt-home-link-item">
-        <el-button type="primary" class="vt-home-link-item-button" @click="openBlankUrl('https://aday.fun')">
-          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px;" /> &nbsp;个人博客</el-button>
+        <el-button
+          type="primary"
+          class="vt-home-link-item-button"
+          @click="openBlankUrl('https://aday.fun')"
+        >
+          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px" />
+          &nbsp;个人博客</el-button
+        >
       </div>
 
       <div class="vt-home-link-item">
-        <el-button type="success" class="vt-home-link-item-button" @click="openBlankUrl('https://vita.aday.fun')">
-          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px;" /> &nbsp;在线演示</el-button>
+        <el-button
+          type="success"
+          class="vt-home-link-item-button"
+          @click="openBlankUrl('https://vita.aday.fun')"
+        >
+          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px" />
+          &nbsp;在线演示</el-button
+        >
       </div>
 
       <div class="vt-home-link-item">
-        <el-button type="info" class="vt-home-link-item-button"
-          @click="openBlankUrl('https://github.com/mengweijin/vita')">
+        <el-button
+          type="info"
+          class="vt-home-link-item-button"
+          @click="openBlankUrl('https://github.com/mengweijin/vita')"
+        >
           <el-icon :size="30">
             <Icon icon="ri:github-fill"></Icon>
-          </el-icon> &nbsp;
-          Vita Github
+          </el-icon>
+          &nbsp; Vita Github
         </el-button>
       </div>
 
       <div class="vt-home-link-item">
-        <el-button type="danger" class="vt-home-link-item-button"
-          @click="openBlankUrl('https://gitee.com/mengweijin/vita')">
+        <el-button
+          type="danger"
+          class="vt-home-link-item-button"
+          @click="openBlankUrl('https://gitee.com/mengweijin/vita')"
+        >
           <el-icon :size="30">
             <Icon icon="simple-icons:gitee"></Icon>
-          </el-icon> &nbsp;Vita Gitee 码云
+          </el-icon>
+          &nbsp;Vita Gitee 码云
         </el-button>
       </div>
     </div>
   </div>
 </template>
-
 
 <style lang="css" scoped>
 .vt-home-link {
@@ -56,7 +73,7 @@ onMounted(() => { });
   margin: 10px 0 5px 0;
 }
 
-.vt-home-link-item+.vt-home-link-item {
+.vt-home-link-item + .vt-home-link-item {
   margin-top: 15px;
 }
 

@@ -64,21 +64,51 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-
-      <el-form-item prop="configKey" label="配置键" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.configKey" :disabled="data?.id" clearable maxlength="128" autocomplete="off" />
+      <el-form-item
+        prop="configKey"
+        label="配置键"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input
+          v-model="form.configKey"
+          :disabled="data?.id"
+          clearable
+          maxlength="128"
+          autocomplete="off"
+        />
       </el-form-item>
 
-      <el-form-item prop="configValue" label="配置值" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.configValue" type="textarea" clearable maxlength="255"
-          :autosize="{ minRows: 1, maxRows: 8 }" />
+      <el-form-item
+        prop="configValue"
+        label="配置值"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input
+          v-model="form.configValue"
+          type="textarea"
+          clearable
+          maxlength="255"
+          :autosize="{ minRows: 1, maxRows: 8 }"
+        />
       </el-form-item>
 
       <el-form-item prop="remark" label="备注">
-        <el-input v-model="form.remark" type="textarea" maxlength="500" :autosize="{ minRows: 3, maxRows: 8 }" />
+        <el-input
+          v-model="form.remark"
+          type="textarea"
+          maxlength="500"
+          :autosize="{ minRows: 3, maxRows: 8 }"
+        />
       </el-form-item>
     </el-form>
     <template #footer>

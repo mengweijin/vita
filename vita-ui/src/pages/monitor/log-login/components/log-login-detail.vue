@@ -21,8 +21,15 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="'登录日志详情'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
-    width="80%">
+  <el-dialog
+    v-model="visible"
+    :title="'登录日志详情'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="80%"
+  >
     <div v-loading="loading">
       <el-descriptions title="" :column="2" :size="size" border>
         <el-descriptions-item label="登录账号" label-align="right" min-width="100">
@@ -67,7 +74,12 @@ defineExpose({ data, visible });
         <el-descriptions-item label="更新时间" label-align="right">
           {{ data?.updateTime }}
         </el-descriptions-item>
-        <el-descriptions-item label="失败信息" label-align="right" :span="2" v-if="data?.success === 'N'">
+        <el-descriptions-item
+          label="失败信息"
+          label-align="right"
+          :span="2"
+          v-if="data?.success === 'N'"
+        >
           <div class="vt-descriptions-item">
             {{ data?.errorMsg }}
           </div>

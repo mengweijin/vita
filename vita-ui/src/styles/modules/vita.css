@@ -7,9 +7,7 @@
   /** tabs 页签头：40px；其它：14px */
   --vt-tab-content-height: calc(var(--vt-main-height) - 40px - 14px);
   /* 查询表单：50px; 表格头：62px；分页组件：42px; 其它：13px */
-  --vt-table-height: calc(
-    var(--vt-tab-content-height) - 50px - 62px - 42px - 13px
-  );
+  --vt-table-height: calc(var(--vt-tab-content-height) - 50px - 62px - 42px - 13px);
   --vt-main-background-color: #f7f7f7;
 }
 

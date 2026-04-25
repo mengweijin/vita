@@ -63,16 +63,35 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="type" label="表单类型" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="type"
+        label="表单类型"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <VtSelectDict v-model="form.type" :code="'vt_form_type'"></VtSelectDict>
       </el-form-item>
-      <el-form-item prop="name" label="表单名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="name"
+        label="表单名称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="formPath" label="表单路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="formPath"
+        label="表单路径"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.formPath" clearable maxlength="300" autocomplete="off" />
       </el-form-item>
     </el-form>

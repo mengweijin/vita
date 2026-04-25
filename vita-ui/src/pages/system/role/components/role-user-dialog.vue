@@ -81,11 +81,24 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`角色【${data.name}】分配用户`" destroy-on-close :align-center="false" @opened="onOpened"
-    @closed="onClosed" width="70%" style="max-height: 90%;">
+  <el-dialog
+    v-model="visible"
+    :title="`角色【${data.name}】分配用户`"
+    destroy-on-close
+    :align-center="false"
+    @opened="onOpened"
+    @closed="onClosed"
+    width="70%"
+    style="max-height: 90%"
+  >
     <!-- 查询表单 -->
-    <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData"
-      style="margin-top: 5px;">
+    <el-form
+      ref="queryFormRef"
+      :model="queryParams"
+      :inline="true"
+      @submit.prevent="loadTableData"
+      style="margin-top: 5px"
+    >
       <el-form-item prop="keywords" label="关键字">
         <el-input v-model="queryParams.keywords" placeholder="用户名、昵称" clearable />
       </el-form-item>
@@ -109,7 +122,7 @@ defineExpose({ data, visible });
       </el-form-item>
     </el-form>
 
-    <el-divider style="margin: 0px;" />
+    <el-divider style="margin: 0px" />
 
     <!-- 表格头-->
     <el-row :gutter="10" style="padding: 15px 0px">
@@ -125,8 +138,14 @@ defineExpose({ data, visible });
         </el-button>
       </el-col>
       <el-col :span="1.5" v-if="selected.length">
-        <el-popconfirm placement="right" width="400" :title="`确定从角色中移除已选中的所有用户吗？`" confirm-button-text="确定"
-          cancel-button-text="取消" @confirm="handleRoleRemoveUserBatch">
+        <el-popconfirm
+          placement="right"
+          width="400"
+          :title="`确定从角色中移除已选中的所有用户吗？`"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          @confirm="handleRoleRemoveUserBatch"
+        >
           <template #reference>
             <el-button type="danger">
               <template #icon>
@@ -140,13 +159,28 @@ defineExpose({ data, visible });
         </el-popconfirm>
       </el-col>
       <!-- 右侧 -->
-      <VtTableBarRight :tableRef="tableRef" :shows="['size']" @update-size="(val) => size = val" />
+      <VtTableBarRight
+        :tableRef="tableRef"
+        :shows="['size']"
+        @update-size="(val) => (size = val)"
+      />
     </el-row>
 
     <!-- 表格 -->
     <div class="vt-table">
-      <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe
-        border show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+      <el-table
+        ref="tableRef"
+        v-loading="loading"
+        :data="tableData"
+        :size="size"
+        row-key="id"
+        height="100%"
+        stripe
+        border
+        show-overflow-tooltip
+        highlight-current-row
+        @selection-change="(val) => (selected = val)"
+      >
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="false" prop="id" label="ID" min-width="180" />
         <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
@@ -168,9 +202,15 @@ defineExpose({ data, visible });
           <template #default="scope">
             <div>
               <el-tooltip content="从角色中移除" placement="top">
-                <div style="display: inline-block;">
-                  <el-popconfirm placement="left" width="400" :title="`确定从角色中移除用户【${scope.row.nickname}】吗？`"
-                    confirm-button-text="确定" cancel-button-text="取消" @confirm="handleRoleRemoveUser(scope.row.id)">
+                <div style="display: inline-block">
+                  <el-popconfirm
+                    placement="left"
+                    width="400"
+                    :title="`确定从角色中移除用户【${scope.row.nickname}】吗？`"
+                    confirm-button-text="确定"
+                    cancel-button-text="取消"
+                    @confirm="handleRoleRemoveUser(scope.row.id)"
+                  >
                     <template #reference>
                       <el-button type="danger" text :size="size">
                         <template #icon>
@@ -188,12 +228,20 @@ defineExpose({ data, visible });
         </el-table-column>
       </el-table>
 
-      <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-        v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-        :total="queryParams.pageTotal" @change="handlePageChange" />
+      <el-pagination
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        v-model:current-page="queryParams.pageCurrent"
+        v-model:page-size="queryParams.pageSize"
+        :total="queryParams.pageTotal"
+        @change="handlePageChange"
+      />
     </div>
 
-    <RoleUsersSelectDialog ref="roleUsersSelectDialogRef" @refresh-table="loadTableData"></RoleUsersSelectDialog>
+    <RoleUsersSelectDialog
+      ref="roleUsersSelectDialogRef"
+      @refresh-table="loadTableData"
+    ></RoleUsersSelectDialog>
   </el-dialog>
 </template>
 

@@ -25,11 +25,7 @@ export const useSseStore = defineStore(
       // 先断开已有连接
       disconnect();
       // 处理路径 SSE URL
-      const url =
-        `${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`.replace(
-          "//",
-          "/",
-        );
+      const url = `${VITE_BASE_API}/monitor/sse/subscribe?t=${Date.now()}`.replace("//", "/");
 
       // 创建SSE连接，关键步骤：在 headers 中传递 Token
       eventSource.value = new SSE(url, {

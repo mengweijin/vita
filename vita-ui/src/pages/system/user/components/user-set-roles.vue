@@ -55,13 +55,29 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`用户【${data.nickname}】设置角色`" destroy-on-close :align-center="false"
-    @opened="onOpened" @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="`用户【${data.nickname}】设置角色`"
+    destroy-on-close
+    :align-center="false"
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="roleIds" label="选中角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="roleIds"
+        label="选中角色"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-select v-model="form.roleIds" clearable filterable multiple placeholder="请选择">
-          <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"
-            :disabled="item.disabled === 'Y'" />
+          <el-option
+            v-for="item in roleList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+            :disabled="item.disabled === 'Y'"
+          />
         </el-select>
       </el-form-item>
     </el-form>

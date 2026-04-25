@@ -132,11 +132,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-dropdown ref="dropdownRef" trigger="click" placement="bottom" :size="props.size" :hide-on-click="false"
-    :max-height="500" :style="props.style" :popper-append-to-body="false">
-    <el-input-tag v-model="selectValue" draggable clearable :save-on-blur="false" :trigger="''" :tag-type="'primary'"
-      :tag-effect="'dark'" :max="props.multiple ? 999 : 1" :size="props.size" placeholder="请选择用户"
-      @remove-tag="handleRemoveTag">
+  <el-dropdown
+    ref="dropdownRef"
+    trigger="click"
+    placement="bottom"
+    :size="props.size"
+    :hide-on-click="false"
+    :max-height="500"
+    :style="props.style"
+    :popper-append-to-body="false"
+  >
+    <el-input-tag
+      v-model="selectValue"
+      draggable
+      clearable
+      :save-on-blur="false"
+      :trigger="''"
+      :tag-type="'primary'"
+      :tag-effect="'dark'"
+      :max="props.multiple ? 999 : 1"
+      :size="props.size"
+      placeholder="请选择用户"
+      @remove-tag="handleRemoveTag"
+    >
       <template #tag="{ value }">
         <span>{{ getLabelValue(value) }}</span>
       </template>
@@ -145,14 +163,28 @@ onMounted(() => {
       <el-container>
         <el-aside width="160px" style="padding: 15px 0px 0px 10px">
           <el-scrollbar max-height="100%">
-            <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" :size="'small'"
-              default-expand-all highlight-current :expand-on-click-node="false" @node-click="handleTreeNodeClick" />
+            <el-tree
+              ref="treeRef"
+              :node-key="'id'"
+              :props="treeProps"
+              :data="treeData"
+              :size="'small'"
+              default-expand-all
+              highlight-current
+              :expand-on-click-node="false"
+              @node-click="handleTreeNodeClick"
+            />
           </el-scrollbar>
         </el-aside>
         <el-main class="vt-user-table-border">
           <!-- 查询表单 -->
-          <el-form ref="queryFormRef" :model="queryParams" :inline="true" :size="'small'"
-            @submit.prevent="loadTableData">
+          <el-form
+            ref="queryFormRef"
+            :model="queryParams"
+            :inline="true"
+            :size="'small'"
+            @submit.prevent="loadTableData"
+          >
             <el-form-item prop="username" label="用户名">
               <el-input v-model="queryParams.username" placeholder="" clearable />
             </el-form-item>
@@ -180,8 +212,18 @@ onMounted(() => {
           </el-form>
 
           <!-- 表格 -->
-          <el-table v-loading="loading" :data="tableData" :size="'small'" row-key="id" height="191px" stripe border
-            show-overflow-tooltip highlight-current-row @row-click="handleTableRowClick">
+          <el-table
+            v-loading="loading"
+            :data="tableData"
+            :size="'small'"
+            row-key="id"
+            height="191px"
+            stripe
+            border
+            show-overflow-tooltip
+            highlight-current-row
+            @row-click="handleTableRowClick"
+          >
             <el-table-column prop="username" label="用户名" min-width="100" align="center" />
             <el-table-column prop="nickname" label="用户昵称" min-width="100" align="center" />
             <el-table-column prop="gender" label="性别" min-width="80" align="center">
@@ -193,9 +235,15 @@ onMounted(() => {
           </el-table>
 
           <!--  @click.native.stop：阻止事件冒泡 -->
-          <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-            v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-            :total="queryParams.pageTotal" @change="handlePageChange" :size="'small'" />
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            v-model:current-page="queryParams.pageCurrent"
+            v-model:page-size="queryParams.pageSize"
+            :total="queryParams.pageTotal"
+            @change="handlePageChange"
+            :size="'small'"
+          />
         </el-main>
       </el-container>
     </template>

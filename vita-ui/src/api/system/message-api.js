@@ -15,8 +15,7 @@ export const messageApi = {
   setNotViewed: (messageReceiverIds) =>
     http.post(`${URL_PREFIX}/set/notViewed/${messageReceiverIds}`),
 
-  setViewed: (messageReceiverIds) =>
-    http.post(`${URL_PREFIX}/set/viewed/${messageReceiverIds}`),
+  setViewed: (messageReceiverIds) => http.post(`${URL_PREFIX}/set/viewed/${messageReceiverIds}`),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

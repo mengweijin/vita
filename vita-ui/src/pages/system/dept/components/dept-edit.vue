@@ -88,32 +88,67 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="parentId" label="父部门">
-        <el-tree-select v-model="form.parentId" :data="deptTreeSelectOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          default-expand-all placeholder="" :disabled="data?.id">
+        <el-tree-select
+          v-model="form.parentId"
+          :data="deptTreeSelectOptions"
+          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
+          check-strictly
+          filterable
+          clearable
+          default-expand-all
+          placeholder=""
+          :disabled="data?.id"
+        >
           <template #default="{ data: { name } }">
             {{ name }}
           </template>
         </el-tree-select>
       </el-form-item>
 
-      <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="name"
+        label="名称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="code" label="编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" :disabled="data?.id" />
+      <el-form-item
+        prop="code"
+        label="编码"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input
+          v-model="form.code"
+          clearable
+          maxlength="64"
+          autocomplete="off"
+          :disabled="data?.id"
+        />
       </el-form-item>
 
       <el-row :gutter="20">
         <el-col :span="12" v-if="false">
           <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
+            <el-switch
+              v-model="form.disabled"
+              inline-prompt
+              active-text="启用"
+              inactive-text="停用"
+              active-value="N"
+              inactive-value="Y"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">

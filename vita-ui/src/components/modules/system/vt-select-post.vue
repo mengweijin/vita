@@ -2,22 +2,22 @@
 import { postApi } from "@/api/system/post-api.js";
 
 const props = defineProps({
-	filterable: {
-		default: true,
-		type: Boolean,
-	},
-	multiple: {
-		default: true,
-		type: Boolean,
-	},
-	size: {
-		default: "default",
-		type: String,
-	},
-	style: {
-		default: "min-width: 200px;",
-		type: String,
-	},
+  filterable: {
+    default: true,
+    type: Boolean,
+  },
+  multiple: {
+    default: true,
+    type: Boolean,
+  },
+  size: {
+    default: "default",
+    type: String,
+  },
+  style: {
+    default: "min-width: 200px;",
+    type: String,
+  },
 });
 
 const selectValue = defineModel({ type: String || Array });
@@ -25,13 +25,13 @@ const selectValue = defineModel({ type: String || Array });
 const postList = ref([]);
 
 const initPostList = () => {
-	postApi.list({ disabled: "N" }).then((res) => {
-		postList.value = res;
-	});
+  postApi.list({ disabled: "N" }).then((res) => {
+    postList.value = res;
+  });
 };
 
 onMounted(() => {
-	initPostList();
+  initPostList();
 });
 </script>
 

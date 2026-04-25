@@ -25,15 +25,26 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="'操作日志详情'" destroy-on-close align-center @opened="onOpened" @closed="onClosed"
-    width="80%">
+  <el-dialog
+    v-model="visible"
+    :title="'操作日志详情'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="80%"
+  >
     <div v-loading="loading">
       <el-descriptions title="" :column="2" :size="size" border>
         <el-descriptions-item label="模块名称" label-align="right" min-width="100">
           {{ data?.title }}
         </el-descriptions-item>
         <el-descriptions-item label="操作类型" label-align="right">
-          <VtTagDict :code="'vt_operation_log_type'" :value="data?.operationType" :size="'default'"></VtTagDict>
+          <VtTagDict
+            :code="'vt_operation_log_type'"
+            :value="data?.operationType"
+            :size="'default'"
+          ></VtTagDict>
         </el-descriptions-item>
 
         <el-descriptions-item label="请求方法名称" label-align="right" :span="2">
@@ -44,13 +55,20 @@ defineExpose({ data, visible });
           {{ data?.url }}
         </el-descriptions-item>
         <el-descriptions-item label="http 请求方式" label-align="right">
-          <VtTagDict :code="'vt_http_request_type'" :value="data?.httpMethod" :size="'default'"></VtTagDict>
+          <VtTagDict
+            :code="'vt_http_request_type'"
+            :value="data?.httpMethod"
+            :size="'default'"
+          ></VtTagDict>
         </el-descriptions-item>
 
         <el-descriptions-item label=" 请求数据" label-align="right">
           <el-scrollbar max-height="300px">
             <template v-if="data?.requestData != null">
-              <vue-json-pretty v-if="utils.isJSON(data?.requestData)" :data="JSON.parse(data?.requestData)" />
+              <vue-json-pretty
+                v-if="utils.isJSON(data?.requestData)"
+                :data="JSON.parse(data?.requestData)"
+              />
               <div v-else>{{ data?.requestData }}</div>
             </template>
           </el-scrollbar>
@@ -58,7 +76,10 @@ defineExpose({ data, visible });
         <el-descriptions-item label="响应数据" label-align="right">
           <el-scrollbar max-height="300px">
             <template v-if="data?.responseData != null">
-              <vue-json-pretty v-if="utils.isJSON(data?.responseData)" :data="JSON.parse(data?.responseData)" />
+              <vue-json-pretty
+                v-if="utils.isJSON(data?.responseData)"
+                :data="JSON.parse(data?.responseData)"
+              />
               <div v-else>{{ data?.responseData }}</div>
             </template>
           </el-scrollbar>
@@ -84,7 +105,12 @@ defineExpose({ data, visible });
         <el-descriptions-item label="更新时间" label-align="right">
           {{ data?.updateTime }}
         </el-descriptions-item>
-        <el-descriptions-item label="失败信息" label-align="right" :span="2" v-if="data?.success === 'N'">
+        <el-descriptions-item
+          label="失败信息"
+          label-align="right"
+          :span="2"
+          v-if="data?.success === 'N'"
+        >
           <div class="vt-descriptions-item">
             {{ data?.errorMsg }}
           </div>

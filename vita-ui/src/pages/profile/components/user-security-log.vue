@@ -36,8 +36,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-    show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+  <el-table
+    ref="tableRef"
+    v-loading="loading"
+    :data="tableData"
+    :size="size"
+    row-key="id"
+    height="100%"
+    stripe
+    border
+    show-overflow-tooltip
+    highlight-current-row
+    @selection-change="(val) => (selected = val)"
+  >
     <el-table-column v-if="false" prop="id" label="ID" min-width="180" />
     <el-table-column v-if="false" prop="username" label="登录账号" min-width="100" fixed="left" />
     <el-table-column prop="loginType" label="登录类型" min-width="100" align="center">
@@ -61,9 +72,14 @@ onMounted(() => {
     <el-table-column v-if="false" prop="updateTime" label="更新时间" align="center" width="180" />
   </el-table>
 
-  <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-    v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-    :total="queryParams.pageTotal" @change="handlePageChange" />
+  <el-pagination
+    background
+    layout="total, sizes, prev, pager, next, jumper"
+    v-model:current-page="queryParams.pageCurrent"
+    v-model:page-size="queryParams.pageSize"
+    :total="queryParams.pageTotal"
+    @change="handlePageChange"
+  />
 </template>
 
 <style scoped></style>

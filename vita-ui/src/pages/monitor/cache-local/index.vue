@@ -85,17 +85,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <el-container v-loading="loading" style="padding: 10px 0px;">
+  <el-container v-loading="loading" style="padding: 10px 0px">
     <el-aside width="450px">
       <el-form :inline="true">
-        <el-form-item style="margin: 0px;">
-          <el-select v-model="cacheName" clearable filterable style="width: 260px;" :size="'default'"
-            placeholder="请选择缓存名称" @change="handleCacheNameChange">
+        <el-form-item style="margin: 0px">
+          <el-select
+            v-model="cacheName"
+            clearable
+            filterable
+            style="width: 260px"
+            :size="'default'"
+            placeholder="请选择缓存名称"
+            @change="handleCacheNameChange"
+          >
             <el-option v-for="item in cacheNameList" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item style="margin: 0px; margin-left: 18px;">
-          <el-button type="primary" :disabled="utils.isEmpty(cacheName)" @click="refreshByCacheName(cacheName)">
+        <el-form-item style="margin: 0px; margin-left: 18px">
+          <el-button
+            type="primary"
+            :disabled="utils.isEmpty(cacheName)"
+            @click="refreshByCacheName(cacheName)"
+          >
             <template #icon>
               <el-icon>
                 <Icon icon="ep:refresh"></Icon>
@@ -103,8 +114,12 @@ onMounted(async () => {
             </template>
             刷新
           </el-button>
-          <el-button type="danger" :disabled="utils.isEmpty(cacheName)" @click="clearByCacheName(cacheName)"
-            v-permission="'monitor:cacheLocal:remove'">
+          <el-button
+            type="danger"
+            :disabled="utils.isEmpty(cacheName)"
+            @click="clearByCacheName(cacheName)"
+            v-permission="'monitor:cacheLocal:remove'"
+          >
             <template #icon>
               <el-icon>
                 <Icon icon="ep:delete"></Icon>
@@ -115,25 +130,39 @@ onMounted(async () => {
         </el-form-item>
       </el-form>
 
-      <el-divider style="margin: 10px 0px;" />
+      <el-divider style="margin: 10px 0px" />
 
-      <el-input v-model="keywords" placeholder="筛选" clearable @input="handleFilterDataList"
-        style="margin-bottom: 10px;" />
+      <el-input
+        v-model="keywords"
+        placeholder="筛选"
+        clearable
+        @input="handleFilterDataList"
+        style="margin-bottom: 10px"
+      />
 
       <div v-for="(item, index) in filteredDataList" :key="item.key" :class="['cache-item']">
-        <div :class="[index === activeIndex ? 'active' : '']" @click="viewCacheValue(item.value, index)"
-          style="display: inline-block; background-color: #eeeeee; width: 340px;">
+        <div
+          :class="[index === activeIndex ? 'active' : '']"
+          @click="viewCacheValue(item.value, index)"
+          style="display: inline-block; background-color: #eeeeee; width: 340px"
+        >
           <a href="javascript:">
             <el-icon>
               <Icon icon="ep:info-filled" />
             </el-icon>
-            <span style="margin-left: 8px; padding-bottom: 2px;">{{ item.key }}</span>
+            <span style="margin-left: 8px; padding-bottom: 2px">{{ item.key }}</span>
           </a>
         </div>
 
         <el-tooltip content="删除" placement="top">
-          <el-button type="danger" text :disabled="utils.isEmpty(cacheName)" @click="removeCache(cacheName, item.key)"
-            style="float: right;margin-right: 2px;" v-permission="'monitor:cacheLocal:remove'">
+          <el-button
+            type="danger"
+            text
+            :disabled="utils.isEmpty(cacheName)"
+            @click="removeCache(cacheName, item.key)"
+            style="float: right; margin-right: 2px"
+            v-permission="'monitor:cacheLocal:remove'"
+          >
             <template #icon>
               <el-icon>
                 <Icon icon="ep:delete"></Icon>
@@ -143,8 +172,13 @@ onMounted(async () => {
         </el-tooltip>
 
         <el-tooltip content="刷新" placement="top">
-          <el-button type="primary" text :disabled="utils.isEmpty(cacheName)" style="float: right;"
-            @click="refreshCacheByNameAndKey(cacheName, item.key)">
+          <el-button
+            type="primary"
+            text
+            :disabled="utils.isEmpty(cacheName)"
+            style="float: right"
+            @click="refreshCacheByNameAndKey(cacheName, item.key)"
+          >
             <template #icon>
               <el-icon>
                 <Icon icon="ep:refresh"></Icon>
@@ -163,7 +197,6 @@ onMounted(async () => {
       </el-scrollbar>
     </el-main>
   </el-container>
-
 </template>
 
 <style scoped>
@@ -172,7 +205,7 @@ onMounted(async () => {
   border-radius: 4px;
 }
 
-.cache-item+.cache-item {
+.cache-item + .cache-item {
   margin: 2px 0px;
 }
 

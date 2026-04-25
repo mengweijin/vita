@@ -11,5 +11,5 @@ export const useMessageStore = defineStore(
     persist: {
       storage: sessionStorage,
     },
-  }
+  },
 );

@@ -39,11 +39,9 @@ export const userApi = {
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  pageByPost: (postId, args) =>
-    http.get(`${URL_PREFIX}/page/by/post/${postId}`, { params: args }),
+  pageByPost: (postId, args) => http.get(`${URL_PREFIX}/page/by/post/${postId}`, { params: args }),
 
-  pageByRole: (roleId, args) =>
-    http.get(`${URL_PREFIX}/page/by/role/${roleId}`, { params: args }),
+  pageByRole: (roleId, args) => http.get(`${URL_PREFIX}/page/by/role/${roleId}`, { params: args }),
 
   queryTerminalInfo: () => http.get(`${URL_PREFIX}/query/terminalInfo`),
 
@@ -98,8 +96,7 @@ export const userApi = {
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 
-  updateBasicInformation: (data) =>
-    http.post(`${URL_PREFIX}/update/basicInformation`, data),
+  updateBasicInformation: (data) => http.post(`${URL_PREFIX}/update/basicInformation`, data),
 
   validateTotpCode: (code) =>
     http.post(`${URL_PREFIX}/validate/totp/${code}`, null, {

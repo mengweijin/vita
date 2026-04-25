@@ -11,8 +11,7 @@ export const logDataChangeApi = {
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-  pageByLoginUser: (args) =>
-    http.get(`${URL_PREFIX}/page-by-login-user`, { params: args }),
+  pageByLoginUser: (args) => http.get(`${URL_PREFIX}/page-by-login-user`, { params: args }),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 

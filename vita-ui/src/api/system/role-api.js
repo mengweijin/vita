@@ -11,17 +11,14 @@ export const roleApi = {
 
   queryDefaultRole: () => http.get(`${URL_PREFIX}/query/defaultRole`, {}),
 
-  queryRoleIdsByUserId: (userId) =>
-    http.get(`${URL_PREFIX}/query/roleIds/by/userId/${userId}`, {}),
+  queryRoleIdsByUserId: (userId) => http.get(`${URL_PREFIX}/query/roleIds/by/userId/${userId}`, {}),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
   removeByRoleIdInUserIds: (roleId, userIds) =>
-    http.post(
-      `${URL_PREFIX}/remove/by/roleId/in/userIds/${roleId}/${userIds}`,
-      null,
-      { loading: false },
-    ),
+    http.post(`${URL_PREFIX}/remove/by/roleId/in/userIds/${roleId}/${userIds}`, null, {
+      loading: false,
+    }),
 
   setPermissions: (id, menuIdList = []) =>
     http.post(`${URL_PREFIX}/set/permissions`, {
@@ -29,8 +26,7 @@ export const roleApi = {
       roleId: id,
     }),
 
-  setUsers: (roleId, userIds) =>
-    http.post(`${URL_PREFIX}/set/users/${roleId}/${userIds}`),
+  setUsers: (roleId, userIds) => http.post(`${URL_PREFIX}/set/users/${roleId}/${userIds}`),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

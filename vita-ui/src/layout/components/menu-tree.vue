@@ -1,19 +1,19 @@
 <script setup>
 const { menuList } = defineProps({
-	menuList: {
-		default: () => [],
-		type: Array,
-	},
+  menuList: {
+    default: () => [],
+    type: Array,
+  },
 });
 
 const router = useRouter();
 
 const handleClick = (menu) => {
-	if ("MENU" === menu.type) {
-		router.push(menu.url);
-	} else if ("URL" === menu.type) {
-		window.open(menu.url, "_blank");
-	}
+  if ("MENU" === menu.type) {
+    router.push(menu.url);
+  } else if ("URL" === menu.type) {
+    window.open(menu.url, "_blank");
+  }
 };
 </script>
 
@@ -38,8 +38,8 @@ const handleClick = (menu) => {
 </template>
 
 <style scoped>
-.el-menu-item>span,
-.el-sub-menu__title>span {
+.el-menu-item > span,
+.el-sub-menu__title > span {
   padding-left: 5px;
 }
 </style>

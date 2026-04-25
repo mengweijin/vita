@@ -7,8 +7,7 @@ export const categoryApi = {
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-  listChildrenByParentCode: (code) =>
-    http.get(`${URL_PREFIX}/list/children/by/parentCode/${code}`),
+  listChildrenByParentCode: (code) => http.get(`${URL_PREFIX}/list/children/by/parentCode/${code}`),
 
   listChildrenByParentId: (parentId) =>
     http.get(`${URL_PREFIX}/list/children/by/parentId/${parentId}`),

@@ -44,16 +44,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="background-color: white; padding: 10px 15px 10px 15px;">
+  <div style="background-color: white; padding: 10px 15px 10px 15px">
     <!-- 表格头-->
-    <el-row :gutter="10" :size="size" style="margin-bottom: 10px;">
+    <el-row :gutter="10" :size="size" style="margin-bottom: 10px">
       <!-- 左侧 -->
-      <el-col :span="1.5">
-        通知/公告
-      </el-col>
+      <el-col :span="1.5"> 通知/公告 </el-col>
 
       <!-- 右侧 -->
-      <el-col :span="1.5" style="margin-left: auto;" v-if="false">
+      <el-col :span="1.5" style="margin-left: auto" v-if="false">
         <el-button type="primary" :size="size">
           <template #icon>
             <el-icon>
@@ -63,28 +61,43 @@ onMounted(() => {
           更多
         </el-button>
       </el-col>
-
     </el-row>
-    <el-table v-loading="loading" :data="tableData" :size="size" row-key="id" height="190px" stripe border
-      show-overflow-tooltip highlight-current-row>
+    <el-table
+      v-loading="loading"
+      :data="tableData"
+      :size="size"
+      row-key="id"
+      height="190px"
+      stripe
+      border
+      show-overflow-tooltip
+      highlight-current-row
+    >
       <el-table-column prop="title" label="标题" min-width="150" fixed="left">
         <template #default="{ row }">
-          <a href="javascript:void(0);" class="vt-title" @click="handleViewDetail(row)">{{ row.title }}</a>
+          <a href="javascript:void(0);" class="vt-title" @click="handleViewDetail(row)">{{
+            row.title
+          }}</a>
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="发布日期" align="center" width="90">
         <template #default="{ row }">
-          {{ utils.toDateString(row.updateTime, 'yyyy-MM-dd') }}
+          {{ utils.toDateString(row.updateTime, "yyyy-MM-dd") }}
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="total, prev, pager, next, jumper" :size="size" v-model:current-page="queryParams.pageCurrent"
-      v-model:page-size="queryParams.pageSize" :total="queryParams.pageTotal" @change="handlePageChange" />
+    <el-pagination
+      layout="total, prev, pager, next, jumper"
+      :size="size"
+      v-model:current-page="queryParams.pageCurrent"
+      v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal"
+      @change="handlePageChange"
+    />
 
     <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
   </div>
 </template>
-
 
 <style lang="css" scoped>
 .vt-title {

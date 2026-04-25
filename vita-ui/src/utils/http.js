@@ -86,9 +86,7 @@ axiosInstance.interceptors.response.use(
       switch (statusCode) {
         case 400_1001: {
           // 打开二级认证弹框
-          const { dialogSecondaryAuthVisible } = storeToRefs(
-            useSecondaryAuthStore(),
-          );
+          const { dialogSecondaryAuthVisible } = storeToRefs(useSecondaryAuthStore());
           dialogSecondaryAuthVisible.value = true;
           break;
         }

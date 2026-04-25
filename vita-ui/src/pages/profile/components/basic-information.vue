@@ -8,9 +8,9 @@ const loading = ref(true);
 const size = ref("default");
 
 // 直接传对象
-const userModel = defineModel('user', {
+const userModel = defineModel("user", {
   default: () => ({}),
-  type: Object
+  type: Object,
 });
 
 const formRef = useTemplateRef("formRef");
@@ -33,7 +33,7 @@ const init = async () => {
       form.mobile = userModel.value?.mobile ?? undefined;
       form.email = userModel.value?.email ?? undefined;
       form.gender = userModel.value?.gender ?? undefined;
-      form.avatar = userModel.value?.avatar ?? '/avatar.jpg';
+      form.avatar = userModel.value?.avatar ?? "/avatar.jpg";
 
       loading.value = false;
       break;
@@ -71,15 +71,13 @@ const onSubmit = () => {
 };
 
 const cropperVisible = ref(false);
-const cropperSrc = ref('');
+const cropperSrc = ref("");
 const openVtCropper = () => {
-  cropperSrc.value = userModel.value?.avatar ?? '/avatar.jpg';
+  cropperSrc.value = userModel.value?.avatar ?? "/avatar.jpg";
   cropperVisible.value = true;
 };
 
-onMounted(() => {
-
-});
+onMounted(() => {});
 </script>
 
 <template>
@@ -88,23 +86,30 @@ onMounted(() => {
       <el-form-item>
         <el-avatar :src="form.avatar" :size="150" />
 
-        <el-button type="primary" style="margin-left: 20px;" @click="openVtCropper">
+        <el-button type="primary" style="margin-left: 20px" @click="openVtCropper">
           <template #icon>
             <el-icon>
               <Icon icon="ep:upload-filled"></Icon>
-            </el-icon>
-          </template>更新图像</el-button>
+            </el-icon> </template
+          >更新图像</el-button
+        >
       </el-form-item>
       <VtCropper v-model="form.avatar" v-model:visible="cropperVisible" v-model:src="cropperSrc" />
     </div>
     <el-form ref="formRef" :model="form" label-width="auto">
-
-      <el-form-item prop="nickname" label="用户昵称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="nickname"
+        label="用户昵称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.nickname" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="mobile" label="移动电话"
-        :rules="[{ pattern: /(?:0|86|\+86)?1[3-9]\d{9}/, message: '电话号码格式不正确' }]">
+      <el-form-item
+        prop="mobile"
+        label="移动电话"
+        :rules="[{ pattern: /(?:0|86|\+86)?1[3-9]\d{9}/, message: '电话号码格式不正确' }]"
+      >
         <el-input v-model="form.mobile" clearable maxlength="15" autocomplete="off" />
       </el-form-item>
 
@@ -118,8 +123,8 @@ onMounted(() => {
 
       <!-- 即使不需要标签，也应设置 label=" "（中间必须要有个空格）。以避免出现 ElementPlusError: [ElForm] unexpected width 0 警告。-->
       <el-form-item label=" ">
-        <el-button type="primary" style="width: 160px;" @click="onSubmit">保存</el-button>
-        <el-button type="warning" style="width: 160px;" @click="resetForm">
+        <el-button type="primary" style="width: 160px" @click="onSubmit">保存</el-button>
+        <el-button type="warning" style="width: 160px" @click="resetForm">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>

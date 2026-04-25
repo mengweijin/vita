@@ -96,5 +96,5 @@ export const useLoginStore = defineStore(
     persist: {
       storage: sessionStorage,
     },
-  }
+  },
 );

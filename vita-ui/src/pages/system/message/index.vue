@@ -126,13 +126,27 @@ onMounted(() => {
   <el-container>
     <el-aside width="140px">
       <el-scrollbar>
-        <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
-          :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
+        <el-tree
+          ref="treeRef"
+          :node-key="'id'"
+          :props="treeProps"
+          :data="treeData"
+          default-expand-all
+          highlight-current
+          :expand-on-click-node="false"
+          @node-click="handleTreeNodeClick"
+          class="vt-tree vt-height"
+        />
       </el-scrollbar>
     </el-aside>
     <el-main class="vt-height">
       <!-- 查询表单 -->
-      <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
+      <el-form
+        ref="queryFormRef"
+        :model="queryParams"
+        :inline="true"
+        @submit.prevent="loadTableData"
+      >
         <el-form-item prop="title" label="标题">
           <el-input v-model="queryParams.title" placeholder="" clearable />
         </el-form-item>
@@ -159,7 +173,7 @@ onMounted(() => {
         </el-form-item>
       </el-form>
 
-      <el-divider style="margin: 0px;" />
+      <el-divider style="margin: 0px" />
 
       <!-- 表格头-->
       <el-row :gutter="10" style="padding: 15px 0px">
@@ -175,44 +189,109 @@ onMounted(() => {
           </el-button>
         </el-col>
         <!-- 右侧 -->
-        <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
+        <VtTableBarRight
+          :tableRef="tableRef"
+          :columns="columns"
+          @update-size="(val) => (size = val)"
+        />
       </el-row>
 
       <!-- 表格 -->
       <div class="vt-table">
-        <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe
-          border show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+        <el-table
+          ref="tableRef"
+          v-loading="loading"
+          :data="tableData"
+          :size="size"
+          row-key="id"
+          height="100%"
+          stripe
+          border
+          show-overflow-tooltip
+          highlight-current-row
+          @selection-change="(val) => (selected = val)"
+        >
           <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
           <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
-          <el-table-column v-if="columns.messageId.visible" prop="messageId" label="消息 ID" min-width="180" />
+          <el-table-column
+            v-if="columns.messageId.visible"
+            prop="messageId"
+            label="消息 ID"
+            min-width="180"
+          />
           <el-table-column v-if="columns.title.visible" prop="title" label="标题" width="220" />
-          <el-table-column v-if="columns.content.visible" prop="content" label="内容" min-width="260" />
-          <el-table-column v-if="columns.category.visible" prop="category" label="消息分类" min-width="100" align="center">
+          <el-table-column
+            v-if="columns.content.visible"
+            prop="content"
+            label="内容"
+            min-width="260"
+          />
+          <el-table-column
+            v-if="columns.category.visible"
+            prop="category"
+            label="消息分类"
+            min-width="100"
+            align="center"
+          >
             <template #default="{ row }">
-              <VtTagDict :code="'vt_message_category'" :value="row.category" :size="size"></VtTagDict>
+              <VtTagDict
+                :code="'vt_message_category'"
+                :value="row.category"
+                :size="size"
+              ></VtTagDict>
             </template>
           </el-table-column>
-          <el-table-column v-if="columns.createByName.visible" prop="createByName" label="发送者" align="center"
-            width="100">
+          <el-table-column
+            v-if="columns.createByName.visible"
+            prop="createByName"
+            label="发送者"
+            align="center"
+            width="100"
+          >
             <template #default="{ row }">
               <span v-if="row.category === 'user'">{{ row.createByName }}</span>
-              <span v-else>{{ row.createByName ?? '系统' }}</span>
+              <span v-else>{{ row.createByName ?? "系统" }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="columns.createTime.visible" prop="createTime" label="发送时间" align="center"
-            width="180" />
-          <el-table-column v-if="columns.viewed.visible" prop="viewed" label="已读/未读" min-width="100" align="center">
+          <el-table-column
+            v-if="columns.createTime.visible"
+            prop="createTime"
+            label="发送时间"
+            align="center"
+            width="180"
+          />
+          <el-table-column
+            v-if="columns.viewed.visible"
+            prop="viewed"
+            label="已读/未读"
+            min-width="100"
+            align="center"
+          >
             <template #default="{ row }">
-              <VtTagDict :code="'vt_message_viewed_status'" :value="row.viewed" :size="size"></VtTagDict>
+              <VtTagDict
+                :code="'vt_message_viewed_status'"
+                :value="row.viewed"
+                :size="size"
+              ></VtTagDict>
             </template>
           </el-table-column>
-          <el-table-column v-if="columns.viewedTime.visible" prop="viewedTime" label="查看时间" align="center"
-            width="180" />
+          <el-table-column
+            v-if="columns.viewedTime.visible"
+            prop="viewedTime"
+            label="查看时间"
+            align="center"
+            width="180"
+          />
           <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="75">
             <template #default="scope">
               <div>
                 <el-tooltip content="标为已读" placement="top" v-if="scope.row.viewed === 'N'">
-                  <el-button type="primary" text :size="size" @click="handleSetViewed(scope.row.id)">
+                  <el-button
+                    type="primary"
+                    text
+                    :size="size"
+                    @click="handleSetViewed(scope.row.id)"
+                  >
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ri:eye-line"></Icon>
@@ -221,7 +300,12 @@ onMounted(() => {
                   </el-button>
                 </el-tooltip>
                 <el-tooltip content="标为未读" placement="top" v-if="scope.row.viewed === 'Y'">
-                  <el-button type="primary" text :size="size" @click="handleSetNotViewed(scope.row.id)">
+                  <el-button
+                    type="primary"
+                    text
+                    :size="size"
+                    @click="handleSetNotViewed(scope.row.id)"
+                  >
                     <template #icon>
                       <el-icon :size="size">
                         <Icon icon="ri:eye-off-line"></Icon>
@@ -234,13 +318,17 @@ onMounted(() => {
           </el-table-column>
         </el-table>
 
-        <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-          v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-          :total="queryParams.pageTotal" @change="handlePageChange" />
+        <el-pagination
+          background
+          layout="total, sizes, prev, pager, next, jumper"
+          v-model:current-page="queryParams.pageCurrent"
+          v-model:page-size="queryParams.pageSize"
+          :total="queryParams.pageTotal"
+          @change="handlePageChange"
+        />
       </div>
     </el-main>
   </el-container>
-
 </template>
 
 <style scoped>

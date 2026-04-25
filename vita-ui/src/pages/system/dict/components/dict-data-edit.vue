@@ -74,15 +74,29 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-
-      <el-form-item prop="code" label="字典编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="code"
+        label="字典编码"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.code" clearable disabled maxlength="100" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="label" label="字典标签" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="label"
+        label="字典标签"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.label" clearable maxlength="100" autocomplete="off" />
       </el-form-item>
 
@@ -91,8 +105,18 @@ defineExpose({ data, visible });
       </el-form-item>
 
       <el-form-item prop="tag" label="标签样式">
-        <VtSelectDict v-model="form.tag" :code="'vt_dict_tag_style'" :style="'width: 240px'"></VtSelectDict>
-        <el-tag :size="'large'" :type="form.tag" effect="dark" style="margin-left: 10px;" v-if="form.tag">
+        <VtSelectDict
+          v-model="form.tag"
+          :code="'vt_dict_tag_style'"
+          :style="'width: 240px'"
+        ></VtSelectDict>
+        <el-tag
+          :size="'large'"
+          :type="form.tag"
+          effect="dark"
+          style="margin-left: 10px"
+          v-if="form.tag"
+        >
           {{ utils.isEmpty(form.label) ? form.tag : form.label }}
         </el-tag>
       </el-form-item>
@@ -100,8 +124,14 @@ defineExpose({ data, visible });
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
+            <el-switch
+              v-model="form.disabled"
+              inline-prompt
+              active-text="启用"
+              inactive-text="停用"
+              active-value="N"
+              inactive-value="Y"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">

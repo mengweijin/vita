@@ -50,9 +50,9 @@ const onOpenMessage = () => {
   router.push("/system/message");
 };
 
-const onOpenUrl = (url, target = '_blank') => {
+const onOpenUrl = (url, target = "_blank") => {
   window.open(url, target);
-}
+};
 
 import { messageApi } from "@/api/system/message-api.js";
 
@@ -66,12 +66,12 @@ onMounted(async () => {
 });
 onUnmounted(() => {
   sseStore.disconnect();
-})
+});
 </script>
 
 <template>
   <el-menu mode="horizontal" :ellipsis="false">
-    <el-menu-item index="0" style="width: 200px; ">
+    <el-menu-item index="0" style="width: 200px">
       <img src="/logo.png" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="appStore.toggleSideMenuOpened" class="vt-icon-padding">
@@ -97,12 +97,20 @@ onUnmounted(() => {
       </el-icon>
     </el-menu-item>
 
-    <el-menu-item index="91" v-device.pc class="vt-icon-padding"
-      @click="onOpenUrl('https://github.com/mengweijin/vita')">
+    <el-menu-item
+      index="91"
+      v-device.pc
+      class="vt-icon-padding"
+      @click="onOpenUrl('https://github.com/mengweijin/vita')"
+    >
       <Icon icon="ri:github-fill" width="29" height="29" />
     </el-menu-item>
-    <el-menu-item index="92" v-device.pc class="vt-icon-padding"
-      @click="onOpenUrl('https://gitee.com/mengweijin/vita')">
+    <el-menu-item
+      index="92"
+      v-device.pc
+      class="vt-icon-padding"
+      @click="onOpenUrl('https://gitee.com/mengweijin/vita')"
+    >
       <Icon icon="simple-icons:gitee" width="24" height="24" />
     </el-menu-item>
 
@@ -110,7 +118,7 @@ onUnmounted(() => {
       <template #title>
         <el-avatar :src="userStore.user.avatar" v-if="userStore.user?.avatar" />
         <el-avatar src="/avatar.jpg" v-else />
-        <span style="margin-left: 10px;">{{ userStore.user?.nickname }}</span>
+        <span style="margin-left: 10px">{{ userStore.user?.nickname }}</span>
       </template>
       <el-menu-item index="99-1" @click="onUserPersonalInformation()">
         <Icon icon="ri:home-9-fill" width="16" height="16" />
@@ -124,7 +132,7 @@ onUnmounted(() => {
         <Icon icon="ri:user-settings-line" width="16" height="16" />
         <span>偏好设置</span>
       </el-menu-item>
-      <el-divider style="margin: 5px 0;" />
+      <el-divider style="margin: 5px 0" />
       <el-menu-item index="99-99" @click="onLogout()">
         <Icon icon="ri:logout-box-line" width="16" height="16" />
         <span>退出</span>
@@ -135,7 +143,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* 左右布局显示 */
-.el-menu--horizontal>.el-menu-item:nth-child(2) {
+.el-menu--horizontal > .el-menu-item:nth-child(2) {
   margin-right: auto;
 }
 
@@ -143,7 +151,7 @@ onUnmounted(() => {
   padding: 0 10px;
 }
 
-.el-menu-item>span {
+.el-menu-item > span {
   padding: 0px 5px;
 }
 

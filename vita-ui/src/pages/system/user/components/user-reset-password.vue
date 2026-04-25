@@ -72,19 +72,42 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`用户【${data.nickname}】重置密码`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="`用户【${data.nickname}】重置密码`"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item style="margin-top: 5px;">
+      <el-form-item style="margin-top: 5px">
         <el-checkbox v-model="isResetToDefaultPassword">是否重置为系统默认密码</el-checkbox>
       </el-form-item>
 
-      <el-form-item prop="password" label="新密码" :rules="[
-        { required: true, message: '必填', trigger: 'blur' },
-        { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '应为8-18位字母、数字、符号至少两种组合' },
-      ]">
-        <el-input v-model="form.password" maxlength="18" :readonly="isResetToDefaultPassword" clearable type="password"
-          placeholder="请输入新密码" show-password autocomplete="off" />
+      <el-form-item
+        prop="password"
+        label="新密码"
+        :rules="[
+          { required: true, message: '必填', trigger: 'blur' },
+          {
+            pattern:
+              /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/,
+            message: '应为8-18位字母、数字、符号至少两种组合',
+          },
+        ]"
+      >
+        <el-input
+          v-model="form.password"
+          maxlength="18"
+          :readonly="isResetToDefaultPassword"
+          clearable
+          type="password"
+          placeholder="请输入新密码"
+          show-password
+          autocomplete="off"
+        />
       </el-form-item>
     </el-form>
     <template #footer>

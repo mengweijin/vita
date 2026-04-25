@@ -80,21 +80,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-input v-model="inputValue" autocomplete="off" disabled style="width: 100%;">
+  <el-input v-model="inputValue" autocomplete="off" disabled style="width: 100%">
     <template #append>
       <el-popover ref="popoverRef" placement="bottom" width="510" trigger="click">
         <div>
-          <el-input v-model="search" @input="handleSearch" clearable style="width: 50%" placeholder="请输入要查找的图标" />
+          <el-input
+            v-model="search"
+            @input="handleSearch"
+            clearable
+            style="width: 50%"
+            placeholder="请输入要查找的图标"
+          />
 
-          <span style="float: right; ">
-            <el-button type="danger" size="small" @click="clearInputValue" style="margin-right: 10px;">清空</el-button>
+          <span style="float: right">
+            <el-button
+              type="danger"
+              size="small"
+              @click="clearInputValue"
+              style="margin-right: 10px"
+              >清空</el-button
+            >
             <el-button type="primary" size="small" @click="close">确定</el-button>
           </span>
-
         </div>
-        <div style="margin-top: 8px;">
-          <el-segmented v-model="iconCollection" :options="collectionOptions"
-            :props="{ label: 'label', value: 'value' }" block @change="handleIconCollectionChange" />
+        <div style="margin-top: 8px">
+          <el-segmented
+            v-model="iconCollection"
+            :options="collectionOptions"
+            :props="{ label: 'label', value: 'value' }"
+            block
+            @change="handleIconCollectionChange"
+          />
         </div>
         <el-scrollbar max-height="260px">
           <div class="vt-icon-picker-content">
@@ -108,8 +124,15 @@ onMounted(() => {
           </div>
         </el-scrollbar>
 
-        <el-pagination background :current-page="currentPage" :page-size="pageSize" size="small"
-          layout="total, prev, pager, next, jumper" :total="allIconList.length" @current-change="handleCurrentChange" />
+        <el-pagination
+          background
+          :current-page="currentPage"
+          :page-size="pageSize"
+          size="small"
+          layout="total, prev, pager, next, jumper"
+          :total="allIconList.length"
+          @current-change="handleCurrentChange"
+        />
 
         <template #reference>
           <el-button text>
@@ -130,7 +153,7 @@ onMounted(() => {
   margin: 15px 0px;
 }
 
-.el-button+.el-button {
+.el-button + .el-button {
   margin-left: 0px;
 }
 </style>

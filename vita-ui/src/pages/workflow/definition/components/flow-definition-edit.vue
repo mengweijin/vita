@@ -76,19 +76,46 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="category" label="流程分类" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <VtSelectCategory code="vt_workflow" v-model="form.category" :containRootNode="false" :filterable="true" />
+      <el-form-item
+        prop="category"
+        label="流程分类"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <VtSelectCategory
+          code="vt_workflow"
+          v-model="form.category"
+          :containRootNode="false"
+          :filterable="true"
+        />
       </el-form-item>
-      <el-form-item prop="flowName" label="流程名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="flowName"
+        label="流程名称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.flowName" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="flowCode" label="流程编码" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="flowCode"
+        label="流程编码"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.flowCode" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="modelValue" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="modelValue"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <template #label>
           <div class="vt-question-icon-container">
             <span>设计器模型</span>
@@ -103,22 +130,46 @@ defineExpose({ data, visible });
             </el-tooltip>
           </div>
         </template>
-        <VtRadioDict :code="'vt_warmflow_designer_model'" :disabled="form.id" v-model="form.modelValue" />
+        <VtRadioDict
+          :code="'vt_warmflow_designer_model'"
+          :disabled="form.id"
+          v-model="form.modelValue"
+        />
       </el-form-item>
-      <el-form-item prop="formCustom" label="表单是否自定义" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="formCustom"
+        label="表单是否自定义"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <VtRadioDict :code="'vt_warmflow_form_custom'" v-model="form.formCustom" />
       </el-form-item>
-      <el-form-item prop="formPath" label="表单路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.formCustom === 'Y'">
+      <el-form-item
+        prop="formPath"
+        label="表单路径"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+        v-if="form.formCustom === 'Y'"
+      >
         <el-input v-model="form.formPath" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="listenerType" label="监听器类型" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="listenerType"
+        label="监听器类型"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.listenerType" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="listenerPath" label="监听器路径" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="listenerPath"
+        label="监听器路径"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.listenerPath" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item prop="ext" label="扩展属性" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="ext"
+        label="扩展属性"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.ext" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
     </el-form>

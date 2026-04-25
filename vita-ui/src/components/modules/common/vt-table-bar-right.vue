@@ -2,39 +2,39 @@
 import { useFullscreen } from "@vueuse/core";
 
 const props = defineProps({
-	columns: {
-		default: {},
-		type: Object,
-	},
-	shows: {
-		default: ["print", "size", "fullscreen", "columns"],
-		type: Array,
-	},
-	tableRef: {
-		type: Object,
-	},
+  columns: {
+    default: {},
+    type: Object,
+  },
+  shows: {
+    default: ["print", "size", "fullscreen", "columns"],
+    type: Array,
+  },
+  tableRef: {
+    type: Object,
+  },
 });
 
 const emit = defineEmits(["update-size"]);
 
 const handleSizeCommand = (command) => {
-	emit("update-size", command);
+  emit("update-size", command);
 };
 
 const onToggleFullscreen = async () => {
-	await nextTick();
-	await props.tableRef.$nextTick();
-	const { toggle: toggleFullscreen } = useFullscreen(props.tableRef);
-	toggleFullscreen();
+  await nextTick();
+  await props.tableRef.$nextTick();
+  const { toggle: toggleFullscreen } = useFullscreen(props.tableRef);
+  toggleFullscreen();
 };
 
 const onPrint = () => {
-	// 通过 CSS 选择器定位元素
-	const element = document.querySelector(".el-table");
+  // 通过 CSS 选择器定位元素
+  const element = document.querySelector(".el-table");
 
-	if (element) {
-		const printWindow = window.open("", "_blank");
-		printWindow.document.write(`
+  if (element) {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(`
       <html>
         <head>
           <title></title>
@@ -56,65 +56,70 @@ const onPrint = () => {
         </body>
       </html>
     `);
-		// 停止加载，否则页签一直是 loading 状态
-		printWindow.document.close();
+    // 停止加载，否则页签一直是 loading 状态
+    printWindow.document.close();
 
-		// 监听打印后操作
-		printWindow.onafterprint = () => {
-			// 关闭当前页
-			printWindow.close();
-		};
+    // 监听打印后操作
+    printWindow.onafterprint = () => {
+      // 关闭当前页
+      printWindow.close();
+    };
 
-		// 调用打印
-		printWindow.print();
-	} else {
-		console.error(`No element was found by selector=${props.selector}`);
-	}
+    // 调用打印
+    printWindow.print();
+  } else {
+    console.error(`No element was found by selector=${props.selector}`);
+  }
 };
 
 const columnList = computed(() => {
-	const list = [];
-	for (const [key, value] of Object.entries(props.columns)) {
-		list.push({ key: key, label: value.label, visible: value.visible });
-	}
-	return list;
+  const list = [];
+  for (const [key, value] of Object.entries(props.columns)) {
+    list.push({ key: key, label: value.label, visible: value.visible });
+  }
+  return list;
 });
 
 const columnCheckedList = ref([]);
 
 const columnChange = () => {
-	for (const [key, value] of Object.entries(props.columns)) {
-		value.visible = columnCheckedList.value.includes(key);
-	}
+  for (const [key, value] of Object.entries(props.columns)) {
+    value.visible = columnCheckedList.value.includes(key);
+  }
 };
 
 const columnGroupChange = (checkedKeys) => {
-	columnCheckedList.value = checkedKeys;
-	columnChange();
+  columnCheckedList.value = checkedKeys;
+  columnChange();
 };
 
 const columnCheckAllChange = (isChecked) => {
-	columnCheckedList.value = isChecked ? Object.keys(props.columns) : [];
-	columnChange();
+  columnCheckedList.value = isChecked ? Object.keys(props.columns) : [];
+  columnChange();
 };
 
 const defaultColumnCheckedList = ref([]);
 
 const columnReset = () => {
-	columnGroupChange(defaultColumnCheckedList.value);
+  columnGroupChange(defaultColumnCheckedList.value);
 };
 
 onMounted(() => {
-	columnCheckedList.value = columnList.value?.filter((item) => item.visible).map((item) => item.key);
+  columnCheckedList.value = columnList.value
+    ?.filter((item) => item.visible)
+    .map((item) => item.key);
 
-	defaultColumnCheckedList.value = [...columnCheckedList.value];
+  defaultColumnCheckedList.value = [...columnCheckedList.value];
 });
 </script>
 
 <template>
-  <el-col :span="1.5" style="margin-left: auto;">
-
-    <el-tooltip content="打印，请在打印窗口手动调整缩放比例，以适应纸张页面。" placement="top" v-if="props.shows.includes('print')">
+  <el-col :span="1.5" style="margin-left: auto">
+    <el-tooltip
+      content="打印，请在打印窗口手动调整缩放比例，以适应纸张页面。"
+      placement="top"
+      v-if="props.shows.includes('print')"
+    >
       <el-button text circle @click="onPrint">
         <template #icon>
           <Icon icon="ep:printer" width="24" height="24"></Icon>
@@ -130,7 +135,12 @@ onMounted(() => {
       </el-button>
     </el-tooltip>
     <el-tooltip content="密度" placement="top" v-if="props.shows.includes('size')">
-      <el-dropdown placement="bottom" trigger="click" style="margin: 0 10px;" @command="handleSizeCommand">
+      <el-dropdown
+        placement="bottom"
+        trigger="click"
+        style="margin: 0 10px"
+        @command="handleSizeCommand"
+      >
         <el-button text circle>
           <template #icon>
             <Icon icon="ri:expand-height-fill" width="24" height="24" />
@@ -147,16 +157,21 @@ onMounted(() => {
     </el-tooltip>
 
     <el-tooltip content="列设置" placement="top" v-if="props.shows.includes('columns')">
-      <div style="display: inline-block;">
+      <div style="display: inline-block">
         <el-popover placement="bottom" trigger="click" :popper-style="{ minWidth: '180px' }">
           <div>
-            <div style="padding: 5px 0;"><span>显示/隐藏列</span></div>
-            <el-divider style="margin: 0px;" />
-            <div style="max-height: 300px; overflow-y: auto;">
+            <div style="padding: 5px 0"><span>显示/隐藏列</span></div>
+            <el-divider style="margin: 0px" />
+            <div style="max-height: 300px; overflow-y: auto">
               <el-checkbox label="全选" :value="-1" :key="-1" @change="columnCheckAllChange" />
-              <el-button type="primary" size="small" @click="columnReset"
-                style="font-size: 14px; height: 20px; margin-top: 6px; float: right;">重置</el-button>
-              <el-divider style="margin: 0px;" />
+              <el-button
+                type="primary"
+                size="small"
+                @click="columnReset"
+                style="font-size: 14px; height: 20px; margin-top: 6px; float: right"
+                >重置</el-button
+              >
+              <el-divider style="margin: 0px" />
               <el-checkbox-group v-model="columnCheckedList" @change="columnGroupChange">
                 <div v-for="(item, index) in columnList" :key="item.key">
                   <el-checkbox :label="item.label" :value="item.key" />

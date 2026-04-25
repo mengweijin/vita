@@ -110,14 +110,20 @@ onMounted(() => {
     </el-form-item>
   </el-form>
 
-  <el-divider style="margin: 0px;" />
+  <el-divider style="margin: 0px" />
 
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5" v-show="selected.length" v-permission="'monitor:logSystem:remove'">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的日志吗？`" confirm-button-text="确定"
-        cancel-button-text="取消" @confirm="handleBatchDelete">
+      <el-popconfirm
+        placement="right"
+        width="400"
+        :title="`确定全部删除已选择的日志吗？`"
+        confirm-button-text="确定"
+        cancel-button-text="取消"
+        @confirm="handleBatchDelete"
+      >
         <template #reference>
           <el-button type="danger">
             <template #icon>
@@ -131,30 +137,91 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => (size = val)" />
   </el-row>
 
   <!-- 表格 -->
   <div class="vt-table">
-    <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-      show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+    <el-table
+      ref="tableRef"
+      v-loading="loading"
+      :data="tableData"
+      :size="size"
+      row-key="id"
+      height="100%"
+      stripe
+      border
+      show-overflow-tooltip
+      highlight-current-row
+      @selection-change="(val) => (selected = val)"
+    >
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.loggerLevel.visible" prop="loggerLevel" label="日志级别" width="100" align="center">
+      <el-table-column
+        v-if="columns.loggerLevel.visible"
+        prop="loggerLevel"
+        label="日志级别"
+        width="100"
+        align="center"
+      >
         <template #default="{ row }">
           <VtTagDict :code="'vt_log_level'" :value="row.loggerLevel" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.threadName.visible" prop="threadName" label="线程名称" min-width="160" />
-      <el-table-column v-if="columns.loggerName.visible" prop="loggerName" label="日志名称" min-width="300" />
-      <el-table-column v-if="columns.formattedMessage.visible" prop="formattedMessage" label="日志内容" min-width="500" />
-      <el-table-column v-if="columns.stackTrace.visible" prop="stackTrace" label="堆栈信息" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180"
-        sortable />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
+      <el-table-column
+        v-if="columns.threadName.visible"
+        prop="threadName"
+        label="线程名称"
+        min-width="160"
+      />
+      <el-table-column
+        v-if="columns.loggerName.visible"
+        prop="loggerName"
+        label="日志名称"
+        min-width="300"
+      />
+      <el-table-column
+        v-if="columns.formattedMessage.visible"
+        prop="formattedMessage"
+        label="日志内容"
+        min-width="500"
+      />
+      <el-table-column
+        v-if="columns.stackTrace.visible"
+        prop="stackTrace"
+        label="堆栈信息"
+        min-width="260"
+      />
+      <el-table-column
+        v-if="columns.createByName.visible"
+        prop="createByName"
+        label="创建者"
+        align="center"
+        width="100"
+      />
+      <el-table-column
+        v-if="columns.createTime.visible"
+        prop="createTime"
+        label="创建时间"
+        align="center"
+        width="180"
+        sortable
+      />
+      <el-table-column
+        v-if="columns.updateByName.visible"
+        prop="updateByName"
+        label="更新者"
+        align="center"
+        width="100"
+      />
+      <el-table-column
+        v-if="columns.updateTime.visible"
+        prop="updateTime"
+        label="更新时间"
+        align="center"
+        width="180"
+      />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
@@ -168,11 +235,22 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除日志吗？`" confirm-button-text="确定"
-                  cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+              <div style="display: inline-block">
+                <el-popconfirm
+                  placement="left"
+                  width="400"
+                  :title="`确定删除日志吗？`"
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  @confirm="handleDelete(scope.row.id)"
+                >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'monitor:logSystem:remove'">
+                    <el-button
+                      type="danger"
+                      text
+                      :size="size"
+                      v-permission="'monitor:logSystem:remove'"
+                    >
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -188,9 +266,15 @@ onMounted(() => {
       </el-table-column>
     </el-table>
 
-    <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-      :total="queryParams.pageTotal" :page-sizes="[100, 200, 300, 500, 1000]" @change="handlePageChange" />
+    <el-pagination
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      v-model:current-page="queryParams.pageCurrent"
+      v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal"
+      :page-sizes="[100, 200, 300, 500, 1000]"
+      @change="handlePageChange"
+    />
   </div>
 
   <LogSystemDetail ref="logSystemDetailRef"></LogSystemDetail>

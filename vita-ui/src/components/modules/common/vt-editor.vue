@@ -4,21 +4,21 @@ import "@wangeditor-next/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor-next/editor-for-vue";
 
 const props = defineProps({
-	editorConfig: {
-		default: {
-			placeholder: "请输入内容...",
-		},
-		type: Object,
-	},
-	// 'default' 或 'simple'
-	mode: {
-		default: "default",
-		type: String,
-	},
-	toolbarConfig: {
-		default: {},
-		type: Object,
-	},
+  editorConfig: {
+    default: {
+      placeholder: "请输入内容...",
+    },
+    type: Object,
+  },
+  // 'default' 或 'simple'
+  mode: {
+    default: "default",
+    type: String,
+  },
+  toolbarConfig: {
+    default: {},
+    type: Object,
+  },
 });
 
 const modelValue = defineModel({ type: String });
@@ -27,21 +27,31 @@ const modelValue = defineModel({ type: String });
 const editorRef = shallowRef();
 
 onBeforeUnmount(() => {
-	// 组件销毁时，也及时销毁编辑器
-	editorRef.value?.destroy();
+  // 组件销毁时，也及时销毁编辑器
+  editorRef.value?.destroy();
 });
 
 const handleCreated = (editor) => {
-	// 记录 editor 实例，重要！
-	editorRef.value = editor;
+  // 记录 editor 实例，重要！
+  editorRef.value = editor;
 };
 </script>
 
 <template>
   <div class="vt-editor-container">
-    <Toolbar :editor="editorRef" :defaultConfig="props.toolbarConfig" :mode="props.mode" class="vt-editor-toolbar" />
-    <Editor v-model="modelValue" :defaultConfig="props.editorConfig" :mode="props.mode" @onCreated="handleCreated"
-      class="vt-editor" />
+    <Toolbar
+      :editor="editorRef"
+      :defaultConfig="props.toolbarConfig"
+      :mode="props.mode"
+      class="vt-editor-toolbar"
+    />
+    <Editor
+      v-model="modelValue"
+      :defaultConfig="props.editorConfig"
+      :mode="props.mode"
+      @onCreated="handleCreated"
+      class="vt-editor"
+    />
   </div>
 </template>
 

@@ -16,17 +16,14 @@ const extendUtils = {
       const pathList = [];
       let row = XEUtils.find(
         list,
-        (item) =>
-          XEUtils.toValueString(id) === XEUtils.toValueString(item[idKey]),
+        (item) => XEUtils.toValueString(id) === XEUtils.toValueString(item[idKey]),
       );
       while (row != null) {
         // 往最前面增加元素（向数组最前面插入元素时，需设置起始索引为 0, 且删除数量为 0）
         pathList.splice(0, 0, row[pathKey]);
         row = XEUtils.find(
           list,
-          (item) =>
-            XEUtils.toValueString(item[idKey]) ===
-            XEUtils.toValueString(row[parentKey]),
+          (item) => XEUtils.toValueString(item[idKey]) === XEUtils.toValueString(row[parentKey]),
         );
       }
       return pathList.join(separator);
@@ -78,9 +75,7 @@ const extendUtils = {
    * @returns {Boolean}
    */
   isBlank: (val) => {
-    return (
-      val === undefined || val === null || XEUtils.toString(val)?.trim() === ""
-    );
+    return val === undefined || val === null || XEUtils.toString(val)?.trim() === "";
   },
 
   /**
@@ -103,8 +98,7 @@ const extendUtils = {
     const str = val.trim();
     // 检查首尾字符：合法JSON以 { } 或 [ ] 包裹
     const isLikeJSON =
-      (str.startsWith("{") && str.endsWith("}")) ||
-      (str.startsWith("[") && str.endsWith("]"));
+      (str.startsWith("{") && str.endsWith("}")) || (str.startsWith("[") && str.endsWith("]"));
     if (!isLikeJSON) {
       return false;
     }
@@ -213,9 +207,7 @@ const extendUtils = {
    * 首字母转大写
    */
   upperFirst: (str) => {
-    return str && str.length > 0
-      ? str.charAt(0).toUpperCase() + str.slice(1)
-      : str;
+    return str && str.length > 0 ? str.charAt(0).toUpperCase() + str.slice(1) : str;
   },
 };
 

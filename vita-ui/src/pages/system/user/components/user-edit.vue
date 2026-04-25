@@ -124,46 +124,83 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="55%" style="padding-left: 30px;padding-right: 30px;">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="55%"
+    style="padding-left: 30px; padding-right: 30px"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item prop="nickname" label="用户昵称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+          <el-form-item
+            prop="nickname"
+            label="用户昵称"
+            :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+          >
             <el-input v-model="form.nickname" clearable maxlength="30" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="deptId" label="归属部门" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+          <el-form-item
+            prop="deptId"
+            label="归属部门"
+            :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+          >
             <VtSelectDept v-model="form.deptId"></VtSelectDept>
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-row :gutter="20" v-if="!(data.id)">
+      <el-row :gutter="20" v-if="!data.id">
         <el-col :span="12">
-          <el-form-item prop="username" label="登录账号" :rules="[
-            { required: true, message: '必填', trigger: 'blur' },
-            { pattern: /^\w+$/, message: '只能包含英文字母、数字和下划线' },
-          ]">
+          <el-form-item
+            prop="username"
+            label="登录账号"
+            :rules="[
+              { required: true, message: '必填', trigger: 'blur' },
+              { pattern: /^\w+$/, message: '只能包含英文字母、数字和下划线' },
+            ]"
+          >
             <el-input v-model="form.username" clearable maxlength="64" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="password" label="登录密码" :rules="[
-            { required: true, message: '必填', trigger: 'blur' },
-            { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '应为8-18位字母、数字、符号至少两种组合' },
-          ]">
-            <el-input v-model="form.password" maxlength="18" clearable type="password" placeholder="请输入密码" show-password
-              autocomplete="off" />
+          <el-form-item
+            prop="password"
+            label="登录密码"
+            :rules="[
+              { required: true, message: '必填', trigger: 'blur' },
+              {
+                pattern:
+                  /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/,
+                message: '应为8-18位字母、数字、符号至少两种组合',
+              },
+            ]"
+          >
+            <el-input
+              v-model="form.password"
+              maxlength="18"
+              clearable
+              type="password"
+              placeholder="请输入密码"
+              show-password
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item prop="mobile" label="移动电话"
-            :rules="[{ pattern: /(?:0|86|\+86)?1[3-9]\d{9}/, message: '电话号码格式不正确' }]">
+          <el-form-item
+            prop="mobile"
+            label="移动电话"
+            :rules="[{ pattern: /(?:0|86|\+86)?1[3-9]\d{9}/, message: '电话号码格式不正确' }]"
+          >
             <el-input v-model="form.mobile" clearable maxlength="15" autocomplete="off" />
           </el-form-item>
         </el-col>
@@ -176,14 +213,20 @@ defineExpose({ data, visible });
 
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item prop="citizenId" label="身份证号"
-            :rules="[{ pattern: /[1-9]\d{5}[1-2]\d{3}((0\d)|(1[0-2]))(([012]\d)|3[0-1])\d{3}(\d|X|x)/, message: '身份证号格式不正确' }]">
+          <el-form-item
+            prop="citizenId"
+            label="身份证号"
+            :rules="[
+              {
+                pattern: /[1-9]\d{5}[1-2]\d{3}((0\d)|(1[0-2]))(([012]\d)|3[0-1])\d{3}(\d|X|x)/,
+                message: '身份证号格式不正确',
+              },
+            ]"
+          >
             <el-input v-model="form.citizenId" clearable maxlength="18" autocomplete="off" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-
-        </el-col>
+        <el-col :span="12"> </el-col>
       </el-row>
 
       <el-row :gutter="20">
@@ -194,8 +237,14 @@ defineExpose({ data, visible });
         </el-col>
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
+            <el-switch
+              v-model="form.disabled"
+              inline-prompt
+              active-text="启用"
+              inactive-text="停用"
+              active-value="N"
+              inactive-value="Y"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -207,7 +256,11 @@ defineExpose({ data, visible });
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="roleIds" label="角色" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+          <el-form-item
+            prop="roleIds"
+            label="角色"
+            :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+          >
             <VtSelectRole v-model="form.roleIds"></VtSelectRole>
           </el-form-item>
         </el-col>

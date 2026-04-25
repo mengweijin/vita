@@ -124,18 +124,21 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-
   <el-container v-loading="loading" v-show="visible">
     <el-main>
       <div class="vt-login-background">
         <el-form :model="form" :rules="rules" ref="formRef" :size="'large'" class="vt-login-form">
           <el-form-item>
-            <div style="width: 100%;text-align: center; padding: 10px;"><img src="/logo.svg" /></div>
+            <div style="width: 100%; text-align: center; padding: 10px">
+              <img src="/logo.svg" />
+            </div>
           </el-form-item>
-          <el-form-item style="margin-top: -25px;">
-            <div class="vt-login-title"><img src="/favicon.png" style="width: 64px;" />&nbsp;微塔管理系统</div>
+          <el-form-item style="margin-top: -25px">
+            <div class="vt-login-title">
+              <img src="/favicon.png" style="width: 64px" />&nbsp;微塔管理系统
+            </div>
           </el-form-item>
-          <el-form-item prop="username" style="margin-top: 0px;">
+          <el-form-item prop="username" style="margin-top: 0px">
             <el-input v-model="form.username" maxlength="30" clearable placeholder="请输入用户名">
               <template #prefix>
                 <el-icon :size="22">
@@ -144,12 +147,25 @@ onBeforeUnmount(() => {
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item prop="password" :rules="[
-            { required: true, message: '必填', trigger: 'blur' },
-            { pattern: /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/, message: '密码应为8-18位字母、数字、符号至少两种组合' }
-          ]">
-            <el-input v-model="form.password" maxlength="18" clearable type="password" placeholder="请输入密码"
-              show-password>
+          <el-form-item
+            prop="password"
+            :rules="[
+              { required: true, message: '必填', trigger: 'blur' },
+              {
+                pattern:
+                  /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/,
+                message: '密码应为8-18位字母、数字、符号至少两种组合',
+              },
+            ]"
+          >
+            <el-input
+              v-model="form.password"
+              maxlength="18"
+              clearable
+              type="password"
+              placeholder="请输入密码"
+              show-password
+            >
               <template #prefix>
                 <el-icon :size="22">
                   <Icon icon="ep:lock" />
@@ -157,13 +173,19 @@ onBeforeUnmount(() => {
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item prop="captcha" v-if="captchaEnabled" :rules="[
-            { required: true, message: '必填', trigger: 'blur' },
-            { pattern: /^\d+$/, message: '验证码应为数字' }
-          ]">
+          <el-form-item
+            prop="captcha"
+            v-if="captchaEnabled"
+            :rules="[
+              { required: true, message: '必填', trigger: 'blur' },
+              { pattern: /^\d+$/, message: '验证码应为数字' },
+            ]"
+          >
             <el-input v-model="form.captcha" maxlength="30" clearable placeholder="验证码">
               <template #prepend>
-                <a href="javascript:;" class="vt-login-captcha" @click="onRefreshCaptcha"><img :src="captchaImg" /></a>
+                <a href="javascript:;" class="vt-login-captcha" @click="onRefreshCaptcha"
+                  ><img :src="captchaImg"
+                /></a>
               </template>
               <template #prefix>
                 <el-icon :size="22">
@@ -172,15 +194,19 @@ onBeforeUnmount(() => {
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item style="margin-top: 5px;">
+          <el-form-item style="margin-top: 5px">
             <el-checkbox v-model="form.remember">记住我</el-checkbox>
-            <a href="javascript:;" style="position: absolute; right: 0;text-decoration: none;"
-              @click="onForgetPassword">忘记密码？</a>
+            <a
+              href="javascript:;"
+              style="position: absolute; right: 0; text-decoration: none"
+              @click="onForgetPassword"
+              >忘记密码？</a
+            >
           </el-form-item>
-          <el-form-item style="margin-top: 5px;">
-            <el-button type="primary" style="width: 100%;" @click="onSubmit">登录</el-button>
+          <el-form-item style="margin-top: 5px">
+            <el-button type="primary" style="width: 100%" @click="onSubmit">登录</el-button>
           </el-form-item>
-          <el-form-item style="margin-top: 5px;">
+          <el-form-item style="margin-top: 5px">
             <div>登录账号：</div>
             <div>admin（管理员）</div>
             <div>vita（普通用户）</div>
@@ -232,7 +258,7 @@ onBeforeUnmount(() => {
   width: 140px;
 }
 
-.el-form-item+.el-form-item {
+.el-form-item + .el-form-item {
   margin-top: 15px;
 }
 
@@ -260,11 +286,11 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/background.png');
+  background-image: url("/background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   z-index: 0;
 }
 

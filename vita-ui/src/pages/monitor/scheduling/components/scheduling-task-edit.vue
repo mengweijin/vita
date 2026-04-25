@@ -1,7 +1,7 @@
 <script setup>
 import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api";
-import cronstrue from 'cronstrue';
-import 'cronstrue/locales/zh_CN';
+import cronstrue from "cronstrue";
+import "cronstrue/locales/zh_CN";
 
 const loading = ref(true);
 
@@ -68,10 +68,10 @@ const onClosed = () => {
 };
 
 const cronDescription = computed(() => {
-  if (form.cron == null || form.cron === '') {
-    return '';
+  if (form.cron == null || form.cron === "") {
+    return "";
   }
-  return cronstrue.toString(form.cron, { locale: 'zh_CN', use24HourTimeFormat: true });
+  return cronstrue.toString(form.cron, { locale: "zh_CN", use24HourTimeFormat: true });
 });
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
@@ -79,38 +79,78 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="40%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-
-      <el-form-item prop="name" label="名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="name"
+        label="名称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="cron" label="CRON 表达式" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.cron" clearable maxlength="64" autocomplete="off" style="width: 40%;" />
-        <span style="margin-left: 10px; color: #c2c2c2;">{{ cronDescription }}执行</span>
+      <el-form-item
+        prop="cron"
+        label="CRON 表达式"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input
+          v-model="form.cron"
+          clearable
+          maxlength="64"
+          autocomplete="off"
+          style="width: 40%"
+        />
+        <span style="margin-left: 10px; color: #c2c2c2">{{ cronDescription }}执行</span>
       </el-form-item>
 
-      <el-form-item prop="beanName" label="Bean 名称" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="beanName"
+        label="Bean 名称"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.beanName" clearable maxlength="64" autocomplete="off" />
       </el-form-item>
 
       <el-form-item prop="args" label="执行参数">
-        <el-input v-model="form.args" type="textarea" maxlength="500" :autosize="{ minRows: 3, maxRows: 8 }" />
+        <el-input
+          v-model="form.args"
+          type="textarea"
+          maxlength="500"
+          :autosize="{ minRows: 3, maxRows: 8 }"
+        />
       </el-form-item>
 
       <el-row :gutter="20" v-if="false">
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
+            <el-switch
+              v-model="form.disabled"
+              inline-prompt
+              active-text="启用"
+              inactive-text="停用"
+              active-value="N"
+              inactive-value="Y"
+            />
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-form-item prop="remark" label="备注">
-        <el-input v-model="form.remark" type="textarea" maxlength="500" :autosize="{ minRows: 3, maxRows: 8 }" />
+        <el-input
+          v-model="form.remark"
+          type="textarea"
+          maxlength="500"
+          :autosize="{ minRows: 3, maxRows: 8 }"
+        />
       </el-form-item>
     </el-form>
     <template #footer>

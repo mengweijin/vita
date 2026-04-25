@@ -40,7 +40,7 @@ onMounted(() => {
 
 <template>
   <el-scrollbar v-loading="loading" class="vt-container">
-    <el-descriptions title="服务器信息" :column="2" :size="size" border style="margin-top: 15px;">
+    <el-descriptions title="服务器信息" :column="2" :size="size" border style="margin-top: 15px">
       <el-descriptions-item label="厂商" label-align="right" min-width="200">
         {{ serverInfo?.manufacturer }}
       </el-descriptions-item>
@@ -75,7 +75,7 @@ onMounted(() => {
         {{ cpuInfo?.free }}%
       </el-descriptions-item>
       <el-descriptions-item label="CPU型号信息" label-align="right">
-        <div style="white-space: pre-wrap;">
+        <div style="white-space: pre-wrap">
           {{ cpuInfo?.cpuModel }}
         </div>
       </el-descriptions-item>
@@ -86,17 +86,16 @@ onMounted(() => {
         {{ memoryInfo?.global }}
       </el-descriptions-item>
       <el-descriptions-item label="物理内存" label-align="right">
-        <div style="white-space: pre-wrap;">
+        <div style="white-space: pre-wrap">
           {{ memoryInfo?.physical }}
         </div>
       </el-descriptions-item>
       <el-descriptions-item label="虚拟内存" label-align="right">
-        <div style="white-space: pre-wrap;">
+        <div style="white-space: pre-wrap">
           {{ memoryInfo?.virtual }}
         </div>
       </el-descriptions-item>
     </el-descriptions>
-
 
     <el-descriptions title="JVM 信息" :column="2" :size="size" border>
       <el-descriptions-item label="虚拟机名称" label-align="right" min-width="200">
@@ -140,9 +139,16 @@ onMounted(() => {
       </el-descriptions-item>
     </el-descriptions>
 
-    <div class="el-descriptions__title" style="margin: 30px 0px 15px 0px;">磁盘信息</div>
-    <el-table v-loading="loading" :data="diskInfo" :size="size" stripe border show-overflow-tooltip
-      highlight-current-row>
+    <div class="el-descriptions__title" style="margin: 30px 0px 15px 0px">磁盘信息</div>
+    <el-table
+      v-loading="loading"
+      :data="diskInfo"
+      :size="size"
+      stripe
+      border
+      show-overflow-tooltip
+      highlight-current-row
+    >
       <el-table-column prop="mountName" label="卷名称" min-width="120" />
       <el-table-column prop="diskFormat" label="磁盘格式" min-width="100" />
       <el-table-column prop="diskName" label="磁盘名称" min-width="180" />
@@ -160,11 +166,11 @@ onMounted(() => {
   padding-bottom: 15px;
 }
 
-.el-descriptions+.el-descriptions {
+.el-descriptions + .el-descriptions {
   margin-top: 25px;
 }
 
-.el-descriptions__extra>.el-button {
+.el-descriptions__extra > .el-button {
   margin-right: 20px;
 }
 </style>

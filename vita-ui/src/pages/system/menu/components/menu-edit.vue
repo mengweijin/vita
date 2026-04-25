@@ -105,29 +105,55 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="50%">
+  <el-dialog
+    v-model="visible"
+    :title="data?.id ? '编辑' : '新增'"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="50%"
+  >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="type" label="菜单类型">
-        <el-segmented v-model="form.type" :options="menuTypeOptions"
-          :props="{ label: 'label', value: 'val', disabled: 'disabled' }" />
+        <el-segmented
+          v-model="form.type"
+          :options="menuTypeOptions"
+          :props="{ label: 'label', value: 'val', disabled: 'disabled' }"
+        />
       </el-form-item>
 
       <el-form-item prop="parentId" label="父菜单">
-        <el-tree-select v-model="form.parentId" :data="menuTreeSelectOptions"
-          :props="{ label: 'titleFullPath', value: 'id', children: 'children' }" check-strictly filterable clearable
-          placeholder="" :disabled="data?.id">
+        <el-tree-select
+          v-model="form.parentId"
+          :data="menuTreeSelectOptions"
+          :props="{ label: 'titleFullPath', value: 'id', children: 'children' }"
+          check-strictly
+          filterable
+          clearable
+          placeholder=""
+          :disabled="data?.id"
+        >
           <template #default="{ data: { title } }">
             {{ title }}
           </template>
         </el-tree-select>
       </el-form-item>
 
-      <el-form-item prop="icon" label="图标" style="width: 65%;" v-if="form.type === 'DIR' || form.type === 'MENU'">
+      <el-form-item
+        prop="icon"
+        label="图标"
+        style="width: 65%"
+        v-if="form.type === 'DIR' || form.type === 'MENU'"
+      >
         <VtIconPicker v-model="form.icon"></VtIconPicker>
       </el-form-item>
 
-      <el-form-item prop="title" label="标题" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+      <el-form-item
+        prop="title"
+        label="标题"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
         <el-input v-model="form.title" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
 
@@ -146,14 +172,18 @@ defineExpose({ data, visible });
         <el-input v-model="form.permission" clearable autocomplete="off" />
       </el-form-item>
 
-      <el-form-item prop="url" label="URL" :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-        v-if="form.type === 'MENU' || form.type === 'URL'">
+      <el-form-item
+        prop="url"
+        label="URL"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+        v-if="form.type === 'MENU' || form.type === 'URL'"
+      >
         <template #label>
           <div class="vt-question-icon-container">
             <span>路由路径/URL</span>
             <el-tooltip placement="top">
               <template #content>
-                vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。<br>
+                vue-router 路由的路径或一个完整的 URL 地址，也是浏览器地址栏访问的路径。<br />
                 比如：/system/menu 或 https://aday.fun
               </template>
               <el-icon class="vt-question-icon">
@@ -168,8 +198,14 @@ defineExpose({ data, visible });
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item prop="disabled" label="状态">
-            <el-switch v-model="form.disabled" inline-prompt active-text="启用" inactive-text="停用" active-value="N"
-              inactive-value="Y" />
+            <el-switch
+              v-model="form.disabled"
+              inline-prompt
+              active-text="启用"
+              inactive-text="停用"
+              active-value="N"
+              inactive-value="Y"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">

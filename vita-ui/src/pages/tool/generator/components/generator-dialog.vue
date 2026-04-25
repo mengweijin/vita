@@ -1,7 +1,7 @@
 <script setup>
-import { generatorApi } from '@/api/tool/generator-api.js';
-import VtCodeHighlight from '@/components/modules/common/vt-code-highlight.vue';
-import utils from '@/utils/utils.js';
+import { generatorApi } from "@/api/tool/generator-api.js";
+import VtCodeHighlight from "@/components/modules/common/vt-code-highlight.vue";
+import utils from "@/utils/utils.js";
 
 const loading = ref(true);
 
@@ -35,31 +35,31 @@ const init = () => {
 const formRef = useTemplateRef("formRef");
 
 const onSubmit = () => {
-	formRef.value.validate((valid, fields) => {
-		if (!valid) {
-			// fields 只有在验证失败的情况下才有值
-			console.log(fields);
-			return;
-		}
-		// TODO 提交表单
-	});
+  formRef.value.validate((valid, fields) => {
+    if (!valid) {
+      // fields 只有在验证失败的情况下才有值
+      console.log(fields);
+      return;
+    }
+    // TODO 提交表单
+  });
 };
 
 const onOpened = () => {
-	loading.value = true;
+  loading.value = true;
   generatorApi.listTemplate().then((res) => {
     templateList.value = res;
   });
   generatorApi.queryDefaultArgs().then((res) => {
     defaultArgs.value = res;
     init();
-     form.tableName = data.value.name;
+    form.tableName = data.value.name;
   });
   loading.value = false;
 };
 
 const onClosed = () => {
-	visible.value = false;
+  visible.value = false;
   templateList.value = [];
   defaultArgs.value = {};
   data.value = {};
@@ -87,7 +87,7 @@ const handleTreeNodeClick = (data, node) => {
   if (!isLeaf) {
     return;
   }
-  
+
   form.templateId = data.id;
   generatorApi.run(form).then((res) => {
     contentPreview.value = res;
@@ -95,7 +95,7 @@ const handleTreeNodeClick = (data, node) => {
 };
 
 const removeVelocitySuffix = (fileName) => {
-  if(utils.isBlank(fileName)) {
+  if (utils.isBlank(fileName)) {
     return "";
   }
   return fileName.replace(".vm", "");
@@ -106,33 +106,52 @@ defineExpose({ data, visible });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="`表 [${data?.name}] 生成代码`" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="90%">
+  <el-dialog
+    v-model="visible"
+    :title="`表 [${data?.name}] 生成代码`"
+    destroy-on-close
+    align-center
+    @opened="onOpened"
+    @closed="onClosed"
+    width="90%"
+  >
     <el-container v-loading="loading" class="vt-height">
       <el-aside width="360px">
         <el-scrollbar>
-          <el-tree ref="treeRef" :node-key="'id'" :props="treeProps" :data="treeData" default-expand-all highlight-current
-            :expand-on-click-node="false" @node-click="handleTreeNodeClick" class="vt-tree vt-height" />
+          <el-tree
+            ref="treeRef"
+            :node-key="'id'"
+            :props="treeProps"
+            :data="treeData"
+            default-expand-all
+            highlight-current
+            :expand-on-click-node="false"
+            @node-click="handleTreeNodeClick"
+            class="vt-tree vt-height"
+          />
         </el-scrollbar>
       </el-aside>
       <el-main class="vt-height">
         <!-- 查询表单 -->
         <el-form ref="formRef" :model="form" :inline="true">
           <el-form-item prop="tablePrefix" label="忽略表前缀">
-            <el-input v-model="form.tablePrefix" placeholder="" clearable style="width: 90px;"/>
+            <el-input v-model="form.tablePrefix" placeholder="" clearable style="width: 90px" />
           </el-form-item>
           <el-form-item prop="author" label="作者">
-            <el-input v-model="form.author" placeholder="" clearable style="width: 95px;" />
+            <el-input v-model="form.author" placeholder="" clearable style="width: 95px" />
           </el-form-item>
           <el-form-item prop="packages" label="包名">
-            <el-input v-model="form.packages" placeholder="" clearable style="width: 200px;" />
+            <el-input v-model="form.packages" placeholder="" clearable style="width: 200px" />
           </el-form-item>
           <el-form-item prop="moduleName" label="模块名">
-            <el-input v-model="form.moduleName" placeholder="" clearable style="width: 80px;" />
+            <el-input v-model="form.moduleName" placeholder="" clearable style="width: 80px" />
           </el-form-item>
         </el-form>
 
-        <VtCodeHighlight :code="contentPreview?.content" :file-name="removeVelocitySuffix(contentPreview?.fileName)" />
+        <VtCodeHighlight
+          :code="contentPreview?.content"
+          :file-name="removeVelocitySuffix(contentPreview?.fileName)"
+        />
       </el-main>
     </el-container>
 

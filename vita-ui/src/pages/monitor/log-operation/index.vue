@@ -83,17 +83,25 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="title" label="模块标题">
-      <el-input v-model="queryParams.title" placeholder="" clearable style="width: 160px;" />
+      <el-input v-model="queryParams.title" placeholder="" clearable style="width: 160px" />
     </el-form-item>
     <el-form-item prop="url" label="URL">
-      <el-input v-model="queryParams.url" placeholder="" clearable style="width: 160px;" />
+      <el-input v-model="queryParams.url" placeholder="" clearable style="width: 160px" />
     </el-form-item>
     <el-form-item prop="operationType" label="操作类型">
-      <VtSelectDict v-model="queryParams.operationType" :code="'vt_operation_log_type'" :style="'width: 120px;'">
+      <VtSelectDict
+        v-model="queryParams.operationType"
+        :code="'vt_operation_log_type'"
+        :style="'width: 120px;'"
+      >
       </VtSelectDict>
     </el-form-item>
     <el-form-item prop="httpMethod" label="请求方式">
-      <VtSelectDict v-model="queryParams.httpMethod" :code="'vt_http_request_type'" :style="'width: 120px;'">
+      <VtSelectDict
+        v-model="queryParams.httpMethod"
+        :code="'vt_http_request_type'"
+        :style="'width: 120px;'"
+      >
       </VtSelectDict>
     </el-form-item>
     <el-form-item>
@@ -116,14 +124,20 @@ onMounted(() => {
     </el-form-item>
   </el-form>
 
-  <el-divider style="margin: 0px;" />
+  <el-divider style="margin: 0px" />
 
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5" v-show="selected.length" v-permission="'monitor:logOperation:remove'">
-      <el-popconfirm placement="right" width="400" :title="`确定全部删除已选择的【${selected.map(i => i.username).join()}】吗？`"
-        confirm-button-text="确定" cancel-button-text="取消" @confirm="handleBatchDelete">
+      <el-popconfirm
+        placement="right"
+        width="400"
+        :title="`确定全部删除已选择的【${selected.map((i) => i.username).join()}】吗？`"
+        confirm-button-text="确定"
+        cancel-button-text="取消"
+        @confirm="handleBatchDelete"
+      >
         <template #reference>
           <el-button type="danger">
             <template #icon>
@@ -137,47 +151,137 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => size = val" />
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => (size = val)" />
   </el-row>
 
   <!-- 表格 -->
   <div class="vt-table">
-    <el-table ref="tableRef" v-loading="loading" :data="tableData" :size="size" row-key="id" height="100%" stripe border
-      show-overflow-tooltip highlight-current-row @selection-change="(val) => selected = val">
+    <el-table
+      ref="tableRef"
+      v-loading="loading"
+      :data="tableData"
+      :size="size"
+      row-key="id"
+      height="100%"
+      stripe
+      border
+      show-overflow-tooltip
+      highlight-current-row
+      @selection-change="(val) => (selected = val)"
+    >
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column v-if="columns.title.visible" prop="title" label="模块标题" min-width="100" fixed="left" />
-      <el-table-column v-if="columns.operationType.visible" prop="operationType" label="操作类型" min-width="100"
-        align="center">
+      <el-table-column
+        v-if="columns.title.visible"
+        prop="title"
+        label="模块标题"
+        min-width="100"
+        fixed="left"
+      />
+      <el-table-column
+        v-if="columns.operationType.visible"
+        prop="operationType"
+        label="操作类型"
+        min-width="100"
+        align="center"
+      >
         <template #default="{ row }">
-          <VtTagDict :code="'vt_operation_log_type'" :value="row.operationType" :size="size"></VtTagDict>
+          <VtTagDict
+            :code="'vt_operation_log_type'"
+            :value="row.operationType"
+            :size="size"
+          ></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.httpMethod.visible" prop="httpMethod" label="请求方式" min-width="100" align="center">
+      <el-table-column
+        v-if="columns.httpMethod.visible"
+        prop="httpMethod"
+        label="请求方式"
+        min-width="100"
+        align="center"
+      >
         <template #default="{ row }">
-          <VtTagDict :code="'vt_http_request_type'" :value="row.httpMethod" :size="size"></VtTagDict>
+          <VtTagDict
+            :code="'vt_http_request_type'"
+            :value="row.httpMethod"
+            :size="size"
+          ></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.url.visible" prop="url" label="URL" min-width="220" />
-      <el-table-column v-if="columns.methodName.visible" prop="methodName" label="方法名称" min-width="190" />
-      <el-table-column v-if="columns.costTime.visible" prop="costTime" label="执行时间" min-width="100" align="center">
-        <template #default="{ row }">
-          {{ row.costTime }} 毫秒
-        </template>
+      <el-table-column
+        v-if="columns.methodName.visible"
+        prop="methodName"
+        label="方法名称"
+        min-width="190"
+      />
+      <el-table-column
+        v-if="columns.costTime.visible"
+        prop="costTime"
+        label="执行时间"
+        min-width="100"
+        align="center"
+      >
+        <template #default="{ row }"> {{ row.costTime }} 毫秒 </template>
       </el-table-column>
-      <el-table-column v-if="columns.success.visible" prop="success" label="操作状态" min-width="100" align="center">
+      <el-table-column
+        v-if="columns.success.visible"
+        prop="success"
+        label="操作状态"
+        min-width="100"
+        align="center"
+      >
         <template #default="{ row }">
           <VtTagDict :code="'vt_succeeded'" :value="row.success" :size="size"></VtTagDict>
         </template>
       </el-table-column>
-      <el-table-column v-if="columns.requestData.visible" prop="requestData" label="请求数据" min-width="260" />
-      <el-table-column v-if="columns.responseData.visible" prop="responseData" label="响应数据" min-width="260" />
-      <el-table-column v-if="columns.errorMsg.visible" prop="errorMsg" label="失败信息" min-width="260" />
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="操作者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="操作时间" align="center" width="180" />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
+      <el-table-column
+        v-if="columns.requestData.visible"
+        prop="requestData"
+        label="请求数据"
+        min-width="260"
+      />
+      <el-table-column
+        v-if="columns.responseData.visible"
+        prop="responseData"
+        label="响应数据"
+        min-width="260"
+      />
+      <el-table-column
+        v-if="columns.errorMsg.visible"
+        prop="errorMsg"
+        label="失败信息"
+        min-width="260"
+      />
+      <el-table-column
+        v-if="columns.createByName.visible"
+        prop="createByName"
+        label="操作者"
+        align="center"
+        width="100"
+      />
+      <el-table-column
+        v-if="columns.createTime.visible"
+        prop="createTime"
+        label="操作时间"
+        align="center"
+        width="180"
+      />
+      <el-table-column
+        v-if="columns.updateByName.visible"
+        prop="updateByName"
+        label="更新者"
+        align="center"
+        width="100"
+      />
+      <el-table-column
+        v-if="columns.updateTime.visible"
+        prop="updateTime"
+        label="更新时间"
+        align="center"
+        width="180"
+      />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
@@ -191,11 +295,22 @@ onMounted(() => {
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <div style="display: inline-block;">
-                <el-popconfirm placement="left" width="400" :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
-                  confirm-button-text="确定" cancel-button-text="取消" @confirm="handleDelete(scope.row.id)">
+              <div style="display: inline-block">
+                <el-popconfirm
+                  placement="left"
+                  width="400"
+                  :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  @confirm="handleDelete(scope.row.id)"
+                >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'monitor:logOperation:remove'">
+                    <el-button
+                      type="danger"
+                      text
+                      :size="size"
+                      v-permission="'monitor:logOperation:remove'"
+                    >
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -211,9 +326,14 @@ onMounted(() => {
       </el-table-column>
     </el-table>
 
-    <el-pagination background layout="total, sizes, prev, pager, next, jumper"
-      v-model:current-page="queryParams.pageCurrent" v-model:page-size="queryParams.pageSize"
-      :total="queryParams.pageTotal" @change="handlePageChange" />
+    <el-pagination
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      v-model:current-page="queryParams.pageCurrent"
+      v-model:page-size="queryParams.pageSize"
+      :total="queryParams.pageTotal"
+      @change="handlePageChange"
+    />
   </div>
 
   <LogOperationDetail ref="logOperationDetailRef"></LogOperationDetail>

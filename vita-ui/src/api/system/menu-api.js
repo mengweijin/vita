@@ -9,8 +9,7 @@ export const menuApi = {
 
   listSideMenus: () => http.get(`${URL_PREFIX}/list/sideMenus`),
 
-  queryMenuIdsByRoleId: (roleId) =>
-    http.get(`${URL_PREFIX}/query/menuIds/by/roleId/${roleId}`),
+  queryMenuIdsByRoleId: (roleId) => http.get(`${URL_PREFIX}/query/menuIds/by/roleId/${roleId}`),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
