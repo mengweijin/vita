@@ -374,7 +374,7 @@ const handleCenter = () => {
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="onClosed">
+        <el-button type="info" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

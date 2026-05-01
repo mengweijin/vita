@@ -114,7 +114,7 @@ defineExpose({ data, visible });
           </template>
           确定
         </el-button>
-        <el-button type="danger" @click="onClosed">
+        <el-button type="info" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

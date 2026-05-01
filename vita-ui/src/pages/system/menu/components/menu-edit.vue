@@ -233,7 +233,7 @@ defineExpose({ data, visible });
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClosed">
+        <el-button type="info" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

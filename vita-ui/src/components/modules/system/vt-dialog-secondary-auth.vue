@@ -88,7 +88,7 @@ const onSubmit = () => {
           </template>
           确定
         </el-button>
-        <el-button type="warning" :disabled="loading" @click="onClosed">
+        <el-button type="info" :disabled="loading" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>
