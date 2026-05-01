@@ -99,7 +99,7 @@ public class SchedulingTaskLogController {
     @SaCheckPermission("monitor:schedulingTaskLog:create")
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody SchedulingTaskLogBO bo) {
-        boolean bool = schedulingTaskLogService.saveByBo(bo);
+        boolean bool = schedulingTaskLogService.save(bo);
         return R.result(bool);
     }
 
@@ -114,7 +114,7 @@ public class SchedulingTaskLogController {
     @SaCheckPermission("monitor:schedulingTaskLog:update")
     @PostMapping("/update")
     public R<Void> update(@Valid @RequestBody SchedulingTaskLogBO bo) {
-        boolean bool = schedulingTaskLogService.updateByBoById(bo);
+        boolean bool = schedulingTaskLogService.updateById(bo);
         return R.result(bool);
     }
 

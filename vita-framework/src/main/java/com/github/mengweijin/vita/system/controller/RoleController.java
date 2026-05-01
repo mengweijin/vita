@@ -128,7 +128,7 @@ public class RoleController {
     @SaCheckPermission("system:role:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody RoleBO role) {
-        boolean bool = roleService.saveByBo(role);
+        boolean bool = roleService.save(role);
         return R.result(bool);
     }
 
@@ -143,7 +143,7 @@ public class RoleController {
     @SaCheckPermission("system:role:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody RoleBO role) {
-        boolean bool = roleService.updateByBoById(role);
+        boolean bool = roleService.updateById(role);
         return R.result(bool);
     }
 

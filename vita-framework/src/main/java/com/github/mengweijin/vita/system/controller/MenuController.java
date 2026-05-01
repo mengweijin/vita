@@ -97,7 +97,7 @@ public class MenuController {
     @SaCheckPermission("system:menu:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MenuBO menu) {
-        boolean bool = menuService.saveByBo(menu);
+        boolean bool = menuService.save(menu);
         return R.result(bool);
     }
 
@@ -112,7 +112,7 @@ public class MenuController {
     @SaCheckPermission("system:menu:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MenuBO menu) {
-        boolean bool = menuService.updateByBoById(menu);
+        boolean bool = menuService.updateById(menu);
         return R.result(bool);
     }
 

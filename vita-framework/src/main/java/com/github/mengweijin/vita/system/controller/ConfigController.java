@@ -115,7 +115,7 @@ public class ConfigController {
     @SaCheckPermission("system:config:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ConfigBO bo) {
-        boolean bool = configService.saveByBo(bo);
+        boolean bool = configService.save(bo);
         // 刷新配置
         configService.publishEnvironmentChangeEvent(bo.getConfigKey());
         return R.result(bool);
@@ -133,7 +133,7 @@ public class ConfigController {
     @SaCheckPermission("system:config:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ConfigBO bo) {
-        boolean bool = configService.updateByBoById(bo);
+        boolean bool = configService.updateById(bo);
         // 刷新配置
         configService.publishEnvironmentChangeEvent(bo.getConfigKey());
         return R.result(bool);

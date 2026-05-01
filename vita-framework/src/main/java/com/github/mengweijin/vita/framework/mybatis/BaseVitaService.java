@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 
 import java.io.Serializable;
@@ -114,34 +113,4 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
         return getBaseMapper().toVoPageQuery(page);
     }
 
-    /**
-     * 插入一条记录（选择字段，策略插入）
-     *
-     * @param bo BO 对象
-     */
-    @Deprecated(since = "3.0.0-M5")
-    public <B> boolean saveByBo(B bo) {
-        return SqlHelper.retBool(getBaseMapper().insertByBo(bo));
-    }
-
-    /**
-     * TableId 注解存在更新记录，否插入一条记录
-     *
-     * @param bo 实体对象 BO
-     * @return boolean
-     */
-    @Deprecated(since = "3.0.0-M5")
-    public <B> boolean saveOrUpdateByBo(B bo) {
-        return getBaseMapper().insertOrUpdateByBo(bo);
-    }
-
-    /**
-     * 根据 ID 选择修改
-     *
-     * @param bo BO 对象
-     */
-    @Deprecated(since = "3.0.0-M5")
-    public <B> boolean updateByBoById(B bo) {
-        return SqlHelper.retBool(getBaseMapper().updateByBoById(bo));
-    }
 }

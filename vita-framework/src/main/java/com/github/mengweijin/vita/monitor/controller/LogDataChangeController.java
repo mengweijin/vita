@@ -104,7 +104,7 @@ public class LogDataChangeController {
     @SaCheckPermission("monitor:logDataChange:create")
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody LogDataChangeBO bo) {
-        boolean bool = logDataChangeService.saveByBo(bo);
+        boolean bool = logDataChangeService.save(bo);
         return R.result(bool);
     }
 
@@ -119,7 +119,7 @@ public class LogDataChangeController {
     @SaCheckPermission("monitor:logDataChange:update")
     @PostMapping("update")
     public R<Void> update(@Valid @RequestBody LogDataChangeBO bo) {
-        boolean bool = logDataChangeService.updateByBoById(bo);
+        boolean bool = logDataChangeService.updateById(bo);
         return R.result(bool);
     }
 

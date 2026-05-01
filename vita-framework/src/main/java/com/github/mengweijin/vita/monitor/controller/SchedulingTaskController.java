@@ -105,7 +105,7 @@ public class SchedulingTaskController {
     @SaCheckPermission("monitor:schedulingTask:create")
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody SchedulingTaskBO bo) {
-        boolean bool = schedulingTaskService.saveByBo(bo);
+        boolean bool = schedulingTaskService.save(bo);
         return R.result(bool);
     }
 
@@ -120,7 +120,7 @@ public class SchedulingTaskController {
     @SaCheckPermission("monitor:schedulingTask:update")
     @PostMapping("/update")
     public R<Void> update(@Valid @RequestBody SchedulingTaskBO bo) {
-        boolean bool = schedulingTaskService.updateByBoById(bo);
+        boolean bool = schedulingTaskService.updateById(bo);
         return R.result(bool);
     }
 

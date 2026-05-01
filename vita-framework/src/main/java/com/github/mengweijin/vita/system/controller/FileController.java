@@ -143,7 +143,7 @@ public class FileController {
     @SaCheckPermission("system:file:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FileBO fileEntity) {
-        boolean bool = fileService.updateByBoById(fileEntity);
+        boolean bool = fileService.updateById(fileEntity);
         return R.result(bool);
     }
 

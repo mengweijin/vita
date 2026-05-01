@@ -104,7 +104,7 @@ public class DictDataController {
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataBO bo) {
         dictDataService.checkValDuplicate(null, bo.getCode(), bo.getVal());
-        boolean bool = dictDataService.saveByBo(bo);
+        boolean bool = dictDataService.save(bo);
         return R.result(bool);
     }
 
@@ -120,7 +120,7 @@ public class DictDataController {
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataBO bo) {
         dictDataService.checkValDuplicate(bo.getId(), bo.getCode(), bo.getVal());
-        boolean bool = dictDataService.updateByBoById(bo);
+        boolean bool = dictDataService.updateById(bo);
         return R.result(bool);
     }
 

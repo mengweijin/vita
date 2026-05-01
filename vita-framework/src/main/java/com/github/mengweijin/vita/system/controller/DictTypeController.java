@@ -98,7 +98,7 @@ public class DictTypeController {
     @SaCheckPermission("system:dictType:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictTypeBO dictType) {
-        boolean bool = dictTypeService.saveByBo(dictType);
+        boolean bool = dictTypeService.save(dictType);
         return R.result(bool);
     }
 
@@ -113,7 +113,7 @@ public class DictTypeController {
     @SaCheckPermission("system:dictType:update")
     @PostMapping("update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictTypeBO dictType) {
-        boolean bool = dictTypeService.updateByBoById(dictType);
+        boolean bool = dictTypeService.updateById(dictType);
         return R.result(bool);
     }
 

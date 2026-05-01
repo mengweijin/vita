@@ -99,7 +99,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody NoticeBO notice) {
-        boolean bool = noticeService.saveByBo(notice);
+        boolean bool = noticeService.save(notice);
         return R.result(bool);
     }
 
@@ -114,7 +114,7 @@ public class NoticeController {
     @SaCheckPermission("system:notice:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody NoticeBO notice) {
-        boolean bool = noticeService.updateByBoById(notice);
+        boolean bool = noticeService.updateById(notice);
         return R.result(bool);
     }
 

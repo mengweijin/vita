@@ -97,7 +97,7 @@ public class PostController {
     @SaCheckPermission("system:post:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody PostBO post) {
-        boolean bool = postService.saveByBo(post);
+        boolean bool = postService.save(post);
         return R.result(bool);
     }
 
@@ -112,7 +112,7 @@ public class PostController {
     @SaCheckPermission("system:post:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody PostBO post) {
-        boolean bool = postService.updateByBoById(post);
+        boolean bool = postService.updateById(post);
         return R.result(bool);
     }
 

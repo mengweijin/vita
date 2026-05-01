@@ -117,7 +117,7 @@ public class MessageController {
     @SaCheckPermission("system:message:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody MessageBO message) {
-        boolean bool = messageService.saveByBo(message);
+        boolean bool = messageService.save(message);
         return R.result(bool);
     }
 
@@ -132,7 +132,7 @@ public class MessageController {
     @SaCheckPermission("system:message:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody MessageBO message) {
-        boolean bool = messageService.updateByBoById(message);
+        boolean bool = messageService.updateById(message);
         return R.result(bool);
     }
 

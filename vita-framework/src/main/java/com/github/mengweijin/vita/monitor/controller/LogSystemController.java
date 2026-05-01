@@ -99,7 +99,7 @@ public class LogSystemController {
     @SaCheckPermission("monitor:logSystem:create")
     @PostMapping("/create")
     public R<Void> create(@Valid @RequestBody LogSystemBO bo) {
-        boolean bool = logSystemService.saveByBo(bo);
+        boolean bool = logSystemService.save(bo);
         return R.result(bool);
     }
 
@@ -114,7 +114,7 @@ public class LogSystemController {
     @SaCheckPermission("monitor:logSystem:update")
     @PostMapping("update")
     public R<Void> update(@Valid @RequestBody LogSystemBO bo) {
-        boolean bool = logSystemService.updateByBoById(bo);
+        boolean bool = logSystemService.updateById(bo);
         return R.result(bool);
     }
 

@@ -118,43 +118,4 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
         List<V> list = MapstructUtils.getConverter().convert(page.getRecords(), this.voClass());
         return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), list);
     }
-
-    /**
-     * 插入一条记录
-     *
-     * @param bo 实体对应的 BO 对象
-     * @return count
-     */
-    @Deprecated(since = "3.0.0-M5")
-    default <B> int insertByBo(B bo) {
-        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
-        return this.insert(t);
-    }
-
-    /**
-     * 主键存在更新记录，否则插入一条记录
-     *
-     * @param bo  bo
-     * @param <B> BO Class Type
-     * @return boolean
-     */
-    @Deprecated(since = "3.0.0-M5")
-    default <B> boolean insertOrUpdateByBo(B bo) {
-        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
-        return this.insertOrUpdate(t);
-    }
-
-
-    /**
-     * 根据 ID 修改
-     *
-     * @param bo 实体对应的 BO 对象
-     * @return count
-     */
-    @Deprecated(since = "3.0.0-M5")
-    default <B> int updateByBoById(B bo) {
-        T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
-        return this.updateById(t);
-    }
-
 }
