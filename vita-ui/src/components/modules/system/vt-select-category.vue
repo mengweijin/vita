@@ -38,7 +38,11 @@ const modelValue = defineModel({ type: String || Array });
 const categoryList = ref([]);
 
 const treeOptions = computed(() => {
-  const list = categoryList.value.map((item) => ({ ...item, disabled: item.disabled === "Y" }));
+  const list = categoryList.value.map((item) => ({
+    ...item,
+    id: String(item.id),
+    disabled: item.disabled === "Y",
+  }));
   utils.addFullPath(list, { pathKey: "name" });
   const tree = utils.toArrayTree(list, { sortKey: "seq" });
   return tree;

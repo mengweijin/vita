@@ -56,17 +56,19 @@ const loadTableData = () => {
   });
 };
 
-const flowDefinitionEditRef = useTemplateRef("flowDefinitionEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  flowDefinitionEditRef.value.data = {};
-  flowDefinitionEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  flowDefinitionEditRef.value.data = { ...row };
-  flowDefinitionEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -414,8 +416,9 @@ onMounted(() => {
   </div>
 
   <FlowDefinitionEdit
-    ref="flowDefinitionEditRef"
-    @refresh-table="loadTableData"
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
   ></FlowDefinitionEdit>
 </template>
 
