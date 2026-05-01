@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { menuApi } from "@/api/system/menu-api";
+import { menuApi } from "@/api/system/menu-api.js";
 import utils from "@/utils/utils.js";
 import { columns } from "./columns.js";
 import MenuEdit from "./components/menu-edit.vue";
@@ -48,19 +48,27 @@ const loadTableData = () => {
   });
 };
 
-const menuEditRef = useTemplateRef("menuEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = (id) => {
-  menuEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
-  menuEditRef.value.visible = true;
+  editData.value = null;
+  if (id) {
+    editData.value = {
+      parentId: id,
+      seq: 0,
+      disabled: "N",
+      type: "MENU",
+    };
+  }
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  menuEditRef.value.data = { ...row };
-  menuEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -329,7 +337,11 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <MenuEdit ref="menuEditRef" @refresh-table="loadTableData"></MenuEdit>
+  <MenuEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></MenuEdit>
 </template>
 
 <style scoped>
