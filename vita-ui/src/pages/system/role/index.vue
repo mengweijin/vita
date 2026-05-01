@@ -61,17 +61,19 @@ const handleAssigningUsers = (row) => {
   roleUserDialogRef.value.visible = true;
 };
 
-const roleEditRef = useTemplateRef("roleEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  roleEditRef.value.data = {};
-  roleEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  roleEditRef.value.data = { ...row };
-  roleEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -350,7 +352,11 @@ onMounted(() => {
     />
   </div>
 
-  <RoleEdit ref="roleEditRef" @refresh-table="loadTableData"></RoleEdit>
+  <RoleEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></RoleEdit>
 
   <RoleMenuDialog ref="roleMenuDialogRef"></RoleMenuDialog>
 
