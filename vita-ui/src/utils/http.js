@@ -141,6 +141,12 @@ axiosInstance.interceptors.response.use(
             showClose: true,
           });
           break;
+        case 502:
+          ElMessage.error({
+            message: `${error.response.status} Bad Gateway`,
+            showClose: true,
+          });
+          break;
         default:
           ElMessage.error({
             message: error.response.data?.msg,

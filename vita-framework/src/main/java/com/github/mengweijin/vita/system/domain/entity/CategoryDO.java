@@ -27,6 +27,11 @@ public class CategoryDO extends BaseEntity {
     private Long parentId;
 
     /**
+     * 祖级列表
+     */
+    private String ancestors;
+
+    /**
      * 编码
      */
     private String code;

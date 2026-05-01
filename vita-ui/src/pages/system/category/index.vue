@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { categoryApi } from "@/api/system/category-api";
+import { categoryApi } from "@/api/system/category-api.js";
 import utils from "@/utils/utils.js";
 import { columns } from "./columns.js";
 import CategoryEdit from "./components/category-edit.vue";
@@ -19,8 +19,6 @@ const tableRef = useTemplateRef("tableRef");
 const treeProps = reactive({
   // 父子节点默认联动
   checkStrictly: false,
-  children: "children",
-  hasChildren: "hasChildren",
 });
 
 const tableData = ref([]);
@@ -30,7 +28,6 @@ const tableData = ref([]);
  */
 const queryParams = reactive({
   code: undefined,
-  disabled: undefined,
   name: undefined,
   pageCurrent: 1,
   pageSize: 10,
@@ -47,47 +44,48 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   categoryApi.pageRoot(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    tableData.value.forEach((item) => {
-      // 只有根节点才有 hasChildren 属性，子节点没有该属性。
-      item.hasChildren = true;
-    });
+    tableData.value = utils.toArrayTree(res.pageRecords, { sortKey: "seq" });
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
 
-/**
- * 加载子节点数据
- * @param row 父节点数据
- * @param treeNode 树节点对象
- * @param resolve 加载完成回调函数，参数为子节点数据数组
- */
-const loadNodeData = (row, treeNode, resolve) => {
-  categoryApi.listChildrenByParentId(row.id).then((res) => {
-    // 转树
-    let tree = utils.toArrayTree(res, { sortKey: "seq" });
-    resolve(tree);
-  });
-};
-
-const categoryEditRef = useTemplateRef("categoryEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = (id) => {
-  categoryEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
-  categoryEditRef.value.visible = true;
+  editData.value = null;
+  if (id) {
+    editData.value = {
+      parentId: id,
+      seq: 0,
+      disabled: "N",
+    };
+  }
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  categoryEditRef.value.data = { ...row };
-  categoryEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
 const selected = ref([]);
+
+const handleEnable = (id) => {
+  categoryApi.enable(id).then(() => {
+    loadTableData();
+  });
+};
+
+const handleDisable = (id) => {
+  categoryApi.disable(id).then(() => {
+    loadTableData();
+  });
+};
 
 const handleDelete = (ids) => {
   categoryApi.remove(ids).then(() => {
@@ -116,14 +114,11 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="name" label="名称">
+    <el-form-item prop="name" label="根节点名称">
       <el-input v-model="queryParams.name" placeholder="" clearable />
     </el-form-item>
-    <el-form-item prop="code" label="编码">
+    <el-form-item prop="code" label="根节点编码">
       <el-input v-model="queryParams.code" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -199,11 +194,9 @@ onMounted(() => {
       ref="tableRef"
       v-loading="loading"
       :data="tableData"
-      lazy
       :tree-props="treeProps"
       :size="size"
       row-key="id"
-      :load="loadNodeData"
       height="100%"
       stripe
       border
@@ -253,28 +246,28 @@ onMounted(() => {
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
         <template #default="scope">
@@ -348,11 +341,16 @@ onMounted(() => {
       v-model:current-page="queryParams.pageCurrent"
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
+      :page-sizes="[10, 20]"
       @change="handlePageChange"
     />
   </div>
 
-  <CategoryEdit ref="categoryEditRef" @refresh-table="loadTableData"></CategoryEdit>
+  <CategoryEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></CategoryEdit>
 </template>
 
 <style scoped></style>

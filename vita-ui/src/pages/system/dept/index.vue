@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { deptApi } from "@/api/system/dept-api";
+import { deptApi } from "@/api/system/dept-api.js";
 import utils from "@/utils/utils.js";
 import { columns } from "./columns.js";
 import DeptEdit from "./components/dept-edit.vue";
@@ -47,19 +47,26 @@ const loadTableData = () => {
   });
 };
 
-const deptEditRef = useTemplateRef("deptEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = (id) => {
-  deptEditRef.value.data = {
-    parentId: id ?? undefined,
-  };
-  deptEditRef.value.visible = true;
+  editData.value = null;
+  if (id) {
+    editData.value = {
+      parentId: id,
+      seq: 0,
+      disabled: "N",
+    };
+  }
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  deptEditRef.value.data = { ...row };
-  deptEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -197,6 +204,12 @@ onMounted(() => {
         min-width="260"
         fixed="left"
       />
+      <el-table-column
+        v-if="columns.ancestors.visible"
+        prop="ancestors"
+        label="祖级列表"
+        min-width="260"
+      />
       <el-table-column v-if="columns.code.visible" prop="code" label="部门编码" min-width="200" />
       <el-table-column
         v-if="columns.disabled.visible"
@@ -223,30 +236,30 @@ onMounted(() => {
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="240">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
@@ -344,7 +357,11 @@ onMounted(() => {
     </el-table>
   </div>
 
-  <DeptEdit ref="deptEditRef" @refresh-table="loadTableData"></DeptEdit>
+  <DeptEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></DeptEdit>
 </template>
 
 <style scoped>

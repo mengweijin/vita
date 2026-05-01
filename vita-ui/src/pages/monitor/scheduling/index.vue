@@ -113,21 +113,25 @@ onMounted(() => {
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
     <el-form-item prop="name" label="任务名称">
-      <el-input v-model="queryParams.name" placeholder="" clearable />
+      <el-input v-model="queryParams.name" placeholder="" clearable style="width: 160px" />
     </el-form-item>
     <el-form-item prop="beanName" label="Bean 名称">
       <el-select
         v-model="queryParams.beanName"
         clearable
-        :filterable="true"
-        :multiple="false"
+        filterable
         placeholder="请选择"
+        style="width: 300px"
       >
         <el-option v-for="item in taskBeanNames" :key="item" :label="item" :value="item" />
       </el-select>
     </el-form-item>
     <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
+      <VtSelectDict
+        v-model="queryParams.disabled"
+        :code="'vt_disabled'"
+        :style="'width: 100px;'"
+      ></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -244,58 +248,34 @@ onMounted(() => {
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="250">
         <template #default="scope">
           <div>
-            <el-tooltip content="启用" placement="top" v-if="scope.row.disabled === 'Y'">
-              <el-button type="primary" text :size="size" @click="handleEnableTask(scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ant-design:check-circle-outlined"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="停用" placement="top" v-if="scope.row.disabled === 'N'">
-              <el-button type="primary" text :size="size" @click="handleDisableTask(scope.row)">
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ri:forbid-line"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
             <el-tooltip content="执行日志" placement="top">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                style="margin-left: 0px"
-                @click="handleViewTaskLog(scope.row)"
-              >
+              <el-button type="primary" text :size="size" @click="handleViewTaskLog(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:tickets"></Icon>
@@ -315,6 +295,36 @@ onMounted(() => {
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:video-play"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="启用" placement="top" v-if="scope.row.disabled === 'Y'">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleEnableTask(scope.row)"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:checkbox-circle-line"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="停用" placement="top" v-if="scope.row.disabled === 'N'">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleDisableTask(scope.row)"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:prohibited-2-line"></Icon>
                   </el-icon>
                 </template>
               </el-button>

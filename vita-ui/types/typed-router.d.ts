@@ -51,13 +51,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/form/manage/': RouteRecordInfo<
-      '/form/manage/',
-      '/form/manage',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/home/': RouteRecordInfo<
       '/home/',
       '/home',
@@ -184,6 +177,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/system/form/': RouteRecordInfo<
+      '/system/form/',
+      '/system/form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/system/menu/': RouteRecordInfo<
       '/system/menu/',
       '/system/menu',
@@ -282,12 +282,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/error/404.vue': {
       routes:
         | '/error/404'
-      views:
-        | never
-    }
-    'src/pages/form/manage/index.vue': {
-      routes:
-        | '/form/manage/'
       views:
         | never
     }
@@ -396,6 +390,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/file/index.vue': {
       routes:
         | '/system/file/'
+      views:
+        | never
+    }
+    'src/pages/system/form/index.vue': {
+      routes:
+        | '/system/form/'
       views:
         | never
     }

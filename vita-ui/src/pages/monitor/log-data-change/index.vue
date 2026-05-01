@@ -164,7 +164,13 @@ onMounted(() => {
     >
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
-      <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
+      <el-table-column
+        v-if="columns.id.visible"
+        prop="id"
+        label="ID"
+        min-width="110"
+        fixed="left"
+      />
       <el-table-column
         v-if="columns.tableName.visible"
         prop="tableName"
@@ -189,28 +195,28 @@ onMounted(() => {
         prop="createByName"
         label="操作者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="操作时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
@@ -229,7 +235,7 @@ onMounted(() => {
                 <el-popconfirm
                   placement="left"
                   width="400"
-                  :title="`确定删除账号为【${scope.row.username}】的登录记录吗？`"
+                  :title="`确定删除 ID 为【${scope.row.id}】的记录吗？`"
                   confirm-button-text="确定"
                   cancel-button-text="取消"
                   @confirm="handleDelete(scope.row.id)"

@@ -198,14 +198,14 @@ onMounted(() => {
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
         sortable
       />
       <el-table-column
@@ -213,14 +213,14 @@ onMounted(() => {
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">

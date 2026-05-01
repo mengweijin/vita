@@ -1,7 +1,7 @@
 const columns = reactive({
   selection: { label: "选择列", visible: false },
   index: { label: "序号列", visible: false },
-  id: { label: "ID", visible: false },
+  id: { label: "ID", visible: true },
   tableName: { label: "表名称", visible: true },
   businessId: { label: "业务数据 ID", visible: true },
   readableMessages: { label: "变更信息", visible: true },

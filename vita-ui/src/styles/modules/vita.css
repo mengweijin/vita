@@ -36,6 +36,14 @@
   height: var(--vt-table-height);
 }
 
+/* el-dialog 里面包裹一层 <div v-loading="loading" class="dialog-wrap">...</div>
+ * 加上这个样式后，让 loading 遮罩相对于整个弹窗区域定位，达到覆盖 el-dialog footer 的效果。
+ */
+.vt-dialog-wrap {
+  position: relative;
+  min-height: 120px;
+}
+
 .el-pagination {
   margin-top: 10px;
 }

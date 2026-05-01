@@ -1,11 +1,11 @@
 <route lang="yaml">
 meta:
   title: 表单管理
-  permission: form:menu:view
+  permission: system:form:view
 </route>
 
 <script setup>
-import { formApi } from "@/api/form/form-api.js";
+import { formApi } from "@/api/system/form-api.js";
 import utils from "@/utils/utils.js";
 import { columns } from "./columns.js";
 import FormEdit from "./components/form-edit.vue";
@@ -141,7 +141,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'form:manage:create'">
+    <el-col :span="1.5" v-permission="'system:form:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -151,7 +151,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'form:manage:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'system:form:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -222,9 +222,9 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.staticFormPath.visible"
-        prop="staticFormPath"
-        label="静态表单路径"
+        v-if="columns.staticFormRoute.visible"
+        prop="staticFormRoute"
+        label="静态表单路由路径"
         min-width="200"
       />
       <el-table-column
@@ -239,28 +239,28 @@ onMounted(() => {
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
@@ -271,7 +271,7 @@ onMounted(() => {
                 text
                 :size="size"
                 @click="handleAdd(scope.row.id)"
-                v-permission="'form:manage:create'"
+                v-permission="'system:form:create'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -287,7 +287,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleEdit(scope.row)"
-                v-permission="'form:manage:update'"
+                v-permission="'system:form:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -307,7 +307,7 @@ onMounted(() => {
                   @confirm="handleDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'form:manage:remove'">
+                    <el-button type="danger" text :size="size" v-permission="'system:form:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

@@ -1,15 +1,15 @@
-package com.github.mengweijin.vita.form.service;
+package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.github.mengweijin.vita.form.domain.entity.FormDO;
-import com.github.mengweijin.vita.form.domain.vo.FormVO;
-import com.github.mengweijin.vita.form.mapper.FormMapper;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.ObjectUtils;
+import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.domain.vo.FormVO;
+import com.github.mengweijin.vita.system.mapper.FormMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
         wrapper.gt(form.getStartCreateTime() != null, FormDO::getCreateTime, form.getStartCreateTime());
         wrapper.le(form.getEndCreateTime() != null, FormDO::getCreateTime, form.getEndCreateTime());
         wrapper.like(StrUtil.isNotBlank(form.getName()), FormDO::getName, form.getName());
-        wrapper.like(StrUtil.isNotBlank(form.getStaticFormPath()), FormDO::getStaticFormPath, form.getStaticFormPath());
+        wrapper.like(StrUtil.isNotBlank(form.getStaticFormRoute()), FormDO::getStaticFormRoute, form.getStaticFormRoute());
         wrapper.like(StrUtil.isNotBlank(form.getRemark()), FormDO::getRemark, form.getRemark());
         return wrapper;
     }

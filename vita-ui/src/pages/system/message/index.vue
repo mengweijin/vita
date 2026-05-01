@@ -246,7 +246,7 @@ onMounted(() => {
             prop="createByName"
             label="发送者"
             align="center"
-            width="100"
+            width="90"
           >
             <template #default="{ row }">
               <span v-if="row.category === 'user'">{{ row.createByName }}</span>
@@ -258,7 +258,7 @@ onMounted(() => {
             prop="createTime"
             label="发送时间"
             align="center"
-            width="180"
+            width="160"
           />
           <el-table-column
             v-if="columns.viewed.visible"
@@ -280,7 +280,7 @@ onMounted(() => {
             prop="viewedTime"
             label="查看时间"
             align="center"
-            width="180"
+            width="160"
           />
           <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="75">
             <template #default="scope">

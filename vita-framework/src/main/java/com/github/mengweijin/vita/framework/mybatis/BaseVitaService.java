@@ -119,6 +119,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
      *
      * @param bo BO 对象
      */
+    @Deprecated(since = "3.0.0-M5")
     public <B> boolean saveByBo(B bo) {
         return SqlHelper.retBool(getBaseMapper().insertByBo(bo));
     }
@@ -129,6 +130,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
      * @param bo 实体对象 BO
      * @return boolean
      */
+    @Deprecated(since = "3.0.0-M5")
     public <B> boolean saveOrUpdateByBo(B bo) {
         return getBaseMapper().insertOrUpdateByBo(bo);
     }
@@ -138,6 +140,7 @@ public abstract class BaseVitaService<M extends BaseVitaMapper<T, V>, T, V> exte
      *
      * @param bo BO 对象
      */
+    @Deprecated(since = "3.0.0-M5")
     public <B> boolean updateByBoById(B bo) {
         return SqlHelper.retBool(getBaseMapper().updateByBoById(bo));
     }

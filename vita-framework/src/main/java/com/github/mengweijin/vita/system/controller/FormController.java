@@ -1,17 +1,17 @@
-package com.github.mengweijin.vita.form.controller;
+package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.github.mengweijin.vita.form.domain.bo.FormBO;
-import com.github.mengweijin.vita.form.domain.entity.FormDO;
-import com.github.mengweijin.vita.form.domain.vo.FormVO;
-import com.github.mengweijin.vita.form.service.FormService;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.bo.FormBO;
+import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.domain.vo.FormVO;
+import com.github.mengweijin.vita.system.service.FormService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/form/manage")
+@RequestMapping("/system/form")
 public class FormController {
 
     private static final String LOG_TITLE = "表单管理";
@@ -48,21 +48,21 @@ public class FormController {
      * @param form {@link FormDO}
      * @return PageQuery<FormVO>
      */
-    @SaCheckPermission("form:manage:select")
+    @SaCheckPermission("system:form:select")
     @GetMapping("/page")
     public PageQuery<FormVO> page(PageQuery<FormDO> page, FormDO form) {
         LambdaQueryWrapper<FormDO> wrapper = formService.buildQueryWrapper(form);
         return formService.pageVo(page, wrapper);
     }
 
-    @SaCheckPermission("form:manage:select")
+    @SaCheckPermission("system:form:select")
     @GetMapping("/page/root")
     public PageQuery<FormVO> pageRootNode(PageQuery<FormDO> page, FormDO form) {
         LambdaQueryWrapper<FormDO> wrapper = formService.buildRootQueryWrapper(form);
         return formService.pageVo(page, wrapper);
     }
 
-    @SaCheckPermission("form:manage:select")
+    @SaCheckPermission("system:form:select")
     @GetMapping("/list/children/by/parentId/{parentId}")
     public List<FormVO> listChildrenByParentId(@PathVariable("parentId") Long parentId) {
         return formService.listChildrenByParentId(parentId);
@@ -74,7 +74,7 @@ public class FormController {
      * @param form {@link FormDO}
      * @return List<FormVO>
      */
-    @SaCheckPermission("form:manage:select")
+    @SaCheckPermission("system:form:select")
     @GetMapping("/list")
     public List<FormVO> list(FormDO form) {
         return formService.listVo(Wrappers.lambdaQuery(form));
@@ -97,7 +97,7 @@ public class FormController {
      * @param form {@link FormDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
-    @SaCheckPermission("form:manage:create")
+    @SaCheckPermission("system:form:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FormBO form) {
         boolean bool = formService.saveByBo(form);
@@ -110,7 +110,7 @@ public class FormController {
      * @param form {@link FormBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("form:manage:update")
+    @SaCheckPermission("system:form:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FormBO form) {
         boolean bool = formService.updateByBoById(form);
@@ -123,7 +123,7 @@ public class FormController {
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("form:manage:remove")
+    @SaCheckPermission("system:form:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = formService.removeByIds(Arrays.asList(ids));

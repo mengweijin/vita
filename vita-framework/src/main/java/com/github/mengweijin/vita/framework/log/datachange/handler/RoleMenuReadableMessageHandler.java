@@ -72,7 +72,7 @@ public class RoleMenuReadableMessageHandler implements IReadableMessageHandler {
         }
         return menuList.stream()
                 .filter(i -> i.getId().equals(menuId))
-                .map(menu -> StrUtil.format("{}[{}]", menu.getTitle(), menu.getPermission()))
+                .map(menu -> StrUtil.format("{}[{}]-[{}]", menu.getTitle(), menu.getPermission(), menu.getId()))
                 .findFirst()
                 .orElse(null);
     }

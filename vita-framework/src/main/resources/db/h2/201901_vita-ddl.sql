@@ -71,6 +71,7 @@ drop table IF EXISTS VT_CATEGORY;
 create TABLE VT_CATEGORY (
   ID                            bigint NOT NULL comment '主键ID',
   PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
+  ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
   CODE                          varchar(500) NOT NULL comment '编码',
   NAME                          varchar(255) NOT NULL comment '名称',
   REMARK 	                    varchar(500) comment '备注',
@@ -84,6 +85,7 @@ create TABLE VT_CATEGORY (
 );
 comment on table VT_CATEGORY is '分类管理表';
 create unique index UIDX_VT_CATEGORY_CODE on VT_CATEGORY(CODE);
+create index IDX_VT_CATEGORY_ANCESTORS on VT_CATEGORY(ANCESTORS);
 
 
 drop table IF EXISTS VT_DICT_TYPE;
@@ -129,7 +131,7 @@ create TABLE VT_LOG_SYSTEM (
   THREAD_NAME                   varchar(255) DEFAULT NULL comment '线程名称',
   LOGGER_NAME                   varchar(255) DEFAULT NULL comment '日志名称。java 类名',
   FORMATTED_MESSAGE             varchar(3000) DEFAULT NULL comment '格式化后的日志信息',
-  STACK_TRACE                   CLOB DEFAULT NULL comment 'stack trace',
+  STACK_TRACE                   text DEFAULT NULL comment 'stack trace',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
@@ -241,7 +243,7 @@ comment on table VT_MENU is '菜单管理表';
 drop table IF EXISTS VT_DEPT;
 create TABLE VT_DEPT (
   ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID              		bigint NOT NULL DEFAULT 0 comment '父部门ID',
+  PARENT_ID              		bigint DEFAULT NULL comment '父部门ID',
   ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
   CODE 		                    varchar(64) NOT NULL comment '部门编码',
   NAME 		                    varchar(64) NOT NULL comment '部门名称',
@@ -326,7 +328,7 @@ drop table IF EXISTS VT_USER_AVATAR;
 create TABLE VT_USER_AVATAR (
   ID                            bigint NOT NULL comment '主键ID',
   USER_ID                       bigint NOT NULL comment '用户ID',
-  AVATAR                        clob DEFAULT NULL comment '用户头像，以 Base64 文本存储的大字段。',
+  AVATAR                        text DEFAULT NULL comment '用户头像，以 Base64 文本存储的大字段。',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
@@ -451,8 +453,9 @@ create TABLE VT_FORM (
   ID                            bigint NOT NULL comment '主键ID',
   PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
   NAME                          varchar(255) NOT NULL comment '表单名称',
-  TYPE                          varchar(64) NOT NULL comment '表单类型。关联字典：vt_form_type',
-  STATIC_FORM_PATH              varchar(225) DEFAULT NULL comment '静态表单路由路径',
+  CATEGORY                      varchar(255) NOT NULL comment '表单分类。关联分类：vt_form',
+  TYPE                          varchar(64) NOT NULL comment '表单类型（静态表单、动态表单）。关联字典：vt_form_type',
+  STATIC_FORM_ROUTE             varchar(225) DEFAULT NULL comment '静态表单路由路径',
   DYNAMIC_FORM_ID               bigint DEFAULT NULL comment '动态表单 ID',
   REMARK                        varchar(500) DEFAULT NULL comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',

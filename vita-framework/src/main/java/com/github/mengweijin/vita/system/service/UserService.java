@@ -15,7 +15,6 @@ import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
-import com.github.mengweijin.vita.framework.environment.EnvironmentChecker;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
@@ -38,7 +37,6 @@ import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -84,11 +82,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
     private VitaProperties vitaProperties;
 
-    private MultipartProperties multipartProperties;
-
     private ApplicationProperties applicationProperties;
-
-    private EnvironmentChecker environmentChecker;
 
     private LogDataChangeService logDataChangeService;
 

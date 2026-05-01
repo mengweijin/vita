@@ -1,6 +1,6 @@
-package com.github.mengweijin.vita.form.domain.bo;
+package com.github.mengweijin.vita.system.domain.bo;
 
-import com.github.mengweijin.vita.form.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.domain.entity.FormDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

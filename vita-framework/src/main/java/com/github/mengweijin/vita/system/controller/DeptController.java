@@ -80,7 +80,7 @@ public class DeptController {
     @SaCheckPermission("system:dept:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DeptBO bo) {
-        boolean bool = deptService.saveByBo(bo);
+        boolean bool = deptService.save(bo);
         return R.result(bool);
     }
 
@@ -95,7 +95,7 @@ public class DeptController {
     @SaCheckPermission("system:dept:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DeptBO bo) {
-        boolean bool = deptService.updateByBoById(bo);
+        boolean bool = deptService.updateById(bo);
         return R.result(bool);
     }
 

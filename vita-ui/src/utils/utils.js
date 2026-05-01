@@ -37,21 +37,6 @@ const extendUtils = {
   },
 
   /**
-   * 仅复制 target 已定义的属性值，且 source 不为空对象才进行复制。
-   * @param {Object} target 目标对象，要复制到的对象
-   * @param {Object} source 原始对象，要被复制的对象
-   */
-  copyDefinedProperties: (target, source) => {
-    if (!XEUtils.isEmpty(source)) {
-      Object.keys(target).forEach((key) => {
-        if (Object.hasOwn(source, key)) {
-          target[key] = source[key];
-        }
-      });
-    }
-  },
-
-  /**
    * 写入字符串到指定文件，并触发浏览器下载。
    * @param {string} content 要写入文件的字符串内容
    * @param {string} fileName 下载的文件名，默认为 "download.txt"
@@ -122,6 +107,14 @@ const extendUtils = {
    */
   isNotBlank: (val) => {
     return !extendUtils.isBlank(val);
+  },
+  /**
+   * 判断是否不为空
+   * @param {Object} val
+   * @returns {Boolean}
+   */
+  isNotEmpty: (val) => {
+    return !XEUtils.isEmpty(val);
   },
   /**
    * 使用指定分隔符拼接字符串

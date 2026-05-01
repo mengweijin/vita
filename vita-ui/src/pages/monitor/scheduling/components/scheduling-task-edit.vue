@@ -55,6 +55,8 @@ const onSubmit = () => {
 
 const emit = defineEmits(["refresh-table"]);
 
+const taskBeanNames = ref([]);
+
 const onOpened = () => {
   loading.value = true;
   init();
@@ -76,6 +78,12 @@ const cronDescription = computed(() => {
 
 /** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
 defineExpose({ data, visible });
+
+onMounted(() => {
+  schedulingTaskApi.queryTaskBeanNames().then((res) => {
+    taskBeanNames.value = res;
+  });
+});
 </script>
 
 <template>
@@ -117,7 +125,10 @@ defineExpose({ data, visible });
         label="Bean 名称"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input v-model="form.beanName" clearable maxlength="64" autocomplete="off" />
+        <!-- <el-input v-model="form.beanName" clearable maxlength="64" autocomplete="off" /> -->
+        <el-select v-model="form.beanName" clearable filterable placeholder="请选择">
+          <el-option v-for="item in taskBeanNames" :key="item" :label="item" :value="item" />
+        </el-select>
       </el-form-item>
 
       <el-form-item prop="args" label="执行参数">

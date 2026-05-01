@@ -5,7 +5,7 @@ const columns = reactive({
   parentId: { label: "父级ID", visible: false },
   name: { label: "表单名称", visible: true },
   type: { label: "表单类型", visible: true },
-  staticFormPath: { label: "静态表单路径", visible: false },
+  staticFormRoute: { label: "静态表单路径", visible: false },
   dynamicFormId: { label: "动态表单ID", visible: false },
   remark: { label: "备注", visible: true },
   createByName: { label: "创建者", visible: true },

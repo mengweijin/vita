@@ -6,7 +6,7 @@ const columns = reactive({
   operationType: { label: "操作类型", visible: true },
   httpMethod: { label: "请求方式", visible: true },
   url: { label: "URL", visible: true },
-  methodName: { label: "方法名称", visible: true },
+  methodName: { label: "方法名称", visible: false },
   costTime: { label: "执行时间（ms）", visible: true },
   success: { label: "操作状态", visible: true },
   requestData: { label: "请求数据", visible: false },

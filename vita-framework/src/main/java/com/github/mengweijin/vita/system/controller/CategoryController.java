@@ -6,6 +6,7 @@ import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.CategoryBO;
 import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
@@ -41,25 +42,15 @@ public class CategoryController {
 
     @SaCheckPermission("system:category:select")
     @GetMapping("/page/root")
-    public PageQuery<CategoryVO> pageRootNode(PageQuery<CategoryDO> page, CategoryDO category) {
+    public PageQuery<CategoryVO> pageRootTree(PageQuery<CategoryDO> page, CategoryDO category) {
         LambdaQueryWrapper<CategoryDO> wrapper = categoryService.buildRootQueryWrapper(category);
-        return categoryService.pageVo(page, wrapper);
+        return categoryService.pageRootTree(page, wrapper);
     }
 
-    @SaCheckPermission("system:category:select")
-    @GetMapping("/list/children/by/parentId/{parentId}")
-    public List<CategoryVO> listChildrenByParentId(@PathVariable("parentId") Long parentId) {
-        return categoryService.listChildrenByParentId(parentId);
-    }
-
-    @GetMapping("/list/children/by/parentCode/{code}")
-    public List<CategoryVO> listChildrenByParentCode(@PathVariable("code") String code) {
-        return categoryService.listChildrenByParentCode(code);
-    }
-
-    @GetMapping("/list/childrenWithParent/by/code/{code}")
-    public List<CategoryVO> listChildrenWithParentByCode(@PathVariable("code") String code) {
-        return categoryService.listChildrenWithParentByCode(code);
+    @GetMapping("/list/children/by/code/{code}")
+    public List<CategoryVO> listChildrenByCode(@PathVariable("code") String code, boolean withSelf) {
+        List<CategoryDO> list = categoryService.getChildrenListByCode(code, withSelf);
+        return MapstructUtils.getConverter().convert(list, CategoryVO.class);
     }
 
     /**
@@ -96,7 +87,7 @@ public class CategoryController {
     @SaCheckPermission("system:category:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody CategoryBO categoryBO) {
-        boolean bool = categoryService.saveByBo(categoryBO);
+        boolean bool = categoryService.save(categoryBO);
         return R.result(bool);
     }
 
@@ -109,7 +100,7 @@ public class CategoryController {
     @SaCheckPermission("system:category:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody CategoryBO categoryBO) {
-        boolean bool = categoryService.updateByBoById(categoryBO);
+        boolean bool = categoryService.updateById(categoryBO);
         return R.result(bool);
     }
 
@@ -123,6 +114,22 @@ public class CategoryController {
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = categoryService.removeByIds(Arrays.asList(ids));
+        return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.ENABLE)
+    @SaCheckPermission("system:category:update")
+    @PostMapping("/enable/{id}")
+    public R<Void> enable(@PathVariable("id") Long id) {
+        boolean bool = categoryService.enable(id);
+        return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.DISABLE)
+    @SaCheckPermission("system:category:update")
+    @PostMapping("/disable/{id}")
+    public R<Void> disable(@PathVariable("id") Long id) {
+        boolean bool = categoryService.disable(id);
         return R.result(bool);
     }
 }

@@ -1,29 +1,51 @@
 <script setup>
 import { ${entityPropertyName}Api } from "@/api/${module}/${entityNameSymbolCase}-api.js";
+import utils from "@/utils/utils.js";
 
-const loading = ref(true);
+const loading = ref(false);
 
-const visible = ref(false);
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+  },
+  data: {
+    type: Object,
+    default: null,
+  },
+});
 
-const data = ref({});
+const emit = defineEmits(["update:visible", "refresh"]);
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
-const form = reactive({
+const INITIAL_FORM = {
   id: undefined,
 #foreach($field in ${entityFields})
   ${field.propertyName}: undefined,
 #end
-});
-
-const init = () => {
-  form.id = data.value.id ?? undefined;
-#foreach($field in ${entityFields})
-  form.${field.propertyName} = data.value.${field.propertyName} ?? undefined;
-#end
 };
+
+const form = ref({ ...INITIAL_FORM });
 
 const formRef = useTemplateRef("formRef");
 
+// 是否为编辑态（有 id 视为编辑）。!! 是 JavaScript 里快速把一个值转换成布尔值（true/false）的简写，本质是两次取反
+const isEdit = computed(() => !!props.data?.id);
+
+// 重置
+const onReset = () => {
+  formRef.value?.resetFields();
+  if (!isEdit) {
+    form.value = { ...INITIAL_FORM };
+  }
+};
+
+// 取消
+const onCancel = () => {
+  emit("update:visible", false);
+};
+
+// 提交
 const onSubmit = () => {
 	formRef.value.validate((valid, fields) => {
 		if (!valid) {
@@ -31,48 +53,52 @@ const onSubmit = () => {
 			console.log(fields);
 			return;
 		}
-		if (form.id) {
-			${entityPropertyName}Api.update(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
+        // 只提交表单设计范围内的字段
+        const payload = utils.pick(form.value, Object.keys(INITIAL_FORM));
+		if (isEdit) {
+			${entityPropertyName}Api.update(payload).then((r) => {
+				emit("refresh");
+				emit("update:visible", false);
 			});
 		} else {
 			${entityPropertyName}Api.create(form).then((r) => {
-				emit("refresh-table");
-				onClosed();
+				emit("refresh");
+				emit("update:visible", false);
 			});
 		}
 	});
 };
 
-const emit = defineEmits(["refresh-table"]);
+// 监听 data 变化：回填表单或重置
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+      // 回填表单，只回填 INITIAL_FORM 中定义的字段，避免冗余提交到后端
+      form.value = utils.pick(val, Object.keys(INITIAL_FORM));
+    } else {
+      formRef.value?.resetFields();
+      form.value = { ...INITIAL_FORM };
+    }
+  },
+  { immediate: true },
+);
 
-const onOpened = () => {
-	loading.value = true;
-	init();
-	loading.value = false;
-};
-
-const onClosed = () => {
-	visible.value = false;
-	data.value = {};
-	init();
-};
-
-/** 暴露给父组件，父组件可通过 editRef.value.visible = true; 来赋值 */
-defineExpose({ data, visible });
+onMounted(() => {});
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="data?.id ? '编辑' : '新增'" destroy-on-close align-center @opened="onOpened"
-    @closed="onClosed" width="40%">
-    <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
-#foreach($field in ${entityFields})
-    <el-form-item prop="${field.propertyName}" label="${field.propertyName}" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
-        <el-input v-model="form.${field.propertyName}" clearable maxlength="30" autocomplete="off" />
-    </el-form-item>
-#end
-    </el-form>
+  <el-dialog :model-value="visible" :title="isEdit ? '编辑' : '新增'" destroy-on-close align-center width="40%">
+    <div v-loading="loading" class="dialog-wrap">
+      <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
+      #foreach($field in ${entityFields})
+        <el-form-item prop="${field.propertyName}" label="${field.propertyName}" :rules="[{ required: true, message: '必填', trigger: 'blur' }]">
+          <el-input v-model="form.${field.propertyName}" clearable maxlength="30" autocomplete="off" />
+        </el-form-item>
+      #end
+      </el-form>
+    </div>
+
     <template #footer>
       <div>
         <el-button type="primary" @click="onSubmit">
@@ -83,7 +109,7 @@ defineExpose({ data, visible });
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="init">
+        <el-button type="warning" @click="onReset">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -91,7 +117,7 @@ defineExpose({ data, visible });
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClosed">
+        <el-button type="primary" @click="onCancel">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

@@ -259,7 +259,7 @@ onMounted(() => {
             v-if="columns.gender.visible"
             prop="gender"
             label="性别"
-            min-width="80"
+            width="60"
             align="center"
           >
             <template #default="{ row }">
@@ -272,12 +272,12 @@ onMounted(() => {
             label="移动电话"
             min-width="120"
           />
-          <el-table-column v-if="columns.email.visible" prop="email" label="邮箱" min-width="140" />
+          <el-table-column v-if="columns.email.visible" prop="email" label="邮箱" min-width="120" />
           <el-table-column
             v-if="columns.disabled.visible"
             prop="disabled"
             label="状态"
-            min-width="80"
+            width="70"
             align="center"
           >
             <template #default="{ row }">
@@ -295,28 +295,28 @@ onMounted(() => {
             prop="createByName"
             label="创建者"
             align="center"
-            width="100"
+            width="90"
           />
           <el-table-column
             v-if="columns.createTime.visible"
             prop="createTime"
             label="创建时间"
             align="center"
-            width="180"
+            width="160"
           />
           <el-table-column
             v-if="columns.updateByName.visible"
             prop="updateByName"
             label="更新者"
             align="center"
-            width="100"
+            width="90"
           />
           <el-table-column
             v-if="columns.updateTime.visible"
             prop="updateTime"
             label="更新时间"
             align="center"
-            width="180"
+            width="160"
           />
           <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
             <template #default="scope">

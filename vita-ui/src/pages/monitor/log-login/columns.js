@@ -4,7 +4,7 @@ const columns = reactive({
   id: { label: "ID", visible: false },
   username: { label: "登录账号", visible: true },
   loginType: { label: "登录类型", visible: true },
-  ip: { label: "IP", visible: true },
+  ip: { label: "IP", visible: false },
   ipLocation: { label: "登录位置", visible: true },
   browser: { label: "浏览器", visible: true },
   platform: { label: "设备平台", visible: true },

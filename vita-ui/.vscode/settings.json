@@ -15,6 +15,17 @@
   "editor.formatOnType": false,
   // 括号配对引导线显示
   "editor.guides.bracketPairs": "active",
+  // Vue 文件强制用 oxfmt（关键：覆盖 volar）
+  "[vue]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  // 其他常用语言也切到 oxfmt
+  "[javascript]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[javascriptreact]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[json]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
   // 是否启用文件嵌套功能，将相关文件分组显示
   "explorer.fileNesting.enabled": false,
   // 文件自动保存设置：关闭
@@ -30,5 +41,7 @@
   // 是否开启VSCode对 JavaScript/TypeScript 的内置验证
   "js/ts.validate.enabled": false,
   // 指定当前项目使用 vscode-icons 作为图标主题
-  "workbench.iconTheme": "vscode-icons"
+  "workbench.iconTheme": "vscode-icons",
+  // 关闭 prettier，避免与 oxc 冲突
+  "prettier.enable": false
 }

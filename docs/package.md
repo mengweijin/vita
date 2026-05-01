@@ -9,11 +9,8 @@ cd $WORKSPACE/vita/vita-ui
 npm config set registry https://registry.npmmirror.com
 pnpm clean
 pnpm install
-pnpm build:staging
-# linux 环境下执行
-pnpm copy:linux
-# windows 环境下执行
-pnpm copy:windows
+# 打包到 java 项目里
+pnpm build:java
 # -----------------------------
 
 # 后端打包
@@ -25,11 +22,7 @@ mvn clean package -Dmaven.test.skip=true -Ph2
 
 ```shell
 java -jar vita-admin.jar
-
-# 或指定参数
-java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.timezone=Asia/Shanghai -Xms128m -Xmx512m -jar vita-admin.jar
 ```
-
 
 ## 前后端分离部署
 

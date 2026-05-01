@@ -72,7 +72,7 @@ public class UserRoleReadableMessageHandler implements IReadableMessageHandler {
         }
         return roleList.stream()
                 .filter(i -> i.getId().equals(roleId))
-                .map(role -> StrUtil.format("{}[{}]", role.getName(), role.getCode()))
+                .map(role -> StrUtil.format("{}[{}]-[{}]", role.getName(), role.getCode(), role.getId()))
                 .findFirst()
                 .orElse(null);
     }

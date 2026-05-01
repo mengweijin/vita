@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.workflow.warm;
 
-import com.github.mengweijin.vita.form.domain.vo.FormVO;
-import com.github.mengweijin.vita.form.service.FormService;
+import com.github.mengweijin.vita.system.domain.vo.FormVO;
+import com.github.mengweijin.vita.system.service.FormService;
 import lombok.AllArgsConstructor;
 import org.dromara.warm.flow.core.dto.Tree;
 import org.dromara.warm.flow.ui.service.FormPathService;

@@ -3,6 +3,7 @@ const columns = reactive({
   index: { label: "序号列", visible: false },
   id: { label: "ID", visible: false },
   name: { label: "部门名称", visible: true },
+  ancestors: { label: "祖级列表", visible: false },
   code: { label: "部门编码", visible: true },
   disabled: { label: "状态", visible: true },
   seq: { label: "排序", visible: true },

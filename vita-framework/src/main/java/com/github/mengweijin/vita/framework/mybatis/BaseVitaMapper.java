@@ -125,6 +125,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @param bo 实体对应的 BO 对象
      * @return count
      */
+    @Deprecated(since = "3.0.0-M5")
     default <B> int insertByBo(B bo) {
         T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.insert(t);
@@ -137,6 +138,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @param <B> BO Class Type
      * @return boolean
      */
+    @Deprecated(since = "3.0.0-M5")
     default <B> boolean insertOrUpdateByBo(B bo) {
         T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.insertOrUpdate(t);
@@ -149,6 +151,7 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @param bo 实体对应的 BO 对象
      * @return count
      */
+    @Deprecated(since = "3.0.0-M5")
     default <B> int updateByBoById(B bo) {
         T t = MapstructUtils.getConverter().convert(bo, this.entityClass());
         return this.updateById(t);

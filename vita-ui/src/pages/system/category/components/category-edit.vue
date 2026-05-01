@@ -2,109 +2,114 @@
 import { categoryApi } from "@/api/system/category-api.js";
 import utils from "@/utils/utils.js";
 
-const loading = ref(true);
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+  },
+  data: {
+    type: Object,
+    default: null,
+  },
+});
 
-const visible = ref(false);
+const emit = defineEmits(["update:visible", "refresh"]);
 
-const data = ref({});
+// 是否为编辑态（有 id 视为编辑）。!! 是 JavaScript 里快速把一个值转换成布尔值（true/false）的简写，本质是两次取反
+const isEdit = computed(() => !!props.data?.id);
 
-/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
-const form = reactive({
+const INITIAL_FORM = {
   code: undefined,
-  disabled: undefined,
+  disabled: "N",
   id: undefined,
   name: undefined,
   parentId: undefined,
   remark: undefined,
-  seq: undefined,
-});
-
-const init = () => {
-  form.id = data.value.id ?? undefined;
-  form.parentId = data.value.parentId ?? undefined;
-  form.name = data.value.name ?? undefined;
-  form.code = data.value.code ?? undefined;
-  form.seq = data.value.seq ?? 1;
-  form.disabled = data.value.disabled ?? "N";
-  form.remark = data.value.remark ?? undefined;
+  seq: 1,
 };
+
+/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
+const form = ref({ ...INITIAL_FORM });
 
 const formRef = useTemplateRef("formRef");
 
-const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields);
-      return;
-    }
-    if (form.id) {
-      categoryApi.update(form).then((r) => {
-        emit("refresh-table");
-        onClosed();
-      });
-    } else {
-      categoryApi.create(form).then((r) => {
-        emit("refresh-table");
-        onClosed();
-      });
-    }
-  });
-};
-
-const emit = defineEmits(["refresh-table"]);
-
-const categoryList = ref([]);
-
-const categoryTreeSelectOptions = computed(() => {
-  categoryList.value.forEach((item) => {
-    item.disabled = false;
-  });
-  utils.addFullPath(categoryList.value, { pathKey: "name" });
-  return utils.toArrayTree(categoryList.value, { sortKey: "seq" });
-});
-
-const onOpened = () => {
-  loading.value = true;
-  categoryApi.list().then((res) => {
-    categoryList.value = res;
-    init();
-    loading.value = false;
-  });
+const onReset = () => {
+  formRef.value?.resetFields();
+  // 重置后清除验证错误
+  formRef.value?.clearValidate();
 };
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
+  emit("update:visible", false);
 };
 
-/** 暴露给父组件，父组件可通过 categoryEditRef.value.visible = true; 来赋值 */
-defineExpose({ data, visible });
+const onSubmit = async () => {
+  const valid = await formRef.value.validate().catch(() => false);
+  if (valid) {
+    if (isEdit.value) {
+      await categoryApi.update(form.value);
+    } else {
+      await categoryApi.create(form.value);
+    }
+    emit("refresh");
+    emit("update:visible", false);
+  }
+};
+
+// 监听 data 变化：回填表单或重置
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+      // 填充表单，仅挑选 INITIAL_FORM 中定义的字段以避免冗余提交
+      form.value = utils.pick(val, Object.keys(INITIAL_FORM));
+    } else {
+      // 当关闭弹窗或清除数据时，重置表单
+      formRef.value?.clearValidate();
+      form.value = { ...INITIAL_FORM };
+    }
+  },
+  { immediate: true },
+);
+
+// -------------------------------------
+const categoryList = ref([]);
+
+const treeOptions = computed(() => {
+  // 使用临时数组避免污染原始数据，并转换 disabled 字段值为布尔值
+  const list = categoryList.value.map((item) => ({ ...item, disabled: false }));
+  // 添加全路径名称
+  utils.addFullPath(list, { pathKey: "name" });
+  // 转换为树形结构
+  return utils.toArrayTree(list, { sortKey: "seq" });
+});
+
+onMounted(async () => {
+  categoryList.value = await categoryApi.list();
+});
 </script>
 
 <template>
   <el-dialog
-    v-model="visible"
-    :title="data?.id ? '编辑' : '新增'"
+    :model-value="visible"
+    :title="isEdit ? '编辑' : '新增'"
     destroy-on-close
     align-center
-    @opened="onOpened"
-    @closed="onClosed"
     width="40%"
+    @closed="onClosed"
   >
-    <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
+    <el-form ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="parentId" label="父节点">
         <el-tree-select
           v-model="form.parentId"
-          :data="categoryTreeSelectOptions"
+          :data="treeOptions"
           :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
           check-strictly
           filterable
           clearable
           default-expand-all
           placeholder=""
-          :disabled="data?.id"
+          :disabled="isEdit"
         >
           <template #default="{ data: { name } }">
             {{ name }}
@@ -125,13 +130,7 @@ defineExpose({ data, visible });
         label="编码"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input
-          v-model="form.code"
-          :disabled="data?.id"
-          clearable
-          maxlength="64"
-          autocomplete="off"
-        />
+        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
       </el-form-item>
 
       <el-row :gutter="20">
@@ -168,7 +167,7 @@ defineExpose({ data, visible });
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="init">
+        <el-button type="warning" @click="onReset">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>
@@ -176,7 +175,7 @@ defineExpose({ data, visible });
           </template>
           重置
         </el-button>
-        <el-button type="primary" @click="onClosed">
+        <el-button type="info" @click="onClosed">
           <template #icon>
             <el-icon>
               <Icon icon="ep:close"></Icon>

@@ -1,6 +1,6 @@
 import http from "@/utils/http.js";
 
-const URL_PREFIX = "/form/manage";
+const URL_PREFIX = "/system/form";
 
 /**
  * @typedef {Object} FormDO

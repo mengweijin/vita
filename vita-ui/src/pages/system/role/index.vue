@@ -195,10 +195,10 @@ onMounted(() => {
         v-if="columns.name.visible"
         prop="name"
         label="角色名称"
-        min-width="200"
+        min-width="160"
         fixed="left"
       />
-      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="200" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="角色编码" min-width="160" />
       <el-table-column
         v-if="columns.disabled.visible"
         prop="disabled"
@@ -214,38 +214,38 @@ onMounted(() => {
         v-if="columns.seq.visible"
         prop="seq"
         label="排序"
-        min-width="80"
+        width="80"
         sortable
         align="center"
       />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="260" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="180" />
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
         label="创建者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.createTime.visible"
         prop="createTime"
         label="创建时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column
         v-if="columns.updateByName.visible"
         prop="updateByName"
         label="更新者"
         align="center"
-        width="100"
+        width="90"
       />
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
         label="更新时间"
         align="center"
-        width="180"
+        width="160"
       />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">

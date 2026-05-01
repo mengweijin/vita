@@ -9,11 +9,9 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
-import com.github.mengweijin.vita.system.domain.bo.DeptBO;
 import com.github.mengweijin.vita.system.domain.entity.DeptDO;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.domain.vo.DeptVO;
@@ -41,43 +39,45 @@ import java.util.Optional;
 @Service
 public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
 
-    public boolean saveByBo(DeptBO bo) {
+    @Override
+    public boolean save(DeptDO entity) {
         // 设置祖级列表
-        String ancestors = this.generateAncestors(bo.getParentId());
-        bo.setAncestors(ancestors);
+        String ancestors = this.generateAncestors(entity.getParentId());
+        entity.setAncestors(ancestors);
 
         // 设置启用/停用状态（优先与父级状态保持一致）
-        String disabled = this.getParentDisabledStatus(bo.getParentId());
-        bo.setDisabled(disabled);
+        String disabled = this.getParentDisabledStatus(entity.getParentId());
+        entity.setDisabled(disabled);
 
         // 保存
-        return super.saveByBo(bo);
+        return super.save(entity);
     }
 
     private String getParentDisabledStatus(Long parentId) {
-        if (parentId == null || parentId.equals(VitaConst.ROOT_PARENT_ID)) {
+        if (parentId == null) {
             return EYesNo.N.getValue();
         }
         DeptDO parent = this.getById(parentId);
         return Optional.ofNullable(parent).map(DeptDO::getDisabled).orElse(EYesNo.N.getValue());
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateByBoById(DeptBO bo) {
-        DeptDO dept = this.getById(bo.getId());
+    public boolean updateById(DeptDO entity) {
+        DeptDO dept = this.getById(entity.getId());
         // 父部门未发生改变
-        if (dept.getParentId().equals(bo.getParentId())) {
-            return super.updateByBoById(bo);
+        if (dept.getParentId().equals(entity.getParentId())) {
+            return super.updateById(entity);
         }
 
         // 父部门发生了改变。先更新本身的祖级列表，再递归更新子部门的祖级列表
-        String ancestors = this.generateAncestors(bo.getParentId());
-        bo.setAncestors(ancestors);
+        String ancestors = this.generateAncestors(entity.getParentId());
+        entity.setAncestors(ancestors);
         // 更新本身（包括本身的祖级列表）
-        super.updateByBoById(bo);
+        super.updateById(entity);
 
         // 更新子部门的祖级列表
-        this.updateChildAncestors(bo.getId());
+        this.updateChildAncestors(entity.getId());
         return true;
     }
 
@@ -87,9 +87,14 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
      * @param parentId 父部门 parentId
      */
     public void updateChildAncestors(Long parentId) {
+        LambdaQueryChainWrapper<DeptDO> wrapper = this.lambdaQuery();
         // 1. 查询直接子部门
-        parentId = parentId == null ? VitaConst.ROOT_PARENT_ID : parentId;
-        List<DeptDO> list = this.lambdaQuery().eq(DeptDO::getParentId, parentId).list();
+        if (parentId == null) {
+            wrapper.isNull(DeptDO::getParentId);
+        } else {
+            wrapper.eq(DeptDO::getParentId, parentId);
+        }
+        List<DeptDO> list = wrapper.list();
 
         // 2. 循环更新子部门
         for (DeptDO dept : list) {
@@ -117,7 +122,7 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
 
     public List<DeptDO> getChildren(Long id) {
         LambdaQueryChainWrapper<DeptDO> wrapper = this.lambdaQuery();
-        if (id == null || id.equals(VitaConst.ROOT_PARENT_ID)) {
+        if (id == null) {
             return wrapper.list();
         }
         DeptDO dept = this.getById(id);
@@ -131,7 +136,7 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
      * @return 祖级列表
      */
     private String generateAncestors(Long parentId) {
-        if (parentId == null || parentId.equals(VitaConst.ROOT_PARENT_ID)) {
+        if (parentId == null) {
             return Const.SLASH;
         }
         DeptDO parent = this.getById(parentId);
@@ -179,12 +184,9 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
     }
 
     public boolean enable(Long id) {
-        List<Long> ids = this.getChildrenIds(id);
-        ArrayList<Long> list = new ArrayList<>(ids);
-        list.add(id);
         return this.lambdaUpdate()
                 .set(DeptDO::getDisabled, EYesNo.N.getValue())
-                .in(DeptDO::getId, list)
+                .eq(DeptDO::getId, id)
                 .update();
     }
 
