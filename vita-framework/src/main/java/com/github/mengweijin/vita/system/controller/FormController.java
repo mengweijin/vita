@@ -41,18 +41,11 @@ public class FormController {
 
     private FormService formService;
 
-    /**
-     * Get FormVO page by FormDO
-     *
-     * @param page page
-     * @param form {@link FormDO}
-     * @return PageQuery<FormVO>
-     */
     @SaCheckPermission("system:form:select")
-    @GetMapping("/page")
-    public PageQuery<FormVO> page(PageQuery<FormDO> page, FormDO form) {
-        LambdaQueryWrapper<FormDO> wrapper = formService.buildQueryWrapper(form);
-        return formService.pageVo(page, wrapper);
+    @GetMapping("/page/root")
+    public PageQuery<FormVO> pageRootTree(PageQuery<FormDO> page, FormDO form) {
+        LambdaQueryWrapper<FormDO> wrapper = formService.buildRootQueryWrapper(form);
+        return formService.pageRootTree(page, wrapper);
     }
 
     /**
@@ -87,7 +80,7 @@ public class FormController {
     @SaCheckPermission("system:form:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FormBO form) {
-        boolean bool = formService.saveByBo(form);
+        boolean bool = formService.save(form);
         return R.result(bool);
     }
 
@@ -100,7 +93,7 @@ public class FormController {
     @SaCheckPermission("system:form:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FormBO form) {
-        boolean bool = formService.updateByBoById(form);
+        boolean bool = formService.updateById(form);
         return R.result(bool);
     }
 

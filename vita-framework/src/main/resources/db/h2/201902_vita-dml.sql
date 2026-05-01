@@ -60,10 +60,6 @@ insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CR
 insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'/1/','vt_workflow_staff',         '人事类',             null,         2,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1003,      1,'/1/','vt_workflow_rd',            '研发类',             null,         3,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100999,    1,'/1/','vt_workflow_other',        '其他',             null,         999,'N',1,current_timestamp(),1,current_timestamp());
--- 表单分类
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,         null,'/','vt_form',                  '表单类别',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2001,      2,'/2/','vt_form_workflow',         '流程表单',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2002,      2,'/2/','vt_form_other',            '其它',             null,         999,'N',1,current_timestamp(),1,current_timestamp());
 
 
 -- 字典类型
@@ -207,7 +203,7 @@ insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREA
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190003, 'vt_gbt_data_level', 'general', '一般', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 表单类型
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200001, 'vt_form_type', 'static', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200002, 'vt_form_type', 'dynamic', '动态表单', 'warning', 2, 'Y', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200002, 'vt_form_type', 'dynamic', '动态表单', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- Warm-Flow 流程是否发布
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010001, 'vt_warmflow_publish', '0', '未发布', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, CODE, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010002, 'vt_warmflow_publish', '1', '已发布', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -474,9 +470,9 @@ INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653140,3,1009
 INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762005,3,100210010011);
 
 -- 表单管理
-INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'工作流-行政-员工请假-表单','static','/forms/workflow/staff-leave/start-form',null,null,1,current_timestamp(),1,current_timestamp());
-INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705601,2043270536503705600,'部门领导审批-表单','static','/forms/workflow/staff-leave/dept-leader-approve-form',null,null,1,current_timestamp(),1,current_timestamp());
-INSERT INTO VT_FORM (ID,PARENT_ID,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705602,2043270536503705600,'人力资源确认-表单','static','/forms/workflow/staff-leave/hr-confirm-form',null,null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'/','工作流-行政-员工请假-表单','static','/forms/workflow/staff-leave/start-form',null,null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705601,2043270536503705600,'/2043270536503705600/','部门领导审批-表单','static','/forms/workflow/staff-leave/dept-leader-approve-form',null,null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",STATIC_ROUTE,DYNAMIC_ID,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705602,2043270536503705600,'/2043270536503705600/','人力资源确认-表单','static','/forms/workflow/staff-leave/hr-confirm-form',null,null,1,current_timestamp(),1,current_timestamp());
 
 
 -- 系统公告

@@ -31,6 +31,11 @@ public class FormDO extends BaseEntity {
     private Long parentId;
 
     /**
+     * 祖级列表
+     */
+    private String ancestors;
+
+    /**
      * 表单名称
      */
     private String name;

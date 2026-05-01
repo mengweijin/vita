@@ -452,6 +452,7 @@ drop table IF EXISTS VT_FORM;
 create TABLE VT_FORM (
   ID                            bigint NOT NULL comment '主键ID',
   PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
+  ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
   NAME                          varchar(255) NOT NULL comment '表单名称',
   TYPE                          varchar(64) NOT NULL comment '表单类型（静态表单、动态表单）。关联字典：vt_form_type',
   STATIC_ROUTE                  varchar(225) DEFAULT NULL comment '静态表单路由路径',
@@ -464,3 +465,4 @@ create TABLE VT_FORM (
   PRIMARY KEY (ID)
 );
 comment on table VT_FORM is '表单管理表';
+create index IDX_VT_FORM_ANCESTORS on VT_FORM(ANCESTORS);

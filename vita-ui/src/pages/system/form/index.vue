@@ -16,6 +16,11 @@ const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
 
+const treeProps = reactive({
+  // 父子节点默认联动
+  checkStrictly: false,
+});
+
 const tableData = ref([]);
 
 /**
@@ -39,24 +44,26 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  formApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
+  formApi.pageRoot(queryParams).then((res) => {
+    tableData.value = utils.toArrayTree(res.pageRecords);
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
 };
 
-const formEditRef = useTemplateRef("formEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  formEditRef.value.data = {};
-  formEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  formEditRef.value.data = { ...row };
-  formEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -164,6 +171,7 @@ onMounted(() => {
       ref="tableRef"
       v-loading="loading"
       :data="tableData"
+      :tree-props="treeProps"
       :size="size"
       row-key="id"
       height="100%"
@@ -302,11 +310,16 @@ onMounted(() => {
       v-model:current-page="queryParams.pageCurrent"
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
+      :page-sizes="[10, 20]"
       @change="handlePageChange"
     />
   </div>
 
-  <FormEdit ref="formEditRef" @refresh-table="loadTableData"></FormEdit>
+  <FormEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></FormEdit>
 </template>
 
 <style scoped></style>
