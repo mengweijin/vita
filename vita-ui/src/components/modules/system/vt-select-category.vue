@@ -33,37 +33,22 @@ const selectValue = defineModel({ type: String || Array });
 
 const categoryList = ref([]);
 
-const initCategoryList = () => {
-  if (props.containRootNode) {
-    categoryApi.listChildrenWithParentByCode(props.code).then((res) => {
-      categoryList.value = res;
-    });
-  } else {
-    categoryApi.listChildrenByParentCode(props.code).then((res) => {
-      categoryList.value = res;
-    });
-  }
-};
-
-const categoryTreeSelectOptions = computed(() => {
-  categoryList.value.map((item) => {
-    item.disabled = item.disabled === "Y";
-    return item;
-  });
-  utils.addFullPath(categoryList.value, { pathKey: "name" });
-  const tree = utils.toArrayTree(categoryList.value, { sortKey: "seq" });
+const treeOptions = computed(() => {
+  const list = categoryList.value.map((item) => ({ ...item, disabled: item.disabled === "Y" }));
+  utils.addFullPath(list, { pathKey: "name" });
+  const tree = utils.toArrayTree(list, { sortKey: "seq" });
   return tree;
 });
 
-onMounted(() => {
-  initCategoryList();
+onMounted(async () => {
+  categoryList.value = await categoryApi.listChildrenByCode(props.code, props.containRootNode);
 });
 </script>
 
 <template>
   <el-tree-select
     v-model="selectValue"
-    :data="categoryTreeSelectOptions"
+    :data="treeOptions"
     :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
     check-strictly
     clearable
