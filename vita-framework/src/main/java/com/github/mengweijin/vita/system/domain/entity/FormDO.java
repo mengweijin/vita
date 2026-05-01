@@ -36,11 +36,6 @@ public class FormDO extends BaseEntity {
     private String name;
 
     /**
-     * 表单分类。关联分类：vt_form
-     */
-    private String category;
-
-    /**
      * 表单类型（静态表单、动态表单）。关联字典：vt_form_type
      */
     private String type;
@@ -48,12 +43,12 @@ public class FormDO extends BaseEntity {
     /**
      * 静态表单路由路径
      */
-    private String staticFormRoute;
+    private String staticRoute;
 
     /**
      * 动态表单 ID
      */
-    private Long dynamicFormId;
+    private Long dynamicId;
 
     /**
      * 备注

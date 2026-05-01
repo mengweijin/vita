@@ -39,28 +39,10 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  formApi.pageRoot(queryParams).then((res) => {
+  formApi.page(queryParams).then((res) => {
     tableData.value = res.pageRecords;
-    tableData.value.forEach((item) => {
-      // 只有根节点才有 hasChildren 属性，子节点没有该属性。
-      item.hasChildren = true;
-    });
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
-  });
-};
-
-/**
- * 加载子节点数据
- * @param row 父节点数据
- * @param treeNode 树节点对象
- * @param resolve 加载完成回调函数，参数为子节点数据数组
- */
-const loadNodeData = (row, treeNode, resolve) => {
-  formApi.listChildrenByParentId(row.id).then((res) => {
-    // 转树
-    let tree = utils.toArrayTree(res, { sortKey: "name" });
-    resolve(tree);
   });
 };
 
@@ -183,10 +165,7 @@ onMounted(() => {
       v-loading="loading"
       :data="tableData"
       :size="size"
-      lazy
       row-key="id"
-      :load="loadNodeData"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       height="100%"
       stripe
       border
@@ -197,12 +176,6 @@ onMounted(() => {
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
-      <el-table-column
-        v-if="columns.parentId.visible"
-        prop="parentId"
-        label="父级ID"
-        min-width="180"
-      />
       <el-table-column
         v-if="columns.name.visible"
         prop="name"
@@ -222,14 +195,14 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.staticFormRoute.visible"
-        prop="staticFormRoute"
+        v-if="columns.staticRoute.visible"
+        prop="staticRoute"
         label="静态表单路由路径"
         min-width="200"
       />
       <el-table-column
-        v-if="columns.dynamicFormId.visible"
-        prop="dynamicFormId"
+        v-if="columns.dynamicId.visible"
+        prop="dynamicId"
         label="动态表单ID"
         min-width="180"
       />

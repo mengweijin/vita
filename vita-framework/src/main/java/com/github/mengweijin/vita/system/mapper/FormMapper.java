@@ -5,8 +5,6 @@ import com.github.mengweijin.vita.system.domain.entity.FormDO;
 import com.github.mengweijin.vita.system.domain.vo.FormVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 /**
  * 流程表单表 WorkflowForm Mapper
  *
@@ -16,12 +14,5 @@ import java.util.List;
 @Mapper
 public interface FormMapper extends BaseVitaMapper<FormDO, FormVO> {
 
-    /**
-     * select children ids
-     *
-     * @param id current id
-     * @return children ids
-     */
-    List<Long> selectChildrenIdsById(Long id);
 }
 

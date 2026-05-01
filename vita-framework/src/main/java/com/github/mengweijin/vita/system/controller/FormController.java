@@ -55,19 +55,6 @@ public class FormController {
         return formService.pageVo(page, wrapper);
     }
 
-    @SaCheckPermission("system:form:select")
-    @GetMapping("/page/root")
-    public PageQuery<FormVO> pageRootNode(PageQuery<FormDO> page, FormDO form) {
-        LambdaQueryWrapper<FormDO> wrapper = formService.buildRootQueryWrapper(form);
-        return formService.pageVo(page, wrapper);
-    }
-
-    @SaCheckPermission("system:form:select")
-    @GetMapping("/list/children/by/parentId/{parentId}")
-    public List<FormVO> listChildrenByParentId(@PathVariable("parentId") Long parentId) {
-        return formService.listChildrenByParentId(parentId);
-    }
-
     /**
      * Get FormVO list by FormDO
      *

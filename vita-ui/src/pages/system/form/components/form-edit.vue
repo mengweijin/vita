@@ -9,7 +9,7 @@ const data = ref({});
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const form = reactive({
-  staticFormRoute: undefined,
+  staticRoute: undefined,
   id: undefined,
   name: undefined,
   type: undefined,
@@ -19,7 +19,7 @@ const init = () => {
   form.id = data.value.id ?? undefined;
   form.name = data.value.name ?? undefined;
   form.type = data.value.type ?? undefined;
-  form.staticFormRoute = data.value.staticFormRoute ?? undefined;
+  form.staticRoute = data.value.staticRoute ?? undefined;
 };
 
 const formRef = useTemplateRef("formRef");
@@ -88,11 +88,11 @@ defineExpose({ data, visible });
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
       <el-form-item
-        prop="staticFormRoute"
+        prop="staticRoute"
         label="表单路由路径"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input v-model="form.staticFormRoute" clearable maxlength="300" autocomplete="off" />
+        <el-input v-model="form.staticRoute" clearable maxlength="300" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
