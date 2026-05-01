@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { noticeApi } from "@/api/system/notice-api";
+import { noticeApi } from "@/api/system/notice-api.js";
 import { columns } from "./columns.js";
 import NoticeDetail from "./components/notice-detail.vue";
 import NoticeEdit from "./components/notice-edit.vue";
@@ -46,17 +46,19 @@ const loadTableData = () => {
   });
 };
 
-const noticeEditRef = useTemplateRef("noticeEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  noticeEditRef.value.data = {};
-  noticeEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  noticeEditRef.value.data = { ...row };
-  noticeEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 const handleRelease = (id) => {
@@ -71,6 +73,7 @@ const handleRevoke = (id) => {
   });
 };
 
+// -----------------------------------------
 const noticeDetailRef = useTemplateRef("noticeDetailRef");
 
 const handleViewDetail = (row) => {
@@ -359,7 +362,11 @@ onMounted(() => {
     />
   </div>
 
-  <NoticeEdit ref="noticeEditRef" @refresh-table="loadTableData"></NoticeEdit>
+  <NoticeEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></NoticeEdit>
   <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
 </template>
 
