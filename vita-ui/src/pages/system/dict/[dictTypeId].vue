@@ -16,8 +16,6 @@ const dictType = ref({});
 
 const loading = ref(true);
 
-const visible = ref(false);
-
 const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
@@ -31,17 +29,19 @@ const loadTableData = () => {
   });
 };
 
-const dictDataEditRef = useTemplateRef("dictDataEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  dictDataEditRef.value.data = { code: dictType.value.code };
-  dictDataEditRef.value.visible = true;
+  editData.value = { code: dictType.value.code, disabled: "N", seq: 1 };
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  dictDataEditRef.value.data = { ...row };
-  dictDataEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -266,7 +266,11 @@ onMounted(() => {
       </el-table-column>
     </el-table>
   </div>
-  <DictDataEdit ref="dictDataEditRef" @refresh-table="loadTableData"></DictDataEdit>
+  <DictDataEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></DictDataEdit>
 </template>
 
 <style scoped>

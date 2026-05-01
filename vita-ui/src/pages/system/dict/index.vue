@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { dictTypeApi } from "@/api/system/dict-api";
+import { dictTypeApi } from "@/api/system/dict-api.js";
 import { columns } from "./columns.js";
 import DictTypeEdit from "./components/dict-type-edit.vue";
 
@@ -46,17 +46,19 @@ const loadTableData = () => {
   });
 };
 
-const dictTypeEditRef = useTemplateRef("dictTypeEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  dictTypeEditRef.value.data = {};
-  dictTypeEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  dictTypeEditRef.value.data = { ...row };
-  dictTypeEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -312,7 +314,11 @@ onMounted(() => {
     />
   </div>
 
-  <DictTypeEdit ref="dictTypeEditRef" @refresh-table="loadTableData"></DictTypeEdit>
+  <DictTypeEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></DictTypeEdit>
 </template>
 
 <style scoped></style>
