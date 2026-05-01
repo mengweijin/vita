@@ -71,27 +71,6 @@ watch(
   },
   { immediate: true },
 );
-
-// -------------------------------------
-const deptList = ref([]);
-
-const treeOptions = computed(() => {
-  // 使用临时数组避免污染原始数据，并转换 disabled 字段值为布尔值
-  const list = deptList.value
-    // 禁用当前节点及其子节点的选择，避免父子部门死循环。并转换 disabled 字段值为布尔值。
-    .map((item) => ({
-      ...item,
-      disabled: item.id === props.data?.id || item.ancestors.includes(props.data?.id),
-    }));
-  // 添加全路径名称
-  utils.addFullPath(list, { pathKey: "name" });
-  // 转换为树形结构
-  return utils.toArrayTree(list, { sortKey: "seq" });
-});
-
-onMounted(async () => {
-  deptList.value = await deptApi.list();
-});
 </script>
 
 <template>
@@ -105,21 +84,7 @@ onMounted(async () => {
   >
     <el-form ref="formRef" :model="form" label-width="auto">
       <el-form-item prop="parentId" label="父部门">
-        <el-tree-select
-          v-model="form.parentId"
-          :data="treeOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
-          check-strictly
-          filterable
-          clearable
-          default-expand-all
-          placeholder=""
-          :disabled="isEdit"
-        >
-          <template #default="{ data: { name } }">
-            {{ name }}
-          </template>
-        </el-tree-select>
+        <VtSelectDept v-model="form.parentId" :disabled="isEdit" />
       </el-form-item>
 
       <el-form-item

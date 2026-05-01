@@ -269,7 +269,7 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="180">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
@@ -305,6 +305,42 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+            <template v-if="scope.row.disabled === 'Y'">
+              <el-tooltip content="启用" placement="top">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  style="margin-left: 0px"
+                  @click="handleEnable(scope.row.id)"
+                  v-permission="'system:category:update'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ri:checkbox-circle-line"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
+            <template v-else>
+              <el-tooltip content="停用" placement="top">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  style="margin-left: 0px"
+                  @click="handleDisable(scope.row.id)"
+                  v-permission="'system:category:update'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ri:prohibited-2-line"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
             <el-tooltip content="删除" placement="top" v-if="scope.row.children?.length <= 0">
               <div style="display: inline-block">
                 <el-popconfirm

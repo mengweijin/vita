@@ -48,16 +48,10 @@ public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO,
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateById(CategoryDO entity) {
-        CategoryDO dept = this.getById(entity.getId());
-        // 父部门未发生改变
-        if (dept.getParentId().equals(entity.getParentId())) {
-            return super.updateById(entity);
-        }
-
-        // 父部门发生了改变。先更新本身的祖级列表，再递归更新子部门的祖级列表
+        // 更新本身的祖级列表
         String ancestors = this.generateAncestors(entity.getParentId());
         entity.setAncestors(ancestors);
-        // 更新本身（包括本身的祖级列表）
+        // 更新本身
         super.updateById(entity);
 
         // 更新子部门的祖级列表

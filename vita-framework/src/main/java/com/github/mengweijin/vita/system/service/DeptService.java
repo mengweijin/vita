@@ -50,13 +50,7 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateById(DeptDO entity) {
-        DeptDO dept = this.getById(entity.getId());
-        // 父部门未发生改变
-        if (dept.getParentId().equals(entity.getParentId())) {
-            return super.updateById(entity);
-        }
-
-        // 父部门发生了改变。先更新本身的祖级列表，再递归更新子部门的祖级列表
+        // 更新本身的祖级列表
         String ancestors = this.generateAncestors(entity.getParentId());
         entity.setAncestors(ancestors);
         // 更新本身（包括本身的祖级列表）

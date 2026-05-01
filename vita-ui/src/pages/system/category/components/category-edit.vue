@@ -135,18 +135,6 @@ onMounted(async () => {
 
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item prop="disabled" label="状态">
-            <el-switch
-              v-model="form.disabled"
-              inline-prompt
-              active-text="启用"
-              inactive-text="停用"
-              active-value="N"
-              inactive-value="Y"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item prop="seq" label="排序">
             <el-input-number v-model="form.seq" :min="1" />
           </el-form-item>
