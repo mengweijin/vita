@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { configApi } from "@/api/system/config-api";
+import { configApi } from "@/api/system/config-api.js";
 import { columns } from "./columns.js";
 import ConfigEdit from "./components/config-edit.vue";
 
@@ -44,17 +44,19 @@ const loadTableData = () => {
   });
 };
 
-const configEditRef = useTemplateRef("configEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  configEditRef.value.data = {};
-  configEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  configEditRef.value.data = { ...row };
-  configEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -310,7 +312,11 @@ onMounted(() => {
     />
   </div>
 
-  <ConfigEdit ref="configEditRef" @refresh-table="loadTableData"></ConfigEdit>
+  <ConfigEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></ConfigEdit>
 </template>
 
 <style scoped></style>
