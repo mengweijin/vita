@@ -1,79 +1,80 @@
 <script setup>
-import { postApi } from "@/api/system/post-api";
+import { postApi } from "@/api/system/post-api.js";
+import utils from "@/utils/utils.js";
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+  },
+  data: {
+    type: Object,
+    default: null,
+  },
+});
 
-const loading = ref(true);
+const emit = defineEmits(["update:visible", "refresh"]);
 
-const visible = ref(false);
-
-const data = ref({});
-
-/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
-const form = reactive({
+// 是否为编辑态（有 id 视为编辑）。!! 是 JavaScript 里快速把一个值转换成布尔值（true/false）的简写，本质是两次取反
+const isEdit = computed(() => !!props.data?.id);
+const INITIAL_FORM = {
   code: undefined,
   disabled: "N",
   id: undefined,
   name: undefined,
   remark: undefined,
   seq: 1,
-});
-
-const init = () => {
-  form.id = data.value.id ?? undefined;
-  form.name = data.value.name ?? undefined;
-  form.code = data.value.code ?? undefined;
-  form.seq = data.value.seq ?? 1;
-  form.disabled = data.value.disabled ?? "N";
-  form.remark = data.value.remark ?? undefined;
 };
+
+/** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
+const form = ref({ ...INITIAL_FORM });
 
 const formRef = useTemplateRef("formRef");
-
-const onSubmit = () => {
-  formRef.value.validate((valid, fields) => {
-    if (!valid) {
-      // fields 只有在验证失败的情况下才有值
-      console.log(fields);
-      return;
-    }
-    if (form.id) {
-      postApi.update(form).then((r) => {
-        emit("refresh-table");
-        onClosed();
-      });
-    } else {
-      postApi.create(form).then((r) => {
-        emit("refresh-table");
-        onClosed();
-      });
-    }
-  });
-};
-
-const emit = defineEmits(["refresh-table"]);
-
-const onOpened = () => {
-  loading.value = true;
-  init();
-  loading.value = false;
+const onReset = () => {
+  formRef.value?.resetFields();
+  // 重置后清除验证错误
+  formRef.value?.clearValidate();
 };
 
 const onClosed = () => {
-  visible.value = false;
-  data.value = {};
-  init();
+  emit("update:visible", false);
 };
 
-/** 暴露给父组件，父组件可通过 deptEditRef.value.visible = true; 来赋值 */
-defineExpose({ data, visible });
+const onSubmit = async () => {
+  const valid = await formRef.value.validate().catch(() => false);
+  if (valid) {
+    if (isEdit.value) {
+      await postApi.update(form.value);
+    } else {
+      await postApi.create(form.value);
+    }
+    emit("refresh");
+    emit("update:visible", false);
+  }
+};
+
+// 监听 data 变化：回填表单或重置
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+      // 填充表单，仅挑选 INITIAL_FORM 中定义的字段以避免冗余提交
+      form.value = utils.pick(val, Object.keys(INITIAL_FORM));
+    } else {
+      // 当关闭弹窗或清除数据时，重置表单
+      formRef.value?.clearValidate();
+      form.value = { ...INITIAL_FORM };
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <el-dialog
-    v-model="visible"
-    :title="data?.id ? '编辑' : '新增'"
+    :model-value="visible"
+    :title="isEdit ? '编辑' : '新增'"
     destroy-on-close
     align-center
-    @opened="onOpened"
     @closed="onClosed"
     width="40%"
   >
@@ -128,7 +129,7 @@ defineExpose({ data, visible });
           </template>
           确定
         </el-button>
-        <el-button type="warning" @click="init">
+        <el-button type="warning" @click="onReset">
           <template #icon>
             <el-icon>
               <Icon icon="ep:refresh-left"></Icon>

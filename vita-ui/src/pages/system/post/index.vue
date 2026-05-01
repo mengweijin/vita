@@ -45,17 +45,19 @@ const loadTableData = () => {
   });
 };
 
-const postEditRef = useTemplateRef("postEditRef");
+// -----------------------------------------
+const editDialogVisible = ref(false);
+const editData = ref(null);
 
 const handleAdd = () => {
-  postEditRef.value.data = {};
-  postEditRef.value.visible = true;
+  editData.value = null;
+  editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  postEditRef.value.data = { ...row };
-  postEditRef.value.visible = true;
+  editData.value = { ...row };
+  editDialogVisible.value = true;
 };
 
 /** selected rows */
@@ -302,7 +304,11 @@ onMounted(() => {
     />
   </div>
 
-  <PostEdit ref="postEditRef" @refresh-table="loadTableData"></PostEdit>
+  <PostEdit
+    v-model:visible="editDialogVisible"
+    :data="editData"
+    @refresh="loadTableData"
+  ></PostEdit>
 </template>
 
 <style scoped></style>
