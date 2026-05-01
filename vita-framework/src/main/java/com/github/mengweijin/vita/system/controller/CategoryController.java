@@ -48,8 +48,8 @@ public class CategoryController {
     }
 
     @GetMapping("/list/children/by/code/{code}")
-    public List<CategoryVO> listChildrenByCode(@PathVariable("code") String code, boolean withSelf) {
-        List<CategoryDO> list = categoryService.getChildrenListByCode(code, withSelf);
+    public List<CategoryVO> listChildrenByCode(@PathVariable("code") String code, boolean withSelf, boolean withDisabled) {
+        List<CategoryDO> list = categoryService.getChildrenListByCode(code, withSelf, withDisabled);
         return MapstructUtils.getConverter().convert(list, CategoryVO.class);
     }
 

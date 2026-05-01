@@ -129,8 +129,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     public LambdaQueryWrapper<UserDO> buildQueryWrapper(UserDO user) {
         List<Long> deptIds = new ArrayList<>();
         if (!Objects.isNull(user.getDeptId())) {
-            deptIds = deptService.getChildrenIds(user.getDeptId());
-            deptIds.add(user.getDeptId());
+            deptIds = deptService.getChildrenIds(user.getDeptId(), true);
         }
 
         LambdaQueryWrapper<UserDO> wrapper = Wrappers.lambdaQuery();
@@ -156,8 +155,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
     }
 
     public Set<Long> getUserIdsInDeptId(Long deptId) {
-        List<Long> deptIds = deptService.getChildrenIds(deptId);
-        deptIds.add(deptId);
+        List<Long> deptIds = deptService.getChildrenIds(deptId, true);
         List<UserDO> list = this.lambdaQuery().select(UserDO::getId).in(UserDO::getDeptId, deptIds).list();
         return list.stream().map(UserDO::getId).collect(Collectors.toSet());
     }

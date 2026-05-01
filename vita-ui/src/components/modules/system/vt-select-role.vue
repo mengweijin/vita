@@ -10,6 +10,10 @@ const props = defineProps({
     default: true,
     type: Boolean,
   },
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
   size: {
     default: "default",
     type: String,
@@ -20,27 +24,22 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: String || Array });
 
 const roleList = ref([]);
 
-const initRoleList = () => {
-  roleApi.list({ disabled: "N" }).then((res) => {
-    roleList.value = res;
-  });
-};
-
-onMounted(() => {
-  initRoleList();
+onMounted(async () => {
+  roleList.value = await roleApi.list({ disabled: "N" });
 });
 </script>
 
 <template>
   <el-select
-    v-model="selectValue"
+    v-model="modelValue"
     clearable
     :filterable="props.filterable"
     :multiple="props.multiple"
+    :disabled="props.disabled"
     :size="props.size"
     :style="props.style"
     placeholder="请选择"

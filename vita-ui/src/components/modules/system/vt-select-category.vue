@@ -7,15 +7,19 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  containRootNode: {
+  containRoot: {
     default: true,
     type: Boolean,
   },
   filterable: {
-    default: false,
+    default: true,
     type: Boolean,
   },
   multiple: {
+    default: false,
+    type: Boolean,
+  },
+  disabled: {
     default: false,
     type: Boolean,
   },
@@ -29,7 +33,7 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: String || Array });
 
 const categoryList = ref([]);
 
@@ -41,19 +45,20 @@ const treeOptions = computed(() => {
 });
 
 onMounted(async () => {
-  categoryList.value = await categoryApi.listChildrenByCode(props.code, props.containRootNode);
+  categoryList.value = await categoryApi.listChildrenByCode(props.code, props.containRoot, false);
 });
 </script>
 
 <template>
   <el-tree-select
-    v-model="selectValue"
+    v-model="modelValue"
     :data="treeOptions"
     :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
     check-strictly
     clearable
     :filterable="props.filterable"
     :multiple="props.multiple"
+    :disabled="props.disabled"
     :size="props.size"
     :style="props.style"
     default-expand-all

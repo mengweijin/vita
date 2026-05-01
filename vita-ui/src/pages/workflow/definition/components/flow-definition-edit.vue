@@ -91,12 +91,7 @@ defineExpose({ data, visible });
         label="流程分类"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <VtSelectCategory
-          code="vt_workflow"
-          v-model="form.category"
-          :containRootNode="false"
-          :filterable="true"
-        />
+        <VtSelectCategory v-model="form.category" code="vt_workflow" :containRoot="false" />
       </el-form-item>
       <el-form-item
         prop="flowName"

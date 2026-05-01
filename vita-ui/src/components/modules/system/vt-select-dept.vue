@@ -11,6 +11,10 @@ const props = defineProps({
     default: false,
     type: Boolean,
   },
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
   size: {
     default: "default",
     type: String,
@@ -21,36 +25,29 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: String || Array });
 
 const deptList = ref([]);
 
-const initDeptList = () => {
-  deptApi.list({ disabled: "N" }).then((res) => {
-    deptList.value = res;
-  });
-};
-
-const deptTreeSelectOptions = computed(() => {
-  deptList.value.forEach((item) => {
-    item.disabled = false;
-  });
-  utils.addFullPath(deptList.value, { pathKey: "name" });
-  return utils.toArrayTree(deptList.value, { sortKey: "seq" });
+const treeOptions = computed(() => {
+  const list = deptList.value.map((item) => ({ ...item, disabled: item.disabled === "Y" }));
+  utils.addFullPath(list, { pathKey: "name" });
+  return utils.toArrayTree(list, { sortKey: "seq" });
 });
 
-onMounted(() => {
-  initDeptList();
+onMounted(async () => {
+  deptList.value = await deptApi.list({ disabled: "N" });
 });
 </script>
 
 <template>
   <el-tree-select
-    v-model="selectValue"
-    :data="deptTreeSelectOptions"
+    v-model="modelValue"
+    :data="treeOptions"
     :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
     check-strictly
     clearable
+    :disabled="props.disabled"
     :filterable="props.filterable"
     :multiple="props.multiple"
     :size="props.size"

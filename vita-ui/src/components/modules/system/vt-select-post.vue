@@ -10,6 +10,10 @@ const props = defineProps({
     default: true,
     type: Boolean,
   },
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
   size: {
     default: "default",
     type: String,
@@ -20,27 +24,22 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: String || Array });
 
 const postList = ref([]);
 
-const initPostList = () => {
-  postApi.list({ disabled: "N" }).then((res) => {
-    postList.value = res;
-  });
-};
-
-onMounted(() => {
-  initPostList();
+onMounted(async () => {
+  postList.value = await postApi.list({ disabled: "N" });
 });
 </script>
 
 <template>
   <el-select
-    v-model="selectValue"
+    v-model="modelValue"
     clearable
     :filterable="props.filterable"
     :multiple="props.multiple"
+    :disabled="props.disabled"
     :size="props.size"
     :style="props.style"
     placeholder="请选择"

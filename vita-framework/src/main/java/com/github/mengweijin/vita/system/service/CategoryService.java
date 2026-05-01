@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Category Service
@@ -42,21 +41,8 @@ public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO,
         // 设置祖级列表
         String ancestors = this.generateAncestors(entity.getParentId());
         entity.setAncestors(ancestors);
-
-        // 设置启用/停用状态（优先与父级状态保持一致）
-        String disabled = this.getParentDisabledStatus(entity.getParentId());
-        entity.setDisabled(disabled);
-
         // 保存
         return super.save(entity);
-    }
-
-    private String getParentDisabledStatus(Long parentId) {
-        if (parentId == null) {
-            return EYesNo.N.getValue();
-        }
-        CategoryDO parent = this.getById(parentId);
-        return Optional.ofNullable(parent).map(CategoryDO::getDisabled).orElse(EYesNo.N.getValue());
     }
 
     @Override
@@ -231,11 +217,15 @@ public class CategoryService extends BaseVitaService<CategoryMapper, CategoryDO,
         return rootPage;
     }
 
-    public List<CategoryDO> getChildrenListByCode(String code, boolean withSelf) {
+    public List<CategoryDO> getChildrenListByCode(String code, boolean withSelf, boolean withDisabled) {
         CategoryDO category = this.getByCode(code);
         if (category == null) {
             return Collections.emptyList();
         }
-        return this.getChildren(category.getId(), withSelf);
+        List<CategoryDO> children = this.getChildren(category.getId(), withSelf);
+        if (!withDisabled) {
+            children = children.stream().filter(i -> EYesNo.N.getValue().equals(i.getDisabled())).toList();
+        }
+        return children;
     }
 }

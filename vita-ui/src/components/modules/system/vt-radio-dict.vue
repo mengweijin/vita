@@ -12,10 +12,6 @@ const props = defineProps({
     default: false,
     type: Boolean,
   },
-  showDisabled: {
-    default: false,
-    type: Boolean,
-  },
   size: {
     default: "default",
     type: String,
@@ -26,7 +22,7 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: String || Array });
 
 const options = ref([]);
 
@@ -37,18 +33,13 @@ onMounted(() => {
 
 <template>
   <el-radio-group
-    v-model="selectValue"
+    v-model="modelValue"
     :disabled="props.disabled"
     :size="props.size"
     :style="props.style"
   >
     <template v-for="item in options" :key="item.val">
-      <template v-if="item.disabled === 'Y'">
-        <el-radio :value="item.val" disabled v-show="props.showDisabled">{{ item.label }}</el-radio>
-      </template>
-      <template v-else>
-        <el-radio :value="item.val">{{ item.label }}</el-radio>
-      </template>
+      <el-radio :value="item.val" v-if="item.disabled === 'N'">{{ item.label }}</el-radio>
     </template>
   </el-radio-group>
 </template>

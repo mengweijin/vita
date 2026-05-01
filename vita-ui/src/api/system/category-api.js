@@ -9,8 +9,11 @@ export const categoryApi = {
 
   pageRoot: (args) => http.get(`${URL_PREFIX}/page/root`, { params: args }),
 
-  listChildrenByCode: (code, withSelf = true) =>
-    http.get(`${URL_PREFIX}/list/children/by/code/${code}`, { withSelf: withSelf }),
+  listChildrenByCode: (code, withSelf = true, withDisabled = false) =>
+    http.get(`${URL_PREFIX}/list/children/by/code/${code}`, {
+      withSelf: withSelf,
+      withDisabled: withDisabled,
+    }),
 
   enable: (id) => http.post(`${URL_PREFIX}/enable/${id}`),
 

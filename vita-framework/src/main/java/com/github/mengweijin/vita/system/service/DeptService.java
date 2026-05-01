@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * <p>
@@ -44,21 +43,8 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
         // 设置祖级列表
         String ancestors = this.generateAncestors(entity.getParentId());
         entity.setAncestors(ancestors);
-
-        // 设置启用/停用状态（优先与父级状态保持一致）
-        String disabled = this.getParentDisabledStatus(entity.getParentId());
-        entity.setDisabled(disabled);
-
         // 保存
         return super.save(entity);
-    }
-
-    private String getParentDisabledStatus(Long parentId) {
-        if (parentId == null) {
-            return EYesNo.N.getValue();
-        }
-        DeptDO parent = this.getById(parentId);
-        return Optional.ofNullable(parent).map(DeptDO::getDisabled).orElse(EYesNo.N.getValue());
     }
 
     @Override
@@ -115,18 +101,24 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
         return strings.stream().map(Long::valueOf).toList();
     }
 
-    public List<Long> getChildrenIds(Long id) {
-        List<DeptDO> children = this.getChildren(id);
+    public List<Long> getChildrenIds(Long id, boolean withSelf) {
+        List<DeptDO> children = this.getChildren(id, withSelf);
         return children.stream().map(DeptDO::getId).toList();
     }
 
-    public List<DeptDO> getChildren(Long id) {
+    public List<DeptDO> getChildren(Long id, boolean withSelf) {
         LambdaQueryChainWrapper<DeptDO> wrapper = this.lambdaQuery();
         if (id == null) {
             return wrapper.list();
         }
         DeptDO dept = this.getById(id);
-        return wrapper.likeRight(DeptDO::getAncestors, dept.getAncestors() + dept.getId()).list();
+        List<DeptDO> list = wrapper.likeRight(DeptDO::getAncestors, dept.getAncestors() + dept.getId()).list();
+        if (withSelf) {
+            List<DeptDO> withSelfList = new ArrayList<>(list);
+            withSelfList.add(0, dept);
+            return withSelfList;
+        }
+        return list;
     }
 
     /**
@@ -191,9 +183,7 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
     }
 
     public boolean disable(Long id) {
-        List<Long> ids = this.getChildrenIds(id);
-        ArrayList<Long> list = new ArrayList<>(ids);
-        list.add(id);
+        List<Long> list = this.getChildrenIds(id, true);
         return this.lambdaUpdate()
                 .set(DeptDO::getDisabled, EYesNo.Y.getValue())
                 .in(DeptDO::getId, list)

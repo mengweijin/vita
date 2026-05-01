@@ -8,6 +8,10 @@ const props = defineProps({
     default: false,
     type: Boolean,
   },
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
   size: {
     default: "default",
     type: String,
@@ -18,7 +22,7 @@ const props = defineProps({
   },
 });
 
-const selectValue = defineModel({ default: [], type: Array });
+const modelValue = defineModel({ default: [], type: Array });
 
 const treeRef = useTemplateRef("treeRef");
 
@@ -97,22 +101,22 @@ const handleTableRowClick = (row) => {
     if (!utils.find(selected.value, (item) => item.id === row.id)) {
       selected.value.push(row);
     }
-    if (!utils.includes(selectValue.value, row.id)) {
-      selectValue.value.push(row.id);
+    if (!utils.includes(modelValue.value, row.id)) {
+      modelValue.value.push(row.id);
     }
     return;
   }
 
-  if (selectValue.value.length) {
+  if (modelValue.value.length) {
     if (!utils.find(selected.value, (item) => item.id === row.id)) {
       selected.value.push(row);
     }
     // 清空数组
-    selectValue.value.splice(0, selectValue.value.length);
-    selectValue.value.push(row.id);
+    modelValue.value.splice(0, modelValue.value.length);
+    modelValue.value.push(row.id);
   } else {
     selected.value.push(row);
-    selectValue.value.push(row.id);
+    modelValue.value.push(row.id);
   }
 };
 
@@ -143,9 +147,10 @@ onMounted(() => {
     :popper-append-to-body="false"
   >
     <el-input-tag
-      v-model="selectValue"
+      v-model="modelValue"
       draggable
       clearable
+      :disabled="props.disabled"
       :save-on-blur="false"
       :trigger="''"
       :tag-type="'primary'"

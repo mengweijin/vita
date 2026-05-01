@@ -263,19 +263,21 @@ onMounted(() => {
         <template #default="scope">
           <div>
             <el-tooltip content="新增" placement="top">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                @click="handleAdd(scope.row.id)"
-                v-permission="'system:dept:create'"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
+              <template v-if="scope.row.disabled === 'N'">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  @click="handleAdd(scope.row.id)"
+                  v-permission="'system:dept:create'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ep:plus"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </template>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button

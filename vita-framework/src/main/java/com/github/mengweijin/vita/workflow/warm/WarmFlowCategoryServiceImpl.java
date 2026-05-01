@@ -23,7 +23,7 @@ public class WarmFlowCategoryServiceImpl implements org.dromara.warm.flow.ui.ser
 
     @Override
     public List<Tree> queryCategory() {
-        List<CategoryDO> list = categoryService.getChildrenListByCode(ECategoryType.VT_WORKFLOW.getValue(), false);
+        List<CategoryDO> list = categoryService.getChildrenListByCode(ECategoryType.VT_WORKFLOW.getValue(), false, false);
         return list.stream()
                 .map(i -> {
                     String id = NumberUtil.toStr(i.getId());
