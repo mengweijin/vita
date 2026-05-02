@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { ${entityPropertyName}Api } from "@/api/${module}/${entityNameSymbolCase}-api.js";
-import { columns } from "./columns.js";
 import ${entityName}Edit from "./components/${entityNameSymbolCase}-edit.vue";
+import { use${entityPropertyName} } from "./hooks.js";
+const { columns } = use${entityPropertyName}();
 
 const loading = ref(true);
 

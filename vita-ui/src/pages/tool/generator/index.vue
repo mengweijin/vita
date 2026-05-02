@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { generatorApi } from "@/api/tool/generator-api.js";
-import { columns } from "./columns.js";
+import { useGenerator } from "./hooks.js";
 import GeneratorDialog from "./components/generator-dialog.vue";
+const { columns } = useGenerator();
 
 const loading = ref(true);
 

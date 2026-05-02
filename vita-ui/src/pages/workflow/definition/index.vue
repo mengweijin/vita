@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
-import { columns } from "./columns.js";
+import { useFlowDefinition } from "./hooks.js";
 import FlowDefinitionEdit from "./components/flow-definition-edit.vue";
+const { columns } = useFlowDefinition();
 
 const loading = ref(true);
 
