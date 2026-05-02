@@ -7,8 +7,9 @@ meta:
 <script setup>
 import { formApi } from "@/api/system/form-api.js";
 import utils from "@/utils/utils.js";
-import { columns } from "./columns.js";
+import { useForm } from "./hooks.js";
 import FormEdit from "./components/form-edit.vue";
+const { columns } = useForm();
 
 const loading = ref(true);
 

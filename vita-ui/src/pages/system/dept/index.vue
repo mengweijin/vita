@@ -7,8 +7,9 @@ meta:
 <script setup>
 import { deptApi } from "@/api/system/dept-api.js";
 import utils from "@/utils/utils.js";
-import { columns } from "./columns.js";
+import { useDept } from "./hooks.js";
 import DeptEdit from "./components/dept-edit.vue";
+const { columns } = useDept();
 
 const loading = ref(true);
 

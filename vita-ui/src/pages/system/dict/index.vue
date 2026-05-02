@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { dictTypeApi } from "@/api/system/dict-api.js";
-import { columns } from "./columns.js";
+import { useDict } from "./hooks.js";
 import DictTypeEdit from "./components/dict-type-edit.vue";
+const { columns } = useDict();
 
 const router = useRouter();
 

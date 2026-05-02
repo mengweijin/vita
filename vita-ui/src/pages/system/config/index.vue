@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { configApi } from "@/api/system/config-api.js";
-import { columns } from "./columns.js";
+import { useConfig } from "./hooks.js";
 import ConfigEdit from "./components/config-edit.vue";
+const { columns } = useConfig();
 
 const loading = ref(true);
 

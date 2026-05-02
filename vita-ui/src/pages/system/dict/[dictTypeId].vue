@@ -5,8 +5,9 @@ meta:
 
 <script setup>
 import { dictDataApi, dictTypeApi } from "@/api/system/dict-api.js";
-import { dictDataColumns as columns } from "./columns.js";
+import { useDict } from "./hooks.js";
 import DictDataEdit from "./components/dict-data-edit.vue";
+const columns = useDict().dictDataColumns;
 
 const route = useRoute();
 
