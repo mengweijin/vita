@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { logOperationApi } from "@/api/monitor/log-operation-api";
-import { columns } from "./columns.js";
 import LogOperationDetail from "./components/log-operation-detail.vue";
+import { useLogOperation } from "./hooks.js";
+const { columns } = useLogOperation();
 
 const loading = ref(true);
 

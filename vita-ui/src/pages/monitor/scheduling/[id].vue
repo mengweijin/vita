@@ -5,7 +5,9 @@ meta:
 
 <script setup>
 import { schedulingTaskLogApi } from "@/api/monitor/scheduling-task-api.js";
-import { taskLogColumns as columns } from "./columns.js";
+import { useScheduling } from "./hooks.js";
+const { taskLogColumns } = useScheduling();
+const columns = taskLogColumns;
 
 const route = useRoute();
 

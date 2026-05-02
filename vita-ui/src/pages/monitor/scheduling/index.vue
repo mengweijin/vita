@@ -8,8 +8,9 @@ meta:
 import { schedulingTaskApi } from "@/api/monitor/scheduling-task-api.js";
 import cronstrue from "cronstrue";
 import "cronstrue/locales/zh_CN";
-import { columns } from "./columns.js";
+import { useScheduling } from "./hooks.js";
 import SchedulingTaskEdit from "./components/scheduling-task-edit.vue";
+const { columns } = useScheduling();
 
 const router = useRouter();
 

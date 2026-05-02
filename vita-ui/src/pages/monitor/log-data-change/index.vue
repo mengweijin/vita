@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { logDataChangeApi } from "@/api/monitor/log-data-change-api.js";
-import { columns } from "./columns.js";
 import LogDataChangeDetail from "./components/log-data-change-detail.vue";
+import { useLogDataChange } from "./hooks.js";
+const { columns } = useLogDataChange();
 
 const loading = ref(true);
 

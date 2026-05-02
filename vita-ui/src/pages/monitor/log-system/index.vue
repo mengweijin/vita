@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { logSystemApi } from "@/api/monitor/log-system-api";
-import { columns } from "./columns.js";
 import LogSystemDetail from "./components/log-system-detail.vue";
+import { useLogSystem } from "./hooks.js";
+const { columns } = useLogSystem();
 
 const loading = ref(true);
 

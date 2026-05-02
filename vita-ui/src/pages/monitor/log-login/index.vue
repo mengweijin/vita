@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { logLoginApi } from "@/api/monitor/log-login-api.js";
-import { columns } from "./columns.js";
 import LogLoginDetail from "./components/log-login-detail.vue";
+import { useLogLogin } from "./hooks.js";
+const { columns } = useLogLogin();
 
 const loading = ref(true);
 
