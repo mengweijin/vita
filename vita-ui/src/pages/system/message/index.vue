@@ -12,7 +12,8 @@ import { useMessageStore } from "@/store/message-store.js";
 const messageStore = useMessageStore();
 const { notViewedCount } = storeToRefs(messageStore);
 
-import { columns } from "./columns.js";
+import { useMessage } from "./hooks.js";
+const { columns } = useMessage();
 
 const dictStore = useDictStore();
 

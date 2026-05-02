@@ -5,13 +5,14 @@ meta:
 </route>
 
 <script setup>
-import { deptApi } from "@/api/system/dept-api";
-import { userApi } from "@/api/system/user-api";
+import { deptApi } from "@/api/system/dept-api.js";
+import { userApi } from "@/api/system/user-api.js";
 import utils from "@/utils/utils.js";
-import { columns } from "./columns.js";
+import { useUser } from "./hooks.js";
 import UserEdit from "./components/user-edit.vue";
 import UserResetPassword from "./components/user-reset-password.vue";
 import UserSetRoles from "./components/user-set-roles.vue";
+const { columns } = useUser();
 
 const loading = ref(false);
 

@@ -6,8 +6,9 @@ meta:
 
 <script setup>
 import { postApi } from "@/api/system/post-api.js";
-import { columns } from "./columns.js";
+import { usePost } from "./hooks.js";
 import PostEdit from "./components/post-edit.vue";
+const { columns } = usePost();
 
 const loading = ref(true);
 

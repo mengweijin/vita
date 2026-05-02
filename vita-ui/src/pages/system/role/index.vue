@@ -6,10 +6,11 @@ meta:
 
 <script setup>
 import { roleApi } from "@/api/system/role-api";
-import { columns } from "./columns.js";
+import { useRole } from "./hooks.js";
 import RoleEdit from "./components/role-edit.vue";
 import RoleMenuDialog from "./components/role-menu-dialog.vue";
 import RoleUserDialog from "./components/role-user-dialog.vue";
+const { columns } = useRole();
 
 const loading = ref(true);
 
