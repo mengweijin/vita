@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import lombok.Data;
@@ -40,6 +42,7 @@ public abstract class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @JsonSerialize(using= ToStringSerializer.class)
     @TableId(value = "ID", type = IdType.ASSIGN_ID)
     protected Long id;
 
@@ -51,9 +54,11 @@ public abstract class BaseEntity implements Serializable {
     @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     protected LocalDateTime updateTime;
 
+    @JsonSerialize(using=ToStringSerializer.class)
     @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
     protected Long createBy;
 
+    @JsonSerialize(using=ToStringSerializer.class)
     @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
     protected Long updateBy;
 

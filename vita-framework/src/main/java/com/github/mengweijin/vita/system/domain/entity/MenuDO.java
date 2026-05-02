@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.system.domain.bo.MenuBO;
 import com.github.mengweijin.vita.system.domain.vo.MenuVO;
@@ -29,6 +31,7 @@ public class MenuDO extends BaseEntity {
     /**
      * 父菜单ID
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long parentId;
 
     /**
