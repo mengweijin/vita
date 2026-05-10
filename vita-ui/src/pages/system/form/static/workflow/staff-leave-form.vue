@@ -1,10 +1,8 @@
 <script setup>
-const INITIAL_FORM = {
-  name: undefined,
-  code: undefined,
-};
-
-const modelValue = defineModel({ type: Object, default: () => ({ ...INITIAL_FORM }) });
+const modelValue = defineModel({
+  type: Object,
+  default: () => ({ name: undefined, code: undefined }),
+});
 
 const formRef = useTemplateRef("formRef");
 
