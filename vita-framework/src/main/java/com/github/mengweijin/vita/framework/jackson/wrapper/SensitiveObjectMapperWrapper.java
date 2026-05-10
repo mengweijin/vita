@@ -42,7 +42,7 @@ public class SensitiveObjectMapperWrapper extends AbstractObjectMapperWrapper {
     private static ObjectMapper createSensitiveObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         //只序列化对象值不为 null 的属性
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
         //反序列化的时候如果多了其他属性,不抛出异常
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         //如果是空对象的时候,不抛异常

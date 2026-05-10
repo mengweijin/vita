@@ -7,8 +7,10 @@ meta:
 <script setup>
 import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
 import { useFlowDefinition } from "./hooks.js";
-import FlowDefinitionEdit from "./components/flow-definition-edit.vue";
+import utils from "@/utils/utils.js";
 const { columns } = useFlowDefinition();
+
+const router = useRouter();
 
 const loading = ref(true);
 
@@ -59,16 +61,16 @@ const loadTableData = () => {
 
 // -----------------------------------------
 const editDialogVisible = ref(false);
-const editData = ref(null);
+const editDataId = ref(null);
 
 const handleAdd = () => {
-  editData.value = null;
+  editDataId.value = "";
   editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
-  editData.value = { ...row };
+  editDataId.value = row.id;
   editDialogVisible.value = true;
 };
 
@@ -416,11 +418,12 @@ onMounted(() => {
     />
   </div>
 
-  <FlowDefinitionEdit
+  <VtDialogWorkflowDesigner
     v-model:visible="editDialogVisible"
-    :data="editData"
+    :id="editDataId"
+    :title="utils.isBlank(editDataId) ? '新增' : '编辑'"
     @refresh="loadTableData"
-  ></FlowDefinitionEdit>
+  ></VtDialogWorkflowDesigner>
 </template>
 
 <style scoped></style>

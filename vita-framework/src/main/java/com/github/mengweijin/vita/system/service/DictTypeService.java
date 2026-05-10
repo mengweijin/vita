@@ -4,6 +4,8 @@ import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.cache.CacheConst;
+import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
@@ -12,6 +14,7 @@ import com.github.mengweijin.vita.system.domain.vo.DictTypeVO;
 import com.github.mengweijin.vita.system.mapper.DictTypeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -36,10 +39,9 @@ public class DictTypeService extends BaseVitaService<DictTypeMapper, DictTypeDO,
     @Override
     public boolean removeByIds(Collection<?> list) {
         for (Object id : list) {
-            DictTypeDO dictType = this.getById((Long) id);
-            List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getCode());
+            List<DictDataDO> dictDataList = dictDataService.queryByTypeId((Long) id);
             if (CollUtil.isNotEmpty(dictDataList)) {
-                throw new ClientException("Please remove dict data first in dict type [" + dictType.getName() + "].");
+                throw new ClientException("Please remove dict data first in dict type id=[" + id + "].");
             }
         }
         return super.removeByIds(list);
@@ -58,7 +60,12 @@ public class DictTypeService extends BaseVitaService<DictTypeMapper, DictTypeDO,
         return wrapper;
     }
 
-    public DictTypeDO getByCode(String code) {
+    public DictTypeDO queryByCode(String code) {
         return this.lambdaQuery().eq(DictTypeDO::getCode, code).one();
+    }
+
+    @Cacheable(value = CacheNames.DICT_TYPE_ID_TO_CODE, key = "#id + ''", unless = CacheConst.UNLESS_OBJECT_NULL)
+    public String queryCodeById(Long id) {
+        return this.lambdaQuery().eq(DictTypeDO::getId, id).oneOpt().map(DictTypeDO::getCode).orElse(null);
     }
 }

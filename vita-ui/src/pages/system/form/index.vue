@@ -204,16 +204,10 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.staticRoute.visible"
-        prop="staticRoute"
-        label="静态表单路由路径"
+        v-if="columns.formPath.visible"
+        prop="formPath"
+        label="表单路径"
         min-width="200"
-      />
-      <el-table-column
-        v-if="columns.dynamicId.visible"
-        prop="dynamicId"
-        label="动态表单ID"
-        min-width="180"
       />
       <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="100" />
       <el-table-column

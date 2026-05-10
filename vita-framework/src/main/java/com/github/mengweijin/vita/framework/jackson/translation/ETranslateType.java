@@ -40,6 +40,11 @@ public enum ETranslateType implements IEnum<String> {
     DICT_DATA_TO_LABEL("DICT_DATA_TO_LABEL"),
 
     /**
+     * 字典类型 ID 转 字典类型 code
+     */
+    DICT_TYPE_ID_TO_CODE("DICT_TYPE_ID_TO_CODE"),
+
+    /**
      * 分类 id 转 名称
      */
     CATEGORY_ID_TO_NAME("CATEGORY_ID_TO_NAME");

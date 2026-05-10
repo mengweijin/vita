@@ -12,6 +12,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  dictType: {
+    type: Object,
+    default: null,
+  },
 });
 
 const emit = defineEmits(["update:visible", "refresh"]);
@@ -20,7 +24,7 @@ const emit = defineEmits(["update:visible", "refresh"]);
 const isEdit = computed(() => !!props.data?.id);
 
 const INITIAL_FORM = {
-  code: undefined,
+  typeId: undefined,
   disabled: "N",
   id: undefined,
   label: undefined,
@@ -73,6 +77,17 @@ watch(
   },
   { immediate: true },
 );
+
+// 监听 dictType 改变：回填 typeId
+watch(
+  () => props.dictType,
+  (val) => {
+    if (val) {
+      form.value.typeId = val.id;
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -86,11 +101,10 @@ watch(
   >
     <el-form ref="formRef" :model="form" label-width="auto">
       <el-form-item
-        prop="code"
         label="字典编码"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input v-model="form.code" clearable disabled maxlength="100" autocomplete="off" />
+        <div>{{ props.dictType.code }}</div>
       </el-form-item>
 
       <el-form-item

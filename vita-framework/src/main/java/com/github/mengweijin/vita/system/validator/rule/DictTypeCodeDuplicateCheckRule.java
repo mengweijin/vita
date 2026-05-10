@@ -13,7 +13,7 @@ public class DictTypeCodeDuplicateCheckRule implements CheckValidator.CheckRule 
     @Override
     public boolean isValid(CharSequence value) {
         DictTypeService dictTypeService = SpringUtil.getBean(DictTypeService.class);
-        DictTypeDO dictType = dictTypeService.getByCode((String) value);
+        DictTypeDO dictType = dictTypeService.queryByCode((String) value);
         return dictType == null;
     }
 

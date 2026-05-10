@@ -139,11 +139,10 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
         LambdaQueryWrapper<FormDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(form.getId() != null, FormDO::getId, form.getId());
         wrapper.eq(StrUtil.isNotBlank(form.getType()), FormDO::getType, form.getType());
-        wrapper.eq(form.getDynamicId() != null, FormDO::getDynamicId, form.getDynamicId());
+        wrapper.eq(StrUtil.isNotBlank(form.getFormPath()), FormDO::getFormPath, form.getFormPath());
         wrapper.gt(form.getStartCreateTime() != null, FormDO::getCreateTime, form.getStartCreateTime());
         wrapper.le(form.getEndCreateTime() != null, FormDO::getCreateTime, form.getEndCreateTime());
         wrapper.like(StrUtil.isNotBlank(form.getName()), FormDO::getName, form.getName());
-        wrapper.like(StrUtil.isNotBlank(form.getStaticRoute()), FormDO::getStaticRoute, form.getStaticRoute());
         wrapper.like(StrUtil.isNotBlank(form.getRemark()), FormDO::getRemark, form.getRemark());
         return wrapper;
     }
@@ -155,11 +154,10 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
 
         wrapper.eq(form.getId() != null, FormDO::getId, form.getId());
         wrapper.eq(StrUtil.isNotBlank(form.getType()), FormDO::getType, form.getType());
-        wrapper.eq(form.getDynamicId() != null, FormDO::getDynamicId, form.getDynamicId());
+        wrapper.eq(StrUtil.isNotBlank(form.getFormPath()), FormDO::getFormPath, form.getFormPath());
         wrapper.gt(form.getStartCreateTime() != null, FormDO::getCreateTime, form.getStartCreateTime());
         wrapper.le(form.getEndCreateTime() != null, FormDO::getCreateTime, form.getEndCreateTime());
         wrapper.like(StrUtil.isNotBlank(form.getName()), FormDO::getName, form.getName());
-        wrapper.like(StrUtil.isNotBlank(form.getStaticRoute()), FormDO::getStaticRoute, form.getStaticRoute());
         wrapper.like(StrUtil.isNotBlank(form.getRemark()), FormDO::getRemark, form.getRemark());
         return wrapper;
     }

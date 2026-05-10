@@ -1,5 +1,7 @@
 package com.github.mengweijin.vita.workflow.domain.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
@@ -85,6 +87,7 @@ public class FlowDefinitionVO extends BaseEntity {
     /**
      * 流程激活状态（0挂起 1激活）
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer activityStatus;
 
     /**

@@ -184,6 +184,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/system/form/static/workflow/staff-leave-form': RouteRecordInfo<
+      '/system/form/static/workflow/staff-leave-form',
+      '/system/form/static/workflow/staff-leave-form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/system/menu/': RouteRecordInfo<
       '/system/menu/',
       '/system/menu',
@@ -396,6 +403,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/form/index.vue': {
       routes:
         | '/system/form/'
+      views:
+        | never
+    }
+    'src/pages/system/form/static/workflow/staff-leave-form.vue': {
+      routes:
+        | '/system/form/static/workflow/staff-leave-form'
       views:
         | never
     }

@@ -6,7 +6,6 @@ import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
-import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
 import com.github.mengweijin.vita.system.domain.entity.DictDataDO;
@@ -86,12 +85,6 @@ public class DictDataController {
         return dictDataService.getVoById(id);
     }
 
-    @GetMapping("/query/by/code/{code}")
-    public List<DictDataVO> queryByCode(@PathVariable("code") String code) {
-        List<DictDataDO> list = dictDataService.queryByCode(code);
-        return MapstructUtils.getConverter().convert(list, DictDataVO.class);
-    }
-
     /**
      * <p>
      * Add DictData
@@ -103,7 +96,7 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody DictDataBO bo) {
-        dictDataService.checkValDuplicate(null, bo.getCode(), bo.getVal());
+        dictDataService.checkValDuplicate(null, bo.getTypeId(), bo.getVal());
         boolean bool = dictDataService.save(bo);
         return R.result(bool);
     }
@@ -119,7 +112,7 @@ public class DictDataController {
     @SaCheckPermission("system:dictData:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody DictDataBO bo) {
-        dictDataService.checkValDuplicate(bo.getId(), bo.getCode(), bo.getVal());
+        dictDataService.checkValDuplicate(bo.getId(), bo.getTypeId(), bo.getVal());
         boolean bool = dictDataService.updateById(bo);
         return R.result(bool);
     }

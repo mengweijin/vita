@@ -41,7 +41,7 @@ public class DictValidator implements ConstraintValidator<Dict, CharSequence> {
         }
 
         DictDataService dictDataService = SpringUtil.getBean(DictDataService.class);
-        List<DictDataDO> dictDataList = dictDataService.queryByCode(dictType.getValue());
+        List<DictDataDO> dictDataList = dictDataService.queryByTypeCode(dictType.getValue());
         if (CollUtil.isEmpty(dictDataList)) {
             //禁止默认消息返回
             context.disableDefaultConstraintViolation();

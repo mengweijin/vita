@@ -107,7 +107,7 @@ create unique index UIDX_VT_DICT_TYPE_CODE on VT_DICT_TYPE(CODE);
 drop table IF EXISTS VT_DICT_DATA;
 create TABLE VT_DICT_DATA (
   ID                            bigint NOT NULL comment '主键ID',
-  CODE 		                    varchar(100) NOT NULL comment '字典类型编码',
+  TYPE_ID 		                bigint NOT NULL comment '字典类型ID',
   VAL 		                    varchar(100) NOT NULL comment '字典数据值',
   LABEL 		                varchar(100) NOT NULL comment '字典数据标签名称',
   TAG                           varchar(10) NULL comment '字典数据标签样式。["primary", "success", "info", "warning", "danger"]',
@@ -121,7 +121,7 @@ create TABLE VT_DICT_DATA (
   PRIMARY KEY (ID)
 );
 comment on table VT_DICT_DATA is '字典数据表';
-create unique index UIDX_VT_DICT_DATA_CODE_VAL on VT_DICT_DATA(CODE, VAL);
+create unique index UIDX_VT_DICT_DATA_TYPE_VAL on VT_DICT_DATA(TYPE_ID, VAL);
 
 
 drop table IF EXISTS VT_LOG_SYSTEM;
@@ -422,13 +422,38 @@ create TABLE VT_SCHEDULING_TASK_LOG (
 comment on table VT_SCHEDULING_TASK_LOG is '调度任务日志表';
 
 
-drop table IF EXISTS VT_EXT_PROP_DEFINITION;
-create TABLE VT_EXT_PROP_DEFINITION (
+------------------------------------------------
+-- 表单管理表
+------------------------------------------------
+drop table IF EXISTS VT_FORM;
+create TABLE VT_FORM (
+  ID                            bigint NOT NULL comment '主键ID',
+  PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
+  ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
+  NAME                          varchar(255) NOT NULL comment '表单名称',
+  TYPE                          varchar(64) NOT NULL comment '表单类型（静态表单、动态表单）。关联字典：vt_form_type',
+  FORM_PATH                     varchar(225) DEFAULT NULL comment '静态表单路由路径; 或动态表单 ID',
+  REMARK                        varchar(500) DEFAULT NULL comment '备注',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+comment on table VT_FORM is '表单管理表';
+create index IDX_VT_FORM_ANCESTORS on VT_FORM(ANCESTORS);
+
+
+------------------------------------------------
+-- 扩展属性定义表
+------------------------------------------------
+drop table IF EXISTS VT_EXT_PROP_DEF;
+create TABLE VT_EXT_PROP_DEF (
   ID                            bigint NOT NULL comment '主键ID',
   TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
   LABEL_NAME                    varchar(64) NOT NULL comment '标签名称',
-  PROP_NAME                     varchar(64) NOT NULL comment '属性字段名称',
-  FORM_TYPE                     varchar(64) NOT NULL DEFAULT 'input' comment '表单组件类型。关联字典：vt_ext_prop_form_types',
+  PROP_CODE                     varchar(64) NOT NULL comment '属性字段编码',
+  FORM_COMPONENT_TYPE           varchar(64) NOT NULL DEFAULT 'input' comment '表单组件类型。关联字典：vt_ext_prop_form_component_types',
   MANDATORY                     char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
   MIN                           bigint DEFAULT NULL comment '最小长度（字符串）/最小值（数字类型）',
   MAX                           bigint DEFAULT NULL comment '最大长度（字符串）/最大值（数字类型）',
@@ -441,28 +466,6 @@ create TABLE VT_EXT_PROP_DEFINITION (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-comment on table VT_EXT_PROP_DEFINITION is '扩展属性定义表';
-create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEFINITION(TABLE_NAME, PROP_NAME);
+comment on table VT_EXT_PROP_DEF is '扩展属性定义表';
+create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEF(TABLE_NAME, PROP_CODE);
 
-
-------------------------------------------------
--- 表单管理表
-------------------------------------------------
-drop table IF EXISTS VT_FORM;
-create TABLE VT_FORM (
-  ID                            bigint NOT NULL comment '主键ID',
-  PARENT_ID                     bigint DEFAULT NULL comment 'PARENT ID',
-  ANCESTORS 	                varchar(500) NOT NULL DEFAULT '/' comment '祖级列表',
-  NAME                          varchar(255) NOT NULL comment '表单名称',
-  TYPE                          varchar(64) NOT NULL comment '表单类型（静态表单、动态表单）。关联字典：vt_form_type',
-  STATIC_ROUTE                  varchar(225) DEFAULT NULL comment '静态表单路由路径',
-  DYNAMIC_ID                    bigint DEFAULT NULL comment '动态表单 ID',
-  REMARK                        varchar(500) DEFAULT NULL comment '备注',
-  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
-  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
-  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
-  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
-  PRIMARY KEY (ID)
-);
-comment on table VT_FORM is '表单管理表';
-create index IDX_VT_FORM_ANCESTORS on VT_FORM(ANCESTORS);

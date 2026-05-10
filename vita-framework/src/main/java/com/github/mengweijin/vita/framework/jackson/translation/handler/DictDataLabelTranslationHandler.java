@@ -3,7 +3,9 @@ package com.github.mengweijin.vita.framework.jackson.translation.handler;
 import cn.hutool.v7.core.text.StrUtil;
 import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
 import com.github.mengweijin.vita.framework.jackson.translation.Translation;
+import com.github.mengweijin.vita.system.domain.entity.DictTypeDO;
 import com.github.mengweijin.vita.system.service.DictDataService;
+import com.github.mengweijin.vita.system.service.DictTypeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DictDataLabelTranslationHandler implements ITranslationHandler {
 
+    private DictTypeService dictTypeService;
+
     private DictDataService dictDataService;
 
     @Override
@@ -31,7 +35,11 @@ public class DictDataLabelTranslationHandler implements ITranslationHandler {
         try {
             String dictValue = StrUtil.toStringOrNull(value);
             if (StrUtil.isNotBlank(dictValue)) {
-                return dictDataService.getLabelByCodeAndVal(translation.dictType(), dictValue);
+                DictTypeDO dictType = dictTypeService.queryByCode(translation.dictType());
+                if (dictType == null) {
+                    return null;
+                }
+                return dictDataService.getLabelByTypeIdAndDataVal(dictType.getId(), dictValue);
             }
             return null;
         } catch (NumberFormatException e) {

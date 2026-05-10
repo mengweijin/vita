@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.system.domain.bo.DictDataBO;
 import com.github.mengweijin.vita.system.domain.vo.DictDataVO;
@@ -27,9 +29,10 @@ import lombok.EqualsAndHashCode;
 public class DictDataDO extends BaseEntity {
 
     /**
-     * 字典类型编码。
+     * 字典类型编码ID
      */
-    private String code;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long typeId;
 
     /**
      * 字典数据值

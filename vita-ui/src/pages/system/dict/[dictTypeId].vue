@@ -24,7 +24,7 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const loadTableData = () => {
-  dictDataApi.list({ code: dictType.value.code }).then((res) => {
+  dictDataApi.list({ typeId: dictTypeId }).then((res) => {
     tableData.value = res;
     loading.value = false;
   });
@@ -35,7 +35,7 @@ const editDialogVisible = ref(false);
 const editData = ref(null);
 
 const handleAdd = () => {
-  editData.value = { code: dictType.value.code, disabled: "N", seq: 1 };
+  editData.value = null;
   editDialogVisible.value = true;
 };
 
@@ -270,6 +270,7 @@ onMounted(() => {
   <DictDataEdit
     v-model:visible="editDialogVisible"
     :data="editData"
+    :dictType="dictType"
     @refresh="loadTableData"
   ></DictDataEdit>
 </template>

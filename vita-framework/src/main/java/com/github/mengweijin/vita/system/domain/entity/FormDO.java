@@ -30,7 +30,7 @@ public class FormDO extends BaseEntity {
     /**
      * 父 ID
      */
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /**
@@ -49,14 +49,9 @@ public class FormDO extends BaseEntity {
     private String type;
 
     /**
-     * 静态表单路由路径
+     * 静态表单路由路径；或动态表单 ID
      */
-    private String staticRoute;
-
-    /**
-     * 动态表单 ID
-     */
-    private Long dynamicId;
+    private String formPath;
 
     /**
      * 备注

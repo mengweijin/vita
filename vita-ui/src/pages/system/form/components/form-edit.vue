@@ -19,7 +19,7 @@ const emit = defineEmits(["update:visible", "refresh"]);
 const isEdit = computed(() => !!props.data?.id);
 
 const INITIAL_FORM = {
-  staticRoute: undefined,
+  formPath: undefined,
   id: undefined,
   name: undefined,
   type: undefined,
@@ -95,11 +95,11 @@ watch(
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
       <el-form-item
-        prop="staticRoute"
-        label="表单路由路径"
+        prop="formPath"
+        label="表单路径"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input v-model="form.staticRoute" clearable maxlength="300" autocomplete="off" />
+        <el-input v-model="form.formPath" clearable maxlength="300" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
