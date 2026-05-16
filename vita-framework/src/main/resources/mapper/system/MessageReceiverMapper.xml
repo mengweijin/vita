@@ -13,7 +13,7 @@
         t.CREATE_TIME,
         t.UPDATE_BY,
         t.UPDATE_TIME,
-        a.CATEGORY,
+        a.TYPE,
         a.TITLE,
         a.CONTENT
         from VT_MESSAGE_RECEIVER t
@@ -47,8 +47,8 @@
                 and t.VIEWED_TIME = #{p.viewedTime}
             </if>
 
-            <if test="p.category != null and p.category != ''">
-                and a.CATEGORY = #{p.category}
+            <if test="p.type != null and p.type != ''">
+                and a.TYPE = #{p.type}
             </if>
             <if test="p.title != null and p.title != ''">
                 and a.TITLE like concat(concat('%', #{p.title}), '%')
