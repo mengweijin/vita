@@ -132,7 +132,7 @@ public class NoticeController {
         return R.result(noticeService.removeByIds(Arrays.asList(ids)));
     }
 
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.PUBLISH)
     @SaCheckPermission("system:notice:release")
     @PostMapping("/release/{id}")
     public R<Void> release(@PathVariable("id") Long id) {
@@ -140,7 +140,7 @@ public class NoticeController {
         return R.result(bool);
     }
 
-    @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
+    @Log(title = LOG_TITLE, operationType = EOperationType.UNPUBLISH)
     @SaCheckPermission("system:notice:revoke")
     @PostMapping("/revoke/{id}")
     public R<Void> revoke(@PathVariable("id") Long id) {

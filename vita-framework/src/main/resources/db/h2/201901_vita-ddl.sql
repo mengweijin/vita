@@ -23,7 +23,7 @@ comment on table VT_NOTICE is '通知/公告表';
 drop table IF EXISTS VT_MESSAGE;
 create TABLE VT_MESSAGE (
   ID                            bigint NOT NULL comment '主键ID',
-  CATEGORY                      varchar(50) DEFAULT NULL comment '消息分类。{@link EMessageCategory}',
+  TYPE                          varchar(50) DEFAULT NULL comment '消息类型。{@link EMessageType}',
   TITLE                         varchar(255) DEFAULT NULL comment '标题',
   CONTENT                       varchar(4000) DEFAULT NULL comment '内容',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
@@ -303,7 +303,6 @@ create TABLE VT_USER (
   USERNAME                      varchar(64) NOT NULL comment '用户登录名（字母数字下划线）',
   NICKNAME                      varchar(64) NOT NULL comment '用户昵称',
   PASSWORD                      varchar(64) NOT NULL comment '登录密码',
-  SALT                          varchar(32) NOT NULL comment '密码加盐',
   PASSWORD_LEVEL                varchar(30) DEFAULT 'MEDIUM' NOT NULL comment '密码强度。PasswdStrength.java',
   PASSWORD_CHANGE_TIME          datetime NULL DEFAULT CURRENT_TIMESTAMP comment '密码修改时间',
   CITIZEN_ID                    varchar(20) DEFAULT NULL comment '身份证号',
@@ -445,10 +444,32 @@ create index IDX_VT_FORM_ANCESTORS on VT_FORM(ANCESTORS);
 
 
 ------------------------------------------------
+-- 员工请假申请表
+------------------------------------------------
+drop table IF EXISTS VT_HR_LEAVE_APPLY;
+create TABLE VT_HR_LEAVE_APPLY (
+  ID                            bigint NOT NULL comment '主键ID',
+  LEAVE_TYPE                    varchar(64) NOT NULL comment '请假类型。关联字典：vt_hr_leave_type',
+  START_TIME                    datetime NOT NULL comment '开始时间',
+  END_TIME                      datetime NOT NULL comment '结束时间',
+  LEAVE_DAYS                    int NOT NULL comment '请假天数',
+  REMARK                        varchar(500) DEFAULT NULL comment '请假原因',
+  ATTACHMENT_ID                 varchar(500) DEFAULT NULL comment '附件ID(s)',
+  WORKFLOW_ID                   varchar(500) DEFAULT NULL comment '工作流实例ID',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+comment on table VT_HR_LEAVE_APPLY is '员工请假申请表';
+
+
+------------------------------------------------
 -- 扩展属性定义表
 ------------------------------------------------
-drop table IF EXISTS VT_EXT_PROP_DEF;
-create TABLE VT_EXT_PROP_DEF (
+drop table IF EXISTS VT_PROP_DEF;
+create TABLE VT_PROP_DEF (
   ID                            bigint NOT NULL comment '主键ID',
   TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
   LABEL_NAME                    varchar(64) NOT NULL comment '标签名称',
@@ -457,15 +478,15 @@ create TABLE VT_EXT_PROP_DEF (
   MANDATORY                     char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
   MIN                           bigint DEFAULT NULL comment '最小长度（字符串）/最小值（数字类型）',
   MAX                           bigint DEFAULT NULL comment '最大长度（字符串）/最大值（数字类型）',
-  REGEXP                        varchar(255) NOT NULL comment '值约束的正则表达式',
-  DICT_CODE                     varchar(255) DEFAULT NULL comment '值关联的字典编码。可选项。',
-  CATEGORY_CODE                 varchar(255) DEFAULT NULL comment '值关联的分类编码。可选项。',
+  REGEXP                        varchar(255) DEFAULT NULL comment '值约束的正则表达式',
+  DICT_CODE                     varchar(255) DEFAULT NULL comment '值关联的字典编码。可选。',
+  CATEGORY_CODE                 varchar(255) DEFAULT NULL comment '值关联的分类编码。可选。',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-comment on table VT_EXT_PROP_DEF is '扩展属性定义表';
-create unique index UIDX_VEPD_TNPN on VT_EXT_PROP_DEF(TABLE_NAME, PROP_CODE);
+comment on table VT_PROP_DEF is '扩展属性定义表';
+create unique index UIDX_VPD_TNPN on VT_PROP_DEF(TABLE_NAME, PROP_CODE);
 

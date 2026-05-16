@@ -105,7 +105,47 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     @SaCheckPermission("workflow:flowDefinition:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
-        boolean bool = FlowEngine.defService().removeByIds(Arrays.asList(ids));
+        boolean bool = FlowEngine.defService().removeDef(Arrays.asList(ids));
+        return R.result(bool);
+    }
+
+    /**
+     * Copy FlowDefinition by id
+     *
+     * @param id id
+     */
+    @Log(title = LOG_TITLE, operationType = EOperationType.COPY)
+    @SaCheckPermission("workflow:flowDefinition:copy")
+    @PostMapping("/copy/{id}")
+    public R<Void> copy(@PathVariable("id") Long id) {
+        boolean bool = FlowEngine.defService().copyDef(id);
+        return R.result(bool);
+    }
+
+
+    /**
+     * Publish FlowDefinition by id
+     *
+     * @param id id
+     */
+    @Log(title = LOG_TITLE, operationType = EOperationType.PUBLISH)
+    @SaCheckPermission("workflow:flowDefinition:publish")
+    @PostMapping("/publish/{id}")
+    public R<Void> publish(@PathVariable("id") Long id) {
+        boolean bool = FlowEngine.defService().publish(id);
+        return R.result(bool);
+    }
+
+    /**
+     * Publish FlowDefinition by id
+     *
+     * @param id id
+     */
+    @Log(title = LOG_TITLE, operationType = EOperationType.UNPUBLISH)
+    @SaCheckPermission("workflow:flowDefinition:unpublish")
+    @PostMapping("/unpublish/{id}")
+    public R<Void> unpublish(@PathVariable("id") Long id) {
+        boolean bool = FlowEngine.defService().unPublish(id);
         return R.result(bool);
     }
 

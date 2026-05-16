@@ -30,7 +30,7 @@ const treeProps = reactive({
 const treeData = ref([]);
 
 const loadTreeData = () => {
-  const dictData = dictStore.get("vt_message_category");
+  const dictData = dictStore.get("vt_message_type");
   treeData.value = [
     {
       children: dictData,
@@ -42,7 +42,7 @@ const loadTreeData = () => {
 };
 
 const handleTreeNodeClick = (data, node) => {
-  queryParams.category = data.val;
+  queryParams.type = data.val;
   loadTableData();
 };
 
@@ -56,7 +56,7 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  category: undefined,
+  type: undefined,
   content: undefined,
   pageCurrent: 1,
   pageSize: 10,
@@ -68,7 +68,7 @@ const queryFormRef = useTemplateRef("queryFormRef");
 
 const resetQueryForm = () => {
   queryFormRef.value.resetFields();
-  queryParams.category = null;
+  queryParams.type = null;
   // 清除选中状态及背景颜色
   treeRef.value.setCurrentKey(null);
   loadTableData();
@@ -228,18 +228,14 @@ onMounted(() => {
             min-width="260"
           />
           <el-table-column
-            v-if="columns.category.visible"
-            prop="category"
-            label="消息分类"
+            v-if="columns.type.visible"
+            prop="type"
+            label="消息类型"
             min-width="100"
             align="center"
           >
             <template #default="{ row }">
-              <VtTagDict
-                :code="'vt_message_category'"
-                :value="row.category"
-                :size="size"
-              ></VtTagDict>
+              <VtTagDict :code="'vt_message_type'" :value="row.type" :size="size"></VtTagDict>
             </template>
           </el-table-column>
           <el-table-column
@@ -250,7 +246,7 @@ onMounted(() => {
             width="90"
           >
             <template #default="{ row }">
-              <span v-if="row.category === 'user'">{{ row.createByName }}</span>
+              <span v-if="row.type === 'user'">{{ row.createByName }}</span>
               <span v-else>{{ row.createByName ?? "系统" }}</span>
             </template>
           </el-table-column>

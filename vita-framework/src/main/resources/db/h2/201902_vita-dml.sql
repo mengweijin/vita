@@ -2,9 +2,9 @@
 --changeset admin:1002 splitStatements:true
 
 -- 用户
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,1,'admin','管理员','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,1,'vita','微塔','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,SALT,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,1,'guest','游客','$2a$10$aO4vR1PTzmn2Y5UaDt/RWeqqBhUVsUT6iq7vazlBeKNebsNOJtiGm','$2a$10$v/3HEiNTDK8ww2yAMLa3y.','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,1,'admin','管理员','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,1,'vita','微塔','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
+insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,1,'guest','游客','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
 
 -- 角色
 insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '管理员', 'admin', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -56,166 +56,213 @@ insert into VT_POST (ID, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TI
 
 -- 流程分类
 insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,         null,'/','vt_workflow',              '流程类别',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1001,      1,'/1/','vt_workflow_finance',       '财务类',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1002,      1,'/1/','vt_workflow_staff',         '人事类',             null,         2,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1003,      1,'/1/','vt_workflow_rd',            '研发类',             null,         3,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100999,    1,'/1/','vt_workflow_other',        '其他',             null,         999,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10001,      1,'/1/','vt_workflow_finance',       '财务类',             null,         1,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10002,      1,'/1/','vt_workflow_staff',         '人事类',             null,         2,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10003,      1,'/1/','vt_workflow_rd',            '研发类',             null,         3,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_CATEGORY (ID,PARENT_ID,ANCESTORS,CODE,NAME,REMARK,SEQ,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10999,    1,'/1/','vt_workflow_other',        '其他',             null,         999,'N',1,current_timestamp(),1,current_timestamp());
 
-
--- 字典类型
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '停用/启用', 'vt_disabled', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '是/否', 'vt_yes_no', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '菜单类型', 'vt_menu_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '用户性别', 'vt_user_gender', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '成功/失败', 'vt_succeeded', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, '登录类型', 'vt_login_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, '密码强度', 'vt_password_level', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8, '操作日志类型', 'vt_operation_log_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9, 'HTTP请求类型', 'vt_http_request_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, '系统日志记录级别', 'vt_log_level', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, '已发布/未发布', 'vt_released', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, '字典标签样式', 'vt_dict_tag_style', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, '调度任务执行状态', 'vt_scheduling_task_status', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14, '系统消息类别', 'vt_message_category', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, '已读/未读', 'vt_message_viewed_status', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, '扩展字段表单组件类型', 'vt_ext_prop_form_component_types', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, '差异类型', 'vt_diff_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, '二级认证模式', 'vt_safe_mode', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, '数据级别', 'vt_gbt_data_level', '参考：标准号：GB/T 43697-2024。中文标准名称：数据安全技术 数据分类分级规则。说明：GB: 强制性国家标准；GB/T：推荐性国家标准；GB/Z: 指导性技术文件。', 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, '表单类型', 'vt_form_type', null, 1, current_timestamp(), 1, current_timestamp());
--- Warm-Flow
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001, 'Warm-Flow 流程是否发布', 'vt_warmflow_publish', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002, 'Warm-Flow 审批表单是否自定义', 'vt_warmflow_form_custom', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003, 'Warm-Flow 流程激活状态', 'vt_warmflow_activity_status', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004, 'Warm-Flow 流程设计器模型', 'vt_warmflow_designer_model', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：停用/启用
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001, 1, 'N', '启用', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002, 1, 'Y', '停用', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '停用/启用', 'vt_disabled', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, 1, 'N', '启用', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10002, 1, 'Y', '停用', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：是/否
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2001, 2, 'Y', '是', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2002, 2, 'N', '否', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 字典：成功/失败
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5001, 5, 'Y', '成功', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5002, 5, 'N', '失败', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 字典：用户性别
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4001, 4, 'male', '男', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4002, 4, 'female', '女', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 字典：登录类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6001, 6, 'LOGIN', '登入', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6002, 6, 'LOGOUT', '注销', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6003, 6, 'KICK_OUT', '被踢下线', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6004, 6, 'REPLACED', '被顶下线', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '是/否', 'vt_yes_no', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20001, 2, 'Y', '是', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20002, 2, 'N', '否', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：菜单类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3001, 3, 'DIR', '目录', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3002, 3, 'MENU', '菜单', 'primary', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3003, 3, 'BTN', '按钮', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3005, 3, 'URL', '外链', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '菜单类型', 'vt_menu_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30001, 3, 'DIR', '目录', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30002, 3, 'MENU', '菜单', 'primary', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30003, 3, 'BTN', '按钮', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (30004, 3, 'URL', '外链', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：用户性别
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (4, '用户性别', 'vt_user_gender', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (40001, 4, 'male', '男', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (40002, 4, 'female', '女', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：成功/失败
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (5, '成功/失败', 'vt_succeeded', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (50001, 5, 'Y', '成功', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (50002, 5, 'N', '失败', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：登录类型
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (6, '登录类型', 'vt_login_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (60001, 6, 'LOGIN', '登入', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (60002, 6, 'LOGOUT', '注销', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (60003, 6, 'KICK_OUT', '被踢下线', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (60004, 6, 'REPLACED', '被顶下线', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：密码强度
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7001, 7, 'EASY', '简单', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7002, 7, 'MEDIUM', '中', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7003, 7, 'STRONG', '强', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7004, 7, 'VERY_STRONG', '很强', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7005, 7, 'EXTREMELY_STRONG', '非常强', 'success', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (7, '密码强度', 'vt_password_level', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (70001, 7, 'EASY', '简单', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (70002, 7, 'MEDIUM', '中', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (70003, 7, 'STRONG', '强', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (70004, 7, 'VERY_STRONG', '很强', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (70005, 7, 'EXTREMELY_STRONG', '非常强', 'success', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：操作日志类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8001, 8, 'SELECT', '查询', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8002, 8, 'INSERT', '新增', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8003, 8, 'UPDATE', '更新', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8004, 8, 'REMOVE', '删除', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8005, 8, 'IMPORT', '导入', 'success', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8006, 8, 'EXPORT', '导出', 'warning', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8007, 8, 'UPLOAD', '上传', 'success', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8008, 8, 'DOWNLOAD', '下载', 'warning', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8009, 8, 'ENABLE', '启用', 'success', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8010, 8, 'DISABLE', '停用', 'danger', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8011, 8, 'OFFLINE', '强制下线', 'danger', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8099, 8, 'OTHER', '其它', 'info', 99, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (8, '操作日志类型', 'vt_operation_log_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80001, 8, 'SELECT', '查询', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80002, 8, 'INSERT', '新增', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80003, 8, 'UPDATE', '更新', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80004, 8, 'REMOVE', '删除', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80005, 8, 'IMPORT', '导入', 'success', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80006, 8, 'EXPORT', '导出', 'warning', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80007, 8, 'UPLOAD', '上传', 'success', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80008, 8, 'DOWNLOAD', '下载', 'warning', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80009, 8, 'ENABLE', '启用', 'success', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80010, 8, 'DISABLE', '停用', 'danger', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80011, 8, 'OFFLINE', '强制下线', 'danger', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80012, 8, 'COPY', '复制', 'info', 12, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80013, 8, 'PUBLISH', '发布', 'success', 13, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80014, 8, 'UNPUBLISH', '取消发布', 'danger', 14, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (80099, 8, 'OTHER', '其它', 'info', 99, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：http 请求方式
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9001, 9, 'GET', 'GET', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9002, 9, 'POST', 'POST', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9003, 9, 'PUT', 'PUT', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9004, 9, 'DELETE', 'DELETE', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9005, 9, 'HEAD', 'HEAD', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9006, 9, 'PATCH', 'PATCH', 'info', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9007, 9, 'OPTIONS', 'OPTIONS', 'info', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9008, 9, 'TRACE', 'TRACE', 'info', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9, 'HTTP请求类型', 'vt_http_request_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90001, 9, 'GET', 'GET', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90002, 9, 'POST', 'POST', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90003, 9, 'PUT', 'PUT', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90004, 9, 'DELETE', 'DELETE', 'danger', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90005, 9, 'HEAD', 'HEAD', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90006, 9, 'PATCH', 'PATCH', 'info', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90007, 9, 'OPTIONS', 'OPTIONS', 'info', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90008, 9, 'TRACE', 'TRACE', 'info', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：日志级别
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10001, 10, 'TRACE', 'TRACE', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10002, 10, 'DEBUG', 'DEBUG', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10003, 10, 'INFO', 'INFO',   'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10004, 10, 'WARN', 'WARN',   'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10005, 10, 'ERROR', 'ERROR', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10, '系统日志记录级别', 'vt_log_level', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100001, 10, 'TRACE', 'TRACE', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100002, 10, 'DEBUG', 'DEBUG', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100003, 10, 'INFO', 'INFO',   'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100004, 10, 'WARN', 'WARN',   'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (100005, 10, 'ERROR', 'ERROR', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：已发布/未发布
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11001, 11, 'Y', '已发布', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11002, 11, 'N', '未发布', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (11, '已发布/未发布', 'vt_released', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (110001, 11, 'Y', '已发布', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (110002, 11, 'N', '未发布', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：字典标签样式
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12001, 12, 'primary', 'primary', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12002, 12, 'success', 'success', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12003, 12, 'info', 'info', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12004, 12, 'warning', 'warning', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12005, 12, 'danger', 'danger', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (12, '字典标签样式', 'vt_dict_tag_style', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120001, 12, 'primary', 'primary', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120002, 12, 'success', 'success', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120003, 12, 'info', 'info', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120004, 12, 'warning', 'warning', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (120005, 12, 'danger', 'danger', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：调度任务执行状态
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13001, 13, 'not_started', '未开始', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13002, 13, 'running', '执行中', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13003, 13, 'finished', '已完成', 'success', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (13, '调度任务执行状态', 'vt_scheduling_task_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130001, 13, 'not_started', '未开始', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130002, 13, 'running', '执行中', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (130003, 13, 'finished', '已完成', 'success', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：系统消息类别
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14001, 14, 'system', '系统', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14002, 14, 'security', '安全', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14003, 14, 'warning', '警告', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14004, 14, 'user', '用户', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14005, 14, 'other', '其它', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (14, '系统消息类型', 'vt_message_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140001, 14, 'system', '系统', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140002, 14, 'security', '安全', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140003, 14, 'warning', '警告', 'warning', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140004, 14, 'user', '用户', 'primary', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (140005, 14, 'other', '其它', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：已发布/未发布
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15001, 15, 'Y', '已读', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15002, 15, 'N', '未读', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (15, '已读/未读', 'vt_message_viewed_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150001, 15, 'Y', '已读', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150002, 15, 'N', '未读', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：表单组件类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16001, 16, 'input', '输入框', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16002, 16, 'input-number', '数字输入框', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16003, 16, 'textarea', '文本域', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16004, 16, 'richtext', '富文本', 'info', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16005, 16, 'select', '下拉框', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16006, 16, 'select-multiple', '多选下拉框', 'info', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16007, 16, 'switch', '开关', 'info', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16008, 16, 'radio', '单选框', 'info', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16009, 16, 'checkbox', '多选框', 'info', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16010, 16, 'year', '年选择器', 'info', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16011, 16, 'month', '月选择器', 'info', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16012, 16, 'date', '日期选择器', 'info', 12, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16013, 16, 'datetime', '日期时间选择器', 'info', 13, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16014, 16, 'week', '周选择器', 'info', 14, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16015, 16, 'file', '文件选择器', 'info', 15, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16016, 16, 'color', '颜色选择器', 'info', 16, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16017, 16, 'icon', '图标选择器', 'info', 17, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16018, 16, 'category', '分类选择器', 'info', 18, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16019, 16, 'dept', '部门选择器', 'info', 19, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16020, 16, 'post', '岗位选择器', 'info', 20, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16021, 16, 'role', '角色选择器', 'info', 21, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16022, 16, 'user', '用户选择器', 'info', 22, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, '扩展字段表单组件类型', 'vt_ext_prop_form_component_types', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160001, 16, 'input', '输入框', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160002, 16, 'input-number', '数字输入框', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160003, 16, 'textarea', '文本域', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160004, 16, 'richtext', '富文本', 'info', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160005, 16, 'select', '下拉框', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160006, 16, 'select-multiple', '多选下拉框', 'info', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160007, 16, 'switch', '开关', 'info', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160008, 16, 'radio', '单选框', 'info', 8, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160009, 16, 'checkbox', '多选框', 'info', 9, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160010, 16, 'year', '年选择器', 'info', 10, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160011, 16, 'month', '月选择器', 'info', 11, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160012, 16, 'date', '日期选择器', 'info', 12, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160013, 16, 'datetime', '日期时间选择器', 'info', 13, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160014, 16, 'week', '周选择器', 'info', 14, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160015, 16, 'file', '文件选择器', 'info', 15, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160016, 16, 'color', '颜色选择器', 'info', 16, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160017, 16, 'icon', '图标选择器', 'info', 17, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160018, 16, 'category', '分类选择器', 'info', 18, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160019, 16, 'dept', '部门选择器', 'info', 19, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160020, 16, 'post', '岗位选择器', 'info', 20, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160021, 16, 'role', '角色选择器', 'info', 21, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160022, 16, 'user', '用户选择器', 'info', 22, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：差异类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17001, 17, 'ADDED', '新增', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17002, 17, 'MODIFIED', '修改', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17003, 17, 'REMOVED', '删除', 'danger', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (17, '差异类型', 'vt_diff_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170001, 17, 'ADDED', '新增', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170002, 17, 'MODIFIED', '修改', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (170003, 17, 'REMOVED', '删除', 'danger', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：二级认证模式
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18001, 18, 'PASSWORD', '密码认证', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18002, 18, 'TOTP', 'TOTP 动态口令认证', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 数据级别
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19001, 19, 'core', '核心', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19002, 19, 'key', '重要', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19003, 19, 'general', '一般', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 表单类型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20001, 20, 'static', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20002, 20, 'dynamic', '动态表单', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- Warm-Flow 流程是否发布
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001001, 1001, '0', '未发布', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001002, 1001, '1', '已发布', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- Warm-Flow 审批表单是否自定义
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002001, 1002, 'Y', '是', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002002, 1002, 'N', '否', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- Warm-Flow 流程激活状态
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003001, 1003, '0', '挂起', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003002, 1003, '1', '激活', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- Warm-Flow 流程设计器模型
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004001, 1004, 'CLASSICS', '经典模型', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004002, 1004, 'MIMIC', '仿钉钉模型', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, '二级认证模式', 'vt_safe_mode', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180001, 18, 'PASSWORD', '密码认证', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180002, 18, 'TOTP', 'TOTP 动态口令', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：表单类型
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, '表单类型', 'vt_form_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190001, 19, 'static', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190002, 19, 'dynamic', '动态表单', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：请假类型
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, '请假类型', 'vt_hr_leave_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200001, 21, 'personal_leave', '事假', 'info', 1, 'N', '私事无薪假', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200002, 21, 'sick_leave', '病假', 'info', 2, 'N', '生病就医', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200003, 21, 'annual_leave', '年假', 'info', 3, 'N', '带薪年假', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200004, 21, 'compensatory_leave', '调休假', 'info', 4, 'N', '加班调休', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200005, 21, 'home_visit_leave', '探亲假', 'info', 5, 'N', '异地探亲', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200006, 21, 'marriage_leave', '婚假', 'info', 6, 'N', '结婚假期', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200007, 21, 'prenatal_leave', '产检假', 'info', 7, 'N', '孕期产检', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200008, 21, 'maternity_leave', '产假', 'info', 8, 'N', '女职工产假', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200009, 21, 'paternity_leave', '陪产假', 'info', 9, 'N', '男方陪护假', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200010, 21, 'lactation_leave', '哺乳假', 'info', 10, 'N', '产后哺乳假', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200011, 21, 'injury_leave', '工伤假', 'info', 11, 'N', '工伤休养', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200012, 21, 'funeral_leave', '丧假', 'info', 12, 'N', '丧事假期', 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程激活状态
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1001, 'Warm-Flow 流程激活状态', 'vt_warmflow_activity_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010001, 1001, '0', '挂起', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10010002, 1001, '1', '激活', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流流程图状态
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1002, 'Warm-Flow 流流程图状态', 'vt_warmflow_chart_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10020001, 1002, '0', '未办理', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10020002, 1002, '1', '待办理', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10020003, 1002, '2', '已办理', 'success', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程状态
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1003, 'Warm-Flow 流程状态', 'vt_warmflow_flow_status', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030001, 1003, '0', '待提交', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030002, 1003, '1', '审批中', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030003, 1003, '2', '审批通过', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030004, 1003, '3', '自动完成', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030005, 1003, '4', '终止', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030006, 1003, '5', '作废', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030007, 1003, '6', '撤销', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030008, 1003, '7', '取回', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030009, 1003, '8', '已完成', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030010, 1003, '9', '已退回', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030011, 1003, '10', '失效', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030012, 1003, '11', '拿回', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030013, 1003, '12', '重启', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10030014, 1003, '13', '暂存', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程是否发布
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1004, 'Warm-Flow 流程是否发布', 'vt_warmflow_publish', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10040001, 1004, '0', '未发布', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10040002, 1004, '1', '已发布', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 审批表单是否自定义
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1005, 'Warm-Flow 审批表单是否自定义', 'vt_warmflow_form_custom', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10050001, 1005, 'Y', '是', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10050002, 1005, 'N', '否', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程设计器模型
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1006, 'Warm-Flow 流程设计器模型', 'vt_warmflow_designer_model', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10060001, 1006, 'CLASSICS', '经典模型', 'primary', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10060002, 1006, 'MIMIC', '仿钉钉模型', 'success', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：人员涉密级别（FL）
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9001, '人员涉密级别', 'vt_fl_personnel_security_level', '《保守国家秘密法》第 43 条：涉密人员分为：核心涉密人员、重要涉密人员、一般涉密人员。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90010001, 9001, 'core', '核心', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90010002, 9001, 'key', '重要', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90010003, 9001, 'general', '一般', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：数据安全级别（GB/T）
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9002, '数据安全级别', 'vt_gbt_data_security_level', '标准号：GB/T 43697-2024。中文标准名称：数据安全技术 数据分类分级规则。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90020001, 9002, 'core', '核心', 'danger', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90020002, 9002, 'key', '重要', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90020003, 9002, 'general', '一般', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：秘密级别（GB/T）
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9003, '秘密级别', 'vt_gbt_secret_level', '标准号：GB/T 7156-2003。中文标准名称：文献保密等级代码与标识。', 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90030001, 9003, 'GK', '公开', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90030002, 9003, 'XZ', '限制', 'primary', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90030003, 9003, 'MM', '秘密', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90030004, 9003, 'JM', '机密', 'warning', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (90030005, 9003, 'UM', '绝密', 'danger', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 
 -- 配置
@@ -360,8 +407,9 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001002,10041001,'BTN','流程定义-创建','workflow:flowDefinition:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001003,10041001,'BTN','流程定义-更新','workflow:flowDefinition:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001004,10041001,'BTN','流程定义-删除','workflow:flowDefinition:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
-
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (100410099,10041,'MENU','warm-flow','workflow:warm-flow:view','/workflow/warm',99,'ri:apps-line','N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001005,10041001,'BTN','流程定义-复制','workflow:flowDefinition:copy',null,5,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001006,10041001,'BTN','流程定义-发布','workflow:flowDefinition:publish',null,6,null,'N',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10041001007,10041001,'BTN','流程定义-取消发布','workflow:flowDefinition:unpublish',null,7,null,'N',1,current_timestamp(),1,current_timestamp());
 
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10081,null,'DIR','开发工具','tools:menu:view',null,81,'ri:tools-fill','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (10081001,10081,'MENU','代码生成器','tools:generator:view','/tool/generator',1,'ri:ai-generate-text','N',1,current_timestamp(),1,current_timestamp());
@@ -388,86 +436,7 @@ INSERT INTO VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPD
 
 
 -- 角色-权限
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280769,2,100);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280771,2,1001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280772,2,1002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280773,2,10091);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280774,2,10092);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280775,2,10093);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280776,2,10094);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280777,2,10095);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280770,2,1001001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858360389634,2,1002001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858360389633,2,1002002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280779,2,1002003);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034134858293280778,2,1002004);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761989,3,100);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761996,3,1001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761997,3,1002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653124,3,10011);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653129,3,10021);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761985,3,10081);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761998,3,10090);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761999,3,10091);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762000,3,10092);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762001,3,10093);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762002,3,10094);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762003,3,10095);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653130,3,1001001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653126,3,1002001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653150,3,10011001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761986,3,10011002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761987,3,10011003);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761990,3,10011004);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761992,3,10011005);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761993,3,10011006);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761994,3,10011007);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653122,3,10011008);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653123,3,10011009);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738565,3,10021001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738566,3,10021002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738567,3,10021003);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738568,3,10021004);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738569,3,10021005);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738570,3,10021006);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738571,3,10021007);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738562,3,10021008);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762004,3,10081002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738563,3,10090001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738564,3,10090002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653121,3,10011001001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653125,3,10011001002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653127,3,10011002001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653128,3,10011002002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653142,3,10011003001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653143,3,10011003002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653145,3,10011004001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653146,3,10011004002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762006,3,10011005001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762007,3,10011005002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950285824001,3,10011006001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950285824002,3,10011006002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653131,3,10011007001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653132,3,10011007002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653133,3,10011007005);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653134,3,10011007006);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653136,3,10011008001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653137,3,10011008002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653138,3,10011008005);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653148,3,10011009001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653149,3,10011009002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761995,3,10021001001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761991,3,10021001002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478761988,3,10021001005);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653139,3,10021003001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653135,3,10021004001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950348738561,3,10021005001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762008,3,10021006001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653147,3,10021007001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653144,3,10021008001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653141,3,10090002001);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950411653140,3,10090002002);
-INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID) VALUES (2034131950478762005,3,100210010011);
+
 
 -- 表单管理
 INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",FORM_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'/','工作流-行政-员工请假-表单','static','/forms/workflow/staff-leave/start-form',null,1,current_timestamp(),1,current_timestamp());

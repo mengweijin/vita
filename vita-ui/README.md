@@ -24,7 +24,20 @@ npm config set registry https://registry.npmmirror.com
 # 全局安装 pnpm
 npm install -g pnpm
 
+# 安装依赖
 pnpm install
+```
+
+若因为升级 pnpm 出现安全限制执行脚本的问题，可通过以下命令解决：
+
+```shell
+# 解除 pnpm 对所有包的脚本执行限制
+# 一次性批准所有被 pnpm 阻止的依赖包，允许它们执行构建脚本（把包加入信任白名单）
+pnpm approve-builds --all
+
+# 安装并执行构建脚本，让依赖完整可用
+# 安装依赖 + 强制执行所有构建脚本
+pnpm install --no-ignore-scripts
 ```
 
 ### Compile and Hot-Reload for Development

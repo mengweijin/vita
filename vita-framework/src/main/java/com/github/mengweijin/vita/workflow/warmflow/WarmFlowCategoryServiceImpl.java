@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.workflow.warm;
+package com.github.mengweijin.vita.workflow.warmflow;
 
 import cn.hutool.v7.core.math.NumberUtil;
 import com.github.mengweijin.vita.framework.enums.ECategoryType;

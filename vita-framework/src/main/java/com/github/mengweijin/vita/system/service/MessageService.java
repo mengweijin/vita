@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.Const;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.sse.SseConnector;
@@ -50,7 +50,7 @@ public class MessageService extends BaseVitaService<MessageMapper, MessageDO, Me
     public LambdaQueryWrapper<MessageDO> buildQueryWrapper(MessageDO message) {
         LambdaQueryWrapper<MessageDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(message.getId() != null, MessageDO::getId, message.getId());
-        wrapper.eq(StrUtil.isNotBlank(message.getCategory()), MessageDO::getCategory, message.getCategory());
+        wrapper.eq(StrUtil.isNotBlank(message.getType()), MessageDO::getType, message.getType());
         wrapper.eq(message.getCreateBy() != null, MessageDO::getCreateBy, message.getCreateBy());
         wrapper.eq(message.getUpdateBy() != null, MessageDO::getUpdateBy, message.getUpdateBy());
         wrapper.gt(message.getStartCreateTime() != null, MessageDO::getCreateTime, message.getStartCreateTime());
@@ -60,40 +60,40 @@ public class MessageService extends BaseVitaService<MessageMapper, MessageDO, Me
         return wrapper;
     }
 
-    public void sendMessageToRole(EMessageCategory category, String title, String content, Long roleId) {
+    public void sendMessageToRole(EMessageType type, String title, String content, Long roleId) {
         UserRoleService userRoleService = SpringUtil.getBean(UserRoleService.class);
         Set<Long> userIds = userRoleService.getUserIdsByRoleId(roleId);
-        this.sendMessageToUsersAsync(category, title, content, userIds);
+        this.sendMessageToUsersAsync(type, title, content, userIds);
     }
 
-    public void sendMessageToRole(EMessageCategory category, String title, String content, String roleCode) {
+    public void sendMessageToRole(EMessageType type, String title, String content, String roleCode) {
         UserRoleService userRoleService = SpringUtil.getBean(UserRoleService.class);
         Set<Long> userIds = userRoleService.getUserIdsByRoleCode(roleCode);
-        this.sendMessageToUsersAsync(category, title, content, userIds);
+        this.sendMessageToUsersAsync(type, title, content, userIds);
     }
 
-    public void sendMessageToDept(EMessageCategory category, String title, String content, Long deptId) {
+    public void sendMessageToDept(EMessageType type, String title, String content, Long deptId) {
         UserService userService = SpringUtil.getBean(UserService.class);
         Set<Long> userIds = userService.getUserIdsInDeptId(deptId);
-        this.sendMessageToUsersAsync(category, title, content, userIds);
+        this.sendMessageToUsersAsync(type, title, content, userIds);
     }
 
-    public void sendMessageToPost(EMessageCategory category, String title, String content, Long postId) {
+    public void sendMessageToPost(EMessageType type, String title, String content, Long postId) {
         UserPostService userPostService = SpringUtil.getBean(UserPostService.class);
         Set<Long> userIds = userPostService.getUserIdsByPostId(postId);
-        this.sendMessageToUsersAsync(category, title, content, userIds);
+        this.sendMessageToUsersAsync(type, title, content, userIds);
     }
 
 
-    public void sendMessageToUser(EMessageCategory category, String title, String content, Long receiveUserId) {
+    public void sendMessageToUser(EMessageType category, String title, String content, Long receiveUserId) {
         this.sendMessageToUsersAsync(category, title, content, Set.of(receiveUserId));
     }
 
-    public void sendMessageToUsersAsync(EMessageCategory category, String title, String content, Set<Long> userIds) {
+    public void sendMessageToUsersAsync(EMessageType type, String title, String content, Set<Long> userIds) {
         Long loginId = LoginHelper.getSessionUserId();
         CompletableFuture.runAsync(() -> transactionTemplate.executeWithoutResult(status -> {
                     MessageDO message = new MessageDO();
-                    message.setCategory(category.getValue());
+                    message.setType(type.getValue());
                     message.setTitle(title);
                     message.setContent(content);
 

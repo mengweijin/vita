@@ -1,4 +1,11 @@
 <script setup>
+const props = defineProps({
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
+});
+
 const modelValue = defineModel({
   type: Object,
   default: () => ({ name: undefined, code: undefined }),
@@ -23,14 +30,26 @@ defineExpose({ onReset });
       label="名称"
       :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
     >
-      <el-input v-model="modelValue.name" clearable maxlength="30" autocomplete="off" />
+      <el-input
+        v-model="modelValue.name"
+        clearable
+        :disabled="props.disabled"
+        maxlength="30"
+        autocomplete="off"
+      />
     </el-form-item>
     <el-form-item
       prop="code"
       label="编码"
       :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
     >
-      <el-input v-model="modelValue.code" clearable maxlength="30" autocomplete="off" />
+      <el-input
+        v-model="modelValue.code"
+        clearable
+        :disabled="props.disabled"
+        maxlength="30"
+        autocomplete="off"
+      />
     </el-form-item>
   </el-form>
 </template>

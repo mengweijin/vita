@@ -1,9 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.data.PasswdStrength;
-import cn.hutool.v7.crypto.digest.BCrypt;
 import cn.hutool.v7.crypto.digest.DigestUtil;
-import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,10 +16,9 @@ class UserServiceTest {
     @Test
     void hashPasswordTest() {
         String password = "aday.fun";
-        String salt = "$2a$10$v/3HEiNTDK8ww2yAMLa3y.";
 
         String passwordLevel = PasswdStrength.getLevel(password).name();
-        String hashedPwd = this.hashPassword(password, salt);
+        String hashedPwd = this.hashPassword(password);
 
         log.info(passwordLevel);
         log.info(hashedPwd);
@@ -29,28 +26,16 @@ class UserServiceTest {
 
         Assertions.assertEquals("EASY", passwordLevel);
 
-        boolean checked = this.checkPassword(password, hashedPwd, salt);
+        boolean checked = this.checkPassword(password, hashedPwd);
         Assertions.assertTrue(checked);
     }
 
-    @Test
-    void generateSalt() {
-        String salt = BCrypt.gensalt();
-        log.info(salt);
-        Assertions.assertNotNull(salt);
+    private String hashPassword(String password) {
+        return DigestUtil.bcrypt(password);
     }
 
-    private String saltedPassword(String password, String salt) {
-        return String.join(Const.COMMA, password, salt);
-    }
-
-    private String hashPassword(String password, String salt) {
-        return DigestUtil.bcrypt(this.saltedPassword(password, salt));
-    }
-
-    private boolean checkPassword(String checkingPwd, String dbPwd, String salt) {
-        String saltedPassword = this.saltedPassword(checkingPwd, salt);
-        return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
+    private boolean checkPassword(String checkingPwd, String dbPwd) {
+        return DigestUtil.bcryptCheck(checkingPwd, dbPwd);
     }
 
 }

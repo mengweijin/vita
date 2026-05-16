@@ -2,7 +2,7 @@ package com.github.mengweijin.vita.system.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.system.domain.bo.MessageBO;
 import com.github.mengweijin.vita.system.domain.vo.MessageVO;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -28,9 +28,9 @@ import lombok.EqualsAndHashCode;
 public class MessageDO extends BaseEntity {
 
     /**
-     * 消息分类。{@link EMessageCategory}
+     * 消息类型。{@link EMessageType}
      */
-    private String category;
+    private String type;
 
     /**
      * 名称

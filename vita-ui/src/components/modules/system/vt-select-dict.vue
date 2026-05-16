@@ -36,7 +36,12 @@ const props = defineProps({
 
 const modelValue = defineModel({ type: String || Array });
 
+const emit = defineEmits(["change"]);
+
 const options = ref([]);
+const handleChange = (val) => {
+  emit("change", val);
+};
 
 onMounted(() => {
   options.value = dictStore.get(props.code);
@@ -53,6 +58,7 @@ onMounted(() => {
     :size="props.size"
     :style="props.style"
     placeholder="请选择"
+    @change="handleChange"
   >
     <template v-for="item in options" :key="item.val">
       <el-option :label="item.label" :value="item.val" v-if="item.disabled === 'N'" />

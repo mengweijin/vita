@@ -14,15 +14,9 @@ const form = reactive({
   value: undefined,
 });
 
-const valueLabel = computed(() => {
-  if (form.safeMode === "PASSWORD") {
-    return "密码";
-  }
-  if (form.safeMode === "TOTP") {
-    return "动态口令";
-  }
-  return "";
-});
+const onSafeModeChange = (val) => {
+  form.value = null;
+};
 
 const onClosed = () => {
   dialogSecondaryAuthVisible.value = false;
@@ -60,12 +54,20 @@ const onSubmit = () => {
   >
     <el-form v-loading="loading" ref="formRef" :model="form" label-width="80px">
       <el-form-item prop="safeMode" label="认证模式">
-        <VtRadioDict :code="'vt_safe_mode'" v-model="form.safeMode" />
-        <!-- <VtSelectDict v-model="form.safeMode" :clearable="false" :code="'vt_safe_mode'"></VtSelectDict> -->
+        <VtRadioDict :code="'vt_safe_mode'" v-model="form.safeMode" @change="onSafeModeChange" />
       </el-form-item>
       <el-form-item
+        v-if="form.safeMode === 'TOTP'"
         prop="value"
-        :label="valueLabel"
+        :label="'动态口令'"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input-otp v-model="form.value" />
+      </el-form-item>
+      <el-form-item
+        v-else
+        prop="value"
+        :label="'用户密码'"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
         <el-input

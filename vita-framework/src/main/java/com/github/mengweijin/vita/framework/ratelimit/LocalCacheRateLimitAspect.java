@@ -8,7 +8,7 @@ import cn.hutool.v7.http.server.servlet.ServletUtil;
 import com.github.mengweijin.vita.framework.cache.CacheFactory;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.constant.VitaConst;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -104,7 +104,7 @@ public class LocalCacheRateLimitAspect {
 
         String messageTitle = I18nUtils.msg("system.RATE_LIMIT.title");
         String messageContent = I18nUtils.msg("system.RATE_LIMIT.content", username, methodName, rateLimitStrategyName);
-        messageService.sendMessageToUsersAsync(EMessageCategory.WARNING, messageTitle, messageContent, userIds);
+        messageService.sendMessageToUsersAsync(EMessageType.WARNING, messageTitle, messageContent, userIds);
 
         throw new ClientException(rateLimit.message());
     }

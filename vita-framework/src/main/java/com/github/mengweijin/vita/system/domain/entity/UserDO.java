@@ -56,12 +56,6 @@ public class UserDO extends BaseEntity {
     private String password;
 
     /**
-     * 密码加盐
-     */
-    @JsonIgnore
-    private String salt;
-
-    /**
      * 密码强度
      */
     @JsonIgnore

@@ -26,6 +26,6 @@ public class PasswordSecondaryAuthHandler implements ISecondaryAuthHandler {
     public boolean validate(UserSessionVO sessionUser, OpenSafeBO bo) {
         UserService userService = SpringUtil.getBean(UserService.class);
         UserDO user = userService.getById(sessionUser.getUserId());
-        return userService.checkPassword(bo.getValue(), user.getPassword(), user.getSalt());
+        return userService.checkPassword(bo.getValue(), user.getPassword());
     }
 }

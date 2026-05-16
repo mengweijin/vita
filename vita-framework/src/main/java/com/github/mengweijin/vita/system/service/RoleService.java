@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.VitaConst;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
@@ -143,7 +143,7 @@ public class RoleService extends BaseVitaService<RoleMapper, RoleDO, RoleVO> {
         MessageService messageService = SpringUtil.getBean(MessageService.class);
         String messageTitle = I18nUtils.msg("system.message.role.permission.change.title");
         String messageContent = I18nUtils.msg("system.message.role.permission.change.content");
-        messageService.sendMessageToUsersAsync(EMessageCategory.SYSTEM, messageTitle, messageContent, userIds);
+        messageService.sendMessageToUsersAsync(EMessageType.SYSTEM, messageTitle, messageContent, userIds);
     }
 
 }

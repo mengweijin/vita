@@ -61,17 +61,59 @@ const loadTableData = () => {
 
 // -----------------------------------------
 const editDialogVisible = ref(false);
+const editDialogTitle = ref("");
 const editDataId = ref(null);
+const editOnlyDesignShow = ref(false);
+const editDisabled = ref(false);
 
 const handleAdd = () => {
   editDataId.value = "";
+  editOnlyDesignShow.value = false;
+  editDisabled.value = false;
+  editDialogTitle.value = "流程定义 - 新增";
   editDialogVisible.value = true;
 };
 
 const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
   editDataId.value = row.id;
+  editOnlyDesignShow.value = false;
+  editDisabled.value = false;
+  editDialogTitle.value = "流程定义 - 编辑";
   editDialogVisible.value = true;
+};
+
+const handleView = (row) => {
+  editDataId.value = row.id;
+  editOnlyDesignShow.value = true;
+  editDisabled.value = true;
+  editDialogTitle.value = "流程定义 - 查看";
+  editDialogVisible.value = true;
+};
+
+const handleDesign = (row) => {
+  editDataId.value = row.id;
+  editOnlyDesignShow.value = true;
+  editDisabled.value = false;
+  editDialogTitle.value = "流程定义 - 流程设计";
+  editDialogVisible.value = true;
+};
+
+const handlePublish = (row) => {
+  flowDefinitionApi.publish(row.id).then(() => {
+    loadTableData();
+  });
+};
+
+const handleUnpublish = (row) => {
+  flowDefinitionApi.unpublish(row.id).then(() => {
+    loadTableData();
+  });
+};
+
+const handleCopy = (row) => {
+  flowDefinitionApi.copy(row.id).then(() => {
+    loadTableData();
+  });
 };
 
 /** selected rows */
@@ -150,7 +192,7 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5" v-permission="'workflow:flowDefinition:create'">
-      <el-button type="primary" @click="handleAdd(null)">
+      <el-button type="primary" @click="handleAdd">
         <template #icon>
           <el-icon>
             <Icon icon="ep:plus"></Icon>
@@ -249,9 +291,6 @@ onMounted(() => {
         width="100"
         align="center"
       >
-        <template #default="{ row }">
-          <VtTagDict :code="'vt_warmflow_publish'" :value="row.isPublish" :size="size"></VtTagDict>
-        </template>
       </el-table-column>
       <el-table-column
         v-if="columns.formCustom.visible"
@@ -281,13 +320,6 @@ onMounted(() => {
         width="100"
         align="center"
       >
-        <template #default="{ row }">
-          <VtTagDict
-            :code="'vt_warmflow_activity_status'"
-            :value="row.activityStatus"
-            :size="size"
-          ></VtTagDict>
-        </template>
       </el-table-column>
       <el-table-column
         v-if="columns.listenerType.visible"
@@ -342,25 +374,52 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="240">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                @click="handleAdd(scope.row.id)"
-                v-permission="'workflow:flowDefinition:create'"
-              >
+            <el-tooltip content="查看流程" placement="top">
+              <el-button type="primary" text :size="size" @click="handleView(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
+                    <Icon icon="ep:view"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
+            <el-tooltip content="流程设计" placement="top" v-if="scope.row.isPublish === 0">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleDesign(scope.row)"
+                v-permission="'workflow:flowDefinition:update'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:flow-chart"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="流程发布" placement="top" v-if="scope.row.isPublish === 0">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handlePublish(scope.row)"
+                v-permission="'workflow:flowDefinition:publish'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:promotion"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+
+            <el-tooltip content="编辑" placement="top" v-if="scope.row.isPublish === 0">
               <el-button
                 type="primary"
                 text
@@ -376,7 +435,7 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <el-tooltip content="删除" placement="top" v-if="scope.row.isPublish === 0">
               <div style="display: inline-block">
                 <el-popconfirm
                   placement="left"
@@ -403,6 +462,38 @@ onMounted(() => {
                 </el-popconfirm>
               </div>
             </el-tooltip>
+            <el-tooltip content="流程复制" placement="top" v-if="scope.row.isPublish === 1">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleCopy(scope.row)"
+                v-permission="'workflow:flowDefinition:copy'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:copy-document"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="取消发布" placement="top" v-if="scope.row.isPublish === 1">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleUnpublish(scope.row)"
+                v-permission="'workflow:flowDefinition:unpublish'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:arrow-go-back-fill"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -421,7 +512,9 @@ onMounted(() => {
   <VtDialogWorkflowDesigner
     v-model:visible="editDialogVisible"
     :id="editDataId"
-    :title="utils.isBlank(editDataId) ? '新增' : '编辑'"
+    :title="editDialogTitle"
+    :only-design-show="editOnlyDesignShow"
+    :disabled="editDisabled"
     @refresh="loadTableData"
   ></VtDialogWorkflowDesigner>
 </template>

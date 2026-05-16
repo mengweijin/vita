@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * vt_message_category
+ * vt_message_type
  *
  * @author mengweijin
  * @since 2023/5/20
  */
 @Getter
 @AllArgsConstructor
-public enum EMessageCategory implements IEnum<String> {
+public enum EMessageType implements IEnum<String> {
 
     /**
      * 来自系统发送的消息

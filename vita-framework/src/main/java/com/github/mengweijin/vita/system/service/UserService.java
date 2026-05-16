@@ -5,7 +5,6 @@ import cn.hutool.v7.core.data.PasswdStrength;
 import cn.hutool.v7.core.date.TimeUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
-import cn.hutool.v7.crypto.digest.BCrypt;
 import cn.hutool.v7.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,7 +13,7 @@ import com.github.mengweijin.vita.framework.cache.CacheConst;
 import com.github.mengweijin.vita.framework.cache.CacheNames;
 import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.constant.VitaConst;
-import com.github.mengweijin.vita.framework.enums.dict.EMessageCategory;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.properties.ApplicationProperties;
 import com.github.mengweijin.vita.framework.properties.VitaProperties;
@@ -93,8 +92,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
             user.setPassword(defaultPassword);
         }
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
-        user.setSalt(BCrypt.gensalt());
-        user.setPassword(DigestUtil.bcrypt(this.saltedPassword(user.getPassword(), user.getSalt())));
+        user.setPassword(DigestUtil.bcrypt(user.getPassword()));
         user.setPasswordChangeTime(LocalDateTime.now());
         return super.save(user);
     }
@@ -119,10 +117,6 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         userPostService.setUserPosts(userDO.getId(), userBO.getPostIds());
         // 保存角色变动日志
         logDataChangeService.saveWhenListChange(VitaConst.TABLE_VT_USER_ROLE, userDO.getId(), List.copyOf(beforeRoleIds), userBO.getRoleIds());
-    }
-
-    public String saltedPassword(String password, String salt) {
-        return String.join(Const.COMMA, password, salt);
     }
 
     @Override
@@ -196,18 +190,15 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
                 .map(UserAvatarDO::getAvatar).orElse(null);
     }
 
-    public boolean checkPassword(String checkingPwd, String dbPwd, String salt) {
-        String saltedPassword = this.saltedPassword(checkingPwd, salt);
-        return DigestUtil.bcryptCheck(saltedPassword, dbPwd);
+    public boolean checkPassword(String checkingPwd, String dbPwd) {
+        return DigestUtil.bcryptCheck(checkingPwd, dbPwd);
     }
 
     public boolean updatePassword(String username, String newPassword) {
         String passwordLevel = PasswdStrength.getLevel(newPassword).name();
-        String salt = BCrypt.gensalt();
-        String hashedPwd = DigestUtil.bcrypt(this.saltedPassword(newPassword, salt));
+        String hashedPwd = DigestUtil.bcrypt(newPassword);
 
         return this.lambdaUpdate()
-                .set(UserDO::getSalt, salt)
                 .set(UserDO::getPassword, hashedPwd)
                 .set(UserDO::getPasswordLevel, passwordLevel)
                 .set(UserDO::getPasswordChangeTime, LocalDateTime.now())
@@ -234,7 +225,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
 
                     String messageTitle = I18nUtils.msg("system.message.USER_PASSWORD_LONG_TIME_NO_CHANGE.title");
                     String messageContent = I18nUtils.msg("system.message.USER_PASSWORD_LONG_TIME_NO_CHANGE.content", duration.toDays());
-                    messageService.sendMessageToUser(EMessageCategory.SECURITY, messageTitle, messageContent, user.getId());
+                    messageService.sendMessageToUser(EMessageType.SECURITY, messageTitle, messageContent, user.getId());
                 })
                 .exceptionally(e -> {
                     log.error(e.getMessage(), e);

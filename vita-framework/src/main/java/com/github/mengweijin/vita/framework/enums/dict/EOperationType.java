@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * vt_operation_type
+ * vt_operation_log_type
  *
  * @author mengweijin
  */
@@ -67,6 +67,21 @@ public enum EOperationType implements IEnum<String> {
      * 强制下线
      */
     OFFLINE("OFFLINE"),
+
+    /**
+     * 复制
+     */
+    COPY("COPY"),
+
+    /**
+     * 发布
+     */
+    PUBLISH("PUBLISH"),
+
+    /**
+     * 取消发布
+     */
+    UNPUBLISH("UNPUBLISH"),
 
     /**
      * 其他

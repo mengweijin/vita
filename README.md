@@ -69,13 +69,14 @@
    <span>基于 SpringBoot、sa-token、mybatis-plus、vue、element-plus 等技术，不依赖任何第三方服务。</span>
 </p>
 <p style="text-indent:2em;">
-   有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西（如：redis, minio/fastdfs，数据库等），和很复杂的配置文件，自己从零搭建又太耗费时间，<strong>真的太麻烦了！</strong>
+   有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西（如：redis, minio/fastdfs，数据库等），以及很复杂的配置文件，自己从零搭建又太耗费时间，<strong>真的太麻烦了！</strong>
 </p>
 <p style="text-indent:2em;">
-   于是，就有了 <strong>Vita（微塔）</strong>，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。
+   于是，就有了 <strong>Vita（微塔）</strong>，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的小体量工作环境。
 </p>
 
 ## 在线演示
+
 |           版本           |          演示链接          |
 |:----------------------:|:----------------------:|
 |       Vita（开发中）        | https://vita.aday.fun  |
@@ -142,10 +143,10 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 
 | ------ |  ------   |  ------  |  ------   | ------  |
 |:------:|:---------:|:--------:|:---------:|:-------:|
-|   首页   |   调度任务    |   角色授权   | 工作流（开发中）  |  图片裁剪   |
-|  系统公告  |   应用监控    |   数据脱敏   | 流程分类（开发中） | 富文本编辑器  |
-|  消息管理  |   本地缓存    |   字典翻译   | 流程表单（开发中） |  图标选择器  |
-|  菜单管理  |   在线用户    |   接口限流   | 流程定义（开发中） | 表格工具条组件 |
+|   首页   |   调度任务    |   角色授权   |    工作流    |  图片裁剪   |
+|  系统公告  |   应用监控    |   数据脱敏   |   流程分类    | 富文本编辑器  |
+|  消息管理  |   本地缓存    |   字典翻译   |   流程表单    |  图标选择器  |
+|  菜单管理  |   在线用户    |   接口限流   |   流程定义    | 表格工具条组件 |
 |  部门管理  |   登录日志    |   缓存过期   | 流程监控（开发中） | 二级认证组件  |
 |  岗位管理  |   操作日志    |   接口防抖   | 流程实例（开发中） | 用户选择组件  |
 |  用户管理  |   系统日志    |   全局异常   | 待办任务（开发中） | 角色选择组件  |
@@ -156,6 +157,7 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 |  文件管理  | 数据存储自动加解密 |   二级认证   | 抄送我的（开发中） | 权限控制指令  |
 
 ### 演示图
+
 | ![image](docs/readme/images/1.png) | ![image](docs/readme/images/2.png) |    
 |-----------------------------------:|:-----------------------------------|
 | ![image](docs/readme/images/3.png) | ![image](docs/readme/images/4.png) | 
@@ -163,4 +165,4 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 
 ## ⭐Star Vita on GitHub
 
-[![Stargazers over time](https://starchart.cc/mengweijin/vita.svg)](https://starchart.cc/mengweijin/vita)
+[![Star History Chart](https://api.star-history.com/chart?repos=mengweijin/vita&type=date&legend=top-left)](https://www.star-history.com/?repos=mengweijin%2Fvita&type=date&legend=top-left)

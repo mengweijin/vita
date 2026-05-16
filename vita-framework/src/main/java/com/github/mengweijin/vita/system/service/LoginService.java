@@ -75,7 +75,7 @@ public class LoginService {
             throw new ClientException(msg);
         }
 
-        if (!userService.checkPassword(loginBO.getPassword(), user.getPassword(), user.getSalt())) {
+        if (!userService.checkPassword(loginBO.getPassword(), user.getPassword())) {
             String msg = I18nUtils.msg("system.login.username.or.password.incorrect");
             logLoginService.addLoginLogAsync(loginBO.getUsername(), ELoginType.LOGIN, msg, request);
             throw new ClientException(msg);
