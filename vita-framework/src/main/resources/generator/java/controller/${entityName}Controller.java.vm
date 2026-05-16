@@ -82,7 +82,7 @@ public class ${entityName}Controller {
     @SaCheckPermission("${module}:${entityPropertyName}:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody ${entityName}BO ${entityPropertyName}) {
-        boolean bool = ${entityPropertyName}Service.saveByBo(${entityPropertyName});
+        boolean bool = ${entityPropertyName}Service.save(${entityPropertyName});
         return R.result(bool);
     }
 
@@ -94,7 +94,7 @@ public class ${entityName}Controller {
     @SaCheckPermission("${module}:${entityPropertyName}:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody ${entityName}BO ${entityPropertyName}) {
-        boolean bool = ${entityPropertyName}Service.updateByBoById(${entityPropertyName});
+        boolean bool = ${entityPropertyName}Service.updateById(${entityPropertyName});
         return R.result(bool);
     }
 

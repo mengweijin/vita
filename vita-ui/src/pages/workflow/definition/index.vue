@@ -291,6 +291,9 @@ onMounted(() => {
         width="100"
         align="center"
       >
+        <template #default="{ row }">
+          <VtTagDict :code="'vt_warmflow_publish'" :value="row.isPublish" :size="size"></VtTagDict>
+        </template>
       </el-table-column>
       <el-table-column
         v-if="columns.formCustom.visible"
@@ -320,6 +323,13 @@ onMounted(() => {
         width="100"
         align="center"
       >
+        <template #default="{ row }">
+          <VtTagDict
+            :code="'vt_warmflow_activity_status'"
+            :value="row.activityStatus"
+            :size="size"
+          ></VtTagDict>
+        </template>
       </el-table-column>
       <el-table-column
         v-if="columns.listenerType.visible"
