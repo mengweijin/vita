@@ -20,7 +20,7 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <revision>2.0.0-M5</revision>
+        <revision>2.0.0-M6-SNAPSHOT</revision>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
