@@ -1,4 +1,4 @@
-package com.github.mengweijin.vita.hr.controller;
+package com.github.mengweijin.vita.oa.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -8,10 +8,10 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.hr.domain.bo.LeaveApplyBO;
-import com.github.mengweijin.vita.hr.domain.entity.LeaveApplyDO;
-import com.github.mengweijin.vita.hr.domain.vo.LeaveApplyVO;
-import com.github.mengweijin.vita.hr.service.LeaveApplyService;
+import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
+import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
+import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.service.LeaveApplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +43,8 @@ public class LeaveApplyController {
 
     /**
      * Get LeaveApplyVO page by LeaveApplyDO
-     * @param page page
+     *
+     * @param page       page
      * @param leaveApply {@link LeaveApplyDO}
      * @return PageQuery<LeaveApplyVO>
      */
@@ -56,6 +57,7 @@ public class LeaveApplyController {
 
     /**
      * Get LeaveApplyVO list by LeaveApplyDO
+     *
      * @param leaveApply {@link LeaveApplyDO}
      * @return List<LeaveApplyVO>
      */
@@ -67,6 +69,7 @@ public class LeaveApplyController {
 
     /**
      * Get LeaveApplyVO by id
+     *
      * @param id id
      * @return LeaveApplyVO
      */
@@ -77,6 +80,7 @@ public class LeaveApplyController {
 
     /**
      * Add LeaveApply
+     *
      * @param leaveApply {@link LeaveApplyDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
@@ -89,6 +93,7 @@ public class LeaveApplyController {
 
     /**
      * Update LeaveApply
+     *
      * @param leaveApply {@link LeaveApplyBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
@@ -101,6 +106,7 @@ public class LeaveApplyController {
 
     /**
      * Remove LeaveApply by id(s), Multiple ids can be separated by commas ",".
+     *
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)

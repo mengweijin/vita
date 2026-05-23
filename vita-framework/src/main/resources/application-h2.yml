@@ -1,7 +1,7 @@
 spring:
   liquibase:
     contexts: prod
-    change-log: classpath:/db/db.changelog-h2.xml
+    change-log: classpath:/db/db.changelog-h2.yaml
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./h2/vita;AUTO_SERVER=TRUE;IGNORECASE=TRUE

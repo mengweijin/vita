@@ -6,7 +6,7 @@ import com.github.mengweijin.vita.system.domain.entity.CategoryDO;
 import com.github.mengweijin.vita.system.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.dromara.warm.flow.core.dto.Tree;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import java.util.List;
  * @author mengweijin
  * @since 2026/4/4
  */
-@Service
+@Component
 @AllArgsConstructor
-public class WarmFlowCategoryServiceImpl implements org.dromara.warm.flow.ui.service.CategoryService {
+public class WarmFlowCategoryService implements org.dromara.warm.flow.ui.service.CategoryService {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Override
     public List<Tree> queryCategory() {

@@ -1,19 +1,19 @@
-package com.github.mengweijin.vita.hr.service;
+package com.github.mengweijin.vita.oa.service;
 
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
-import com.github.mengweijin.vita.hr.domain.entity.LeaveApplyDO;
-import com.github.mengweijin.vita.hr.domain.vo.LeaveApplyVO;
-import com.github.mengweijin.vita.hr.mapper.LeaveApplyMapper;
+import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
+import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.mapper.LeaveApplyMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
  * 员工请假申请表 LeaveApply Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  *
  * @author mengweijin
  * @since 2026-05-16

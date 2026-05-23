@@ -1,6 +1,6 @@
-package com.github.mengweijin.vita.hr.domain.bo;
+package com.github.mengweijin.vita.oa.domain.bo;
 
-import com.github.mengweijin.vita.hr.domain.entity.LeaveApplyDO;
+import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

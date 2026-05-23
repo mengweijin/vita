@@ -1,8 +1,8 @@
-package com.github.mengweijin.vita.hr.mapper;
+package com.github.mengweijin.vita.oa.mapper;
 
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
-import com.github.mengweijin.vita.hr.domain.entity.LeaveApplyDO;
-import com.github.mengweijin.vita.hr.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
+import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

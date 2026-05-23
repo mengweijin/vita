@@ -16,6 +16,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  showGrid: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -33,7 +37,7 @@ const { VITE_BASE_API } = import.meta.env;
 const url = computed(() => {
   let basePath = utils.trimSpecified(VITE_BASE_API, "/");
   let bearerToken = loginStore.getBearerToken();
-  return `${basePath}/warm-flow-ui/index.html?id=${props.id}&onlyDesignShow=${props.onlyDesignShow}&disabled=${props.disabled}&Authorization=${bearerToken}`;
+  return `${basePath}/warm-flow-ui/index.html?id=${props.id}&onlyDesignShow=${props.onlyDesignShow}&showGrid=${props.showGrid}&disabled=${props.disabled}&Authorization=${bearerToken}`;
 });
 
 const onClosed = () => {

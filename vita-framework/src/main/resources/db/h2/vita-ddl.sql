@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset admin:1001 splitStatements:true
+--changeset admin:1 splitStatements:true
 
 -- 与 MySQL 区别
 -- 1、h2 中，创建表最后面不能添加 COMMENT = '表注释'；
@@ -446,10 +446,10 @@ create index IDX_VT_FORM_ANCESTORS on VT_FORM(ANCESTORS);
 ------------------------------------------------
 -- 员工请假申请表
 ------------------------------------------------
-drop table IF EXISTS VT_HR_LEAVE_APPLY;
-create TABLE VT_HR_LEAVE_APPLY (
+drop table IF EXISTS VT_OA_LEAVE_APPLY;
+create TABLE VT_OA_LEAVE_APPLY (
   ID                            bigint NOT NULL comment '主键ID',
-  LEAVE_TYPE                    varchar(64) NOT NULL comment '请假类型。关联字典：vt_hr_leave_type',
+  LEAVE_TYPE                    varchar(64) NOT NULL comment '请假类型。关联字典：vt_oa_leave_type',
   START_TIME                    datetime NOT NULL comment '开始时间',
   END_TIME                      datetime NOT NULL comment '结束时间',
   LEAVE_DAYS                    int NOT NULL comment '请假天数',
@@ -462,7 +462,7 @@ create TABLE VT_HR_LEAVE_APPLY (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-comment on table VT_HR_LEAVE_APPLY is '员工请假申请表';
+comment on table VT_OA_LEAVE_APPLY is '员工请假申请表';
 
 
 ------------------------------------------------

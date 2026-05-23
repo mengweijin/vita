@@ -106,6 +106,9 @@ public class DeptService extends BaseVitaService<DeptMapper, DeptDO, DeptVO> {
             return wrapper.list();
         }
         DeptDO dept = this.getById(id);
+        if (dept == null) {
+            return new ArrayList<>();
+        }
         List<DeptDO> list = wrapper.likeRight(DeptDO::getAncestors, dept.getAncestors() + dept.getId()).list();
         if (withSelf) {
             List<DeptDO> withSelfList = new ArrayList<>(list);

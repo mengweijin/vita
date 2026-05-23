@@ -84,8 +84,8 @@ spring:
   liquibase:
     # 启用 liquibase
     enabled: true
-    # 存储变化的文件（changelog）位置。默认：classpath:/db/changelog/db.changelog-master.xml
-    change-log: classpath:/db/db.changelog-master.xml
+    # 存储变化的文件（changelog）位置。默认：classpath:/db/changelog/db.changelog-master.yaml
+    change-log: classpath:/db/db.changelog-h2.yaml
     # 分环境执行，若在 changelog 文件中设置了对应 context 属性，则只会执行与 dev 对应值的 changeset
     # contexts: test
     # 执行前首先删除数据库，默认 false。若设置为 true，则执行变更前，会先删除目标数据库，请谨慎

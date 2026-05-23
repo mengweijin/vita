@@ -1,13 +1,14 @@
-package com.github.mengweijin.vita.hr.domain.entity;
+package com.github.mengweijin.vita.oa.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
-import com.github.mengweijin.vita.hr.domain.bo.LeaveApplyBO;
-import com.github.mengweijin.vita.hr.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
+import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
 
 
@@ -23,41 +24,41 @@ import java.time.LocalDateTime;
 })
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_HR_LEAVE_APPLY")
+@TableName("VT_OA_LEAVE_APPLY")
 public class LeaveApplyDO extends BaseEntity {
 
     /**
-    * 请假类型。关联字典：vt_hr_leave_type
-    */
+     * 请假类型。关联字典：vt_oa_leave_type
+     */
     private String leaveType;
 
     /**
-    * 开始时间
-    */
+     * 开始时间
+     */
     private LocalDateTime startTime;
 
     /**
-    * 结束时间
-    */
+     * 结束时间
+     */
     private LocalDateTime endTime;
 
     /**
-    * 请假天数
-    */
+     * 请假天数
+     */
     private Integer leaveDays;
 
     /**
-    * 请假原因
-    */
+     * 请假原因
+     */
     private String remark;
 
     /**
-    * 附件ID(s)
-    */
+     * 附件ID(s)
+     */
     private String attachmentId;
 
     /**
-    * 工作流实例ID
-    */
+     * 工作流实例ID
+     */
     private String workflowId;
 }

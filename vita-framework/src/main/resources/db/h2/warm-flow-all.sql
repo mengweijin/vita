@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset admin:1 splitStatements:true
+--changeset admin:3 splitStatements:true
 
 drop table IF EXISTS flow_definition;
 CREATE TABLE flow_definition

@@ -43,15 +43,27 @@ public class PageQuery<T> implements Serializable {
     @SuppressWarnings({"java:S1948"})
     private List<T> pageRecords;
 
-    public PageQuery(final long pageCurrent, final long pageSize, final long pageTotal, final List<T> pageRecords) {
+    private PageQuery(final long pageCurrent, final long pageSize, final long pageTotal, final List<T> pageRecords) {
         this.pageCurrent = pageCurrent;
         this.pageSize = pageSize;
         this.pageTotal = pageTotal;
         this.pageRecords = pageRecords;
     }
 
-    public static <E extends Serializable> PageQuery<E> of(IPage<E> page) {
-        return new PageQuery<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
+    public static <E> PageQuery<E> of(IPage<E> page) {
+        return of(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
+    }
+
+    public static <E> PageQuery<E> of(long pageCurrent, long pageSize) {
+        return of(pageCurrent, pageSize, 0);
+    }
+
+    public static <E> PageQuery<E> of(long pageCurrent, long pageSize, long pageTotal) {
+        return of(pageCurrent, pageSize, pageTotal, null);
+    }
+
+    public static <E> PageQuery<E> of(long pageCurrent, long pageSize, long pageTotal, List<E> pageRecords) {
+        return new PageQuery<>(pageCurrent, pageSize, pageTotal, pageRecords);
     }
 
     public IPage<T> toPage() {
