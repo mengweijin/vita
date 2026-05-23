@@ -7,7 +7,8 @@ export const cacheLocalApi = {
 
   clearByName: (cacheName) => http.post(`${URL_PREFIX}/clear/by/name/${cacheName}`),
 
-  query: (cacheName) => http.get(`${URL_PREFIX}/query?cacheName=${cacheName}`),
+  listCacheByName: (cacheName) =>
+    http.get(`${URL_PREFIX}/list/cache/by/name?cacheName=${cacheName}`),
 
   queryCacheByNameAndKey: (cacheName, cacheKey) =>
     http.get(`${URL_PREFIX}/query/cache/by/nameAndKey?cacheName=${cacheName}&cacheKey=${cacheKey}`),

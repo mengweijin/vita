@@ -31,7 +31,7 @@ const handleCacheNameChange = async (name) => {
 
   if (!utils.isEmpty(name)) {
     loading.value = true;
-    dataList.value = await cacheLocalApi.query(name);
+    dataList.value = await cacheLocalApi.listCacheByName(name);
     handleFilterDataList(keywords.value);
     loading.value = false;
   }

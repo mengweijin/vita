@@ -50,7 +50,7 @@ public class CacheLocalController {
 
     @SaCheckPermission("monitor:cacheLocal:view")
     @GetMapping("/list/cache/by/name")
-    public List<CacheVO> getCacheByName(@RequestParam("cacheName") String cacheName) {
+    public List<CacheVO> listCacheByName(@RequestParam("cacheName") String cacheName) {
         List<CacheVO> list = new ArrayList<>();
 
         Map<Object, Object> cacheMap = new HashMap<>(16);
