@@ -228,7 +228,7 @@ onMounted(() => {
           导入
         </el-button>
       </el-upload>
-    </el-col>    
+    </el-col>
     <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:flowDefinition:remove'">
       <el-popconfirm
         placement="right"
@@ -251,7 +251,12 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
+    <VtTableBarRight
+      :tableRef="tableRef"
+      :columns="columns"
+      @refresh="loadTableData"
+      @update-size="(val) => (size = val)"
+    />
   </el-row>
 
   <!-- 表格 -->

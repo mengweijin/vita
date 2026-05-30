@@ -28,7 +28,7 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  code: 'vt_workflow',
+  code: "vt_workflow",
   name: undefined,
   pageCurrent: 1,
   pageSize: 10,
@@ -115,7 +115,6 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    
   </el-form>
 
   <el-divider style="margin: 0px" />
@@ -163,7 +162,12 @@ onMounted(() => {
       <el-checkbox v-model="treeProps.checkStrictly"> 取消父子联动 </el-checkbox>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
+    <VtTableBarRight
+      :tableRef="tableRef"
+      :columns="columns"
+      @refresh="loadTableData"
+      @update-size="(val) => (size = val)"
+    />
   </el-row>
 
   <!-- 表格 -->

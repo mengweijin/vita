@@ -86,7 +86,7 @@ const treeOptions = computed(() => {
 });
 
 onMounted(async () => {
-  categoryList.value = await categoryApi.list({ code: "vt_workflow"});
+  categoryList.value = await categoryApi.list({ code: "vt_workflow" });
 });
 </script>
 

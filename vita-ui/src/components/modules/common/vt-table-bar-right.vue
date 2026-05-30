@@ -119,11 +119,7 @@ onMounted(() => {
 
 <template>
   <el-col :span="1.5" style="margin-left: auto">
-    <el-tooltip
-      content="刷新"
-      placement="top"
-      v-if="props.shows.includes('refresh')"
-    >
+    <el-tooltip content="刷新" placement="top" v-if="props.shows.includes('refresh')">
       <el-button text circle @click="onRefresh">
         <template #icon>
           <Icon icon="ep:refresh" width="24" height="24"></Icon>

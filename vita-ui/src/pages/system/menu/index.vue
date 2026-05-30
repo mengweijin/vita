@@ -165,7 +165,12 @@ onMounted(() => {
       <el-checkbox v-model="treeProps.checkStrictly"> 取消父子联动 </el-checkbox>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
+    <VtTableBarRight
+      :tableRef="tableRef"
+      :columns="columns"
+      @refresh="loadTableData"
+      @update-size="(val) => (size = val)"
+    />
   </el-row>
 
   <!-- 表格 -->

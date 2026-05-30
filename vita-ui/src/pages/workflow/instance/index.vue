@@ -144,7 +144,12 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
+    <VtTableBarRight
+      :tableRef="tableRef"
+      :columns="columns"
+      @refresh="loadTableData"
+      @update-size="(val) => (size = val)"
+    />
   </el-row>
 
   <!-- 表格 -->
@@ -183,7 +188,7 @@ onMounted(() => {
         label="业务ID"
         width="180"
       />
-      
+
       <el-table-column
         v-if="columns.nodeType.visible"
         prop="nodeType"
@@ -254,7 +259,7 @@ onMounted(() => {
         label="表单路径"
         min-width="100"
       />
-      
+
       <el-table-column
         v-if="columns.defJson.visible"
         prop="defJson"
