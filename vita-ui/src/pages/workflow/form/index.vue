@@ -1,14 +1,15 @@
 <route lang="yaml">
 meta:
-  title: 岗位管理
-  permission: system:post:view
+  title: 流程表单
+  permission: workflow:flowForm:view
 </route>
 
 <script setup>
-import { postApi } from "@/api/system/post-api.js";
-import { usePost } from "./hooks.js";
-import PostEdit from "./components/post-edit.vue";
-const { columns } = usePost();
+import { formApi } from "@/api/system/form-api.js";
+import utils from "@/utils/utils.js";
+import { useForm } from "./hooks.js";
+import FormEdit from "./components/form-edit.vue";
+const { columns } = useForm();
 
 const loading = ref(true);
 
@@ -16,18 +17,23 @@ const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
 
+const treeProps = reactive({
+  // 父子节点默认联动
+  checkStrictly: false,
+});
+
 const tableData = ref([]);
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  code: undefined,
-  disabled: undefined,
+  id: undefined,
   name: undefined,
   pageCurrent: 1,
   pageSize: 10,
   pageTotal: 0,
+  type: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -39,8 +45,8 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  postApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
+  formApi.pageRoot(queryParams).then((res) => {
+    tableData.value = utils.toArrayTree(res.pageRecords);
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
@@ -65,7 +71,7 @@ const handleEdit = (row) => {
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
+  formApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -91,14 +97,14 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="name" label="名称">
+    <el-form-item prop="id" label="ID" v-show="false">
+      <el-input v-model="queryParams.id" placeholder="" clearable />
+    </el-form-item>
+    <el-form-item prop="name" label="表单名称">
       <el-input v-model="queryParams.name" placeholder="" clearable />
     </el-form-item>
-    <el-form-item prop="code" label="编码">
-      <el-input v-model="queryParams.code" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
+    <el-form-item prop="type" label="表单类型">
+      <VtSelectDict v-model="queryParams.type" :code="'vt_form_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -125,7 +131,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'system:post:create'">
+    <el-col :span="1.5" v-permission="'system:form:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -135,7 +141,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'system:post:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'system:form:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -166,6 +172,7 @@ onMounted(() => {
       ref="tableRef"
       v-loading="loading"
       :data="tableData"
+      :tree-props="treeProps"
       :size="size"
       row-key="id"
       height="100%"
@@ -181,31 +188,28 @@ onMounted(() => {
       <el-table-column
         v-if="columns.name.visible"
         prop="name"
-        label="岗位名称"
-        min-width="180"
+        label="表单名称"
+        min-width="260"
         fixed="left"
       />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="180" />
       <el-table-column
-        v-if="columns.disabled.visible"
-        prop="disabled"
-        label="状态"
-        min-width="80"
+        v-if="columns.type.visible"
+        prop="type"
+        label="表单类型"
+        width="100"
         align="center"
       >
-        <template #default="{ row }">
-          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
+        <template #default="scope">
+          <VtTagDict :code="'vt_form_type'" :value="scope.row.type" :size="'default'"></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.seq.visible"
-        prop="seq"
-        label="排序"
-        min-width="80"
-        sortable
-        align="center"
+        v-if="columns.formPath.visible"
+        prop="formPath"
+        label="表单路径"
+        min-width="200"
       />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="100" />
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
@@ -243,7 +247,7 @@ onMounted(() => {
                 text
                 :size="size"
                 @click="handleAdd(scope.row.id)"
-                v-permission="'system:post:create'"
+                v-permission="'system:form:create'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -259,7 +263,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleEdit(scope.row)"
-                v-permission="'system:post:update'"
+                v-permission="'system:form:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -279,7 +283,7 @@ onMounted(() => {
                   @confirm="handleDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'system:post:remove'">
+                    <el-button type="danger" text :size="size" v-permission="'system:form:remove'">
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -301,15 +305,16 @@ onMounted(() => {
       v-model:current-page="queryParams.pageCurrent"
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
+      :page-sizes="[10, 20]"
       @change="handlePageChange"
     />
   </div>
 
-  <PostEdit
+  <FormEdit
     v-model:visible="editDialogVisible"
     :data="editData"
     @refresh="loadTableData"
-  ></PostEdit>
+  ></FormEdit>
 </template>
 
 <style scoped></style>

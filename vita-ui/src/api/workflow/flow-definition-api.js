@@ -1,6 +1,6 @@
 import http from "@/utils/http.js";
 
-const URL_PREFIX = "/workflow/flow-definition";
+const URL_PREFIX = "/workflow/definition";
 
 export const flowDefinitionApi = {
   create: (data) => http.post(`${URL_PREFIX}/create`, data),

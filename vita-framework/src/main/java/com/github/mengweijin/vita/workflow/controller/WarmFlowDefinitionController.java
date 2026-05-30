@@ -7,9 +7,11 @@ import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowDefinitionService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.FlowEngine;
@@ -26,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 流程定义表 FlowDefinition Controller
@@ -40,7 +44,7 @@ import java.util.Arrays;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/workflow/flow-definition")
+@RequestMapping("/workflow/definition")
 public class WarmFlowDefinitionController extends WarmFlowController {
 
     private static final String LOG_TITLE = "流程定义";
@@ -94,6 +98,14 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FlowDefinition flowDefinition) {
         boolean bool = warmFlowDefinitionService.updateById(flowDefinition);
         return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.IMPORT)
+    @SaCheckPermission("workflow:flowDefinition:create")
+    @PostMapping("/import")
+    public void importDefinition(HttpServletRequest request) {
+        List<MultipartFile> list = UploadUtils.upload(request, file -> file);
+        warmFlowDefinitionService.importDefinition(list);
     }
 
     /**

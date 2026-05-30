@@ -1,14 +1,14 @@
 <route lang="yaml">
 meta:
-  title: 岗位管理
-  permission: system:post:view
+  title: 流程实例
+  permission: workflow:flowInstance:view
 </route>
 
 <script setup>
-import { postApi } from "@/api/system/post-api.js";
-import { usePost } from "./hooks.js";
-import PostEdit from "./components/post-edit.vue";
-const { columns } = usePost();
+import { flowInstanceApi } from "@/api/workflow/flow-instance-api.js";
+import { useFlowInstance } from "./hooks.js";
+import utils from "@/utils/utils.js";
+const { columns } = useFlowInstance();
 
 const loading = ref(true);
 
@@ -22,12 +22,23 @@ const tableData = ref([]);
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  code: undefined,
-  disabled: undefined,
-  name: undefined,
+  activityStatus: undefined,
+  category: undefined,
+  delFlag: undefined,
+  ext: undefined,
+  flowCode: undefined,
+  flowName: undefined,
+  formCustom: undefined,
+  formPath: undefined,
+  isPublish: undefined,
+  listenerPath: undefined,
+  listenerType: undefined,
+  modelValue: undefined,
   pageCurrent: 1,
   pageSize: 10,
   pageTotal: 0,
+  tenantId: undefined,
+  version: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -39,7 +50,7 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  postApi.page(queryParams).then((res) => {
+  flowInstanceApi.page(queryParams).then((res) => {
     tableData.value = res.pageRecords;
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
@@ -47,25 +58,11 @@ const loadTableData = () => {
 };
 
 // -----------------------------------------
-const editDialogVisible = ref(false);
-const editData = ref(null);
-
-const handleAdd = () => {
-  editData.value = null;
-  editDialogVisible.value = true;
-};
-
-const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  editData.value = { ...row };
-  editDialogVisible.value = true;
-};
-
 /** selected rows */
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
+  flowDefinitionApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -91,14 +88,15 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="name" label="名称">
-      <el-input v-model="queryParams.name" placeholder="" clearable />
+    <el-form-item prop="flowName" label="流程名称">
+      <el-input v-model="queryParams.flowName" placeholder="" clearable style="width: 140px" />
     </el-form-item>
-    <el-form-item prop="code" label="编码">
-      <el-input v-model="queryParams.code" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
+    <el-form-item prop="activityStatus" label="激活状态">
+      <VtSelectDict
+        v-model="queryParams.activityStatus"
+        :code="'vt_warmflow_activity_status'"
+        :style="'width: 120px;'"
+      />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -124,18 +122,7 @@ onMounted(() => {
 
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
-    <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'system:post:create'">
-      <el-button type="primary" @click="handleAdd(null)">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:plus"></Icon>
-          </el-icon>
-        </template>
-        新增
-      </el-button>
-    </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'system:post:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:flowDefinition:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -179,33 +166,114 @@ onMounted(() => {
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
       <el-table-column
-        v-if="columns.name.visible"
-        prop="name"
-        label="岗位名称"
-        min-width="180"
-        fixed="left"
+        v-if="columns.definitionId.visible"
+        prop="definitionId"
+        label="流程定义ID"
+        min-width="100"
       />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="180" />
       <el-table-column
-        v-if="columns.disabled.visible"
-        prop="disabled"
-        label="状态"
-        min-width="80"
+        v-if="columns.flowName.visible"
+        prop="flowName"
+        label="流程名称"
+        min-width="100"
+      />
+      <el-table-column
+        v-if="columns.businessId.visible"
+        prop="businessId"
+        label="业务ID"
+        width="180"
+      />
+      
+      <el-table-column
+        v-if="columns.nodeType.visible"
+        prop="nodeType"
+        label="节点类型"
+        width="100"
+      />
+      <el-table-column
+        v-if="columns.nodeCode.visible"
+        prop="nodeCode"
+        label="流程节点编码"
+        width="80"
+        align="center"
+      />
+      <el-table-column
+        v-if="columns.nodeName.visible"
+        prop="nodeName"
+        label="流程节点名称"
+        width="100"
+        align="center"
+      />
+      <el-table-column
+        v-if="columns.variable.visible"
+        prop="variable"
+        label="流程变量"
+        width="100"
+        align="center"
+      />
+      <el-table-column
+        v-if="columns.flowStatus.visible"
+        prop="flowStatus"
+        label="流程状态"
+        width="100"
+        align="center"
+      />
+      <el-table-column
+        v-if="columns.activityStatus.visible"
+        prop="activityStatus"
+        label="流程激活状态"
+        width="100"
         align="center"
       >
         <template #default="{ row }">
-          <VtTagDict :code="'vt_disabled'" :value="row.disabled" :size="size"></VtTagDict>
+          <VtTagDict
+            :code="'vt_warmflow_activity_status'"
+            :value="row.activityStatus"
+            :size="size"
+          ></VtTagDict>
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.seq.visible"
-        prop="seq"
-        label="排序"
-        min-width="80"
-        sortable
+        v-if="columns.formCustom.visible"
+        prop="formCustom"
+        label="审批表单是否自定义"
+        width="130"
         align="center"
+      >
+        <template #default="{ row }">
+          <VtTagDict
+            :code="'vt_warmflow_form_custom'"
+            :value="row.formCustom"
+            :size="size"
+          ></VtTagDict>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-if="columns.formPath.visible"
+        prop="formPath"
+        label="表单路径"
+        min-width="100"
       />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="200" />
+      
+      <el-table-column
+        v-if="columns.defJson.visible"
+        prop="defJson"
+        label="流程定义json"
+        min-width="100"
+      />
+      <el-table-column v-if="columns.ext.visible" prop="ext" label="扩展字段" min-width="100" />
+      <el-table-column
+        v-if="columns.delFlag.visible"
+        prop="delFlag"
+        label="删除标记"
+        min-width="100"
+      />
+      <el-table-column
+        v-if="columns.tenantId.visible"
+        prop="tenantId"
+        label="租户ID"
+        min-width="100"
+      />
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
@@ -234,41 +302,19 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="240">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                @click="handleAdd(scope.row.id)"
-                v-permission="'system:post:create'"
-              >
+            <el-tooltip content="查看流程" placement="top">
+              <el-button type="primary" text :size="size" @click="handleView(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
+                    <Icon icon="ep:view"></Icon>
                   </el-icon>
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                style="margin-left: 0px"
-                @click="handleEdit(scope.row)"
-                v-permission="'system:post:update'"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:edit"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <el-tooltip content="删除" placement="top" v-if="scope.row.isPublish === 0">
               <div style="display: inline-block">
                 <el-popconfirm
                   placement="left"
@@ -279,7 +325,12 @@ onMounted(() => {
                   @confirm="handleDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'system:post:remove'">
+                    <el-button
+                      type="danger"
+                      text
+                      :size="size"
+                      v-permission="'workflow:flowDefinition:remove'"
+                    >
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -304,12 +355,6 @@ onMounted(() => {
       @change="handlePageChange"
     />
   </div>
-
-  <PostEdit
-    v-model:visible="editDialogVisible"
-    :data="editData"
-    @refresh="loadTableData"
-  ></PostEdit>
 </template>
 
 <style scoped></style>

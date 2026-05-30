@@ -1,0 +1,76 @@
+{
+  "nodeList": [
+    {
+      "nodeType": "0",
+      "nodeCode": "start",
+      "nodeName": "开始",
+      "permissionFlag": null,
+      "nodeRatio": "0",
+      "anyNodeSkip": null,
+      "listenerType": null,
+      "listenerPath": null,
+      "formCustom": "N",
+      "ext": "[]",
+      "coordinate": "260,200|260,200",
+      "version": "1",
+      "skipList": [
+        {
+          "skipType": "PASS",
+          "skipCondition": null,
+          "skipName": null,
+          "nowNodeCode": "start",
+          "nextNodeCode": "submit",
+          "coordinate": "280,200;370,200"
+        }
+      ]
+    },
+    {
+      "nodeType": "1",
+      "nodeCode": "submit",
+      "nodeName": "领导审批",
+      "permissionFlag": "user:2",
+      "nodeRatio": "0",
+      "anyNodeSkip": null,
+      "listenerType": "",
+      "listenerPath": "",
+      "formCustom": "Y",
+      "ext": "[]",
+      "coordinate": "420,200|420,200",
+      "version": "1",
+      "skipList": [
+        {
+          "skipType": "PASS",
+          "skipCondition": null,
+          "skipName": null,
+          "nowNodeCode": "submit",
+          "nextNodeCode": "end",
+          "coordinate": "470,200;577,200"
+        }
+      ]
+    },
+    {
+      "nodeType": "2",
+      "nodeCode": "end",
+      "nodeName": "结束",
+      "permissionFlag": null,
+      "nodeRatio": "0",
+      "anyNodeSkip": null,
+      "listenerType": null,
+      "listenerPath": null,
+      "formCustom": "N",
+      "ext": "[]",
+      "coordinate": "597,200|597,200",
+      "version": "1",
+      "skipList": []
+    }
+  ],
+  "flowCode": "wf_oa_leave",
+  "flowName": "请假流程",
+  "modelValue": "CLASSICS",
+  "category": "10002",
+  "version": "1",
+  "formCustom": "Y",
+  "formPath": "2043270536503705600",
+  "listenerType": "",
+  "listenerPath": ""
+}

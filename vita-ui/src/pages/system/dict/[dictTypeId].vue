@@ -24,6 +24,7 @@ const tableRef = useTemplateRef("tableRef");
 const tableData = ref([]);
 
 const loadTableData = () => {
+  loading.value = true;
   dictDataApi.list({ typeId: dictTypeId }).then((res) => {
     tableData.value = res;
     loading.value = false;
@@ -116,7 +117,8 @@ onMounted(() => {
     <VtTableBarRight
       :tableRef="tableRef"
       :columns="columns"
-      :shows="['size', 'columns']"
+      :shows="['refresh', 'size', 'columns']"
+      @refresh="loadTableData"
       @update-size="(val) => (size = val)"
     />
   </el-row>

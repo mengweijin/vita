@@ -60,9 +60,9 @@ spring:
       thread-name-prefix: task-async-
       pool:
         # 核心线程数，线程池创建时候初始化的线程数。默认为 8
-        core-size: 32
+        core-size: 8
         # 最大线程数，线程池最大的线程数，只有在缓冲队列满了之后，才会申请超过核心线程数的线程。默认为 Integer.MAX_VALUE
-        max-size: 64
+        max-size: 16
         # 允许线程的空闲时间，当超过了核心线程之外的线程，在空闲时间到达之后会被销毁。默认为 60 秒
         keep-alive: 60s
         # 等待执行的任务队列最大容量。若队列满，并且线程数已达 max-size，新任务会触发拒绝策略。默认为 Integer.MAX_VALUE
@@ -75,7 +75,7 @@ spring:
       thread-name-prefix: scheduling-
       pool:
         # default 1
-        size: 32
+        size: 8
       shutdown:
         # 是否等待未完成的任务执行完成后再关闭线程池（避免强制中断任务）
         await-termination: true

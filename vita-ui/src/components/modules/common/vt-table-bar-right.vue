@@ -7,7 +7,7 @@ const props = defineProps({
     type: Object,
   },
   shows: {
-    default: ["print", "size", "fullscreen", "columns"],
+    default: ["refresh", "print", "size", "fullscreen", "columns"],
     type: Array,
   },
   tableRef: {
@@ -15,7 +15,11 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update-size"]);
+const onRefresh = () => {
+  emit("refresh");
+};
+
+const emit = defineEmits(["refresh", "update-size"]);
 
 const handleSizeCommand = (command) => {
   emit("update-size", command);
@@ -115,6 +119,18 @@ onMounted(() => {
 
 <template>
   <el-col :span="1.5" style="margin-left: auto">
+    <el-tooltip
+      content="刷新"
+      placement="top"
+      v-if="props.shows.includes('refresh')"
+    >
+      <el-button text circle @click="onRefresh">
+        <template #icon>
+          <Icon icon="ep:refresh" width="24" height="24"></Icon>
+        </template>
+      </el-button>
+    </el-tooltip>
+
     <el-tooltip
       content="打印，请在打印窗口手动调整缩放比例，以适应纸张页面。"
       placement="top"

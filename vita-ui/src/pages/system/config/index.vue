@@ -175,7 +175,7 @@ onMounted(() => {
       </el-tooltip>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => (size = val)" />
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
   </el-row>
 
   <!-- 表格 -->

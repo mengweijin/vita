@@ -1,14 +1,15 @@
 <route lang="yaml">
 meta:
-  title: 岗位管理
-  permission: system:post:view
+  title: 流程分类
+  permission: workflow:flowCategory:view
 </route>
 
 <script setup>
-import { postApi } from "@/api/system/post-api.js";
-import { usePost } from "./hooks.js";
-import PostEdit from "./components/post-edit.vue";
-const { columns } = usePost();
+import { categoryApi } from "@/api/system/category-api.js";
+import utils from "@/utils/utils.js";
+import { useCategory } from "./hooks.js";
+import CategoryEdit from "./components/category-edit.vue";
+const { columns } = useCategory();
 
 const loading = ref(true);
 
@@ -16,14 +17,18 @@ const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
 
+const treeProps = reactive({
+  // 父子节点默认联动
+  checkStrictly: false,
+});
+
 const tableData = ref([]);
 
 /**
  * 不能初始化为 null，否则 resetFields() 不生效
  */
 const queryParams = reactive({
-  code: undefined,
-  disabled: undefined,
+  code: 'vt_workflow',
   name: undefined,
   pageCurrent: 1,
   pageSize: 10,
@@ -39,8 +44,8 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  postApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
+  categoryApi.pageRoot(queryParams).then((res) => {
+    tableData.value = utils.toArrayTree(res.pageRecords, { sortKey: "seq" });
     queryParams.pageTotal = res.pageTotal;
     loading.value = false;
   });
@@ -50,8 +55,15 @@ const loadTableData = () => {
 const editDialogVisible = ref(false);
 const editData = ref(null);
 
-const handleAdd = () => {
+const handleAdd = (id) => {
   editData.value = null;
+  if (id) {
+    editData.value = {
+      parentId: id,
+      seq: 0,
+      disabled: "N",
+    };
+  }
   editDialogVisible.value = true;
 };
 
@@ -64,8 +76,20 @@ const handleEdit = (row) => {
 /** selected rows */
 const selected = ref([]);
 
+const handleEnable = (id) => {
+  categoryApi.enable(id).then(() => {
+    loadTableData();
+  });
+};
+
+const handleDisable = (id) => {
+  categoryApi.disable(id).then(() => {
+    loadTableData();
+  });
+};
+
 const handleDelete = (ids) => {
-  postApi.remove(ids).then(() => {
+  categoryApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -91,33 +115,7 @@ onMounted(() => {
 <template>
   <!-- 查询表单 -->
   <el-form ref="queryFormRef" :model="queryParams" :inline="true" @submit.prevent="loadTableData">
-    <el-form-item prop="name" label="名称">
-      <el-input v-model="queryParams.name" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="code" label="编码">
-      <el-input v-model="queryParams.code" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="disabled" label="状态">
-      <VtSelectDict v-model="queryParams.disabled" :code="'vt_disabled'"></VtSelectDict>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" native-type="submit">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:search"></Icon>
-          </el-icon>
-        </template>
-        搜索
-      </el-button>
-      <el-button type="warning" @click="resetQueryForm">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:refresh-left"></Icon>
-          </el-icon>
-        </template>
-        重置
-      </el-button>
-    </el-form-item>
+    
   </el-form>
 
   <el-divider style="margin: 0px" />
@@ -125,7 +123,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'system:post:create'">
+    <el-col :span="1.5" v-permission="'system:category:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -135,7 +133,12 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'system:post:remove'">
+    <el-col
+      :span="1.5"
+      v-if="false"
+      v-show="selected.length"
+      v-permission="'system:category:remove'"
+    >
       <el-popconfirm
         placement="right"
         width="400"
@@ -156,6 +159,9 @@ onMounted(() => {
         </template>
       </el-popconfirm>
     </el-col>
+    <el-col :span="1.5" v-if="false">
+      <el-checkbox v-model="treeProps.checkStrictly"> 取消父子联动 </el-checkbox>
+    </el-col>
     <!-- 右侧 -->
     <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
   </el-row>
@@ -166,6 +172,7 @@ onMounted(() => {
       ref="tableRef"
       v-loading="loading"
       :data="tableData"
+      :tree-props="treeProps"
       :size="size"
       row-key="id"
       height="100%"
@@ -173,19 +180,26 @@ onMounted(() => {
       border
       show-overflow-tooltip
       highlight-current-row
+      default-expand-all
       @selection-change="(val) => (selected = val)"
     >
       <el-table-column v-if="columns.selection.visible" type="selection" width="55" />
       <el-table-column v-if="columns.index.visible" type="index" label="序号" width="60" />
       <el-table-column v-if="columns.id.visible" prop="id" label="ID" min-width="180" />
       <el-table-column
+        v-if="columns.parentId.visible"
+        prop="parentId"
+        label="Parent ID"
+        min-width="180"
+      />
+      <el-table-column
         v-if="columns.name.visible"
         prop="name"
-        label="岗位名称"
-        min-width="180"
+        label="分类名称"
+        min-width="230"
         fixed="left"
       />
-      <el-table-column v-if="columns.code.visible" prop="code" label="岗位编码" min-width="180" />
+      <el-table-column v-if="columns.code.visible" prop="code" label="分类编码" min-width="260" />
       <el-table-column
         v-if="columns.disabled.visible"
         prop="disabled"
@@ -234,23 +248,25 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="210">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                @click="handleAdd(scope.row.id)"
-                v-permission="'system:post:create'"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
+            <el-tooltip content="新增" placement="top">
+              <template v-if="scope.row.disabled === 'N'">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  @click="handleAdd(scope.row.id)"
+                  v-permission="'system:category:create'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ep:plus"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </template>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button
@@ -259,7 +275,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleEdit(scope.row)"
-                v-permission="'system:post:update'"
+                v-permission="'system:category:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -268,7 +284,43 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <template v-if="scope.row.disabled === 'Y'">
+              <el-tooltip content="启用" placement="top">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  style="margin-left: 0px"
+                  @click="handleEnable(scope.row.id)"
+                  v-permission="'system:category:update'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ri:checkbox-circle-line"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
+            <template v-else>
+              <el-tooltip content="停用" placement="top">
+                <el-button
+                  type="primary"
+                  text
+                  :size="size"
+                  style="margin-left: 0px"
+                  @click="handleDisable(scope.row.id)"
+                  v-permission="'system:category:update'"
+                >
+                  <template #icon>
+                    <el-icon :size="size">
+                      <Icon icon="ri:prohibited-2-line"></Icon>
+                    </el-icon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </template>
+            <el-tooltip content="删除" placement="top" v-if="scope.row.children?.length <= 0">
               <div style="display: inline-block">
                 <el-popconfirm
                   placement="left"
@@ -279,7 +331,12 @@ onMounted(() => {
                   @confirm="handleDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'system:post:remove'">
+                    <el-button
+                      type="danger"
+                      text
+                      :size="size"
+                      v-permission="'system:category:remove'"
+                    >
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>
@@ -301,15 +358,21 @@ onMounted(() => {
       v-model:current-page="queryParams.pageCurrent"
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
+      :page-sizes="[10, 20]"
       @change="handlePageChange"
     />
   </div>
 
-  <PostEdit
+  <CategoryEdit
     v-model:visible="editDialogVisible"
     :data="editData"
     @refresh="loadTableData"
-  ></PostEdit>
+  ></CategoryEdit>
 </template>
 
-<style scoped></style>
+<style scoped>
+.vt-table {
+  /* 查询表单：50px; */
+  height: calc(var(--vt-table-height) + 50px);
+}
+</style>

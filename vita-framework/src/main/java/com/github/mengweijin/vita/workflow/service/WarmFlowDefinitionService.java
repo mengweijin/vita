@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.workflow.service;
 
+import cn.hutool.v7.core.io.IoUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,14 +8,20 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.warm.flow.core.FlowEngine;
 import org.dromara.warm.flow.orm.entity.FlowDefinition;
 import org.dromara.warm.flow.orm.mapper.FlowDefinitionMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -55,4 +62,18 @@ public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapp
         return wrapper;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void importDefinition(List<MultipartFile> list) {
+        InputStream inputStream = null;
+        try {
+            for (MultipartFile multipartFile : list) {
+                inputStream = multipartFile.getInputStream();
+                FlowEngine.defService().importIs(inputStream);
+            }
+        } catch (IOException e) {
+            throw new ServerException(e);
+        } finally {
+            IoUtil.closeQuietly(inputStream);
+        }
+    }
 }

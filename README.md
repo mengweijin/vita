@@ -77,10 +77,7 @@
 
 ## 在线演示
 
-|           版本           |          演示链接          |
-|:----------------------:|:----------------------:|
-|       Vita（开发中）        | https://vita.aday.fun  |
-| Vitality Layui 版（停止维护） | https://layui.aday.fun |
+<https://vita.aday.fun>
 
 ## 启动应用
 

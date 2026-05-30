@@ -48,7 +48,7 @@ public class UploadUtils {
                     fileList.add(r);
                 }
             } else {
-                String message = "Can't found upload file! The request is not a MultipartHttpServletRequest.";
+                String message = "Can't found upload file!";
                 throw new ClientException(message);
             }
         } catch (Exception e) {

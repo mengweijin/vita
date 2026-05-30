@@ -161,7 +161,8 @@ defineExpose({ data, visible });
       <!-- 右侧 -->
       <VtTableBarRight
         :tableRef="tableRef"
-        :shows="['size']"
+        :shows="['refresh', 'size']"
+        @refresh="loadTableData"
         @update-size="(val) => (size = val)"
       />
     </el-row>

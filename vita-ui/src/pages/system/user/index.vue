@@ -196,6 +196,7 @@ onMounted(() => {
         <VtTableBarRight
           :tableRef="tableRef"
           :columns="columns"
+          @refresh="loadTableData"
           @update-size="(val) => (size = val)"
         />
       </el-row>

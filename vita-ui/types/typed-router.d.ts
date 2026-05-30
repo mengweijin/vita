@@ -20,8 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
+    RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -247,6 +248,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/workflow/category/': RouteRecordInfo<
+      '/workflow/category/',
+      '/workflow/category',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/workflow/definition/': RouteRecordInfo<
       '/workflow/definition/',
       '/workflow/definition',
@@ -254,9 +262,16 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/workflow/warm/': RouteRecordInfo<
-      '/workflow/warm/',
-      '/workflow/warm',
+    '/workflow/form/': RouteRecordInfo<
+      '/workflow/form/',
+      '/workflow/form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/workflow/instance/': RouteRecordInfo<
+      '/workflow/instance/',
+      '/workflow/instance',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -279,11 +294,15 @@ declare module 'vue-router/auto-routes' {
         | '/demo/iframe'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/error/403.vue': {
       routes:
         | '/error/403'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/error/404.vue': {
@@ -291,11 +310,15 @@ declare module 'vue-router/auto-routes' {
         | '/error/404'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/home/index.vue': {
       routes:
         | '/home/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/login/index.vue': {
@@ -303,11 +326,15 @@ declare module 'vue-router/auto-routes' {
         | '/login/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/monitor/cache-local/index.vue': {
       routes:
         | '/monitor/cache-local/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/monitor/log-data-change/index.vue': {
@@ -315,11 +342,15 @@ declare module 'vue-router/auto-routes' {
         | '/monitor/log-data-change/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/monitor/log-login/index.vue': {
       routes:
         | '/monitor/log-login/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/monitor/log-operation/index.vue': {
@@ -327,11 +358,15 @@ declare module 'vue-router/auto-routes' {
         | '/monitor/log-operation/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/monitor/log-system/index.vue': {
       routes:
         | '/monitor/log-system/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/monitor/scheduling/index.vue': {
@@ -339,17 +374,23 @@ declare module 'vue-router/auto-routes' {
         | '/monitor/scheduling/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/monitor/scheduling/[id].vue': {
       routes:
         | '/monitor/scheduling/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/monitor/server/index.vue': {
       routes:
         | '/monitor/server/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/monitor/user-online/index.vue': {
@@ -357,11 +398,15 @@ declare module 'vue-router/auto-routes' {
         | '/monitor/user-online/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/profile/personal-information.vue': {
       routes:
         | '/profile/personal-information'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/category/index.vue': {
@@ -369,11 +414,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/category/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/config/index.vue': {
       routes:
         | '/system/config/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/dept/index.vue': {
@@ -381,11 +430,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/dept/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/dict/index.vue': {
       routes:
         | '/system/dict/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/dict/[dictTypeId].vue': {
@@ -393,11 +446,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/dict/[dictTypeId]'
       views:
         | never
+      pathParamNames:
+        | 'dictTypeId'
     }
     'src/pages/system/file/index.vue': {
       routes:
         | '/system/file/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/form/index.vue': {
@@ -405,11 +462,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/form/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/form/static/workflow/staff-leave-form.vue': {
       routes:
         | '/system/form/static/workflow/staff-leave-form'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/menu/index.vue': {
@@ -417,11 +478,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/menu/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/message/index.vue': {
       routes:
         | '/system/message/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/notice/index.vue': {
@@ -429,11 +494,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/notice/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/post/index.vue': {
       routes:
         | '/system/post/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/system/role/index.vue': {
@@ -441,11 +510,15 @@ declare module 'vue-router/auto-routes' {
         | '/system/role/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/system/user/index.vue': {
       routes:
         | '/system/user/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/tool/generator/index.vue': {
@@ -453,11 +526,23 @@ declare module 'vue-router/auto-routes' {
         | '/tool/generator/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/tool/swagger-ui.vue': {
       routes:
         | '/tool/swagger-ui'
       views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/workflow/category/index.vue': {
+      routes:
+        | '/workflow/category/'
+      views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/workflow/definition/index.vue': {
@@ -465,11 +550,23 @@ declare module 'vue-router/auto-routes' {
         | '/workflow/definition/'
       views:
         | never
+      pathParamNames:
+        | never
     }
-    'src/pages/workflow/warm/index.vue': {
+    'src/pages/workflow/form/index.vue': {
       routes:
-        | '/workflow/warm/'
+        | '/workflow/form/'
       views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/workflow/instance/index.vue': {
+      routes:
+        | '/workflow/instance/'
+      views:
+        | never
+      pathParamNames:
         | never
     }
   }

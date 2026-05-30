@@ -8,9 +8,9 @@ meta:
 import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
 import { useFlowDefinition } from "./hooks.js";
 import utils from "@/utils/utils.js";
+import { useLoginStore } from "@/store/login-store.js";
+const loginStore = useLoginStore();
 const { columns } = useFlowDefinition();
-
-const router = useRouter();
 
 const loading = ref(true);
 
@@ -66,12 +66,21 @@ const editDataId = ref(null);
 const editOnlyDesignShow = ref(false);
 const editDisabled = ref(false);
 
+const { VITE_BASE_API } = import.meta.env;
+// 处理路径
+let importUrl = `${VITE_BASE_API}/workflow/definition/import`.replace("//", "/");
+
 const handleAdd = () => {
   editDataId.value = "";
   editOnlyDesignShow.value = false;
   editDisabled.value = false;
   editDialogTitle.value = "流程定义 - 新增";
   editDialogVisible.value = true;
+};
+
+const handleImport = (res) => {
+  ElMessage.success({ duration: 3000, message: `导入成功!`, showClose: true });
+  loadTableData();
 };
 
 const handleEdit = (row) => {
@@ -201,6 +210,25 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
+    <el-col :span="1.5" v-permission="'workflow:flowDefinition:create'">
+      <el-upload
+        multiple
+        :show-file-list="false"
+        :action="importUrl"
+        :on-success="handleImport"
+        :accept="'.json'"
+        :headers="{ Authorization: `${loginStore.getBearerToken()}` }"
+      >
+        <el-button type="success">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:upload"></Icon>
+            </el-icon>
+          </template>
+          导入
+        </el-button>
+      </el-upload>
+    </el-col>    
     <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:flowDefinition:remove'">
       <el-popconfirm
         placement="right"
@@ -223,7 +251,7 @@ onMounted(() => {
       </el-popconfirm>
     </el-col>
     <!-- 右侧 -->
-    <VtTableBarRight :tableRef="tableRef" :columns="columns" @update-size="(val) => (size = val)" />
+    <VtTableBarRight :tableRef="tableRef" :columns="columns" @refresh="loadTableData" @update-size="(val) => (size = val)" />
   </el-row>
 
   <!-- 表格 -->
