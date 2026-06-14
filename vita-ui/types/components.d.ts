@@ -11,7 +11,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    copy: typeof import('./../src/components/modules/system/vt-dialog-secondary-auth copy.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -54,7 +53,6 @@ declare module 'vue' {
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSegmented: typeof import('element-plus/es')['ElSegmented']
     ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElSpace: typeof import('element-plus/es')['ElSpace']
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
@@ -67,21 +65,14 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     ElUpload: typeof import('element-plus/es')['ElUpload']
-    FlowDefinition: typeof import('../src/pages/workflow/definition/warmflow-definition.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VtCodeHighlight: typeof import('./../src/components/modules/common/vt-code-highlight.vue')['default']
     VtCropper: typeof import('./../src/components/modules/common/vt-cropper.vue')['default']
-    VtDialogFilePreview: typeof import('../src/components/modules/system/vt-dialog-file-viewer.vue/index.js')['default']
     VtDialogFileViewer: typeof import('./../src/components/modules/system/vt-dialog-file-viewer.vue')['default']
     VtDialogSecondaryAuth: typeof import('./../src/components/modules/system/vt-dialog-secondary-auth.vue')['default']
     VtDialogWorkflowDesigner: typeof import('./../src/components/modules/system/vt-dialog-workflow-designer.vue')['default']
-    VtDynamicRouteLoader: typeof import('../src/components/modules/system/vt-route-page-loader.vue/index.js')['default']
     VtEditor: typeof import('./../src/components/modules/common/vt-editor.vue')['default']
-    VtFlowDefinition: typeof import('../src/pages/workflow/definition/warmflow-definition.vue')['default']
-    VtFormLoader: typeof import('./../src/components/modules/system/vt-form-loader.vue')['default']
-    'VtFormLoader.example': typeof import('./../src/components/modules/system/vt-form-loader.example.vue')['default']
-    VtFormRouterLoader: typeof import('./../src/components/modules/system/vt-form-router-loader.vue')['default']
     VtIconPicker: typeof import('./../src/components/modules/common/vt-icon-picker.vue')['default']
     VtRadioDict: typeof import('./../src/components/modules/system/vt-radio-dict.vue')['default']
     VtRoutePageLoader: typeof import('./../src/components/modules/system/vt-route-page-loader.vue')['default']
@@ -94,7 +85,6 @@ declare module 'vue' {
     VtTableBarRight: typeof import('./../src/components/modules/common/vt-table-bar-right.vue')['default']
     VtTagDict: typeof import('./../src/components/modules/system/vt-tag-dict.vue')['default']
     VtUpload: typeof import('./../src/components/modules/system/vt-upload.vue')['default']
-    VtWorkflowFormLoader: typeof import('./../src/components/modules/system/vt-workflow-form-loader.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
