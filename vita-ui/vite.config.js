@@ -42,8 +42,6 @@ export default defineConfig(({ mode }) => {
       minify: mode !== "development",
       // https://rollupjs.org/configuration-options/
       rollupOptions: {
-        // 将 '@flyfish-group/file-viewer3' 标记为外部依赖，不会被打包(临时解决报错问题，等待原作者修复中)
-        external: ["@flyfish-group/file-viewer3"],
         // Rollup 打包配置选项
         output: {
           // 静态资源文件命名规则（图片、字体、CSS等）
