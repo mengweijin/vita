@@ -11,6 +11,7 @@ import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.generator.domain.bo.GeneratorBO;
 import lombok.AccessLevel;
@@ -125,7 +126,7 @@ public class GeneratorUtils {
         objectMap.put("module", args.getModuleName());
         objectMap.put("package", GeneratorUtils.getPackages(args.getPackages(), args.getModuleName()));
         objectMap.put("author", args.getAuthor());
-        objectMap.put("date", DateUtil.format(LocalDateTime.now(), DateFormatPool.NORM_DATE_PATTERN));
+        objectMap.put("date", DateUtil.format(LocalDateTime.now(Const.ZONE), DateFormatPool.NORM_DATE_PATTERN));
         objectMap.put("baseEntity", BASE_ENTITY_CLASS.getName());
         objectMap.put("baseEntityPackage", CharSequenceUtil.subBefore(BASE_ENTITY_CLASS.getName(), ".", true));
         objectMap.put("baseEntityName", CharSequenceUtil.subAfter(BASE_ENTITY_CLASS.getName(), ".", true));

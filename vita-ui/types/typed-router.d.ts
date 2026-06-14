@@ -129,6 +129,48 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/oa/backlog-task': RouteRecordInfo<
+      '/oa/backlog-task',
+      '/oa/backlog-task',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/oa/done-task': RouteRecordInfo<
+      '/oa/done-task',
+      '/oa/done-task',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/oa/leave-apply/': RouteRecordInfo<
+      '/oa/leave-apply/',
+      '/oa/leave-apply',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/oa/leave-apply/workflow/start-form': RouteRecordInfo<
+      '/oa/leave-apply/workflow/start-form',
+      '/oa/leave-apply/workflow/start-form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/oa/my-workflow': RouteRecordInfo<
+      '/oa/my-workflow',
+      '/oa/my-workflow',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/oa/workflow-center': RouteRecordInfo<
+      '/oa/workflow-center',
+      '/oa/workflow-center',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/profile/personal-information': RouteRecordInfo<
       '/profile/personal-information',
       '/profile/personal-information',
@@ -185,13 +227,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/system/form/static/workflow/staff-leave-form': RouteRecordInfo<
-      '/system/form/static/workflow/staff-leave-form',
-      '/system/form/static/workflow/staff-leave-form',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/system/menu/': RouteRecordInfo<
       '/system/menu/',
       '/system/menu',
@@ -223,6 +258,13 @@ declare module 'vue-router/auto-routes' {
     '/system/role/': RouteRecordInfo<
       '/system/role/',
       '/system/role',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/system/test-page': RouteRecordInfo<
+      '/system/test-page',
+      '/system/test-page',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -265,6 +307,13 @@ declare module 'vue-router/auto-routes' {
     '/workflow/form/': RouteRecordInfo<
       '/workflow/form/',
       '/workflow/form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/workflow/form-loader/': RouteRecordInfo<
+      '/workflow/form-loader/',
+      '/workflow/form-loader',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -401,6 +450,54 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
+    'src/pages/oa/backlog-task.vue': {
+      routes:
+        | '/oa/backlog-task'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/oa/done-task.vue': {
+      routes:
+        | '/oa/done-task'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/oa/leave-apply/index.vue': {
+      routes:
+        | '/oa/leave-apply/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/oa/leave-apply/workflow/start-form.vue': {
+      routes:
+        | '/oa/leave-apply/workflow/start-form'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/oa/my-workflow.vue': {
+      routes:
+        | '/oa/my-workflow'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/oa/workflow-center.vue': {
+      routes:
+        | '/oa/workflow-center'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
     'src/pages/profile/personal-information.vue': {
       routes:
         | '/profile/personal-information'
@@ -465,14 +562,6 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/system/form/static/workflow/staff-leave-form.vue': {
-      routes:
-        | '/system/form/static/workflow/staff-leave-form'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
     'src/pages/system/menu/index.vue': {
       routes:
         | '/system/menu/'
@@ -508,6 +597,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/role/index.vue': {
       routes:
         | '/system/role/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/system/test-page.vue': {
+      routes:
+        | '/system/test-page'
       views:
         | never
       pathParamNames:
@@ -556,6 +653,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/workflow/form/index.vue': {
       routes:
         | '/workflow/form/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/workflow/form-loader/index.vue': {
+      routes:
+        | '/workflow/form-loader/'
       views:
         | never
       pathParamNames:

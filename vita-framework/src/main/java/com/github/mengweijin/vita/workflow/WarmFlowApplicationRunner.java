@@ -33,23 +33,25 @@ public class WarmFlowApplicationRunner implements ApplicationRunner {
         MultiResource resources = ResourceFinder.of().find("workflow/*.json");
 
         // 执行事务操作。如果抛出未捕获的异常，事务会自动回滚
-        transactionTemplate.executeWithoutResult(status -> {
-            resources.forEach(resource -> {
-                String resourceName = resource.getName();
-                String str = resource.readUtf8Str();
-                DefJson defJson = FlowEngine.jsonConvert.strToBean(str, DefJson.class);
-                defJson.setCreateBy(String.valueOf(VitaConst.USER_ADMIN_ID));
-                defJson.setUpdateBy(String.valueOf(VitaConst.USER_ADMIN_ID));
-                List<Definition> definitions = FlowEngine.defService().getByFlowCode(defJson.getFlowCode());
-                if (CollUtil.isEmpty(definitions)) {
-                    // 导入流程定义
-                    FlowEngine.defService().importDef(defJson);
-                    log.info("成功导入流程定义: {}", resourceName);
-                } else {
-                    log.info("流程定义已存在: {}", resourceName);
-                }
-            });
-        });
+        transactionTemplate.executeWithoutResult(status ->
+                resources.forEach(resource -> {
+                    String resourceName = resource.getName();
+                    String str = resource.readUtf8Str();
+                    DefJson defJson = FlowEngine.jsonConvert.strToBean(str, DefJson.class);
+                    defJson.setCreateBy(String.valueOf(VitaConst.USER_ADMIN_ID));
+                    defJson.setUpdateBy(String.valueOf(VitaConst.USER_ADMIN_ID));
+                    List<Definition> definitions = FlowEngine.defService().getByFlowCode(defJson.getFlowCode());
+                    if (CollUtil.isEmpty(definitions)) {
+                        // 导入流程定义
+                        Definition definition = FlowEngine.defService().importDef(defJson);
+                        // 发布流程定义
+                        FlowEngine.defService().publish(definition.getId());
+                        log.info("成功导入流程定义: {}", resourceName);
+                    } else {
+                        log.info("流程定义已存在: {}", resourceName);
+                    }
+                })
+        );
 
         log.info("初始化流程定义已完成。");
     }

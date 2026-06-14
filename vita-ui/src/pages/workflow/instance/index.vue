@@ -1,7 +1,7 @@
 <route lang="yaml">
 meta:
   title: 流程实例
-  permission: workflow:flowInstance:view
+  permission: workflow:instance:view
 </route>
 
 <script setup>
@@ -122,7 +122,7 @@ onMounted(() => {
 
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
-    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:flowDefinition:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:definition:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -334,7 +334,7 @@ onMounted(() => {
                       type="danger"
                       text
                       :size="size"
-                      v-permission="'workflow:flowDefinition:remove'"
+                      v-permission="'workflow:definition:remove'"
                     >
                       <template #icon>
                         <el-icon :size="size">

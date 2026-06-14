@@ -53,10 +53,8 @@ const onSubmit = () => {
 			console.log(fields);
 			return;
 		}
-        // 只提交表单设计范围内的字段
-        const payload = utils.pick(form.value, Object.keys(INITIAL_FORM));
 		if (isEdit) {
-			${entityPropertyName}Api.update(payload).then((r) => {
+			${entityPropertyName}Api.update(form).then((r) => {
 				emit("refresh");
 				emit("update:visible", false);
 			});

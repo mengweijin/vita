@@ -454,7 +454,7 @@ create TABLE VT_OA_LEAVE_APPLY (
   END_TIME                      datetime NOT NULL comment '结束时间',
   LEAVE_DAYS                    int NOT NULL comment '请假天数',
   REMARK                        varchar(500) DEFAULT NULL comment '请假原因',
-  ATTACHMENT_ID                 varchar(500) DEFAULT NULL comment '附件ID(s)',
+  ATTACHMENT_IDS                varchar(1024) DEFAULT NULL comment '附件 ID(s)',
   WORKFLOW_ID                   varchar(500) DEFAULT NULL comment '工作流实例ID',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',

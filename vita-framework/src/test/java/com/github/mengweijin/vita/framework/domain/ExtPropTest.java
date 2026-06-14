@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.domain;
 
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.util.ObjectMapperUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ class ExtPropTest {
         ExtProp ext = new ExtProp();
         ext.put("username", "admin");
         ext.put("nickname", "管理员");
-        ext.put("startTime", LocalDateTime.now());
+        ext.put("startTime", LocalDateTime.now(Const.ZONE));
 
         String str = ObjectMapperUtils.getSensitiveObjectMapperWrapper().writeValueAsString(ext);
 

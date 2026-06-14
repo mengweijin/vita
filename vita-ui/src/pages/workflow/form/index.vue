@@ -1,7 +1,7 @@
 <route lang="yaml">
 meta:
   title: 流程表单
-  permission: workflow:flowForm:view
+  permission: workflow:form:view
 </route>
 
 <script setup>

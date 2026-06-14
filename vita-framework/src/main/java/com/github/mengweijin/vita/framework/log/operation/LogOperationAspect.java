@@ -5,6 +5,7 @@ import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import cn.hutool.v7.json.JSONUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.jackson.wrapper.AbstractObjectMapperWrapper;
 import com.github.mengweijin.vita.framework.repeatable.RepeatedlyRequestWrapper;
@@ -124,7 +125,7 @@ public class LogOperationAspect {
             logOperation.setCostTime(stopWatch.getDuration().toMillis());
 
             Long loginUserId = LOGIN_USER_ID.get();
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now(Const.ZONE);
             logOperation.setCreateBy(loginUserId);
             logOperation.setUpdateBy(loginUserId);
             logOperation.setCreateTime(now);

@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.system.service;
 
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.monitor.service.LogLoginService;
 import com.github.mengweijin.vita.monitor.service.LogOperationService;
 import com.github.mengweijin.vita.monitor.service.SchedulingTaskLogService;
@@ -45,7 +46,7 @@ public class HomeService {
 
     public HomeConsoleChartVO queryConsoleChart() {
         long days = 6;
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(Const.ZONE);
         LocalDateTime startTime = now.minusDays(days).atTime(LocalTime.MIN);
         LocalDateTime endTime = now.atTime(LocalTime.MAX);
 

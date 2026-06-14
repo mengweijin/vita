@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.oa.domain.entity;
 
+import cn.hutool.v7.core.date.DateFormatPool;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
 import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
@@ -8,6 +10,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -35,11 +38,15 @@ public class LeaveApplyDO extends BaseEntity {
     /**
      * 开始时间
      */
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_MINUTE_PATTERN)
+    @JsonFormat(pattern = DateFormatPool.NORM_DATETIME_MINUTE_PATTERN)
     private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
+    @DateTimeFormat(pattern = DateFormatPool.NORM_DATETIME_MINUTE_PATTERN)
+    @JsonFormat(pattern = DateFormatPool.NORM_DATETIME_MINUTE_PATTERN)
     private LocalDateTime endTime;
 
     /**
@@ -53,9 +60,9 @@ public class LeaveApplyDO extends BaseEntity {
     private String remark;
 
     /**
-     * 附件ID(s)
+     * 附件 ID(s)
      */
-    private String attachmentId;
+    private String attachmentIds;
 
     /**
      * 工作流实例ID

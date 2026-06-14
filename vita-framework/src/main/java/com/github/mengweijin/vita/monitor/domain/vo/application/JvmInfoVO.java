@@ -9,6 +9,7 @@ import cn.hutool.v7.extra.management.RuntimeInfo;
 import cn.hutool.v7.extra.management.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -58,7 +59,7 @@ public class JvmInfoVO implements Serializable {
         this.projectHome = new UserInfo().getCurrentDir();
 
         this.startTime = TimeUtil.of(ManagementFactory.getRuntimeMXBean().getStartTime());
-        this.runTimeSeconds = TimeUtil.between(this.startTime, LocalDateTime.now()).toSeconds();
+        this.runTimeSeconds = TimeUtil.between(this.startTime, LocalDateTime.now(Const.ZONE)).toSeconds();
         this.currentProcessIdentifier = Long.parseLong(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
 
         RuntimeInfo runtimeInfo = new RuntimeInfo();

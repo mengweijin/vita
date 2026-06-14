@@ -1,7 +1,7 @@
 <route lang="yaml">
 meta:
   title: 流程分类
-  permission: workflow:flowCategory:view
+  permission: workflow:category:view
 </route>
 
 <script setup>

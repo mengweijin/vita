@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.framework.util;
 import cn.hutool.v7.core.bean.BeanUtil;
 import cn.hutool.v7.core.map.MapUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.TeacherVO;
 import com.github.mengweijin.vita.framework.log.datachange.DataChangeLogAspect;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
@@ -33,14 +34,14 @@ class DiffUtilsTest {
         t1.setName("张三");
         t1.setAge(13);
         t1.setCreateBy(0L);
-        t1.setCreateTime(LocalDateTime.now().minusDays(1L));
+        t1.setCreateTime(LocalDateTime.now(Const.ZONE).minusDays(1L));
 
         t2 = new TeacherVO();
         t2.setId(1L);
         t2.setName("李四");
         t2.setAge(16);
         t2.setCreateBy(0L);
-        t2.setCreateTime(LocalDateTime.now());
+        t2.setCreateTime(LocalDateTime.now(Const.ZONE));
     }
 
     @Test

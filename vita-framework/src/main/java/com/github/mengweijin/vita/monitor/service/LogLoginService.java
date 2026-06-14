@@ -8,6 +8,7 @@ import cn.hutool.v7.http.useragent.UserAgentInfo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.enums.dict.ELoginType;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
@@ -102,7 +103,7 @@ public class LogLoginService extends BaseVitaService<LogLoginMapper, LogLoginDO,
     }
 
     public Long getDailyUserLoginCount() {
-        LocalDate localDate = LocalDate.now();
+        LocalDate localDate = LocalDate.now(Const.ZONE);
         LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
         LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
         return this.lambdaQuery().eq(LogLoginDO::getLoginType, ELoginType.LOGIN.getValue()).between(LogLoginDO::getCreateTime, startTime, endTime).count();

@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.monitor.service;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.monitor.domain.entity.LogOperationDO;
 import com.github.mengweijin.vita.monitor.domain.vo.LogOperationVO;
@@ -59,7 +60,7 @@ public class LogOperationService extends BaseVitaService<LogOperationMapper, Log
     }
 
     public Long getDailyUserOperationCount() {
-        LocalDate localDate = LocalDate.now();
+        LocalDate localDate = LocalDate.now(Const.ZONE);
         LocalDateTime startTime = localDate.atTime(LocalTime.MIN);
         LocalDateTime endTime = localDate.atTime(LocalTime.MAX);
         return this.lambdaQuery().between(LogOperationDO::getCreateTime, startTime, endTime).count();

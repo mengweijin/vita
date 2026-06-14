@@ -1,6 +1,7 @@
 package com.github.mengweijin.vita.system.service;
 
 import cn.hutool.v7.core.date.TimeUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,8 @@ class HomeServiceTest {
 
     @Test
     void calcDate() {
-        LocalDateTime startDate = LocalDate.now().minusDays(8).atTime(LocalTime.MIN);
-        LocalDateTime endDate = LocalDate.now().atTime(LocalTime.MAX);
+        LocalDateTime startDate = LocalDate.now(Const.ZONE).minusDays(8).atTime(LocalTime.MIN);
+        LocalDateTime endDate = LocalDate.now(Const.ZONE).atTime(LocalTime.MAX);
 
         log.info("startDate={}", startDate);
         log.info("endDate={}", endDate);

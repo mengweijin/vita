@@ -43,8 +43,7 @@ const onSubmit = () => {
 
 <template>
   <el-dialog
-    v-model="dialogSecondaryAuthVisible"
-    v-loading="loading"
+    :model-value="dialogSecondaryAuthVisible"
     :title="'二级认证'"
     destroy-on-close
     align-center

@@ -4,6 +4,7 @@ import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.poi.excel.ExcelUtil;
 import cn.hutool.v7.poi.excel.style.DefaultStyleSet;
 import cn.hutool.v7.poi.excel.writer.ExcelWriter;
+import com.github.mengweijin.vita.framework.constant.Const;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -50,14 +51,14 @@ class ExcelUtilsMapTest {
         row1.put("年龄", 23);
         row1.put("成绩", 88.32);
         row1.put("是否合格", true);
-        row1.put("考试日期", LocalDateTime.now());
+        row1.put("考试日期", LocalDateTime.now(Const.ZONE));
 
         Map<String, Object> row2 = new LinkedHashMap<>();
         row2.put("姓名", "李四（设置所有列为自动宽度测试）阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康");
         row2.put("年龄", 33);
         row2.put("成绩", 59.50);
         row2.put("是否合格", false);
-        row2.put("考试日期", LocalDateTime.now());
+        row2.put("考试日期", LocalDateTime.now(Const.ZONE));
 
         List<Map<String, Object>> list = new ArrayList<>();
         Collections.addAll(list, row1, row2);

@@ -93,7 +93,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         }
         user.setPasswordLevel(PasswdStrength.getLevel(user.getPassword()).name());
         user.setPassword(DigestUtil.bcrypt(user.getPassword()));
-        user.setPasswordChangeTime(LocalDateTime.now());
+        user.setPasswordChangeTime(LocalDateTime.now(Const.ZONE));
         return super.save(user);
     }
 
@@ -201,7 +201,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
         return this.lambdaUpdate()
                 .set(UserDO::getPassword, hashedPwd)
                 .set(UserDO::getPasswordLevel, passwordLevel)
-                .set(UserDO::getPasswordChangeTime, LocalDateTime.now())
+                .set(UserDO::getPasswordChangeTime, LocalDateTime.now(Const.ZONE))
                 .eq(UserDO::getUsername, username)
                 .update();
     }
@@ -218,7 +218,7 @@ public class UserService extends BaseVitaService<UserMapper, UserDO, UserVO> {
                     }
 
                     UserDO user = this.getByUsername(username);
-                    Duration duration = TimeUtil.between(user.getPasswordChangeTime(), LocalDateTime.now());
+                    Duration duration = TimeUtil.between(user.getPasswordChangeTime(), LocalDateTime.now(Const.ZONE));
                     if (duration.toDays() < userPasswordChangeInterval) {
                         return;
                     }

@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.workflow.warmflow;
 
 import cn.hutool.v7.core.date.DateFormatPool;
 import cn.hutool.v7.core.text.StrUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.system.domain.entity.UserDO;
 import com.github.mengweijin.vita.system.service.UserService;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class WarmFlowGlobalListener implements GlobalListener {
                         nodeJson.getExtMap().put(HANDLER_USER_NICKNAME_LABEL, user.getNickname());
                     }
                     // 年月日时分秒
-                    nodeJson.getExtMap().put(HANDLER_TIME_LABEL, LocalDateTime.now().format(DateTimeFormatter.ofPattern(DateFormatPool.NORM_DATETIME_PATTERN)));
+                    nodeJson.getExtMap().put(HANDLER_TIME_LABEL, LocalDateTime.now(Const.ZONE).format(DateTimeFormatter.ofPattern(DateFormatPool.NORM_DATETIME_PATTERN)));
                 }
             }
             listenerVariable.getInstance().setDefJson(FlowEngine.jsonConvert.objToStr(defJson));

@@ -54,6 +54,10 @@ public class PageQuery<T> implements Serializable {
         return of(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
     }
 
+    public static <E> PageQuery<E> of(org.dromara.warm.flow.core.utils.page.Page<E> page) {
+        return of(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getList());
+    }
+
     public static <E> PageQuery<E> of(long pageCurrent, long pageSize) {
         return of(pageCurrent, pageSize, 0);
     }
@@ -71,4 +75,12 @@ public class PageQuery<T> implements Serializable {
         page.setRecords(this.pageRecords);
         return page;
     }
+
+    public org.dromara.warm.flow.core.utils.page.Page<T> toWarmFlowPage() {
+        org.dromara.warm.flow.core.utils.page.Page<T> page = new org.dromara.warm.flow.core.utils.page.Page<>(Long.valueOf(this.pageCurrent).intValue(), Long.valueOf(this.pageSize).intValue());
+        page.setTotal(this.pageTotal);
+        page.setList(this.pageRecords);
+        return page;
+    }
+
 }

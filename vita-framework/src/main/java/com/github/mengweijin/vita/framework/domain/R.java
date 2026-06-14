@@ -67,7 +67,7 @@ public class R<T> implements Serializable {
         r.setCode(code);
         r.setMsg(msg);
         r.setData(data);
-        r.setTime(LocalDateTime.now());
+        r.setTime(LocalDateTime.now(Const.ZONE));
         return r;
     }
 

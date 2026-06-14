@@ -1,7 +1,7 @@
 <route lang="yaml">
 meta:
   title: 流程定义
-  permission: workflow:flowDefinition:view
+  permission: workflow:definition:view
 </route>
 
 <script setup>
@@ -200,7 +200,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'workflow:flowDefinition:create'">
+    <el-col :span="1.5" v-permission="'workflow:definition:create'">
       <el-button type="primary" @click="handleAdd">
         <template #icon>
           <el-icon>
@@ -210,7 +210,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-permission="'workflow:flowDefinition:create'">
+    <el-col :span="1.5" v-permission="'workflow:definition:create'">
       <el-upload
         multiple
         :show-file-list="false"
@@ -229,7 +229,7 @@ onMounted(() => {
         </el-button>
       </el-upload>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:flowDefinition:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:definition:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -417,7 +417,7 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="240">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="250">
         <template #default="scope">
           <div>
             <el-tooltip content="查看流程" placement="top">
@@ -436,7 +436,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleDesign(scope.row)"
-                v-permission="'workflow:flowDefinition:update'"
+                v-permission="'workflow:definition:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -452,7 +452,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handlePublish(scope.row)"
-                v-permission="'workflow:flowDefinition:publish'"
+                v-permission="'workflow:definition:publish'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -469,7 +469,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleEdit(scope.row)"
-                v-permission="'workflow:flowDefinition:update'"
+                v-permission="'workflow:definition:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -493,7 +493,7 @@ onMounted(() => {
                       type="danger"
                       text
                       :size="size"
-                      v-permission="'workflow:flowDefinition:remove'"
+                      v-permission="'workflow:definition:remove'"
                     >
                       <template #icon>
                         <el-icon :size="size">
@@ -512,7 +512,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleCopy(scope.row)"
-                v-permission="'workflow:flowDefinition:copy'"
+                v-permission="'workflow:definition:copy'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -528,7 +528,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleUnpublish(scope.row)"
-                v-permission="'workflow:flowDefinition:unpublish'"
+                v-permission="'workflow:definition:unpublish'"
               >
                 <template #icon>
                   <el-icon :size="size">

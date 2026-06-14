@@ -6,9 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
+import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.service.FormService;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowDefinitionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.FlowEngine;
 import org.dromara.warm.flow.core.dto.ApiResult;
 import org.dromara.warm.flow.core.dto.DefJson;
+import org.dromara.warm.flow.core.entity.Definition;
 import org.dromara.warm.flow.orm.entity.FlowDefinition;
 import org.dromara.warm.flow.ui.controller.WarmFlowController;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +56,8 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     private final WarmFlowDefinitionService warmFlowDefinitionService;
 
+    private final FormService formService;
+
     /**
      * Get FlowDefinitionVO page by FlowDefinitionDO
      *
@@ -58,7 +65,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param flowDefinition {@link FlowDefinition}
      * @return PageQuery<FlowDefinitionVO>
      */
-    @SaCheckPermission("workflow:flowDefinition:select")
+    @SaCheckPermission("workflow:definition:select")
     @GetMapping("/page")
     public PageQuery<FlowDefinitionVO> page(PageQuery<FlowDefinition> pageQuery, FlowDefinition flowDefinition) {
         LambdaQueryWrapper<FlowDefinition> wrapper = warmFlowDefinitionService.buildQueryWrapper(flowDefinition);
@@ -67,7 +74,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @Override
-    @SaCheckPermission(mode = SaMode.OR, value = {"workflow:flowDefinition:create", "workflow:flowDefinition:update"})
+    @SaCheckPermission(mode = SaMode.OR, value = {"workflow:definition:create", "workflow:definition:update"})
     @PostMapping("/save-json")
     @Transactional(rollbackFor = Exception.class)
     public ApiResult<Void> saveJson(@RequestBody DefJson defJson, @RequestHeader("onlyNodeSkip") boolean onlyNodeSkip) throws Exception {
@@ -80,7 +87,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param flowDefinition {@link FlowDefinition}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
-    @SaCheckPermission("workflow:flowDefinition:create")
+    @SaCheckPermission("workflow:definition:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FlowDefinition flowDefinition) {
         boolean bool = FlowEngine.defService().checkAndSave(flowDefinition);
@@ -93,7 +100,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param flowDefinition {@link FlowDefinition}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("workflow:flowDefinition:update")
+    @SaCheckPermission("workflow:definition:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FlowDefinition flowDefinition) {
         boolean bool = warmFlowDefinitionService.updateById(flowDefinition);
@@ -101,7 +108,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.IMPORT)
-    @SaCheckPermission("workflow:flowDefinition:create")
+    @SaCheckPermission("workflow:definition:create")
     @PostMapping("/import")
     public void importDefinition(HttpServletRequest request) {
         List<MultipartFile> list = UploadUtils.upload(request, file -> file);
@@ -114,7 +121,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("workflow:flowDefinition:remove")
+    @SaCheckPermission("workflow:definition:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = FlowEngine.defService().removeDef(Arrays.asList(ids));
@@ -127,7 +134,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param id id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.COPY)
-    @SaCheckPermission("workflow:flowDefinition:copy")
+    @SaCheckPermission("workflow:definition:copy")
     @PostMapping("/copy/{id}")
     public R<Void> copy(@PathVariable("id") Long id) {
         boolean bool = FlowEngine.defService().copyDef(id);
@@ -141,7 +148,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param id id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.PUBLISH)
-    @SaCheckPermission("workflow:flowDefinition:publish")
+    @SaCheckPermission("workflow:definition:publish")
     @PostMapping("/publish/{id}")
     public R<Void> publish(@PathVariable("id") Long id) {
         boolean bool = FlowEngine.defService().publish(id);
@@ -154,12 +161,27 @@ public class WarmFlowDefinitionController extends WarmFlowController {
      * @param id id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UNPUBLISH)
-    @SaCheckPermission("workflow:flowDefinition:unpublish")
+    @SaCheckPermission("workflow:definition:unpublish")
     @PostMapping("/unpublish/{id}")
     public R<Void> unpublish(@PathVariable("id") Long id) {
         boolean bool = FlowEngine.defService().unPublish(id);
         return R.result(bool);
     }
 
+    @GetMapping("/query/publishedDefinitionStartFormRoutePath/by/flowCode/{flowCode}")
+    public String queryPublishedDefinitionStartFormRoutePathByFlowCode(@PathVariable("flowCode") String flowCode) {
+        Definition definition = FlowEngine.defService().getPublishByFlowCode(flowCode);
+        if (definition == null) {
+            throw new ServerException("No published definition found for flowCode: " + flowCode);
+        }
+        String formCustom = definition.getFormCustom();
+        String formPath = definition.getFormPath();
+        if (EYesNo.N.getValue().equalsIgnoreCase(formCustom)) {
+            return formPath;
+        }
+        // 动态表单
+        FormDO form = formService.getById(formPath);
+        return form.getFormPath();
+    }
 }
 

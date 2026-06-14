@@ -5,6 +5,7 @@ import cn.hutool.v7.poi.excel.ExcelUtil;
 import cn.hutool.v7.poi.excel.style.DefaultStyleSet;
 import cn.hutool.v7.poi.excel.writer.ExcelWriteConfig;
 import cn.hutool.v7.poi.excel.writer.ExcelWriter;
+import com.github.mengweijin.vita.framework.constant.Const;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.Test;
 
@@ -95,14 +96,14 @@ class ExcelUtilsBeanTest {
         bean1.setAge(22);
         bean1.setPass(true);
         bean1.setScore(66.30);
-        bean1.setExamDate(LocalDateTime.now());
+        bean1.setExamDate(LocalDateTime.now(Const.ZONE));
 
         TestBean bean2 = new TestBean();
         bean2.setName("李四（设置所有列为自动宽度测试）阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康阿斯顿法国红酒看来微软推哦怕时代法国红酒看来的风格和健康的法国红酒看来法国红酒看来法国红酒看来的风格和健康");
         bean2.setAge(28);
         bean2.setPass(false);
         bean2.setScore(38.50);
-        bean2.setExamDate(LocalDateTime.now());
+        bean2.setExamDate(LocalDateTime.now(Const.ZONE));
 
         List<TestBean> list = new ArrayList<>();
         Collections.addAll(list, bean1, bean2);

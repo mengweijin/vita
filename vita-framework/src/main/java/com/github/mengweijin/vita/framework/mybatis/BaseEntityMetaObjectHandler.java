@@ -3,6 +3,7 @@ package com.github.mengweijin.vita.framework.mybatis;
 import cn.hutool.v7.core.func.LambdaUtil;
 import cn.hutool.v7.core.func.SerFunction;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
@@ -32,7 +33,7 @@ public class BaseEntityMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         Object originalObject = metaObject.getOriginalObject();
         if (originalObject instanceof BaseEntity) {
-            LocalDateTime localDateTime = LocalDateTime.now();
+            LocalDateTime localDateTime = LocalDateTime.now(Const.ZONE);
             this.strictInsertFill(metaObject, CREATE_TIME, LocalDateTime.class, localDateTime);
             this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, localDateTime);
 
@@ -49,7 +50,7 @@ public class BaseEntityMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         Object originalObject = metaObject.getOriginalObject();
         if (originalObject instanceof BaseEntity) {
-            LocalDateTime localDateTime = LocalDateTime.now();
+            LocalDateTime localDateTime = LocalDateTime.now(Const.ZONE);
             this.strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime.class, localDateTime);
 
             Long userId = LoginHelper.getSessionUserId();

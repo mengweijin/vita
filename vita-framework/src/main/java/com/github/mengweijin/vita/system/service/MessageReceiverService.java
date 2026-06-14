@@ -4,6 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
@@ -67,7 +68,7 @@ public class MessageReceiverService extends BaseVitaService<MessageReceiverMappe
                 .list().stream().map(MessageReceiverDO::getId).toList();
         return this.lambdaUpdate()
                 .set(MessageReceiverDO::getViewed, EYesNo.Y.getValue())
-                .set(MessageReceiverDO::getViewedTime, LocalDateTime.now())
+                .set(MessageReceiverDO::getViewedTime, LocalDateTime.now(Const.ZONE))
                 .in(MessageReceiverDO::getId, unViewedIds)
                 .update();
     }

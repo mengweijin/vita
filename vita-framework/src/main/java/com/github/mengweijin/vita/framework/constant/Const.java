@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.time.ZoneId;
 
 /**
  * 通用常量信息
@@ -145,4 +146,9 @@ public final class Const {
      * Java虚拟机可用的CPU处理器个数
      */
     public static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
+
+    /**
+     * 默认时区
+     */
+    public static final ZoneId ZONE = ZoneId.of("Asia/Shanghai");
 }

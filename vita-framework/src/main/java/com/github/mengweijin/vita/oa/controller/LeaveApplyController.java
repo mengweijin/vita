@@ -1,6 +1,5 @@
 package com.github.mengweijin.vita.oa.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
@@ -34,10 +33,10 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/hr/leave-apply")
+@RequestMapping("/oa/leave-apply")
 public class LeaveApplyController {
 
-    private static final String LOG_TITLE = "LeaveApply 管理";
+    private static final String LOG_TITLE = "休假申请";
 
     private LeaveApplyService leaveApplyService;
 
@@ -48,7 +47,6 @@ public class LeaveApplyController {
      * @param leaveApply {@link LeaveApplyDO}
      * @return PageQuery<LeaveApplyVO>
      */
-    @SaCheckPermission("system:leaveApply:select")
     @GetMapping("/page")
     public PageQuery<LeaveApplyVO> page(PageQuery<LeaveApplyDO> page, LeaveApplyDO leaveApply) {
         LambdaQueryWrapper<LeaveApplyDO> wrapper = leaveApplyService.buildQueryWrapper(leaveApply);
@@ -61,7 +59,6 @@ public class LeaveApplyController {
      * @param leaveApply {@link LeaveApplyDO}
      * @return List<LeaveApplyVO>
      */
-    @SaCheckPermission("system:leaveApply:select")
     @GetMapping("/list")
     public List<LeaveApplyVO> list(LeaveApplyDO leaveApply) {
         return leaveApplyService.listVo(Wrappers.lambdaQuery(leaveApply));
@@ -84,7 +81,6 @@ public class LeaveApplyController {
      * @param leaveApply {@link LeaveApplyDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
-    @SaCheckPermission("system:leaveApply:create")
     @PostMapping("/create")
     public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody LeaveApplyBO leaveApply) {
         boolean bool = leaveApplyService.save(leaveApply);
@@ -97,7 +93,6 @@ public class LeaveApplyController {
      * @param leaveApply {@link LeaveApplyBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:leaveApply:update")
     @PostMapping("/update")
     public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody LeaveApplyBO leaveApply) {
         boolean bool = leaveApplyService.updateById(leaveApply);
@@ -110,7 +105,6 @@ public class LeaveApplyController {
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("system:leaveApply:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = leaveApplyService.removeByIds(Arrays.asList(ids));

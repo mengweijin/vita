@@ -15,6 +15,9 @@ export const flowDefinitionApi = {
 
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
+  queryPublishedDefinitionStartFormRoutePathByFlowCode: (flowCode) =>
+    http.get(`${URL_PREFIX}/query/publishedDefinitionStartFormRoutePath/by/flowCode/${flowCode}`),
+
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),

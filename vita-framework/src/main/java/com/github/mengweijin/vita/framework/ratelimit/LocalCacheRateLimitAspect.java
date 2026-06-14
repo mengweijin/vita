@@ -76,7 +76,7 @@ public class LocalCacheRateLimitAspect {
             if (cacheObject == null) {
                 cacheObject = new RatelimitCacheObject();
             }
-            LocalDateTime current = LocalDateTime.now();
+            LocalDateTime current = LocalDateTime.now(Const.ZONE);
             // 移除掉已经超过统计时间区间的值
             List<LocalDateTime> list = cacheObject.getList().stream().filter(item -> TimeUtil.between(item, current, ChronoUnit.SECONDS) < rateLimit.duration()).toList();
             // 未超过最大限制，覆盖更新缓存

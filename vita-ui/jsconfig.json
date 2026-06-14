@@ -15,5 +15,5 @@
   // types/**/*.d.ts：包含特定类型声明文件。
   "include": ["./src/**/*", "types/**/*.d.ts"],
   // 指定类型定义文件的查找根目录
-  "typeRoots": ["./node_modules/@types", "./types"]
+  "typeRoots": ["./types", "./node_modules/@types"]
 }

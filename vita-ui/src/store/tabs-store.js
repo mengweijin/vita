@@ -132,6 +132,13 @@ export const useTabsStore = defineStore(
       activeTab.value = "";
     };
 
+    const updateTabTitle = (title) => {
+      const tab = tabsList.value.find((tab) => tab.name === activeTab.value);
+      if (tab) {
+        tab.title = title;
+      }
+    };
+
     return {
       activeTab,
       addTab,
@@ -145,6 +152,7 @@ export const useTabsStore = defineStore(
       removeTab,
       setActiveTab,
       tabsList,
+      updateTabTitle,
     };
   },
   {

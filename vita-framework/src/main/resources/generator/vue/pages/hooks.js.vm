@@ -1,4 +1,4 @@
-export function use${entityPropertyName}}() {
+export function use${entityName}() {
   const columns = reactive({
     selection: { label: "选择列", visible: false },
     index: { label: "序号列", visible: false },

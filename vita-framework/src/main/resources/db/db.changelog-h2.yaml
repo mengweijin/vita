@@ -3,11 +3,11 @@ databaseChangeLog:
       file: db/h2/vita-ddl.sql
       relativeToChangelogFile: false
   - include:
+      file: db/h2/vita-ddl-warm-flow-all.sql
+      relativeToChangelogFile: false
+  - include:
       file: db/h2/vita-dml.sql
       relativeToChangelogFile: false
   - include:
-      file: db/h2/warm-flow-all.sql
-      relativeToChangelogFile: false
-  - include:
-      file: db/h2/vita-dev.sql
+      file: db/h2/vita-dml-dev.sql
       relativeToChangelogFile: false

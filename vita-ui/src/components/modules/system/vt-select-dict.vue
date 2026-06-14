@@ -29,12 +29,12 @@ const props = defineProps({
     type: String,
   },
   style: {
-    default: "width: 200px;",
+    default: "min-width: 200px;",
     type: String,
   },
 });
 
-const modelValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: [String, Array] });
 
 const emit = defineEmits(["change"]);
 

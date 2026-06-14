@@ -2,6 +2,7 @@ package com.github.mengweijin.vita.framework.util;
 
 import cn.hutool.v7.core.date.DateFormatPool;
 import cn.hutool.v7.core.date.TemporalAccessorUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +38,7 @@ public class TimestampIdUtils {
     public static long timestampId() {
         LocalDateTime now;
         synchronized (LOCK) {
-            now = LocalDateTime.now();
+            now = LocalDateTime.now(Const.ZONE);
         }
         return Long.parseLong(TemporalAccessorUtil.format(now, DateFormatPool.PURE_DATETIME_MS_PATTERN));
     }

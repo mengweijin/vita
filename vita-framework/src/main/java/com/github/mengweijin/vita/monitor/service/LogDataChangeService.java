@@ -4,6 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.text.StrValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.log.datachange.DiffModel;
 import com.github.mengweijin.vita.framework.log.datachange.ReadableMessageHandlerFactory;
@@ -86,7 +87,7 @@ public class LogDataChangeService extends BaseVitaService<LogDataChangeMapper, L
 
     private LogDataChangeDO buildLogDataChangeDO(String tableName, Long businessId, Object beforeObject, Object afterObject, List<DiffModel> changeData) {
         Long sessionUserId = LoginHelper.getSessionUserId();
-        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.now(Const.ZONE);
 
         IReadableMessageHandler handler = readableMessageHandlerFactory.getHandler(tableName);
         List<String> humanReadable = handler.toHumanReadable(businessId, changeData);

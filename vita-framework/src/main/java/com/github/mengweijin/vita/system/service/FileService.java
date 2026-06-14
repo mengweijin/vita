@@ -57,7 +57,7 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
     }
 
     public static String getStoragePath(String dir, String suffix) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(Const.ZONE);
         String year = String.valueOf(now.getYear());
         String month = CharSequenceUtil.padPre(String.valueOf(now.getMonthValue()), 2, "0");
         String day = CharSequenceUtil.padPre(String.valueOf(now.getDayOfMonth()), 2, "0");

@@ -4,6 +4,7 @@ import cn.hutool.v7.core.date.TimeUtil;
 import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.StrUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.scheduler.ISchedulingTask;
 import com.github.mengweijin.vita.framework.util.I18nUtils;
@@ -44,7 +45,7 @@ public class MultipartLocationCleanTask implements ISchedulingTask {
             throw new ServerException(msg);
         }
         int hours = NumberUtil.parseInt(hoursString);
-        LocalDateTime minusTime = LocalDateTime.now().minusHours(hours);
+        LocalDateTime minusTime = LocalDateTime.now(Const.ZONE).minusHours(hours);
 
         String location = multipartProperties.getLocation();
         AtomicReference<Long> count = new AtomicReference<>(0L);
