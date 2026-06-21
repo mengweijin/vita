@@ -6,7 +6,6 @@ import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
 import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.Const;
@@ -28,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -83,8 +81,8 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
         return this.lambdaQuery().eq(FileDO::getMd5, md5).list();
     }
 
-    public long countByMd5(String md5) {
-        return this.lambdaQuery().eq(FileDO::getMd5, md5).count();
+    public FileDO getFirstByMd5(String md5) {
+        return this.lambdaQuery().eq(FileDO::getMd5, md5).list().stream().findFirst().orElse(null);
     }
 
     public List<FileDO> upload(HttpServletRequest request) {
@@ -110,9 +108,16 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
         fileEntity.setSuffix(suffix);
         fileEntity.setDeleted(EYesNo.N.getValue());
 
-        String storagePath = getStoragePath(vitaProperties.getUploadPath(), suffix);
-        copyFile(multipartFile, storagePath);
-        fileEntity.setStoragePath(storagePath);
+        FileDO first = this.getFirstByMd5(md5);
+        if (first == null) {
+            String storagePath = getStoragePath(vitaProperties.getUploadPath(), suffix);
+            fileEntity.setStoragePath(storagePath);
+            copyFile(multipartFile, storagePath);
+        } else {
+            // 文件已存在，直接修改引用即可，避免重复上传。
+            fileEntity.setStoragePath(first.getStoragePath());
+        }
+
         return fileEntity;
     }
 
@@ -126,20 +131,4 @@ public class FileService extends BaseVitaService<FileMapper, FileDO, FileVO> {
         };
     }
 
-    @Override
-    public boolean removeByIds(Collection<?> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return false;
-        }
-
-        List<FileDO> fileList = this.lambdaQuery().in(FileDO::getId, list).list();
-
-        boolean removed = super.removeByIds(list);
-        if (removed) {
-            // 从磁盘物理删除文件
-            fileList.forEach(f -> FileUtil.del(f.getStoragePath()));
-        }
-
-        return removed;
-    }
 }

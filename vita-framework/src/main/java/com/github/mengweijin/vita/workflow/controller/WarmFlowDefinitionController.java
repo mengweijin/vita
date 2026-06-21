@@ -3,12 +3,14 @@ package com.github.mengweijin.vita.workflow.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
 import com.github.mengweijin.vita.system.domain.entity.FormDO;
@@ -69,7 +71,8 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     @GetMapping("/page")
     public PageQuery<FlowDefinitionVO> page(PageQuery<FlowDefinition> pageQuery, FlowDefinition flowDefinition) {
         LambdaQueryWrapper<FlowDefinition> wrapper = warmFlowDefinitionService.buildQueryWrapper(flowDefinition);
-        return warmFlowDefinitionService.pageVo(pageQuery, wrapper);
+        IPage<FlowDefinition> page = warmFlowDefinitionService.page(pageQuery.toPage(), wrapper);
+        return MapstructUtils.convertToPageQuery(page, FlowDefinitionVO.class);
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)

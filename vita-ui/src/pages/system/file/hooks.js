@@ -4,7 +4,7 @@ export function useFile() {
     index: { label: "序号列", visible: false },
     id: { label: "ID", visible: false },
     name: { label: "文件名称", visible: true },
-    suffix: { label: "文件后缀", visible: true },
+    suffix: { label: "后缀", visible: true },
     storagePath: { label: "存储路径", visible: true },
     md5: { label: "MD5", visible: true },
     createByName: { label: "创建者", visible: true },

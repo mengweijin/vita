@@ -38,11 +38,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  logDataChangeApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  logDataChangeApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /** selected rows */

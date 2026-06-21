@@ -86,8 +86,8 @@ axiosInstance.interceptors.response.use(
       switch (statusCode) {
         case 400_1001: {
           // 打开二级认证弹框
-          const { dialogSecondaryAuthVisible } = storeToRefs(useSecondaryAuthStore());
-          dialogSecondaryAuthVisible.value = true;
+          const { secondaryAuthDialogVisible } = storeToRefs(useSecondaryAuthStore());
+          secondaryAuthDialogVisible.value = true;
           break;
         }
         case 400:
@@ -97,6 +97,10 @@ axiosInstance.interceptors.response.use(
           });
           break;
         case 401:
+          // 立即关闭 loading 状态，避免登录页被 loading 覆盖
+          loadingInstance?.close();
+          // 清理所有消息提示
+          ElMessage.closeAll();
           // 清理前端登录信息残留
           useLoginStore().logout();
           // 跳转时携带当前页面路径，登录后可返回

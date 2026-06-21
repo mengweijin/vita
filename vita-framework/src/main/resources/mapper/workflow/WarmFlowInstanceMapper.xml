@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.mengweijin.vita.workflow.mapper.WarmFlowInstanceMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        fi.DEFINITION_ID,
+        fi.BUSINESS_ID,
+        fi.NODE_TYPE,
+        fi.NODE_CODE,
+        fi.NODE_NAME,
+        fi.VARIABLE,
+        fi.FLOW_STATUS,
+        fi.ACTIVITY_STATUS,
+        fi.DEF_JSON,
+        fi.EXT,
+        fi.DEL_FLAG,
+        fi.TENANT_ID,
+        fi.ID,
+        fi.CREATE_TIME,
+        fi.CREATE_BY,
+        fi.UPDATE_TIME,
+        fi.UPDATE_BY,
+        fd.FLOW_NAME,
+        fd.FORM_CUSTOM,
+        fd.FORM_PATH
+    </sql>
+
+    <select id="selectPageVo" resultType="com.github.mengweijin.vita.workflow.domain.vo.FlowInstanceVO">
+        SELECT
+        <include refid="BaseColumnList"/>
+        FROM FLOW_INSTANCE fi
+        LEFT JOIN FLOW_DEFINITION fd ON fi.DEFINITION_ID=fd.ID
+        <where>
+            <if test="p.definitionId != null">
+                AND fi.DEFINITION_ID = #{p.definitionId}
+            </if>
+            <if test="p.businessId != null and p.businessId != ''">
+                AND fi.BUSINESS_ID = #{p.businessId}
+            </if>
+            <if test="p.nodeType != null">
+                AND fi.NODE_TYPE = #{p.nodeType}
+            </if>
+            <if test="p.nodeCode != null and p.nodeCode != ''">
+                AND fi.NODE_CODE = #{p.nodeCode}
+            </if>
+            <if test="p.nodeName != null and p.nodeName != ''">
+                AND fi.NODE_NAME = #{p.nodeName}
+            </if>
+            <if test="p.variable != null and p.variable != ''">
+                AND fi.VARIABLE = #{p.variable}
+            </if>
+            <if test="p.flowStatus != null and p.flowStatus != ''">
+                AND fi.FLOW_STATUS = #{p.flowStatus}
+            </if>
+            <if test="p.activityStatus != null">
+                AND fi.ACTIVITY_STATUS = #{p.activityStatus}
+            </if>
+            <if test="p.defJson != null and p.defJson != ''">
+                AND fi.DEF_JSON = #{p.defJson}
+            </if>
+            <if test="p.ext != null and p.ext != ''">
+                AND fi.EXT = #{p.ext}
+            </if>
+            <if test="p.delFlag != null and p.delFlag != ''">
+                AND fi.DEL_FLAG = #{p.delFlag}
+            </if>
+            <if test="p.tenantId != null and p.tenantId != ''">
+                AND fi.TENANT_ID = #{p.tenantId}
+            </if>
+            <if test="p.id != null">
+                AND fi.ID = #{p.id}
+            </if>
+            <if test="p.createTime != null">
+                AND fi.CREATE_TIME = #{p.createTime}
+            </if>
+            <if test="p.createBy != null">
+                AND fi.CREATE_BY = #{p.createBy}
+            </if>
+            <if test="p.updateTime != null">
+                AND fi.UPDATE_TIME = #{p.updateTime}
+            </if>
+            <if test="p.updateBy != null">
+                AND fi.UPDATE_BY = #{p.updateBy}
+            </if>
+            <if test="p.formCustom != null and p.formCustom != ''">
+                AND fd.FORM_CUSTOM = #{p.formCustom}
+            </if>
+            <if test="p.formPath != null and p.formPath != ''">
+                AND fd.FORM_PATH = #{p.formPath}
+            </if>
+            <if test="p.flowName != null and p.flowName != ''">
+                AND fd.FLOW_NAME like CONCAT('%', #{p.flowName}, '%')
+            </if>
+        </where>
+        ORDER BY fi.CREATE_TIME DESC
+    </select>
+</mapper>

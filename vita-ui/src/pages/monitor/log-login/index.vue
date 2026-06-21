@@ -39,11 +39,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  logLoginApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  logLoginApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /** selected rows */

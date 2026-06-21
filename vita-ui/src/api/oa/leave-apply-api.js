@@ -3,13 +3,15 @@ import http from "@/utils/http.js";
 const URL_PREFIX = "/oa/leave-apply";
 
 export const leaveApplyApi = {
-    create: (data) => http.post(`${URL_PREFIX}/create`, data),
+  create: (data) => http.post(`${URL_PREFIX}/create`, data),
 
-    list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+  saveAndStartWorkflow: (data) => http.post(`${URL_PREFIX}/saveAndStartWorkflow`, data),
 
-    page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-    remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
-    update: (data) => http.post(`${URL_PREFIX}/update`, data),
+  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
+
+  update: (data) => http.post(`${URL_PREFIX}/update`, data),
 };

@@ -40,6 +40,13 @@ export const useTabsStore = defineStore(
     };
 
     /**
+     * 移除当前激活的标签页
+     */
+    const removeActiveTab = () => {
+      removeTab(activeTab.value);
+    };
+
+    /**
      * 添加标签页
      * @param {Object} route
      */
@@ -150,6 +157,7 @@ export const useTabsStore = defineStore(
       removeOtherTabs,
       removeRightTabs,
       removeTab,
+      removeActiveTab,
       setActiveTab,
       tabsList,
       updateTabTitle,

@@ -37,11 +37,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  userOnlineApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  userOnlineApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const handlePageChange = (currentPage, pageSize) => {

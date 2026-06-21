@@ -1,9 +1,11 @@
 package com.github.mengweijin.vita.oa.domain.entity;
 
 import cn.hutool.v7.core.date.DateFormatPool;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.mybatis.typehandler.CommaDelimitedListTypeHandler;
 import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
 import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -13,6 +15,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -60,9 +63,10 @@ public class LeaveApplyDO extends BaseEntity {
     private String remark;
 
     /**
-     * 附件 ID(s)
+     * 附件 ID(s)（数据库中以逗号分隔存储）
      */
-    private String attachmentIds;
+    @TableField(typeHandler = CommaDelimitedListTypeHandler.class)
+    private List<String> attachmentIds;
 
     /**
      * 工作流实例ID

@@ -8,6 +8,9 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  /**
+   * 流程定义id
+   */
   id: {
     type: String,
     default: "",

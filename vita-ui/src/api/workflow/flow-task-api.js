@@ -3,7 +3,7 @@ import http from "@/utils/http.js";
 const URL_PREFIX = "/workflow/task";
 
 export const flowTaskApi = {
-  pageBacklog: (args) => http.get(`${URL_PREFIX}//page/backlog`, { params: args }),
+  pageBacklog: (args) => http.get(`${URL_PREFIX}/page/backlog`, { params: args }),
 
   pageDone: (args) => http.get(`${URL_PREFIX}/page/done`, { params: args }),
 

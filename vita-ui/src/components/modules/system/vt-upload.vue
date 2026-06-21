@@ -2,12 +2,14 @@
 import { fileApi } from "@/api/system/file-api.js";
 import { useLoginStore } from "@/store/login-store.js";
 import utils from "@/utils/utils.js";
+import { useFilePreviewStore } from "@/store/file-preview-store.js";
+const filePreviewStore = useFilePreviewStore();
+const { filePreviewDialogVisible, filePreviewId, filePreviewName } = storeToRefs(filePreviewStore);
 
 const loginStore = useLoginStore();
 const { VITE_BASE_API } = import.meta.env;
 // 处理路径
 const uploadUrl = `${VITE_BASE_API}/system/file/upload`.replace("//", "/");
-const previewUrl = `${VITE_BASE_API}/system/file/preview`.replace("//", "/");
 
 const props = defineProps({
   showFileList: {
@@ -30,8 +32,11 @@ const props = defineProps({
     default: "",
     type: String,
   },
+  /** 提示信息
+   * 比如：建议文件大小不超过 10MB。
+   */
   tip: {
-    default: "建议文件大小不超过 10MB",
+    default: "",
     type: String,
   },
   headers: {
@@ -52,10 +57,6 @@ const modelValue = defineModel({ type: Array, default: () => [] });
 
 const fileList = ref([]);
 
-const fileViewerDialogVisible = ref(false);
-
-const fileViewerDialogUrl = ref("");
-
 const computedHeaders = computed(() => {
   return {
     ...props.headers,
@@ -63,7 +64,7 @@ const computedHeaders = computed(() => {
   };
 });
 
-const handleUpload = (response, uploadFile, uploadFiles) => {
+const handleSuccess = (response, uploadFile, uploadFiles) => {
   // 提取ID
   const ids = response.map((f) => f.id);
   // 合并，去重
@@ -79,26 +80,23 @@ const handleUpload = (response, uploadFile, uploadFiles) => {
     showClose: true,
   });
 
-  console.log(modelValue);
+  emit("callback");
 };
 
 const handleRemove = (uploadFile, uploadFiles) => {
   const id = uploadFile.response[0].id;
   // 从 modelValue 中移除 id
   modelValue.value = modelValue.value.filter((item) => item !== id);
-  console.log(modelValue);
 };
 
 const handlePreview = (uploadFile) => {
   const fileVO = uploadFile.response[0];
-  const id = fileVO.id;
-  const name = fileVO.name;
-  const suffix = fileVO.suffix;
-
-  fileViewerDialogUrl.value = `${previewUrl}/${id}/${suffix}?Authorization=${loginStore.getBearerToken()}`;
-  fileViewerDialogVisible.value = true;
-  // fileApi.download(id, name);
+  filePreviewId.value = fileVO.id;
+  filePreviewName.value = fileVO.name;
+  filePreviewDialogVisible.value = true;
 };
+
+const emit = defineEmits(["callback"]);
 
 onMounted(async () => {});
 </script>
@@ -110,28 +108,39 @@ onMounted(async () => {});
     :drag="props.drag"
     :accept="props.accept"
     :file-list="fileList"
-    :show-file-list="true"
+    :show-file-list="props.showFileList"
     :action="uploadUrl"
-    :on-success="handleUpload"
+    :on-success="handleSuccess"
     :on-remove="handleRemove"
     :on-preview="handlePreview"
     :headers="computedHeaders"
     :with-credentials="props.withCredentials"
     :style="style"
+    :class="{ 'vt-upload-drag': props.drag }"
   >
-    <el-icon v-if="props.drag">
-      <Icon icon="ep:upload-filled" style="color: var(--vt-primary-color)"></Icon>
-    </el-icon>
+    <template v-if="props.drag">
+      <el-icon :size="45">
+        <Icon icon="ep:upload-filled" style="color: var(--vt-primary-color)"></Icon>
+      </el-icon>
+      <div class="el-upload__text" style="margin-top: -10px">
+        将文件拖放至此处 或 <em>点击上传</em>
+      </div>
+    </template>
     <el-button v-else type="primary">
       <el-icon :size="20"><Icon icon="ep:upload-filled"></Icon></el-icon>
       <span style="margin-left: 5px">点击上传</span>
     </el-button>
-    <template #tip>
+
+    <!-- 只有当 tip 有值时才渲染提示区域 -->
+    <template v-if="props.tip" #tip>
       <div class="el-upload__tip">{{ props.tip }}</div>
     </template>
   </el-upload>
-
-  <VtDialogFileViewer v-model:visible="fileViewerDialogVisible" :url="fileViewerDialogUrl" />
 </template>
 
-<style scoped></style>
+<style scoped>
+/* 调整拖拽上传区域的高度 */
+.vt-upload-drag :deep(.el-upload-dragger) {
+  padding: 10px;
+}
+</style>

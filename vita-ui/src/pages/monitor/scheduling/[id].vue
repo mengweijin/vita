@@ -47,11 +47,15 @@ const tableData = ref([]);
 
 const loadTableData = () => {
   loading.value = true;
-  schedulingTaskLogApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  schedulingTaskLogApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /** selected rows */

@@ -129,8 +129,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/oa/backlog-task': RouteRecordInfo<
-      '/oa/backlog-task',
+    '/oa/backlog-task/': RouteRecordInfo<
+      '/oa/backlog-task/',
       '/oa/backlog-task',
       Record<never, never>,
       Record<never, never>,
@@ -157,15 +157,15 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/oa/my-workflow': RouteRecordInfo<
-      '/oa/my-workflow',
+    '/oa/my-workflow/': RouteRecordInfo<
+      '/oa/my-workflow/',
       '/oa/my-workflow',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/oa/workflow-center': RouteRecordInfo<
-      '/oa/workflow-center',
+    '/oa/workflow-center/': RouteRecordInfo<
+      '/oa/workflow-center/',
       '/oa/workflow-center',
       Record<never, never>,
       Record<never, never>,
@@ -450,9 +450,9 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/oa/backlog-task.vue': {
+    'src/pages/oa/backlog-task/index.vue': {
       routes:
-        | '/oa/backlog-task'
+        | '/oa/backlog-task/'
       views:
         | never
       pathParamNames:
@@ -482,17 +482,17 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/oa/my-workflow.vue': {
+    'src/pages/oa/my-workflow/index.vue': {
       routes:
-        | '/oa/my-workflow'
+        | '/oa/my-workflow/'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/oa/workflow-center.vue': {
+    'src/pages/oa/workflow-center/index.vue': {
       routes:
-        | '/oa/workflow-center'
+        | '/oa/workflow-center/'
       views:
         | never
       pathParamNames:

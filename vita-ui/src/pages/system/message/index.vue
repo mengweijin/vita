@@ -76,11 +76,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  messageApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  messageApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /** selected rows */

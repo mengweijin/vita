@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
+import com.github.mengweijin.vita.framework.enums.EWorkflowCode;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -11,8 +12,10 @@ import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
 import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
 import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
 import com.github.mengweijin.vita.oa.service.LeaveApplyService;
+import com.github.mengweijin.vita.workflow.service.WarmFlowInstanceService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.warm.flow.core.entity.Instance;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +41,9 @@ public class LeaveApplyController {
 
     private static final String LOG_TITLE = "休假申请";
 
-    private LeaveApplyService leaveApplyService;
+    private final LeaveApplyService leaveApplyService;
+
+    private final WarmFlowInstanceService warmFlowInstanceService;
 
     /**
      * Get LeaveApplyVO page by LeaveApplyDO
@@ -109,6 +114,18 @@ public class LeaveApplyController {
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
         boolean bool = leaveApplyService.removeByIds(Arrays.asList(ids));
         return R.result(bool);
+    }
+
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @PostMapping("/saveAndStartWorkflow")
+    public R<Instance> saveAndStartWorkflow(@Validated @RequestBody LeaveApplyBO bo) {
+        boolean bool = leaveApplyService.saveOrUpdate(bo);
+        if (bool) {
+            String flowCode = EWorkflowCode.WF_OA_LEAVE.getValue();
+            Instance instance = warmFlowInstanceService.start(bo.getId(), flowCode, null);
+            return R.ok(instance);
+        }
+        return R.fail("Save leave apply data failed!");
     }
 
 }

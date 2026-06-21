@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    copy: typeof import('./../src/components/modules/system/vt-dialog-workflow-designer copy.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -71,6 +72,7 @@ declare module 'vue' {
     VtCropper: typeof import('./../src/components/modules/common/vt-cropper.vue')['default']
     VtDialogFileViewer: typeof import('./../src/components/modules/system/vt-dialog-file-viewer.vue')['default']
     VtDialogSecondaryAuth: typeof import('./../src/components/modules/system/vt-dialog-secondary-auth.vue')['default']
+    VtDialogWorkflowChart: typeof import('./../src/components/modules/system/vt-dialog-workflow-chart.vue')['default']
     VtDialogWorkflowDesigner: typeof import('./../src/components/modules/system/vt-dialog-workflow-designer.vue')['default']
     VtEditor: typeof import('./../src/components/modules/common/vt-editor.vue')['default']
     VtIconPicker: typeof import('./../src/components/modules/common/vt-icon-picker.vue')['default']

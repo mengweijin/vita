@@ -7,6 +7,8 @@ import zhCn from "element-plus/es/locale/lang/zh-cn";
     <RouterView />
     <!-- 二级认证弹窗 -->
     <VtDialogSecondaryAuth />
+    <!-- 文件预览弹窗 -->
+    <VtDialogFileViewer />
   </el-config-provider>
 </template>
 

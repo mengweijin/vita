@@ -5,11 +5,11 @@ meta:
 </route>
 
 <script setup>
-onMounted(() => {});
+import WorkflowInstanceList from "@/pages/workflow/instance/components/workflow-instance-list.vue";
 </script>
 
 <template>
-  <div>功能开发中......</div>
+  <WorkflowInstanceList :scope="'my'" />
 </template>
 
 <style scoped></style>

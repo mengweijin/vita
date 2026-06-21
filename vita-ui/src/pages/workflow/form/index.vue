@@ -45,11 +45,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  formApi.pageRoot(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res.pageRecords);
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  formApi
+    .pageRoot(queryParams)
+    .then((res) => {
+      tableData.value = utils.toArrayTree(res.pageRecords);
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 // -----------------------------------------

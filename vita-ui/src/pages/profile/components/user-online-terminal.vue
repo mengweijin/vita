@@ -11,10 +11,14 @@ const tableData = ref([]);
 
 const loadTableData = () => {
   loading.value = true;
-  userApi.queryTerminalInfo().then((res) => {
-    tableData.value = res;
-    loading.value = false;
-  });
+  userApi
+    .queryTerminalInfo()
+    .then((res) => {
+      tableData.value = res;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 onMounted(() => {

@@ -42,10 +42,14 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  deptApi.list(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
-    loading.value = false;
-  });
+  deptApi
+    .list(queryParams)
+    .then((res) => {
+      tableData.value = utils.toArrayTree(res, { sortKey: "seq" });
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 // -----------------------------------------

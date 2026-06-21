@@ -82,8 +82,10 @@ public class MenuController {
     }
 
     @GetMapping("/query/menuIds/by/roleId/{roleId}")
-    public Set<Long> queryMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
-        return roleMenuService.getMenuIdsByRoleId(roleId);
+    public List<String> queryMenuIdsByRoleId(@PathVariable("roleId") Long roleId) {
+        Set<Long> menuIds = roleMenuService.getMenuIdsByRoleId(roleId);
+        // 转 String 返回，避免前端精度丢失导致数据错误
+        return menuIds.stream().map(Object::toString).toList();
     }
 
     /**

@@ -13,16 +13,19 @@ const queryParams = reactive({
   pageCurrent: 1,
   pageSize: 5,
   pageTotal: 0,
-  released: "Y",
 });
 
 const loadTableData = () => {
   loading.value = true;
-  noticeApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  noticeApi
+    .pageHome(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const handlePageChange = (currentPage, pageSize) => {

@@ -19,7 +19,7 @@ const props = defineProps({
   },
   value: {
     required: false,
-    type: String,
+    type: [String, Number, Array],
   },
 });
 

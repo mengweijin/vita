@@ -452,7 +452,7 @@ create TABLE VT_OA_LEAVE_APPLY (
   LEAVE_TYPE                    varchar(64) NOT NULL comment '请假类型。关联字典：vt_oa_leave_type',
   START_TIME                    datetime NOT NULL comment '开始时间',
   END_TIME                      datetime NOT NULL comment '结束时间',
-  LEAVE_DAYS                    int NOT NULL comment '请假天数',
+  LEAVE_DAYS                    int NOT NULL DEFAULT 0 comment '请假天数',
   REMARK                        varchar(500) DEFAULT NULL comment '请假原因',
   ATTACHMENT_IDS                varchar(1024) DEFAULT NULL comment '附件 ID(s)',
   WORKFLOW_ID                   varchar(500) DEFAULT NULL comment '工作流实例ID',

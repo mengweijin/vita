@@ -73,11 +73,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  userApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  userApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const dropdownRef = useTemplateRef("dropdownRef");

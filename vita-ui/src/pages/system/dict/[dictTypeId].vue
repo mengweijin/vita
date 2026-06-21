@@ -25,10 +25,14 @@ const tableData = ref([]);
 
 const loadTableData = () => {
   loading.value = true;
-  dictDataApi.list({ typeId: dictTypeId }).then((res) => {
-    tableData.value = res;
-    loading.value = false;
-  });
+  dictDataApi
+    .list({ typeId: dictTypeId })
+    .then((res) => {
+      tableData.value = res;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 // -----------------------------------------

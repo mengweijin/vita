@@ -55,6 +55,15 @@ public enum ESensitiveStrategy {
         return StrUtil.replaceByCodePoint(s, partLength * 2, s.length(), MaskingManager.DEFAULT_MASK_CHAR);
     }),
 
+    HALF(s -> {
+        String masks = StrUtil.padAfter(Const.EMPTY, 6, MaskingManager.DEFAULT_MASK_CHAR);
+        if (s == null || s.length() < 6) {
+            return masks;
+        }
+        int partLength = s.length() / 2;
+        return masks + StrUtil.sub(s, partLength, s.length());
+    }),
+
     /**
      * 只显示第一个字符
      */

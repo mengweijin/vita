@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * <p>
@@ -61,18 +59,12 @@ public class NoticeController {
         return noticeService.pageVo(page, wrapper);
     }
 
-    /**
-     * <p>
-     * Get Notice list by Notice
-     * </p>
-     *
-     * @param notice {@link NoticeDO}
-     * @return List<Notice>
-     */
-    @SaCheckPermission("system:notice:select")
-    @GetMapping("/list")
-    public List<NoticeVO> list(NoticeDO notice) {
-        return noticeService.listVo(Wrappers.lambdaQuery(notice));
+    @GetMapping("/page/home")
+    public PageQuery<NoticeVO> pageHome(PageQuery<NoticeDO> page, NoticeDO notice) {
+        notice.setReleased(EYesNo.Y.getValue());
+        LambdaQueryWrapper<NoticeDO> wrapper = noticeService.buildQueryWrapper(notice);
+        wrapper.orderByDesc(NoticeDO::getUpdateTime);
+        return noticeService.pageVo(page, wrapper);
     }
 
     /**

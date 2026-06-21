@@ -17,11 +17,15 @@ const queryParams = reactive({
 
 const loadTableData = () => {
   loading.value = true;
-  logLoginApi.pageByLoginUser(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  logLoginApi
+    .pageByLoginUser(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const handlePageChange = (currentPage, pageSize) => {

@@ -38,8 +38,7 @@ public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapp
 
     public PageQuery<FlowDefinitionVO> pageVo(PageQuery<FlowDefinition> pageQuery, Wrapper<FlowDefinition> queryWrapper) {
         IPage<FlowDefinition> page = this.page(pageQuery.toPage(), queryWrapper);
-        List<FlowDefinitionVO> list = MapstructUtils.getConverter().convert(page.getRecords(), FlowDefinitionVO.class);
-        return PageQuery.of(page.getCurrent(), page.getSize(), page.getTotal(), list);
+        return MapstructUtils.convertToPageQuery(page, FlowDefinitionVO.class);
     }
 
     public LambdaQueryWrapper<FlowDefinition> buildQueryWrapper(FlowDefinition flowDefinition) {

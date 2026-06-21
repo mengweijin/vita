@@ -28,7 +28,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <mybatis-plus.version>3.5.16</mybatis-plus.version>
-        <warm-flow.version>1.8.7</warm-flow.version>
+        <warm-flow.version>1.8.8</warm-flow.version>
         <hutool.version>7.0.0-M6</hutool.version>
         <sa-token.version>1.45.0</sa-token.version>
         <oshi.version>7.2.1</oshi.version>

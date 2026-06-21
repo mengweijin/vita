@@ -17,7 +17,10 @@ public class ApplicationProperties {
     private String name = "vita-admin";
 
     @NotBlank
-    private String version = "2.0.0-SNAPSHOT";
+    private String version;
+
+    @NotBlank
+    private String formattedVersion;
 
     @NotBlank
     private String author = "mengweijin";
@@ -26,9 +29,15 @@ public class ApplicationProperties {
     private String email = "aday.fun@outlook.com";
 
     @NotBlank
+    private String blog = "https://aday.fun";
+
+    @NotBlank
     private String home = "https://vita.aday.fun";
 
     @NotBlank
     private String github = "https://github.com/mengweijin";
+
+    @NotBlank
+    private String gitee = "https://gitee.com/mengweijin";
 
 }

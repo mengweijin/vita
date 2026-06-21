@@ -1,5 +1,5 @@
 application:
-  name: Vita-Admin
+  name: vita-admin
   version: @version@
   formatted-version: (v@version@)
   author: Meng Wei Jin
@@ -154,7 +154,7 @@ sa-token:
   # 是否输出操作日志
   is-log: false
   # 是否打印控制台 banner
-  is-print: off
+  is-print: false
 # warm-flow工作流配置。WarmFlowProperties.java
 warm-flow:
   banner: false
@@ -196,4 +196,7 @@ springdoc:
 decorator:
   datasource:
     enabled: false
-
+vita:
+  webhook:
+    enabled: false
+    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx

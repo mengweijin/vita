@@ -44,11 +44,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  categoryApi.pageRoot(queryParams).then((res) => {
-    tableData.value = utils.toArrayTree(res.pageRecords, { sortKey: "seq" });
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  categoryApi
+    .pageRoot(queryParams)
+    .then((res) => {
+      tableData.value = utils.toArrayTree(res.pageRecords, { sortKey: "seq" });
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 // -----------------------------------------

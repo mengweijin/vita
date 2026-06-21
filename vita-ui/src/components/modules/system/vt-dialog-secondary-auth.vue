@@ -3,7 +3,7 @@ import { userApi } from "@/api/system/user-api.js";
 import { useSecondaryAuthStore } from "@/store/secondary-auth-store.js";
 
 const secondaryAuthStore = useSecondaryAuthStore();
-const { dialogSecondaryAuthVisible } = storeToRefs(secondaryAuthStore);
+const { secondaryAuthDialogVisible } = storeToRefs(secondaryAuthStore);
 
 const loading = ref(false);
 
@@ -19,7 +19,7 @@ const onSafeModeChange = (val) => {
 };
 
 const onClosed = () => {
-  dialogSecondaryAuthVisible.value = false;
+  secondaryAuthDialogVisible.value = false;
   loading.value = false;
 };
 
@@ -43,7 +43,7 @@ const onSubmit = () => {
 
 <template>
   <el-dialog
-    :model-value="dialogSecondaryAuthVisible"
+    :model-value="secondaryAuthDialogVisible"
     :title="'二级认证'"
     destroy-on-close
     align-center

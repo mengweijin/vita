@@ -108,7 +108,7 @@ public class VitaProperties {
          */
         @NotNull
         @Min(60)
-        @Max(Integer.MAX_VALUE)
+        @Max(600)
         private Long secondaryAuthValidityPeriod = 180L;
 
     }
@@ -122,9 +122,10 @@ public class VitaProperties {
         private Boolean enabled = false;
 
         /**
-         * 企业微信 Webhook 地址。${vita.webhook.wechat}
-         * 格式：<a href="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx">https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx</a>
+         * webhook 请求地址。${vita.webhook.url}
+         * <p>企业微信：{@code https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx-xxxx-xxxx-xxxx}</p>
+         * <p>钉钉：{@code https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxxxxxxxxxxxxxxxxxxx}</p>
          */
-        private String wechat;
+        private String url;
     }
 }

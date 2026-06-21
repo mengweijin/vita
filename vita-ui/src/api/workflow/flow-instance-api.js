@@ -7,6 +7,7 @@ export const flowInstanceApi = {
 
   pageMyFlow: (args) => http.get(`${URL_PREFIX}/page/myFlow`, { params: args }),
 
-  start: (businessId, flowParams) =>
-    http.post(`${URL_PREFIX}/start`, null, { params: { ...flowParams, businessId: businessId } }),
+  termination: (id, flowParams) => http.post(`${URL_PREFIX}/termination/${id}`, flowParams),
+
+  remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 };

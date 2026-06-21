@@ -71,13 +71,13 @@ public class FileController {
      * 文件预览接口
      *
      * @param id       文件 id
-     * @param suffix   文件后缀（可选，这个参数用来适配前端 file-viewer 的 url 规则）
+     * @param fileName 文件名称（可选，这个参数用来适配前端 file-viewer 的 url 规则）
      * @param request  request
      * @param response response
      */
-    @GetMapping({"/preview/{id}", "/preview/{id}/{suffix}"})
-    public void preview(@PathVariable("id") Long id, @PathVariable("suffix") String suffix, HttpServletRequest request, HttpServletResponse response) {
-        log.debug("suffix: {}", suffix);
+    @GetMapping({"/preview/{id}", "/preview/{id}/{fileName}"})
+    public void preview(@PathVariable("id") Long id, @PathVariable("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) {
+        log.debug("fileName: {}", fileName);
         Supplier<FileDO> supplier = fileService.getFileSupplierById(id);
         DownLoadUtils.preview(request, response, supplier);
     }

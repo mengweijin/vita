@@ -32,7 +32,6 @@ public class LeaveApplyService extends BaseVitaService<LeaveApplyMapper, LeaveAp
         wrapper.eq(leaveApply.getEndTime() != null, LeaveApplyDO::getEndTime, leaveApply.getEndTime());
         wrapper.eq(leaveApply.getLeaveDays() != null, LeaveApplyDO::getLeaveDays, leaveApply.getLeaveDays());
         wrapper.eq(StrUtil.isNotBlank(leaveApply.getRemark()), LeaveApplyDO::getRemark, leaveApply.getRemark());
-        wrapper.eq(StrUtil.isNotBlank(leaveApply.getAttachmentIds()), LeaveApplyDO::getAttachmentIds, leaveApply.getAttachmentIds());
         wrapper.eq(StrUtil.isNotBlank(leaveApply.getWorkflowId()), LeaveApplyDO::getWorkflowId, leaveApply.getWorkflowId());
         wrapper.gt(leaveApply.getStartCreateTime() != null, LeaveApplyDO::getCreateTime, leaveApply.getStartCreateTime());
         wrapper.le(leaveApply.getEndCreateTime() != null, LeaveApplyDO::getCreateTime, leaveApply.getEndCreateTime());

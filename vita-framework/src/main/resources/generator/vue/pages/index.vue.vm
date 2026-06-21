@@ -42,6 +42,7 @@ const loadTableData = () => {
   ${entityPropertyName}Api.page(queryParams).then((res) => {
     tableData.value = res.pageRecords;
     queryParams.pageTotal = res.pageTotal;
+  }).finally(() => {
     loading.value = false;
   });
 };

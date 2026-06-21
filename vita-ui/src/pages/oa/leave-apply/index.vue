@@ -43,11 +43,15 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  leaveApplyApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  leaveApplyApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const editDialogVisible = ref(false);

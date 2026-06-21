@@ -115,7 +115,6 @@ public interface BaseVitaMapper<T, V> extends BaseMapper<T> {
      * @return PageQuery<V>
      */
     default PageQuery<V> toVoPageQuery(IPage<T> page) {
-        List<V> list = MapstructUtils.getConverter().convert(page.getRecords(), this.voClass());
-        return PageQuery.of(page.getCurrent(), page.getSize(), page.getTotal(), list);
+        return MapstructUtils.convertToPageQuery(page, this.voClass());
     }
 }

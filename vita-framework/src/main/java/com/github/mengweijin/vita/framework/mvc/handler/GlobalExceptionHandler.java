@@ -10,6 +10,7 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.exception.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.warm.flow.core.exception.FlowException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,15 @@ public class GlobalExceptionHandler extends BaseResponseEntityExceptionHandler {
         log.warn(e.getMessage());
         R<Void> r = R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r);
+    }
+
+    @ExceptionHandler({
+            FlowException.class
+    })
+    @ResponseBody
+    ResponseEntity<R<Void>> handleFlowException(Exception e, HttpServletRequest request) {
+        log.warn(e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(R.fail(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler({

@@ -93,8 +93,10 @@ public class RoleController {
      * @return Role
      */
     @GetMapping("/query/roleIds/by/userId/{userId}")
-    public Set<Long> queryRoleIdsByUserId(@PathVariable("userId") Long userId) {
-        return userRoleService.getRoleIdsByUserId(userId);
+    public List<String> queryRoleIdsByUserId(@PathVariable("userId") Long userId) {
+        Set<Long> roleIds = userRoleService.getRoleIdsByUserId(userId);
+        // 转 String 返回，避免前端精度丢失导致数据错误
+        return roleIds.stream().map(Object::toString).toList();
     }
 
     @GetMapping("/query/defaultRole")

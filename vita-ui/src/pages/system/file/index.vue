@@ -8,6 +8,9 @@ meta:
 import { fileApi } from "@/api/system/file-api.js";
 import { useLoginStore } from "@/store/login-store.js";
 import { useFile } from "./hooks.js";
+import { useFilePreviewStore } from "@/store/file-preview-store.js";
+const filePreviewStore = useFilePreviewStore();
+const { filePreviewDialogVisible, filePreviewId, filePreviewName } = storeToRefs(filePreviewStore);
 const { columns } = useFile();
 
 const loginStore = useLoginStore();
@@ -40,20 +43,29 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  fileApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  fileApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const { VITE_BASE_API } = import.meta.env;
 // 处理路径
 let uploadUrl = `${VITE_BASE_API}/system/file/upload`.replace("//", "/");
 
-const handleUpload = (res) => {
-  ElMessage.success({ duration: 3000, message: `【${res[0]?.name}】上传成功!`, showClose: true });
+const handleCallback = (res) => {
   loadTableData();
+};
+
+const handlePreview = (row) => {
+  filePreviewId.value = row.id;
+  filePreviewName.value = row.name;
+  filePreviewDialogVisible.value = true;
 };
 
 const handleDownload = (row) => {
@@ -122,22 +134,7 @@ onMounted(() => {
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
     <el-col :span="1.5">
-      <el-upload
-        multiple
-        :show-file-list="false"
-        :action="uploadUrl"
-        :on-success="handleUpload"
-        :headers="{ Authorization: `${loginStore.getBearerToken()}` }"
-      >
-        <el-button type="primary">
-          <template #icon>
-            <el-icon>
-              <Icon icon="ep:upload"></Icon>
-            </el-icon>
-          </template>
-          上传文件
-        </el-button>
-      </el-upload>
+      <VtUpload :show-file-list="false" @callback="handleCallback" />
     </el-col>
     <el-col :span="1.5" v-show="selected.length" v-permission="'system:file:remove'">
       <el-popconfirm
@@ -191,17 +188,17 @@ onMounted(() => {
         v-if="columns.name.visible"
         prop="name"
         label="文件名称"
-        min-width="200"
+        min-width="180"
         fixed="left"
       />
-      <el-table-column v-if="columns.suffix.visible" prop="suffix" label="文件后缀" width="90" />
+      <el-table-column v-if="columns.suffix.visible" prop="suffix" label="后缀" width="60" />
       <el-table-column
         v-if="columns.storagePath.visible"
         prop="storagePath"
         label="存储路径"
         min-width="240"
       />
-      <el-table-column v-if="columns.md5.visible" prop="md5" label="MD5" width="290" />
+      <el-table-column v-if="columns.md5.visible" prop="md5" label="MD5" width="280" />
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
@@ -230,11 +227,26 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="160">
         <template #default="scope">
           <div>
+            <el-tooltip content="预览" placement="top">
+              <el-button type="primary" text :size="size" @click="handlePreview(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:view"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="下载" placement="top">
-              <el-button type="primary" text :size="size" @click="handleDownload(scope.row)">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleDownload(scope.row)"
+              >
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:download"></Icon>

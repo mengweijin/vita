@@ -25,6 +25,11 @@ import java.util.TimeZone;
 @SuppressWarnings({"unused"})
 public class JacksonConfig {
 
+    /**
+     * 添加对Long, BigInteger, BigDecimal, 日期等数据的序列化处理。
+     *
+     * @return JavaTimeModule
+     */
     public static JavaTimeModule javaTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(Long.class, BigNumberSerializer.BIG_NUMBER_SERIALIZER_INSTANCE);

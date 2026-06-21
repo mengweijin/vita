@@ -32,11 +32,15 @@ const tableData = ref([]);
 
 const loadTableData = () => {
   loading.value = true;
-  userApi.pageByRole(data.value.id, queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  userApi
+    .pageByRole(data.value.id, queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const handlePageChange = (currentPage, pageSize) => {

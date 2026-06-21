@@ -6,10 +6,13 @@ meta:
 <script setup>
 import { fileApi } from "@/api/system/file-api.js";
 import { useLoginStore } from "@/store/login-store.js";
+import { useTabsStore } from "@/store/tabs-store.js";
 import { leaveApplyApi } from "@/api/oa/leave-apply-api.js";
 import utils from "@/utils/utils.js";
 
+const router = useRouter();
 const loginStore = useLoginStore();
+const tabsStore = useTabsStore();
 
 const props = defineProps({
   readonly: {
@@ -32,6 +35,7 @@ const INITIAL_FORM = {
   remark: undefined,
   attachmentIds: [],
   workflowId: undefined,
+  isDraft: undefined,
 };
 
 const form = ref({ ...INITIAL_FORM });
@@ -41,39 +45,36 @@ const formRef = useTemplateRef("formRef");
 // 是否为编辑态（有 id 视为编辑）。!! 是 JavaScript 里快速把一个值转换成布尔值（true/false）的简写，本质是两次取反
 const isEdit = computed(() => !!form?.id);
 
-const { VITE_BASE_API } = import.meta.env;
-// 处理路径
-let uploadUrl = `${VITE_BASE_API}/system/file/upload`.replace("//", "/");
-
-const handleUpload = (res) => {
-  ElMessage.success({ duration: 3000, message: `【${res[0]?.name}】上传成功!`, showClose: true });
-  const ids = res.map((f) => f.id);
-
-  form.value.attachmentIds.push(ids);
+// 自定义验证器：验证时间范围
+const validateTimeRange = (rule, value, callback) => {
+  if (!form.value.startTime || !form.value.endTime) {
+    callback(new Error("请选择完整的起止时间"));
+  } else if (new Date(form.value.startTime) >= new Date(form.value.endTime)) {
+    callback(new Error("开始时间必须早于结束时间"));
+  } else {
+    callback();
+  }
 };
 
-const onStart = () => {
-  alert("start");
-};
-
-const onSave = () => {
+const onSubmit = () => {
   formRef.value.validate((valid, fields) => {
     if (!valid) {
       // fields 只有在验证失败的情况下才有值
       console.log(fields);
       return;
     }
-    leaveApplyApi.saveOrUpdate(form).then(() => {
-      alert("save");
+    leaveApplyApi.saveAndStartWorkflow(form.value).then((r) => {
+      if (r.code === 200) {
+        tabsStore.removeActiveTab();
+        router.push("/oa/my-workflow");
+      }
     });
   });
 };
 
-const onReset = () => {
-  formRef.value?.resetFields();
-  if (!isEdit) {
-    form.value = { ...INITIAL_FORM };
-  }
+const onClose = () => {
+  form.value = { ...INITIAL_FORM };
+  tabsStore.removeActiveTab();
 };
 
 watch(
@@ -108,8 +109,12 @@ onMounted(async () => {});
       </el-form-item>
 
       <el-form-item
+        prop="startTime"
         label="起止时间"
-        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+        :rules="[
+          { required: true, message: '请选择开始时间', trigger: 'blur' },
+          { validator: validateTimeRange, trigger: 'change' },
+        ]"
       >
         <el-col :span="11">
           <el-date-picker
@@ -117,6 +122,7 @@ onMounted(async () => {});
             clearable
             :disabled="props.readonly"
             type="datetime"
+            value-format="YYYY-MM-DD HH:mm"
             :format="'YYYY-MM-DD HH:mm'"
             placeholder="选择开始时间"
             style="width: 100%"
@@ -131,6 +137,7 @@ onMounted(async () => {});
             clearable
             :disabled="props.readonly"
             type="datetime"
+            value-format="YYYY-MM-DD HH:mm"
             :format="'YYYY-MM-DD HH:mm'"
             placeholder="选择结束时间"
             style="width: 100%"
@@ -156,34 +163,26 @@ onMounted(async () => {});
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />
       </el-form-item>
       <el-form-item prop="attachmentId" label="附件">
-        <VtUpload v-model="form.attachmentIds" :disabled="props.readonly" :drag="false" />
+        <VtUpload v-model="form.attachmentIds" :disabled="props.readonly" :drag="true" />
       </el-form-item>
     </el-form>
 
     <div class="vt-leave-apply-button-container">
-      <el-button type="primary" @click="onStart">
-        <template #icon>
-          <el-icon>
-            <Icon icon="ep:promotion"></Icon>
-          </el-icon>
-        </template>
-        发起流程
-      </el-button>
-      <el-button type="primary" @click="onSave">
+      <el-button type="primary" @click="onSubmit">
         <template #icon>
           <el-icon>
             <Icon icon="ep:check"></Icon>
           </el-icon>
         </template>
-        保存
+        发起流程
       </el-button>
-      <el-button type="warning" @click="onReset">
+      <el-button type="warning" @click="onClose">
         <template #icon>
           <el-icon>
-            <Icon icon="ep:refresh-left"></Icon>
+            <Icon icon="ep:close"></Icon>
           </el-icon>
         </template>
-        重置
+        取消
       </el-button>
     </div>
   </div>

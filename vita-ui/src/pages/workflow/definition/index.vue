@@ -52,30 +52,34 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  flowDefinitionApi.page(queryParams).then((res) => {
-    tableData.value = res.pageRecords;
-    queryParams.pageTotal = res.pageTotal;
-    loading.value = false;
-  });
+  flowDefinitionApi
+    .page(queryParams)
+    .then((res) => {
+      tableData.value = res.pageRecords;
+      queryParams.pageTotal = res.pageTotal;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 // -----------------------------------------
-const editDialogVisible = ref(false);
-const editDialogTitle = ref("");
-const editDataId = ref(null);
-const editOnlyDesignShow = ref(false);
-const editDisabled = ref(false);
+const workflowDesignerDialogVisible = ref(false);
+const workflowDesignerDialogTitle = ref("");
+const workflowDesignerDialogDefinitionId = ref(null);
+const workflowDesignerDialogOnlyDesignShow = ref(false);
+const workflowDesignerDialogDisabled = ref(false);
 
 const { VITE_BASE_API } = import.meta.env;
 // 处理路径
 let importUrl = `${VITE_BASE_API}/workflow/definition/import`.replace("//", "/");
 
 const handleAdd = () => {
-  editDataId.value = "";
-  editOnlyDesignShow.value = false;
-  editDisabled.value = false;
-  editDialogTitle.value = "流程定义 - 新增";
-  editDialogVisible.value = true;
+  workflowDesignerDialogDefinitionId.value = "";
+  workflowDesignerDialogOnlyDesignShow.value = false;
+  workflowDesignerDialogDisabled.value = false;
+  workflowDesignerDialogTitle.value = "流程定义 - 新增";
+  workflowDesignerDialogVisible.value = true;
 };
 
 const handleImport = (res) => {
@@ -84,27 +88,27 @@ const handleImport = (res) => {
 };
 
 const handleEdit = (row) => {
-  editDataId.value = row.id;
-  editOnlyDesignShow.value = false;
-  editDisabled.value = false;
-  editDialogTitle.value = "流程定义 - 编辑";
-  editDialogVisible.value = true;
+  workflowDesignerDialogDefinitionId.value = row.id;
+  workflowDesignerDialogOnlyDesignShow.value = false;
+  workflowDesignerDialogDisabled.value = false;
+  workflowDesignerDialogTitle.value = "流程定义 - 编辑";
+  workflowDesignerDialogVisible.value = true;
 };
 
 const handleView = (row) => {
-  editDataId.value = row.id;
-  editOnlyDesignShow.value = true;
-  editDisabled.value = true;
-  editDialogTitle.value = "流程定义 - 查看";
-  editDialogVisible.value = true;
+  workflowDesignerDialogDefinitionId.value = row.id;
+  workflowDesignerDialogOnlyDesignShow.value = true;
+  workflowDesignerDialogDisabled.value = true;
+  workflowDesignerDialogTitle.value = "流程定义 - 查看";
+  workflowDesignerDialogVisible.value = true;
 };
 
 const handleDesign = (row) => {
-  editDataId.value = row.id;
-  editOnlyDesignShow.value = true;
-  editDisabled.value = false;
-  editDialogTitle.value = "流程定义 - 流程设计";
-  editDialogVisible.value = true;
+  workflowDesignerDialogDefinitionId.value = row.id;
+  workflowDesignerDialogOnlyDesignShow.value = true;
+  workflowDesignerDialogDisabled.value = false;
+  workflowDesignerDialogTitle.value = "流程定义 - 流程设计";
+  workflowDesignerDialogVisible.value = true;
 };
 
 const handlePublish = (row) => {
@@ -553,11 +557,11 @@ onMounted(() => {
   </div>
 
   <VtDialogWorkflowDesigner
-    v-model:visible="editDialogVisible"
-    :id="editDataId"
-    :title="editDialogTitle"
-    :only-design-show="editOnlyDesignShow"
-    :disabled="editDisabled"
+    v-model:visible="workflowDesignerDialogVisible"
+    :id="workflowDesignerDialogDefinitionId"
+    :title="workflowDesignerDialogTitle"
+    :only-design-show="workflowDesignerDialogOnlyDesignShow"
+    :disabled="workflowDesignerDialogDisabled"
     @refresh="loadTableData"
   ></VtDialogWorkflowDesigner>
 </template>

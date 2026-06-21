@@ -34,10 +34,14 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  generatorApi.listTableInfo(queryParams.tableName).then((res) => {
-    tableData.value = res;
-    loading.value = false;
-  });
+  generatorApi
+    .listTableInfo(queryParams.tableName)
+    .then((res) => {
+      tableData.value = res;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /** selected rows */
