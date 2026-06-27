@@ -45,6 +45,10 @@ public class LoginHelper {
         return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getUsername).orElse(null);
     }
 
+    public static String getSessionUserNickname() {
+        return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getNickname).orElse(null);
+    }
+
     public static Long getSessionUserDeptId() {
         return Optional.ofNullable(getSessionUser()).map(UserSessionVO::getDeptId).orElse(null);
     }

@@ -184,19 +184,33 @@ axiosInstance.download = (url, fileName = undefined) => {
       responseType: "blob",
     })
     .then((response) => {
-      // attachment;fileName=%E6%A8%AA%E5%9B%BE_%E4%BA%91%E6%9B%A6_1.jpg
+      // attachment;fileName="%E6%A8%AA%E5%9B%BE_%E4%BA%91%E6%9B%A6_1.jpg"
       const contentDisposition = response.headers["content-disposition"];
-
       if (utils.isEmpty(fileName)) {
-        const encodedFileName = contentDisposition
-          .split(";")
-          .map((item) => item.trim())
-          // 获取第一个符合条件的元素
-          .find((item) => item.toLowerCase().startsWith("filename="))
-          // 截取后半部分
-          .slice(9);
-        const decodedFileName = decodeURIComponent(encodedFileName);
-        fileName = decodedFileName;
+        const parts = contentDisposition.split(";").map((item) => item.trim());
+        // 优先处理 RFC5987 的 filename*，回退到 filename
+        let filenamePart =
+          parts.find((item) => item.toLowerCase().startsWith("filename*=")) ||
+          parts.find((item) => item.toLowerCase().startsWith("filename="));
+        if (filenamePart) {
+          // 截取等号右侧（保留可能包含 = 的情况）
+          let encodedFileName = filenamePart.substring(filenamePart.indexOf("=") + 1);
+          // 去掉两侧的单/双引号（如果有的话）
+          encodedFileName = encodedFileName.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
+          // 如果是 filename* 的形式，可能带有 charset'' 前缀，如 UTF-8''%E6%96%87
+          if (filenamePart.toLowerCase().startsWith("filename*=")) {
+            const idx = encodedFileName.indexOf("''");
+            if (idx !== -1) {
+              encodedFileName = encodedFileName.substring(idx + 2);
+            }
+          }
+          try {
+            fileName = decodeURIComponent(encodedFileName);
+          } catch {
+            // 解码失败时回退为原始值（已剥离引号）
+            fileName = encodedFileName;
+          }
+        }
       }
 
       const url = window.URL.createObjectURL(

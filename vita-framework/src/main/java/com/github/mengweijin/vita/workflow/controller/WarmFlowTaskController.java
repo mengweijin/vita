@@ -1,7 +1,5 @@
 package com.github.mengweijin.vita.workflow.controller;
 
-import com.github.mengweijin.vita.framework.constant.SqlConst;
-import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
@@ -9,16 +7,13 @@ import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowTaskVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowTaskService;
+import com.github.mengweijin.vita.workflow.warmflow.WarmFlowPermissionHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.dto.FlowParams;
-import org.dromara.warm.flow.core.entity.HisTask;
 import org.dromara.warm.flow.core.entity.Instance;
-import org.dromara.warm.flow.core.enums.FlowStatus;
-import org.dromara.warm.flow.core.service.HisTaskService;
+import org.dromara.warm.flow.core.enums.NodeType;
 import org.dromara.warm.flow.core.service.TaskService;
-import org.dromara.warm.flow.core.utils.page.Page;
-import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,9 +41,9 @@ public class WarmFlowTaskController {
 
     private final TaskService taskService;
 
-    private final HisTaskService hisTaskService;
+    private final WarmFlowTaskService warmFlowTaskService;
 
-    private WarmFlowTaskService warmFlowTaskService;
+    private final WarmFlowPermissionHandler warmFlowPermissionHandler;
 
     /**
      * 待办任务
@@ -57,33 +52,11 @@ public class WarmFlowTaskController {
      * @param vo        FlowTaskVO
      * @return PageQuery
      */
-    @GetMapping("/page/backlog")
-    public PageQuery<FlowTaskVO> pageBacklog(PageQuery<FlowTaskVO> pageQuery, FlowTaskVO vo) {
-        Long userId = LoginHelper.getSessionUserId();
-        vo.setCreateBy(userId);
-        vo.setFlowStatus(FlowStatus.APPROVAL.getKey());
-
+    @GetMapping("/page")
+    public PageQuery<FlowTaskVO> page(PageQuery<FlowTaskVO> pageQuery, FlowTaskVO vo) {
+        vo.setProcessedBy(LoginHelper.getSessionUserId());
+        vo.setNodeType(NodeType.BETWEEN.getKey());
         return warmFlowTaskService.selectPageVo(pageQuery, vo);
-    }
-
-    /**
-     * 已办任务
-     *
-     * @param pageQuery PageQuery
-     * @param hisTask   HisTask
-     * @return PageQuery
-     */
-    @GetMapping("/page/done")
-    public PageQuery<HisTask> pageDone(PageQuery<HisTask> pageQuery, FlowHisTask hisTask) {
-        Long userId = LoginHelper.getSessionUserId();
-        hisTask.setCreateBy(userId.toString());
-        hisTask.setFlowStatus(FlowStatus.PASS.getKey());
-
-        Page<HisTask> warmFlowPage = pageQuery.toWarmFlowPage()
-                .setOrderBy(VitaConst.COLUMN_CREATE_TIME)
-                .setIsAsc(SqlConst.DESC);
-        Page<HisTask> page = hisTaskService.page(hisTask, warmFlowPage);
-        return PageQuery.of(page);
     }
 
     /**
@@ -98,7 +71,7 @@ public class WarmFlowTaskController {
     @PostMapping("/pass/{taskId}")
     public R<Instance> pass(@PathVariable("taskId") Long taskId,
                             @RequestParam(name = "message", required = false) String message,
-                            @RequestBody Map<String, Object> variable) {
+                            @RequestBody(required = false) Map<String, Object> variable) {
         Instance instance = taskService.pass(taskId, message, variable);
         return R.ok(instance);
     }
@@ -115,8 +88,8 @@ public class WarmFlowTaskController {
     @PostMapping("/reject/{taskId}")
     public R<Instance> reject(@PathVariable("taskId") Long taskId,
                               @RequestParam(name = "message", required = false) String message,
-                              @RequestBody Map<String, Object> variable) {
-        Instance instance = taskService.reject(taskId, message, variable);
+                              @RequestBody(required = false) Map<String, Object> variable) {
+        Instance instance = warmFlowTaskService.reject(taskId, message, variable);
         return R.ok(instance);
     }
 
@@ -130,7 +103,7 @@ public class WarmFlowTaskController {
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/revoke/{instanceId}")
     public R<Instance> revoke(@PathVariable("instanceId") Long instanceId,
-                              @RequestBody FlowParams flowParams) {
+                              @RequestBody(required = false) FlowParams flowParams) {
         Instance instance = taskService.revoke(instanceId, flowParams);
         return R.ok(instance);
     }
@@ -144,7 +117,7 @@ public class WarmFlowTaskController {
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/depute/{taskId}")
-    public R<Boolean> depute(@PathVariable("taskId") Long taskId, @RequestBody FlowParams flowParams) {
+    public R<Boolean> depute(@PathVariable("taskId") Long taskId, @RequestBody(required = false) FlowParams flowParams) {
         boolean deputed = taskService.depute(taskId, flowParams);
         return R.result(deputed);
     }
@@ -158,7 +131,7 @@ public class WarmFlowTaskController {
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/addSignature/{taskId}")
-    public R<Boolean> addSignature(@PathVariable("taskId") Long taskId, @RequestBody FlowParams flowParams) {
+    public R<Boolean> addSignature(@PathVariable("taskId") Long taskId, @RequestBody(required = false) FlowParams flowParams) {
         boolean added = taskService.addSignature(taskId, flowParams);
         return R.result(added);
     }
@@ -172,7 +145,7 @@ public class WarmFlowTaskController {
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/reductionSignature/{taskId}")
-    public R<Boolean> reductionSignature(@PathVariable("taskId") Long taskId, @RequestBody FlowParams flowParams) {
+    public R<Boolean> reductionSignature(@PathVariable("taskId") Long taskId, @RequestBody(required = false) FlowParams flowParams) {
         boolean reduced = taskService.reductionSignature(taskId, flowParams);
         return R.result(reduced);
     }
@@ -186,7 +159,7 @@ public class WarmFlowTaskController {
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/updateHandler/{taskId}")
-    public R<Boolean> updateHandler(@PathVariable("taskId") Long taskId, @RequestBody FlowParams flowParams) {
+    public R<Boolean> updateHandler(@PathVariable("taskId") Long taskId, @RequestBody(required = false) FlowParams flowParams) {
         boolean updated = taskService.updateHandler(taskId, flowParams);
         return R.result(updated);
     }

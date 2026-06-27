@@ -6,6 +6,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.text.CharSequenceUtil;
+import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.util.EnumUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.constant.VitaConst;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
+import com.github.mengweijin.vita.framework.enums.dict.EMessageType;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.enums.dict.ESafeMode;
 import com.github.mengweijin.vita.framework.exception.ClientException;
@@ -39,6 +41,7 @@ import com.github.mengweijin.vita.system.domain.vo.user.UserStoreVO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserVO;
 import com.github.mengweijin.vita.system.handler.secondaryauth.ISecondaryAuthHandler;
 import com.github.mengweijin.vita.system.handler.secondaryauth.SecondaryAuthHandleFactory;
+import com.github.mengweijin.vita.system.service.MessageService;
 import com.github.mengweijin.vita.system.service.UserAvatarService;
 import com.github.mengweijin.vita.system.service.UserRoleService;
 import com.github.mengweijin.vita.system.service.UserService;
@@ -80,6 +83,8 @@ public class UserController {
     private UserRoleService userRoleService;
 
     private VitaProperties vitaProperties;
+
+    private MessageService messageService;
 
     /**
      * <p>
@@ -299,6 +304,12 @@ public class UserController {
     @PostMapping("/set/roles")
     public R<Void> setRoles(@Validated @RequestBody UserRoleBO bo) {
         userRoleService.setUserRoles(bo.getUserId(), bo.getRoleIds());
+
+        String title = "角色变更";
+        String nickname = StrUtil.emptyIfNull(LoginHelper.getSessionUserNickname()).toString();
+        String content = String.format("您的角色已发生变更。变更人：%s", nickname);
+        Long userId = LoginHelper.getSessionUserId();
+        messageService.sendMessageToUser(EMessageType.USER, title, content, userId);
         return R.ok();
     }
 

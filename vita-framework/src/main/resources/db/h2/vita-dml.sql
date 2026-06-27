@@ -4,12 +4,10 @@
 -- 用户
 insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,1,'admin','管理员','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'female','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
 insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,1,'vita','微塔','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
-insert into VT_USER (ID,DEPT_ID,USERNAME,NICKNAME,PASSWORD,PASSWORD_LEVEL,PASSWORD_CHANGE_TIME,CITIZEN_ID,GENDER,EMAIL,MOBILE,TOTP,DISABLED,DELETED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,1,'guest','游客','$2a$10$iiYJPA.3t09Ry4ECRpcpBuE.tOWJRq0o4M3AEMOadrArXavZg2/Cu','EASY',current_timestamp(),null,'male','aday.fun@outlook.com','18700000000',null,'N','N',null,1,current_timestamp(),1,current_timestamp());
 
 -- 角色
 insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1, '管理员', 'admin', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (2, '普通用户', 'general', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_ROLE (ID, NAME, CODE, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (3, '游客', 'guest', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 部门
 insert into VT_DEPT (ID, PARENT_ID, ANCESTORS, CODE, NAME, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1,        null, '/',  'company',           '微塔科技',    1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -254,6 +252,20 @@ insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, C
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10070003, 1007, '2', '结束节点', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10070004, 1007, '3', '互斥网关', 'info', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10070005, 1007, '4', '并行网关', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程节点跳转类型
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1008, 'Warm-Flow 流程节点跳转类型', 'vt_warmflow_node_skip_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10080001, 1008, 'PASS', '通过', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10080002, 1008, 'REJECT', '退回', 'danger', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10080003, 1008, 'NONE', '无动作', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+-- 字典：Warm-Flow 流程节点协作方式
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (1009, 'Warm-Flow 流程节点协作方式', 'vt_warmflow_node_cooperate_type', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090001, 1009, '1', '审批', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090002, 1009, '2', '转办', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090003, 1009, '3', '委派', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090004, 1009, '4', '会签', 'info', 4, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090005, 1009, '5', '票签', 'info', 5, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090006, 1009, '6', '加签', 'info', 6, 'N', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (10090007, 1009, '7', '减签', 'info', 7, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 
 -- 字典：人员涉密级别（FL）
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (9001, '人员涉密级别', 'vt_fl_personnel_security_level', '《保守国家秘密法》第 43 条：涉密人员分为：核心涉密人员、重要涉密人员、一般涉密人员。', 1, current_timestamp(), 1, current_timestamp());
@@ -460,8 +472,31 @@ INSERT INTO VT_NOTICE (ID,TITLE,DESCRIPTION,RELEASED,CREATE_BY,CREATE_TIME,UPDAT
 
 
 -- 用户-角色
-insert into VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1876458459928420354,3,3,1,current_timestamp(),1,current_timestamp());
 INSERT INTO VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2034125907099107330,2,2,1,current_timestamp(),1,current_timestamp());
 
 
 -- 角色-权限
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136705,2,10031001,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136706,2,1001006,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136707,2,1001005,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136708,2,10031003,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136709,2,1001004,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136710,2,10031002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136711,2,100,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065576136712,2,1001003,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245570,2,1001002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245571,2,10031004,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245572,2,1001001,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245573,2,10090001,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245574,2,1001,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245575,2,1002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245576,2,10090,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245577,2,10090002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245578,2,10091,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245579,2,10031,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245580,2,10090002002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245581,2,10090002001,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245582,2,1002004,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245583,2,1002003,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245584,2,1002002,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_ROLE_MENU (ID,ROLE_ID,MENU_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2069980065643245585,2,1002001,1,current_timestamp(),1,current_timestamp());

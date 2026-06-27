@@ -82,27 +82,30 @@ public class WarmFlowPermissionHandler implements PermissionHandler {
     /**
      * 转换办理人，比如设计器中预设了能办理的人，如果其中包含角色或者部门id等，可以通过此接口进行转换成用户id
      *
-     * @return permissions：{user:1,role:1,dept:1,post:1}
+     * @return userIds
      */
     @Override
     public List<String> convertPermissions(List<String> permissions) {
         Set<Long> userIds = new HashSet<>();
         // 把角色，部门，岗位转换成用户
         permissions.forEach(p -> {
-            // 只取 : 后面的值，转换为 Long
-            long id = NumberUtil.parseLong(p.split(Const.COLON, 2)[1]);
-
-            if (p.startsWith(EWarmFlowHandlerType.ROLE.getCode())) {
-                Set<Long> userIdsInRole = userRoleService.getUserIdsByRoleId(id);
-                userIds.addAll(userIdsInRole);
-            } else if (p.startsWith(EWarmFlowHandlerType.DEPT.getCode())) {
-                Set<Long> userIdsInDept = userService.getUserIdsInDeptId(id);
-                userIds.addAll(userIdsInDept);
-            } else if (p.startsWith(EWarmFlowHandlerType.POST.getCode())) {
-                Set<Long> userIdsInPost = userPostService.getUserIdsByPostId(id);
-                userIds.addAll(userIdsInPost);
+            String[] split = p.split(Const.COLON, 2);
+            if (split.length == 1) {
+                // 如果没有 :，说明是用户ID
+                userIds.add(NumberUtil.parseLong(p));
             } else {
-                userIds.add(id);
+                // 只取 : 后面的值，转换为 Long
+                long id = NumberUtil.parseLong(split[1]);
+                if (p.startsWith(EWarmFlowHandlerType.ROLE.getCode())) {
+                    Set<Long> userIdsInRole = userRoleService.getUserIdsByRoleId(id);
+                    userIds.addAll(userIdsInRole);
+                } else if (p.startsWith(EWarmFlowHandlerType.DEPT.getCode())) {
+                    Set<Long> userIdsInDept = userService.getUserIdsInDeptId(id);
+                    userIds.addAll(userIdsInDept);
+                } else if (p.startsWith(EWarmFlowHandlerType.POST.getCode())) {
+                    Set<Long> userIdsInPost = userPostService.getUserIdsByPostId(id);
+                    userIds.addAll(userIdsInPost);
+                }
             }
         });
         return userIds.stream().map(Object::toString).toList();

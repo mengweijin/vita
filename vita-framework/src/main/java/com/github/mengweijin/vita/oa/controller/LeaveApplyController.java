@@ -122,7 +122,8 @@ public class LeaveApplyController {
         boolean bool = leaveApplyService.saveOrUpdate(bo);
         if (bool) {
             String flowCode = EWorkflowCode.WF_OA_LEAVE.getValue();
-            Instance instance = warmFlowInstanceService.start(bo.getId(), flowCode, null);
+            LeaveApplyDO leaveApplyDO = leaveApplyService.getById(bo.getId());
+            Instance instance = warmFlowInstanceService.start(flowCode, leaveApplyDO);
             return R.ok(instance);
         }
         return R.fail("Save leave apply data failed!");

@@ -136,8 +136,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/oa/done-task': RouteRecordInfo<
-      '/oa/done-task',
+    '/oa/done-task/': RouteRecordInfo<
+      '/oa/done-task/',
       '/oa/done-task',
       Record<never, never>,
       Record<never, never>,
@@ -458,9 +458,9 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/oa/done-task.vue': {
+    'src/pages/oa/done-task/index.vue': {
       routes:
-        | '/oa/done-task'
+        | '/oa/done-task/'
       views:
         | never
       pathParamNames:

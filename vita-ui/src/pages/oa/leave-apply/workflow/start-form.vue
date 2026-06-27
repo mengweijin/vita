@@ -28,10 +28,10 @@ const props = defineProps({
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const INITIAL_FORM = {
   id: undefined,
-  leaveType: undefined,
-  startTime: undefined,
-  endTime: undefined,
-  leaveDays: undefined,
+  leaveType: "personal_leave",
+  startTime: `${utils.toDateString(new Date(), "yyyy-MM-dd")} 09:00`,
+  endTime: `${utils.toDateString(new Date(), "yyyy-MM-dd")} 18:00`,
+  leaveDays: 1,
   remark: undefined,
   attachmentIds: [],
   workflowId: undefined,
@@ -146,7 +146,6 @@ onMounted(async () => {});
       </el-form-item>
 
       <el-form-item
-        v-if="false"
         prop="leaveDays"
         label="休假天数（工作日）"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"

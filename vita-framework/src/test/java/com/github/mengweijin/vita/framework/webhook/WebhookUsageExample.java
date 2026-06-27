@@ -59,12 +59,12 @@ public class WebhookUsageExample {
      */
     public void example3_sendSystemAlert() {
         try {
-            String markdown = "# ⚠️ 系统告警\n" +
-                    "## 服务器状态异常\n" +
-                    "- **服务**: user-service\n" +
-                    "- **错误**: 数据库连接超时\n" +
-                    "- **时间**: " + java.time.LocalDateTime.now() + "\n" +
-                    "\n" +
+            String markdown = "# ⚠️ 系统告警%n" +
+                    "## 服务器状态异常%n" +
+                    "- **服务**: user-service%n" +
+                    "- **错误**: 数据库连接超时%n" +
+                    "- **时间**: " + java.time.LocalDateTime.now() + "%n" +
+                    "%n" +
                     "> 请立即处理";
 
             webhookService.sendMarkdown(markdown);
@@ -133,7 +133,7 @@ public class WebhookUsageExample {
     public void example7_businessUsage(String serviceName, String errorMessage) {
         try {
             String markdown = String.format(
-                    "# 系统异常\n**服务**: %s\n**错误**: %s",
+                    "# 系统异常%n**服务**: %s%n**错误**: %s",
                     serviceName,
                     errorMessage
             );
@@ -166,24 +166,4 @@ public class WebhookUsageExample {
         }
     }
 
-    /**
-     * 示例 9: 构建自定义消息并发送
-     */
-    public void example9_customMessage() {
-        try {
-            // 直接构建消息对象
-            WebhookMessage message = WebhookMessage.buildMarkdown(
-                    "# 自定义消息\n这是一条自定义的 Markdown 消息"
-            );
-
-            // 可以进一步自定义
-            // message.setMsgtype("markdown");
-            // ... 其他自定义逻辑
-
-            webhookService.sendMessage(message);
-            log.info("自定义消息发送成功");
-        } catch (Exception e) {
-            log.error("发送自定义消息失败", e);
-        }
-    }
 }

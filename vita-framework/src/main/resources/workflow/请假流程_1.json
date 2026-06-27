@@ -12,7 +12,7 @@
       "formCustom": "N",
       "ext": "[]",
       "coordinate": "260,200|260,200",
-      "version": "1",
+      "version": "2",
       "skipList": [
         {
           "skipType": "PASS",
@@ -27,8 +27,8 @@
     {
       "nodeType": "1",
       "nodeCode": "submit",
-      "nodeName": "领导审批",
-      "permissionFlag": "user:2",
+      "nodeName": "申请",
+      "permissionFlag": "",
       "nodeRatio": "0",
       "anyNodeSkip": null,
       "listenerType": "",
@@ -36,15 +36,15 @@
       "formCustom": "Y",
       "ext": "[]",
       "coordinate": "420,200|420,200",
-      "version": "1",
+      "version": "2",
       "skipList": [
         {
           "skipType": "PASS",
           "skipCondition": null,
           "skipName": null,
           "nowNodeCode": "submit",
-          "nextNodeCode": "end",
-          "coordinate": "470,200;577,200"
+          "nextNodeCode": "f8e766ac-1f63-4557-bb0b-e41519badda8",
+          "coordinate": "470,200;581,200"
         }
       ]
     },
@@ -59,16 +59,41 @@
       "listenerPath": null,
       "formCustom": "N",
       "ext": "[]",
-      "coordinate": "597,200|597,200",
-      "version": "1",
+      "coordinate": "821,200|821,200",
+      "version": "2",
       "skipList": []
+    },
+    {
+      "nodeType": "1",
+      "nodeCode": "f8e766ac-1f63-4557-bb0b-e41519badda8",
+      "nodeName": "直属领导审批",
+      "permissionFlag": "1",
+      "nodeRatio": "0",
+      "anyNodeSkip": "submit",
+      "listenerType": "",
+      "listenerPath": "",
+      "formCustom": "Y",
+      "ext": "[]",
+      "coordinate": "631,200|631,200",
+      "version": "2",
+      "skipList": [
+        {
+          "skipType": "PASS",
+          "skipCondition": null,
+          "skipName": null,
+          "nowNodeCode": "f8e766ac-1f63-4557-bb0b-e41519badda8",
+          "nextNodeCode": "end",
+          "nextNodeType": "2",
+          "coordinate": "681,200;796,200"
+        }
+      ]
     }
   ],
   "flowCode": "wf_oa_leave",
   "flowName": "请假流程",
   "modelValue": "CLASSICS",
   "category": "10002",
-  "version": "1",
+  "version": "2",
   "formCustom": "Y",
   "formPath": "2043270536503705600",
   "listenerType": "",

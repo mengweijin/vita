@@ -6,7 +6,7 @@ export function useFlowInstance() {
     definitionId: { label: "流程定义ID", visible: false },
     flowName: { label: "流程名称", visible: true },
     businessId: { label: "业务ID", visible: false },
-    nodeType: { label: "节点类型", visible: true },
+    nodeType: { label: "节点类型", visible: false },
     nodeCode: { label: "流程节点编码", visible: false },
     nodeName: { label: "流程节点名称", visible: true },
     variable: { label: "流程变量", visible: false },

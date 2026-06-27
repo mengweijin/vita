@@ -88,31 +88,32 @@ public class WarmFlowHandlerSelectService implements HandlerSelectService {
         Map<String, List<Long>> map = storageIds.stream()
                 .collect(Collectors.groupingBy(
                         str -> {
-                            if (str.startsWith(EWarmFlowHandlerType.USER.getCode())) {
-                                return EWarmFlowHandlerType.USER.getCode();
-                            }
                             if (str.startsWith(EWarmFlowHandlerType.ROLE.getCode())) {
-                                return EWarmFlowHandlerType.ROLE.getCode();
+                                return EWarmFlowHandlerType.ROLE.getDesc();
                             }
                             if (str.startsWith(EWarmFlowHandlerType.DEPT.getCode())) {
-                                return EWarmFlowHandlerType.DEPT.getCode();
+                                return EWarmFlowHandlerType.DEPT.getDesc();
                             }
                             if (str.startsWith(EWarmFlowHandlerType.POST.getCode())) {
-                                return EWarmFlowHandlerType.POST.getCode();
+                                return EWarmFlowHandlerType.POST.getDesc();
                             }
-                            return "other:";
+                            return EWarmFlowHandlerType.USER.getDesc();
                         },
                         Collectors.mapping(
                                 // 只取后面的值，转换为 Long
-                                str -> NumberUtil.parseLong(str.split(Const.COLON, 2)[1]),
+                                str -> {
+                                    String[] split = str.split(Const.COLON, 2);
+                                    String id = split.length == 1 ? str : split[1];
+                                    return NumberUtil.parseLong(id);
+                                },
                                 Collectors.toList()
                         )
                 ));
 
-        List<Long> userIdList = map.get(EWarmFlowHandlerType.USER.getCode());
-        List<Long> roleIdList = map.get(EWarmFlowHandlerType.ROLE.getCode());
-        List<Long> deptIdList = map.get(EWarmFlowHandlerType.DEPT.getCode());
-        List<Long> postIdList = map.get(EWarmFlowHandlerType.POST.getCode());
+        List<Long> userIdList = map.get(EWarmFlowHandlerType.USER.getDesc());
+        List<Long> roleIdList = map.get(EWarmFlowHandlerType.ROLE.getDesc());
+        List<Long> deptIdList = map.get(EWarmFlowHandlerType.DEPT.getDesc());
+        List<Long> postIdList = map.get(EWarmFlowHandlerType.POST.getDesc());
 
         List<HandlerFeedBackVo> handlerFeedBackVos = new ArrayList<>();
 

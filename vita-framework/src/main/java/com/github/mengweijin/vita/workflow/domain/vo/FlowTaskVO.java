@@ -90,6 +90,11 @@ public class FlowTaskVO extends BaseEntity {
     private List<String> permissionList;
 
     /**
+     * 当前处理人
+     */
+    private Long processedBy;
+
+    /**
      * 流程用户列表
      */
     private List<User> userList;

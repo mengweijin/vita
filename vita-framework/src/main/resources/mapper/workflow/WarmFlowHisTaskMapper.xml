@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.mengweijin.vita.workflow.mapper.WarmFlowHisTaskMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumnList">
+        fht.DEFINITION_ID,
+        fht.INSTANCE_ID,
+        fht.TASK_ID,
+        fht.NODE_CODE,
+        fht.NODE_NAME,
+        fht.NODE_TYPE,
+        fht.TARGET_NODE_CODE,
+        fht.TARGET_NODE_NAME,
+        fht.APPROVER,
+        fht.COOPERATE_TYPE,
+        fht.COLLABORATOR,
+        fht.SKIP_TYPE,
+        fht.FLOW_STATUS,
+        fht.FORM_CUSTOM,
+        fht.FORM_PATH,
+        fht.MESSAGE,
+        fht.VARIABLE,
+        fht.EXT,
+        fht.DEL_FLAG,
+        fht.TENANT_ID,
+        fht.ID,
+        fht.CREATE_TIME,
+        fht.UPDATE_TIME,
+        fd.FLOW_NAME,
+        fi.BUSINESS_ID
+    </sql>
+
+    <select id="selectPageVo" resultType="com.github.mengweijin.vita.workflow.domain.vo.FlowHisTaskVO">
+        SELECT
+        <include refid="BaseColumnList"/>
+        FROM FLOW_HIS_TASK fht
+        LEFT JOIN FLOW_DEFINITION fd ON fht.DEFINITION_ID=fd.ID
+        LEFT JOIN FLOW_INSTANCE fi ON fht.INSTANCE_ID=fi.ID
+        <where>
+            <if test="p.definitionId != null">
+                AND fht.DEFINITION_ID = #{p.definitionId}
+            </if>
+            <if test="p.instanceId != null">
+                AND fht.INSTANCE_ID = #{p.instanceId}
+            </if>
+            <if test="p.taskId != null">
+                AND fht.TASK_ID = #{p.taskId}
+            </if>
+            <if test="p.nodeCode != null and p.nodeCode != ''">
+                AND fht.NODE_CODE = #{p.nodeCode}
+            </if>
+            <if test="p.nodeName != null and p.nodeName != ''">
+                AND fht.NODE_NAME = #{p.nodeName}
+            </if>
+            <if test="p.nodeType != null">
+                AND fht.NODE_TYPE = #{p.nodeType}
+            </if>
+            <if test="p.targetNodeCode != null and p.targetNodeCode != ''">
+                AND fht.TARGET_NODE_CODE = #{p.targetNodeCode}
+            </if>
+            <if test="p.targetNodeName != null and p.targetNodeName != ''">
+                AND fht.TARGET_NODE_NAME = #{p.targetNodeName}
+            </if>
+            <if test="p.approver != null and p.approver != ''">
+                AND fht.APPROVER = #{p.approver}
+            </if>
+            <if test="p.cooperateType != null">
+                AND fht.COOPERATE_TYPE = #{p.cooperateType}
+            </if>
+            <if test="p.collaborator != null and p.collaborator != ''">
+                AND fht.COLLABORATOR = #{p.collaborator}
+            </if>
+            <if test="p.skipType != null and p.skipType != ''">
+                AND fht.SKIP_TYPE = #{p.skipType}
+            </if>
+            <if test="p.flowStatus != null and p.flowStatus != ''">
+                AND fht.FLOW_STATUS = #{p.flowStatus}
+            </if>
+            <if test="p.formCustom != null and p.formCustom != ''">
+                AND fht.FORM_CUSTOM = #{p.formCustom}
+            </if>
+            <if test="p.formPath != null and p.formPath != ''">
+                AND fht.FORM_PATH = #{p.formPath}
+            </if>
+            <if test="p.message != null and p.message != ''">
+                AND fht.MESSAGE = #{p.message}
+            </if>
+            <if test="p.variable != null and p.variable != ''">
+                AND fht.VARIABLE = #{p.variable}
+            </if>
+            <if test="p.ext != null and p.ext != ''">
+                AND fht.EXT = #{p.ext}
+            </if>
+            <if test="p.delFlag != null and p.delFlag != ''">
+                AND fht.DEL_FLAG = #{p.delFlag}
+            </if>
+            <if test="p.tenantId != null and p.tenantId != ''">
+                AND fht.TENANT_ID = #{p.tenantId}
+            </if>
+            <if test="p.id != null">
+                AND fht.ID = #{p.id}
+            </if>
+            <if test="p.createTime != null">
+                AND fht.CREATE_TIME = #{p.createTime}
+            </if>
+            <if test="p.updateTime != null">
+                AND fht.UPDATE_TIME = #{p.updateTime}
+            </if>
+
+            <if test="p.flowName != null and p.flowName != ''">
+                AND fd.FLOW_NAME like CONCAT('%',#{p.flowName},'%')
+            </if>
+            <if test="p.businessId != null and p.businessId != ''">
+                AND fi.BUSINESS_ID = #{p.businessId}
+            </if>
+        </where>
+        ORDER BY fht.UPDATE_TIME DESC
+    </select>
+</mapper>

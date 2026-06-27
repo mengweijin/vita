@@ -1,13 +1,16 @@
 package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.log.operation.Log;
+import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.framework.validator.group.Group;
+import com.github.mengweijin.vita.framework.webhook.WebhookService;
 import com.github.mengweijin.vita.system.domain.bo.NoticeBO;
 import com.github.mengweijin.vita.system.domain.entity.NoticeDO;
 import com.github.mengweijin.vita.system.domain.vo.NoticeVO;
@@ -41,6 +44,8 @@ public class NoticeController {
     private static final String LOG_TITLE = "系统公告";
 
     private NoticeService noticeService;
+
+    private WebhookService webhookService;
 
     /**
      * <p>
@@ -129,6 +134,8 @@ public class NoticeController {
     @PostMapping("/release/{id}")
     public R<Void> release(@PathVariable("id") Long id) {
         boolean bool = noticeService.lambdaUpdate().set(NoticeDO::getReleased, EYesNo.Y.getValue()).eq(NoticeDO::getId, id).update();
+        String nickname = StrUtil.emptyIfNull(LoginHelper.getSessionUserNickname()).toString();
+        webhookService.sendText(String.format("%s 发布了一个新的系统公告，请注意查看。", nickname));
         return R.result(bool);
     }
 

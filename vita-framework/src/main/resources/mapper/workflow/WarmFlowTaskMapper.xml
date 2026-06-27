@@ -29,7 +29,10 @@
         FROM FLOW_TASK ft
         LEFT JOIN FLOW_DEFINITION fd ON ft.DEFINITION_ID=fd.ID
         LEFT JOIN FLOW_INSTANCE fi ON ft.INSTANCE_ID=fi.ID
+        LEFT JOIN FLOW_USER fu ON fu.ASSOCIATED = ft.ID
         <where>
+            AND fu.processed_by = #{p.processedBy}
+
             <if test="p.definitionId != null">
                 AND ft.DEFINITION_ID = #{p.definitionId}
             </if>

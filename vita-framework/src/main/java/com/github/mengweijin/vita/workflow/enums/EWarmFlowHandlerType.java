@@ -13,7 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public enum EWarmFlowHandlerType {
 
-    USER("user:", "用户"),
+    /**
+     * Warm-Flow 中，用户不要加权限前缀。
+     */
+    USER("", "用户"),
     ROLE("role:", "角色"),
     DEPT("dept:", "部门"),
     POST("post:", "岗位"),

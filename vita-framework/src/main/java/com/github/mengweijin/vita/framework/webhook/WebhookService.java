@@ -6,11 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * 企业微信 Webhook 服务
@@ -71,9 +73,9 @@ public class WebhookService {
      *
      * @param content 文本内容
      */
+    @Async
     public void sendText(String content) {
-        WebhookMessage message = WebhookMessage.buildText(content);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildText(content));
     }
 
     /**
@@ -83,9 +85,9 @@ public class WebhookService {
      * @param mentionedList    被提及人的 userid 列表
      * @param mentionedMobiles 被提及人的手机号列表
      */
+    @Async
     public void sendTextWithMention(String content, List<String> mentionedList, List<String> mentionedMobiles) {
-        WebhookMessage message = WebhookMessage.buildTextWithMention(content, mentionedList, mentionedMobiles);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildTextWithMention(content, mentionedList, mentionedMobiles));
     }
 
     /**
@@ -93,9 +95,9 @@ public class WebhookService {
      *
      * @param content Markdown 内容
      */
+    @Async
     public void sendMarkdown(String content) {
-        WebhookMessage message = WebhookMessage.buildMarkdown(content);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildMarkdown(content));
     }
 
     /**
@@ -104,9 +106,9 @@ public class WebhookService {
      * @param base64 图片 base64 编码
      * @param md5    图片 MD5
      */
+    @Async
     public void sendImage(String base64, String md5) {
-        WebhookMessage message = WebhookMessage.buildImage(base64, md5);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildImage(base64, md5));
     }
 
     /**
@@ -114,9 +116,9 @@ public class WebhookService {
      *
      * @param articles 图文列表
      */
+    @Async
     public void sendNews(List<WebhookMessage.NewsContent.Article> articles) {
-        WebhookMessage message = WebhookMessage.buildNews(articles);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildNews(articles));
     }
 
     /**
@@ -127,9 +129,9 @@ public class WebhookService {
      * @param url         链接
      * @param picurl      图片链接
      */
+    @Async
     public void sendSingleNews(String title, String description, String url, String picurl) {
-        WebhookMessage message = WebhookMessage.buildSingleNews(title, description, url, picurl);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildSingleNews(title, description, url, picurl));
     }
 
     /**
@@ -137,17 +139,17 @@ public class WebhookService {
      *
      * @param mediaId 文件 ID
      */
+    @Async
     public void sendFile(String mediaId) {
-        WebhookMessage message = WebhookMessage.buildFile(mediaId);
-        sendMessage(message);
+        sendMessage(() -> WebhookMessage.buildFile(mediaId));
     }
 
     /**
      * 发送自定义消息
      *
-     * @param message 消息对象
+     * @param messageSupplier 消息对象
      */
-    public void sendMessage(WebhookMessage message) {
+    private void sendMessage(Supplier<WebhookMessage> messageSupplier) {
         if (!vitaProperties.getWebhook().getEnabled()) {
             log.debug("Webhook is disabled");
             return;
@@ -159,6 +161,7 @@ public class WebhookService {
         }
 
         try {
+            WebhookMessage message = messageSupplier.get();
             String json = message.toJson();
             log.debug("Sending webhook message: {}", json);
 

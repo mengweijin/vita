@@ -47,7 +47,7 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   flowTaskApi
-    .pageBacklog(queryParams)
+    .page(queryParams)
     .then((res) => {
       tableData.value = res.pageRecords;
       queryParams.pageTotal = res.pageTotal;
@@ -60,9 +60,12 @@ const loadTableData = () => {
 /** selected rows */
 const selected = ref([]);
 
+const workflowApproveDialogVisible = ref(false);
+const taskId = ref("");
+
 const handleApprove = (row) => {
-  const taskId = row.id;
-  ElMessage.warning(`功能开发中......`);
+  taskId.value = row.id;
+  workflowApproveDialogVisible.value = true;
 };
 
 const handlePageChange = (currentPage, pageSize) => {
@@ -142,13 +145,13 @@ onMounted(() => {
         v-if="columns.definitionId.visible"
         prop="definitionId"
         label="流程定义 ID"
-        min-width="100"
+        min-width="180"
       />
       <el-table-column
         v-if="columns.instanceId.visible"
         prop="instanceId"
         label="流程编号"
-        min-width="160"
+        min-width="180"
       />
 
       <el-table-column
@@ -268,6 +271,12 @@ onMounted(() => {
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
       @change="handlePageChange"
+    />
+
+    <VtDialogWorkflowApprove
+      v-model:visible="workflowApproveDialogVisible"
+      :task-id="taskId"
+      @refresh="loadTableData"
     />
   </div>
 </template>
