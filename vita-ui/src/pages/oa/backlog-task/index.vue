@@ -68,6 +68,12 @@ const handleApprove = (row) => {
   workflowApproveDialogVisible.value = true;
 };
 
+const handleRestartWorkflow = (row) => {
+  flowTaskApi.pass(row.id, "重新发起审批").then((res) => {
+    loadTableData();
+  });
+};
+
 const handlePageChange = (currentPage, pageSize) => {
   queryParams.pageCurrent = currentPage;
   queryParams.pageSize = pageSize;
@@ -247,14 +253,36 @@ onMounted(() => {
         align="center"
         width="180"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="80">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
             <el-tooltip content="审批" placement="top">
-              <el-button type="primary" text :size="size" @click="handleApprove(scope.row)">
+              <el-button
+                v-if="scope.row.flowStatus === '1'"
+                type="primary"
+                text
+                :size="size"
+                @click="handleApprove(scope.row)"
+              >
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:checked"></Icon>
+                    <Icon icon="ri:chat-check-line"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="重新发起流程" placement="top">
+              <el-button
+                v-if="scope.row.flowStatus === '6' || scope.row.flowStatus === '9'"
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0"
+                @click="handleRestartWorkflow(scope.row)"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:promotion"></Icon>
                   </el-icon>
                 </template>
               </el-button>

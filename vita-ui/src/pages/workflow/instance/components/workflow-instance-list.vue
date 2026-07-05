@@ -111,6 +111,12 @@ const handleView = (row) => {
   workflowChartDialogVisible.value = true;
 };
 
+const handleRevoke = (row) => {
+  flowInstanceApi.revoke(row.id).then(() => {
+    loadTableData();
+  });
+};
+
 const handleTermination = (row) => {
   flowInstanceApi.termination(row.id, { ignore: true }).then(() => {
     loadTableData();
@@ -364,8 +370,36 @@ onMounted(() => {
                 </template>
               </el-button>
             </el-tooltip>
+            <el-tooltip content="撤销流程" placement="top">
+              <div
+                style="display: inline-block"
+                v-if="scope.row.flowStatus === '1' || scope.row.flowStatus === '9'"
+              >
+                <el-popconfirm
+                  placement="left"
+                  width="400"
+                  :title="`确定撤销【${scope.row.id} - ${scope.row.flowName}】吗？`"
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  @confirm="handleRevoke(scope.row)"
+                >
+                  <template #reference>
+                    <el-button type="danger" text :size="size">
+                      <template #icon>
+                        <el-icon :size="size">
+                          <Icon icon="ri:arrow-go-back-fill"></Icon>
+                        </el-icon>
+                      </template>
+                    </el-button>
+                  </template>
+                </el-popconfirm>
+              </div>
+            </el-tooltip>
             <el-tooltip content="终止流程" placement="top">
-              <div style="display: inline-block" v-if="scope.row.flowStatus === '1'">
+              <div
+                style="display: inline-block"
+                v-if="props.scope === 'all' && scope.row.flowStatus === '1'"
+              >
                 <el-popconfirm
                   placement="left"
                   width="400"
@@ -383,7 +417,7 @@ onMounted(() => {
                     >
                       <template #icon>
                         <el-icon :size="size">
-                          <Icon icon="ep:close"></Icon>
+                          <Icon icon="ep:circle-close"></Icon>
                         </el-icon>
                       </template>
                     </el-button>

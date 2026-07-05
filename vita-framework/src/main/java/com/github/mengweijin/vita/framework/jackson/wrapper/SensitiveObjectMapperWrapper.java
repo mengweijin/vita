@@ -1,5 +1,6 @@
 package com.github.mengweijin.vita.framework.jackson.wrapper;
 
+import cn.hutool.v7.core.date.DateFormatPool;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,9 +50,9 @@ public class SensitiveObjectMapperWrapper extends AbstractObjectMapperWrapper {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         //取消时间的转化格式,默认是时间戳,可以取消,同时需要设置要表现的时间格式
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat(DateFormatPool.NORM_DATETIME_PATTERN));
         // 注册 javaTimeModule
-        mapper.registerModule(JacksonConfig.javaTimeModule());
+        mapper.registerModules(JacksonConfig.vitaModules());
         // 重新设置 Jackson 的 Bean 序列化修改器
         SerializerFactory serializerFactory = mapper.getSerializerFactory().withSerializerModifier(new SensitiveBeanSerializerModifier());
         mapper.setSerializerFactory(serializerFactory);

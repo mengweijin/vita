@@ -44,7 +44,7 @@ class FileControllerTest {
     void setUp() {
         restTemplate = new RestTemplateBuilder().build();
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(JacksonConfig.javaTimeModule());
+        objectMapper.registerModules(JacksonConfig.vitaModules());
         token = login();
     }
 

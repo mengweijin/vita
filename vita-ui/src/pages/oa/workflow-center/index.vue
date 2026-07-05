@@ -22,7 +22,7 @@ const openLeaveApplyForm = () => {
 
 const handleDevelopment = () => {
   ElMessage.warning({
-    duration: 3000,
+    duration: 5000,
     message: "功能未开发！演示请参考【请假申请】模块。",
     showClose: true,
   });

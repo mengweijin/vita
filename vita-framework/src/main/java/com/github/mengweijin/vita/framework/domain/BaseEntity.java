@@ -42,7 +42,7 @@ public abstract class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableId(value = "ID", type = IdType.ASSIGN_ID)
     protected Long id;
 
@@ -54,11 +54,11 @@ public abstract class BaseEntity implements Serializable {
     @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     protected LocalDateTime updateTime;
 
-    @JsonSerialize(using=ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
     protected Long createBy;
 
-    @JsonSerialize(using=ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
     protected Long updateBy;
 

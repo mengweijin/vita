@@ -51,6 +51,14 @@ public class WarmFlowTaskService extends BaseVitaService<WarmFlowInstanceMapper,
         return super.defaultQueryWrapper(entity);
     }
 
+    /**
+     * 退回流程。
+     * <p>
+     * warm-flow 退回时,默认会创建一个待办任务。
+     * 但申请节点一般没设置办理人，因此这里手动往任务中设置办理人。
+     * 以便于流程退回后，发起人可以修改表单申请后，重启启动该流程。
+     * </p>
+     */
     @Transactional(rollbackFor = Exception.class)
     public Instance reject(Long taskId, String message, Map<String, Object> variable) {
         TaskService taskService = FlowEngine.taskService();
@@ -58,7 +66,6 @@ public class WarmFlowTaskService extends BaseVitaService<WarmFlowInstanceMapper,
 
         Instance instance = taskService.reject(taskId, message, variable);
 
-        // warm-flow 退回时,默认创建了一个待办任务，但申请节点一般没设置办理人，因此这里手动往任务中设置办理人。
         List<Task> taskList = taskService.getByInsId(instance.getId());
         Task task = CollUtil.getLast(taskList);
         task.setPermissionList(Collections.singletonList(instance.getCreateBy()));

@@ -7,7 +7,6 @@ import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowTaskVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowTaskService;
-import com.github.mengweijin.vita.workflow.warmflow.WarmFlowPermissionHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.dto.FlowParams;
@@ -42,8 +41,6 @@ public class WarmFlowTaskController {
     private final TaskService taskService;
 
     private final WarmFlowTaskService warmFlowTaskService;
-
-    private final WarmFlowPermissionHandler warmFlowPermissionHandler;
 
     /**
      * 待办任务
@@ -90,21 +87,6 @@ public class WarmFlowTaskController {
                               @RequestParam(name = "message", required = false) String message,
                               @RequestBody(required = false) Map<String, Object> variable) {
         Instance instance = warmFlowTaskService.reject(taskId, message, variable);
-        return R.ok(instance);
-    }
-
-    /**
-     * 流程撤销
-     *
-     * @param instanceId 实例id
-     * @param flowParams 参数
-     * @return R<Instance>
-     */
-    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
-    @PostMapping("/revoke/{instanceId}")
-    public R<Instance> revoke(@PathVariable("instanceId") Long instanceId,
-                              @RequestBody(required = false) FlowParams flowParams) {
-        Instance instance = taskService.revoke(instanceId, flowParams);
         return R.ok(instance);
     }
 

@@ -73,6 +73,21 @@ public class WarmFlowInstanceController {
     }
 
     /**
+     * 流程撤销
+     *
+     * @param instanceId 实例id
+     * @param flowParams 参数
+     * @return R<Instance>
+     */
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @PostMapping("/revoke/{instanceId}")
+    public R<Instance> revoke(@PathVariable("instanceId") Long instanceId,
+                              @RequestBody(required = false) FlowParams flowParams) {
+        Instance instance = taskService.revoke(instanceId, flowParams);
+        return R.ok(instance);
+    }
+
+    /**
      * 终止流程
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)

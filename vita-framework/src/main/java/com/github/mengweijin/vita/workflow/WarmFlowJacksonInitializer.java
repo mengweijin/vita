@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.workflow;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.mengweijin.vita.framework.exception.ServerException;
-import com.github.mengweijin.vita.framework.jackson.JacksonConfig;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.plugin.json.JsonConvertJackson;
@@ -26,7 +26,7 @@ public class WarmFlowJacksonInitializer {
             Object objectMapper = objectMapperField.get(null);
             if (objectMapper instanceof com.fasterxml.jackson.databind.ObjectMapper mapper) {
                 // Register JavaTimeModule to support LocalDateTime serialization/deserialization
-                mapper.registerModule(JacksonConfig.javaTimeModule());
+                mapper.registerModule(new JavaTimeModule());
                 log.info("Successfully registered JavaTimeModule to warm-flow's ObjectMapper");
             }
         } catch (NoSuchFieldException e) {

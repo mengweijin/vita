@@ -15,9 +15,6 @@ export const flowTaskApi = {
       params: { message: encodeURIComponent(message) },
     }),
 
-  revoke: (instanceId, flowParams = {}) =>
-    http.post(`${URL_PREFIX}/revoke/${instanceId}`, flowParams),
-
   depute: (taskId, flowParams = {}) => http.post(`${URL_PREFIX}/depute/${taskId}`, flowParams),
 
   addSignature: (taskId, flowParams = {}) =>
