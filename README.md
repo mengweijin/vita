@@ -162,4 +162,6 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 
 ## ⭐Star Vita on GitHub
 
-[![Star History Chart](https://api.star-history.com/chart?repos=mengweijin/vita&type=date&legend=top-left)](https://www.star-history.com/?repos=mengweijin%2Fvita&type=date&legend=top-left)
+<!-- star-history:start -->
+
+<!-- star-history:end -->

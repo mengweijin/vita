@@ -42,11 +42,13 @@ export const useLoginStore = defineStore(
     };
 
     const isLogin = async () => {
+      // 先检查内存中的token
       let token = getToken();
       if (utils.isNotBlank(token)) {
         return true;
       }
 
+      // 再检查localStorage中的token
       token = getLocalStorageToken();
       if (utils.isNotBlank(token)) {
         setToken(token);

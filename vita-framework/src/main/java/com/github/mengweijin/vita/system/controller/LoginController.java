@@ -60,4 +60,12 @@ public class LoginController {
         return loginService.getCaptcha();
     }
 
+    @SaIgnore
+    @GetMapping("/isLogin")
+    public R<String> isLogin() {
+        if (StpUtil.isLogin()) {
+            return R.ok(StpUtil.getTokenValue());
+        }
+        return R.fail();
+    }
 }
