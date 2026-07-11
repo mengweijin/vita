@@ -163,5 +163,8 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 ## ⭐Star Vita on GitHub
 
 <!-- star-history:start -->
-
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/star-history/star-history-dark-20260711020839.svg">
+  <img alt="Star history" src="assets/star-history/star-history-light-20260711020839.svg">
+</picture>
 <!-- star-history:end -->
