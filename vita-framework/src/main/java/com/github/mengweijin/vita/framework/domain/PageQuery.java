@@ -77,7 +77,7 @@ public class PageQuery<T> implements Serializable {
     }
 
     public org.dromara.warm.flow.core.utils.page.Page<T> toWarmFlowPage() {
-        org.dromara.warm.flow.core.utils.page.Page<T> page = new org.dromara.warm.flow.core.utils.page.Page<>(Long.valueOf(this.pageCurrent).intValue(), Long.valueOf(this.pageSize).intValue());
+        org.dromara.warm.flow.core.utils.page.Page<T> page = new org.dromara.warm.flow.core.utils.page.Page<>(Math.toIntExact(this.pageCurrent), Math.toIntExact(this.pageSize));
         page.setTotal(this.pageTotal);
         page.setList(this.pageRecords);
         return page;
