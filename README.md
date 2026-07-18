@@ -160,11 +160,12 @@ java -Dname=vita-admin -Dspring.profiles.active=h2 -Dfile.encoding=utf-8 -Duser.
 | ![image](docs/readme/images/3.png) | ![image](docs/readme/images/4.png) | 
 | ![image](docs/readme/images/5.png) | ![image](docs/readme/images/6.png) | 
 
-## ⭐Star Vita on GitHub
+## ⭐Star History on GitHub
 
-<!-- star-history:start -->
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/star-history/star-history-dark-20260711020839.svg">
-  <img alt="Star history" src="assets/star-history/star-history-light-20260711020839.svg">
-</picture>
-<!-- star-history:end -->
+<a href="https://www.star-history.com/?repos=mengweijin%2Fvita&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=mengweijin/vita&type=date&theme=dark&legend=top-left&sealed_token=VvuYldDaXci8BGnysCcGlXZbgIsNr-jVlHLYfkImmigv4MM5Iw2oyrT8S30Wz1IDyW9LuLS6M-wU4cn7bZQimtjvytt-Uw_bLBgneGdAWu5C1UBmtdOPP2ekq6R4t_VQBfQA9z9q5qvLc9jHXYiFaCm-ln-tp6XtTJtW9l17tyP6UU6pPd7jGuJJub11" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=mengweijin/vita&type=date&legend=top-left&sealed_token=VvuYldDaXci8BGnysCcGlXZbgIsNr-jVlHLYfkImmigv4MM5Iw2oyrT8S30Wz1IDyW9LuLS6M-wU4cn7bZQimtjvytt-Uw_bLBgneGdAWu5C1UBmtdOPP2ekq6R4t_VQBfQA9z9q5qvLc9jHXYiFaCm-ln-tp6XtTJtW9l17tyP6UU6pPd7jGuJJub11" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=mengweijin/vita&type=date&legend=top-left&sealed_token=VvuYldDaXci8BGnysCcGlXZbgIsNr-jVlHLYfkImmigv4MM5Iw2oyrT8S30Wz1IDyW9LuLS6M-wU4cn7bZQimtjvytt-Uw_bLBgneGdAWu5C1UBmtdOPP2ekq6R4t_VQBfQA9z9q5qvLc9jHXYiFaCm-ln-tp6XtTJtW9l17tyP6UU6pPd7jGuJJub11" />
+ </picture>
+</a>
