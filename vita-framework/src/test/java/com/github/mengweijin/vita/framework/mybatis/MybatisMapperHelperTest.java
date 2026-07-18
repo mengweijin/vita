@@ -7,8 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -29,7 +30,7 @@ class MybatisMapperHelperTest {
 
     @Test
     void mockSimpleTest() {
-        Mockito.when(userMapper.selectById(1L)).thenReturn(new UserDO());
+        when(userMapper.selectById(1L)).thenReturn(new UserDO());
         UserDO userDO = userMapper.selectById(1L);
         Assertions.assertNotNull(userDO);
     }

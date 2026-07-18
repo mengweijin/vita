@@ -14,9 +14,9 @@ import java.math.BigInteger;
 public final class BigNumberModule extends SimpleModule {
 
     public BigNumberModule() {
-        this.addSerializer(Long.class, BigNumberSerializer.INSTANCE);
-        this.addSerializer(Long.TYPE, BigNumberSerializer.INSTANCE);
-        this.addSerializer(BigInteger.class, BigNumberSerializer.INSTANCE);
+        this.addSerializer(Long.class, BigNumberSerializer.BIG_NUMBER_INSTANCE);
+        this.addSerializer(Long.TYPE, BigNumberSerializer.BIG_NUMBER_INSTANCE);
+        this.addSerializer(BigInteger.class, BigNumberSerializer.BIG_NUMBER_INSTANCE);
         this.addSerializer(BigDecimal.class, ToStringSerializer.instance);
     }
 }

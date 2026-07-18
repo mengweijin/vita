@@ -28,10 +28,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>2025.0.3</spring-cloud.version>
         <mybatis-plus.version>3.5.17</mybatis-plus.version>
-        <warm-flow.version>1.8.8</warm-flow.version>
-        <hutool.version>7.0.0-M6</hutool.version>
+        <warm-flow.version>1.8.9</warm-flow.version>
+        <hutool.version>7.0.0-M7</hutool.version>
         <sa-token.version>1.45.0</sa-token.version>
-        <oshi.version>7.3.2</oshi.version>
+        <oshi.version>7.4.0</oshi.version>
         <zxing.version>3.5.4</zxing.version>
         <fesod-sheet.version>2.0.2-incubating</fesod-sheet.version>
         <ip2region.version>3.3.7</ip2region.version>

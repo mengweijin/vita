@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.framework.webhook;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import java.util.List;
  * @author mengweijin
  * @since 2026-06-20
  */
-@SpringBootTest
 class WebhookMessageTest {
 
     /**
@@ -27,8 +26,8 @@ class WebhookMessageTest {
         System.out.println("文本消息 JSON: " + json);
 
         // 验证 JSON 格式
-        assert json.contains("\"msgtype\":\"text\"");
-        assert json.contains("\"content\":\"这是一条测试消息\"");
+        Assertions.assertTrue(json.contains("\"msgtype\":\"text\""));
+        Assertions.assertTrue(json.contains("\"content\":\"这是一条测试消息\""));
     }
 
     /**
@@ -47,8 +46,8 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("带提及文本消息 JSON: " + json);
 
-        assert json.contains("\"mentioned_list\"");
-        assert json.contains("\"zhangsan\"");
+        Assertions.assertTrue(json.contains("\"mentioned_list\""));
+        Assertions.assertTrue(json.contains("\"zhangsan\""));
     }
 
     /**
@@ -61,8 +60,8 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("Markdown 消息 JSON: " + json);
 
-        assert json.contains("\"msgtype\":\"markdown\"");
-        assert json.contains("# 标题");
+        Assertions.assertTrue(json.contains("\"msgtype\":\"markdown\""));
+        Assertions.assertTrue(json.contains("# 标题"));
     }
 
     /**
@@ -80,8 +79,8 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("图文消息 JSON: " + json);
 
-        assert json.contains("\"msgtype\":\"news\"");
-        assert json.contains("\"title\":\"测试标题\"");
+        Assertions.assertTrue(json.contains("\"msgtype\":\"news\""));
+        Assertions.assertTrue(json.contains("\"title\":\"测试标题\""));
     }
 
     /**
@@ -98,7 +97,7 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("单条图文消息 JSON: " + json);
 
-        assert json.contains("\"articles\":[{");
+        Assertions.assertTrue(json.contains("\"articles\":[{"));
     }
 
     /**
@@ -110,8 +109,8 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("文件消息 JSON: " + json);
 
-        assert json.contains("\"msgtype\":\"file\"");
-        assert json.contains("\"media_id\":\"MEDIA_ID_123456\"");
+        Assertions.assertTrue(json.contains("\"msgtype\":\"file\""));
+        Assertions.assertTrue(json.contains("\"media_id\":\"MEDIA_ID_123456\""));
     }
 
     /**
@@ -123,8 +122,8 @@ class WebhookMessageTest {
         String json = message.toJson();
         System.out.println("图片消息 JSON: " + json);
 
-        assert json.contains("\"msgtype\":\"image\"");
-        assert json.contains("\"base64\":\"BASE64_DATA\"");
+        Assertions.assertTrue(json.contains("\"msgtype\":\"image\""));
+        Assertions.assertTrue(json.contains("\"base64\":\"BASE64_DATA\""));
     }
 
     /**
@@ -139,7 +138,7 @@ class WebhookMessageTest {
         System.out.println("空值处理 JSON: " + json);
 
         // 验证没有 null 值
-        assert !json.contains("null");
+        Assertions.assertFalse(json.contains("null"));
     }
 
     /**
@@ -153,7 +152,7 @@ class WebhookMessageTest {
                 .setUrl("https://example.com")
                 .setPicurl("https://example.com/image.jpg");
 
-        assert "标题".equals(article.getTitle());
-        assert "描述".equals(article.getDescription());
+        Assertions.assertEquals("标题", article.getTitle());
+        Assertions.assertEquals("描述", article.getDescription());
     }
 }
