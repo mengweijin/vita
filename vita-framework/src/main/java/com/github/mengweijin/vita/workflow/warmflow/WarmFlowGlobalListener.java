@@ -31,7 +31,7 @@ public class WarmFlowGlobalListener implements GlobalListener {
 
     private static final String HANDLER_TIME_LABEL = "办理时间";
 
-    private transient final UserService userService;
+    private final transient UserService userService;
 
     /**
      * 分派监听器，动态修改代办任务信息
