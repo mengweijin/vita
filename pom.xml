@@ -20,7 +20,7 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <revision>2.0.0-M6-SNAPSHOT</revision>
+        <revision>2.0.0-M6</revision>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -330,15 +330,5 @@
             <id>snapshots</id>
             <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </repository>
-        <repository>
-            <id>aliyun</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>aliyun</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
