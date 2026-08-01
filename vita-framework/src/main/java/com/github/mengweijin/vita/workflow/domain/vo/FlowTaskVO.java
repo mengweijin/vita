@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.workflow.domain.vo;
 
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.jackson.translation.ETranslateType;
+import com.github.mengweijin.vita.framework.jackson.translation.Translation;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -99,5 +101,18 @@ public class FlowTaskVO extends BaseEntity {
      */
     private List<User> userList;
 
+    // endregion
+
+    // region ----- 自定义扩展字段
+    /**
+     * 流程实例创建人 Id
+     */
+    private Long instanceCreateBy;
+
+    /**
+     * 流程实例创建人姓名
+     */
+    @Translation(translateType = ETranslateType.USER_ID_TO_NICKNAME, field = "instanceCreateBy")
+    private String instanceCreateByName;
     // endregion
 }

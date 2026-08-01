@@ -147,4 +147,17 @@ public class FlowHisTaskVO extends BaseEntity {
     private List<String> permissionList;
 
     // endregion
+
+    // region ----- 自定义扩展字段
+    /**
+     * 流程实例创建人 Id
+     */
+    private Long instanceCreateBy;
+
+    /**
+     * 流程实例创建人姓名
+     */
+    @Translation(translateType = ETranslateType.USER_ID_TO_NICKNAME, field = "instanceCreateBy")
+    private String instanceCreateByName;
+    // endregion
 }

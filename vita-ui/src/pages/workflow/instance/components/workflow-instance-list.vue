@@ -241,8 +241,10 @@ onMounted(() => {
         v-if="columns.flowName.visible"
         prop="flowName"
         label="流程名称"
-        min-width="160"
-      />
+        min-width="200"
+      >
+        <template #default="{ row }"> {{ row.flowName }} （{{ row.createByName }}）</template>
+      </el-table-column>
       <el-table-column
         v-if="columns.businessId.visible"
         prop="businessId"

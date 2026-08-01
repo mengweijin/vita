@@ -28,7 +28,8 @@
         fht.CREATE_TIME,
         fht.UPDATE_TIME,
         fd.FLOW_NAME,
-        fi.BUSINESS_ID
+        fi.BUSINESS_ID,
+        fi.CREATE_BY AS INSTANCE_CREATE_BY
     </sql>
 
     <select id="selectPageVo" resultType="com.github.mengweijin.vita.workflow.domain.vo.FlowHisTaskVO">
