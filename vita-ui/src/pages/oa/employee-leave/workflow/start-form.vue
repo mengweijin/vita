@@ -4,15 +4,10 @@ meta:
 </route>
 
 <script setup>
-import { fileApi } from "@/api/system/file-api.js";
-import { useLoginStore } from "@/store/login-store.js";
-import { useTabsStore } from "@/store/tabs-store.js";
 import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
 import utils from "@/utils/utils.js";
 
 const router = useRouter();
-const loginStore = useLoginStore();
-const tabsStore = useTabsStore();
 
 const loading = ref(false);
 
@@ -68,7 +63,6 @@ const onSubmit = () => {
     }
     employeeLeaveApi.saveWorkflow(form.value).then((r) => {
       if (r.code === 200) {
-        tabsStore.removeActiveTab();
         router.push("/oa/my-workflow");
       }
     });
@@ -77,7 +71,6 @@ const onSubmit = () => {
 
 const onClose = () => {
   form.value = { ...INITIAL_FORM };
-  tabsStore.removeActiveTab();
 };
 
 watch(
