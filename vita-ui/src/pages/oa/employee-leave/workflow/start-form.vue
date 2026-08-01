@@ -32,7 +32,6 @@ const INITIAL_FORM = {
   remark: undefined,
   attachmentIds: [],
   workflowId: undefined,
-  isDraft: undefined,
   createByName: undefined,
 };
 
@@ -69,9 +68,12 @@ const onSubmit = () => {
   });
 };
 
-const onClose = () => {
-  form.value = { ...INITIAL_FORM };
+// Expose a generic performAction that calls the existing onSubmit logic.
+const performAction = async (...args) => {
+  return await onSubmit();
 };
+
+defineExpose({ performAction });
 
 watch(
   () => props.businessId,
@@ -169,25 +171,6 @@ watch(
           <VtUpload v-model="form.attachmentIds" :disabled="props.readonly" :drag="true" />
         </el-form-item>
       </el-form>
-
-      <div class="vt-leave-apply-button-container" v-if="!props.readonly">
-        <el-button type="primary" @click="onSubmit">
-          <template #icon>
-            <el-icon>
-              <Icon icon="ep:check"></Icon>
-            </el-icon>
-          </template>
-          保存
-        </el-button>
-        <el-button type="warning" @click="onClose">
-          <template #icon>
-            <el-icon>
-              <Icon icon="ep:close"></Icon>
-            </el-icon>
-          </template>
-          取消
-        </el-button>
-      </div>
     </div>
   </el-scrollbar>
 </template>
@@ -196,10 +179,5 @@ watch(
 .vt-leave-apply-container {
   padding: 0 15px;
   max-height: calc(100vh - 200px);
-}
-.vt-leave-apply-button-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0px;
 }
 </style>

@@ -24,6 +24,24 @@ const router = useRouter();
 
 const resolvedComp = ref(null);
 
+const innerInstance = ref(null);
+
+// Expose a single, generic method to invoke an action on the loaded component.
+// Child components should implement `performAction(...)` to be callable.
+const performAction = async (...args) => {
+  if (!innerInstance.value) {
+    console.warn("[VtRoutePageLoader] inner component instance not ready");
+    return null;
+  }
+  if (typeof innerInstance.value.performAction === "function") {
+    return await innerInstance.value.performAction(...args);
+  }
+  console.warn("[VtRoutePageLoader] inner component has no performAction method");
+  return null;
+};
+
+defineExpose({ performAction });
+
 /**
  * 根据 routePath 解析出最终要渲染的组件（异步组件也可直接使用）
  */
@@ -91,5 +109,6 @@ watch(
     :is="resolvedComp"
     :readonly="props.readonly"
     :businessId="props.businessId"
+    ref="innerInstance"
   />
 </template>

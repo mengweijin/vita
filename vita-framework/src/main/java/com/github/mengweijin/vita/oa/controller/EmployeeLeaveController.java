@@ -118,14 +118,18 @@ public class EmployeeLeaveController {
 
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/saveWorkflow")
-    public R<Instance> saveWorkflow(@Validated @RequestBody EmployeeLeaveBO bo) {
+    public R<Void> saveWorkflow(@Validated @RequestBody EmployeeLeaveBO bo) {
+        boolean isCreate = bo.getId() == null;
         boolean bool = employeeLeaveService.saveOrUpdate(bo);
-        if (bool) {
+        if (isCreate && bool) {
             String flowCode = EWorkflowCode.EMPLOYEE_LEAVE.getValue();
             Instance instance = warmFlowInstanceService.start(flowCode, bo.getId());
-            return R.ok(instance);
+            employeeLeaveService.lambdaUpdate()
+                    .set(EmployeeLeaveDO::getWorkflowId, instance.getId())
+                    .eq(EmployeeLeaveDO::getId, bo.getId())
+                    .update();
         }
-        return R.fail("Save leave apply data failed!");
+        return R.ok();
     }
 
 }

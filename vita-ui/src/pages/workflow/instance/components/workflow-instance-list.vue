@@ -1,5 +1,6 @@
 <script setup>
 import { flowInstanceApi } from "@/api/workflow/flow-instance-api.js";
+import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
 import { useFlowInstance } from "../hooks.js";
 import utils from "@/utils/utils.js";
 const { columns } = useFlowInstance();
@@ -84,19 +85,6 @@ const loadTableData = () => {
 /** selected rows */
 const selected = ref([]);
 
-const handleDelete = (ids) => {
-  flowDefinitionApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-};
-
-const handleBatchDelete = () => {
-  const ids = selected.value.map((item) => item.id).join();
-  handleDelete(ids);
-};
-
 const handlePageChange = (currentPage, pageSize) => {
   queryParams.pageCurrent = currentPage;
   queryParams.pageSize = pageSize;
@@ -111,8 +99,14 @@ const handleView = (row) => {
   workflowChartDialogVisible.value = true;
 };
 
-const handleEdit = (row) => {
-  alert("功能开发中。。。。。。");
+const editFormLoaderVisible = ref(false);
+const editFormLoaderFlowCode = ref("");
+const editFormLoaderBusinessId = ref("");
+const handleEdit = async (row) => {
+  const flowDefinition = await flowDefinitionApi.queryById(row.definitionId);
+  editFormLoaderFlowCode.value = flowDefinition.flowCode;
+  editFormLoaderBusinessId.value = row.businessId;
+  editFormLoaderVisible.value = true;
 };
 
 const handleSubmit = (row) => {
@@ -527,6 +521,13 @@ onMounted(() => {
     <VtDialogWorkflowChart
       v-model:visible="workflowChartDialogVisible"
       :id="workflowChartDialogInstanceId"
+    />
+
+    <VtDialogWorkflowFormLoader
+      v-model:visible="editFormLoaderVisible"
+      :flow-code="editFormLoaderFlowCode"
+      :business-id="editFormLoaderBusinessId"
+      :readonly="false"
     />
   </div>
 </template>

@@ -5,9 +5,6 @@ meta:
 </route>
 
 <script setup>
-import VtDialogWorkflowFormLoader from "@/components/modules/system/vt-dialog-workflow-form-loader.vue";
-const router = useRouter();
-
 const flowCode = ref("");
 const businessId = ref("");
 const readonly = ref("");

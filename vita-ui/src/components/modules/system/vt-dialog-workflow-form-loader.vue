@@ -27,10 +27,19 @@ const props = defineProps({
 });
 
 const loading = ref(false);
+const loaderRef = ref(null);
 
-const emit = defineEmits(["callback"]);
+const emit = defineEmits(["callback", "update:visible"]);
 
-const onClosed = () => {
+const onSave = async () => {
+  loading.value = true;
+  await loaderRef.value.performAction();
+  emit("callback");
+  loading.value = false;
+  emit("update:visible", false);
+};
+
+const onCancel = () => {
   emit("update:visible", false);
 };
 
@@ -52,14 +61,35 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <el-dialog :model-value="visible" :title="title" destroy-on-close align-center @closed="onClosed">
+  <el-dialog :model-value="visible" :title="title" destroy-on-close align-center>
     <VtRoutePageLoader
+      ref="loaderRef"
       v-loading="loading"
       :route-path="routePath"
       :readonly="props.readonly"
       :businessId="props.businessId"
       @callback="loadDone"
     />
+    <template #footer>
+      <div>
+        <el-button type="primary" @click="onSave">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:check"></Icon>
+            </el-icon>
+          </template>
+          保存
+        </el-button>
+        <el-button type="info" @click="onCancel">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:close"></Icon>
+            </el-icon>
+          </template>
+          取消
+        </el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
