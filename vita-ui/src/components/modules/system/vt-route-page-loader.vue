@@ -5,16 +5,16 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  /** 传递给目标组件的 readonly 属性 */
-  readonly: {
-    default: false,
-    type: Boolean,
-  },
   /** 业务数据 ID */
   businessId: {
     type: String,
     required: false,
     default: null,
+  },
+  /** 传递给目标组件的 readonly 属性 */
+  readonly: {
+    default: false,
+    type: Boolean,
   },
 });
 

@@ -7,14 +7,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.framework.util.UploadUtils;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
-import com.github.mengweijin.vita.system.service.FormService;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowDefinitionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,8 +54,6 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     private static final String LOG_TITLE = "流程定义";
 
     private final WarmFlowDefinitionService warmFlowDefinitionService;
-
-    private final FormService formService;
 
     /**
      * Get FlowDefinitionVO page by FlowDefinitionDO
@@ -177,20 +172,19 @@ public class WarmFlowDefinitionController extends WarmFlowController {
         return R.result(bool);
     }
 
-    @GetMapping("/query/publishedDefinitionStartFormRoutePath/by/flowCode/{flowCode}")
+    @GetMapping("/query/routePath/by/flowCode/{flowCode}")
     public String queryPublishedDefinitionStartFormRoutePathByFlowCode(@PathVariable("flowCode") String flowCode) {
         Definition definition = FlowEngine.defService().getPublishByFlowCode(flowCode);
         if (definition == null) {
             throw new ServerException("No published definition found for flowCode: " + flowCode);
         }
-        String formCustom = definition.getFormCustom();
-        String formPath = definition.getFormPath();
-        if (EYesNo.N.getValue().equalsIgnoreCase(formCustom)) {
-            return formPath;
-        }
-        // 动态表单
-        FormDO form = formService.getById(formPath);
-        return form.getFormPath();
+        return warmFlowDefinitionService.getRoutePath(definition);
+    }
+
+    @GetMapping("/query/routePath/by/id/{id}")
+    public String queryPublishedDefinitionStartFormRoutePathByFlowCode(@PathVariable("id") Long id) {
+        FlowDefinition definition = warmFlowDefinitionService.getById(id);
+        return warmFlowDefinitionService.getRoutePath(definition);
     }
 }
 

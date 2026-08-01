@@ -5,16 +5,17 @@ meta:
 </route>
 
 <script setup>
-const flowCode = ref("");
+import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
+const routePath = ref("");
 const businessId = ref("");
-const readonly = ref("");
-const formLoaderVisible = ref(false);
+const readonly = ref(false);
+const dialogRoutePageLoaderVisible = ref(false);
 
-const openEmployeeLeaveForm = () => {
-  flowCode.value = "employee_leave";
+const openEmployeeLeaveForm = async () => {
+  routePath.value = await flowDefinitionApi.queryRoutePathByFlowCode("employee_leave");
   businessId.value = null;
   readonly.value = false;
-  formLoaderVisible.value = true;
+  dialogRoutePageLoaderVisible.value = true;
 };
 
 const handleDevelopment = () => {
@@ -93,9 +94,9 @@ onMounted(() => {});
       </el-card>
     </div>
 
-    <VtDialogWorkflowFormLoader
-      v-model:visible="formLoaderVisible"
-      :flow-code="flowCode"
+    <VtDialogRoutePageLoader
+      v-model:visible="dialogRoutePageLoaderVisible"
+      :route-path="routePath"
       :business-id="businessId"
       :readonly="readonly"
     />

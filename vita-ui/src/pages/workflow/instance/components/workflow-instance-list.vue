@@ -99,14 +99,15 @@ const handleView = (row) => {
   workflowChartDialogVisible.value = true;
 };
 
-const editFormLoaderVisible = ref(false);
-const editFormLoaderFlowCode = ref("");
-const editFormLoaderBusinessId = ref("");
+const dialogRoutePageLoaderVisible = ref(false);
+const dialogRoutePageLoaderRoutePath = ref("");
+const dialogRoutePageLoaderBusinessId = ref("");
 const handleEdit = async (row) => {
-  const flowDefinition = await flowDefinitionApi.queryById(row.definitionId);
-  editFormLoaderFlowCode.value = flowDefinition.flowCode;
-  editFormLoaderBusinessId.value = row.businessId;
-  editFormLoaderVisible.value = true;
+  dialogRoutePageLoaderRoutePath.value = await flowDefinitionApi.queryRoutePathById(
+    row.definitionId,
+  );
+  dialogRoutePageLoaderBusinessId.value = row.businessId;
+  dialogRoutePageLoaderVisible.value = true;
 };
 
 const handleSubmit = (row) => {
@@ -523,10 +524,10 @@ onMounted(() => {
       :id="workflowChartDialogInstanceId"
     />
 
-    <VtDialogWorkflowFormLoader
-      v-model:visible="editFormLoaderVisible"
-      :flow-code="editFormLoaderFlowCode"
-      :business-id="editFormLoaderBusinessId"
+    <VtDialogRoutePageLoader
+      v-model:visible="dialogRoutePageLoaderVisible"
+      :route-path="dialogRoutePageLoaderRoutePath"
+      :business-id="dialogRoutePageLoaderBusinessId"
       :readonly="false"
     />
   </div>

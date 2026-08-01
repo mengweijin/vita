@@ -1,13 +1,11 @@
 <script setup>
-import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
-
 const props = defineProps({
   visible: {
     type: Boolean,
     required: true,
   },
-  /** 流程编码 */
-  flowCode: {
+  /** 流程表单路由路径 */
+  routePath: {
     type: String,
     default: "",
   },
@@ -22,14 +20,14 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "创建流程",
+    default: "流程表单",
   },
 });
 
+const emit = defineEmits(["callback", "update:visible"]);
+
 const loading = ref(false);
 const loaderRef = ref(null);
-
-const emit = defineEmits(["callback", "update:visible"]);
 
 const onSave = async () => {
   loading.value = true;
@@ -46,18 +44,6 @@ const onCancel = () => {
 const loadDone = () => {
   loading.value = false;
 };
-
-// 动态路由地址
-const routePath = ref("");
-
-watchEffect(async () => {
-  if (props.flowCode) {
-    loading.value = true;
-    routePath.value = await flowDefinitionApi.queryPublishedDefinitionStartFormRoutePathByFlowCode(
-      props.flowCode,
-    );
-  }
-});
 </script>
 
 <template>
@@ -65,7 +51,7 @@ watchEffect(async () => {
     <VtRoutePageLoader
       ref="loaderRef"
       v-loading="loading"
-      :route-path="routePath"
+      :route-path="props.routePath"
       :readonly="props.readonly"
       :businessId="props.businessId"
       @callback="loadDone"

@@ -17,8 +17,10 @@ export const flowDefinitionApi = {
 
   queryById: (id) => http.get(`${URL_PREFIX}/query/${id}`),
 
-  queryPublishedDefinitionStartFormRoutePathByFlowCode: (flowCode) =>
-    http.get(`${URL_PREFIX}/query/publishedDefinitionStartFormRoutePath/by/flowCode/${flowCode}`),
+  queryRoutePathById: (id) => http.get(`${URL_PREFIX}/query/routePath/by/id/${id}`),
+
+  queryRoutePathByFlowCode: (flowCode) =>
+    http.get(`${URL_PREFIX}/query/routePath/by/flowCode/${flowCode}`),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 

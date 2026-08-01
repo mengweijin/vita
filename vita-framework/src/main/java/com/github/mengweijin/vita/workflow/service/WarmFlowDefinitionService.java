@@ -8,12 +8,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.spring.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
+import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
+import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.service.FormService;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.FlowEngine;
+import org.dromara.warm.flow.core.entity.Definition;
 import org.dromara.warm.flow.orm.entity.FlowDefinition;
 import org.dromara.warm.flow.orm.mapper.FlowDefinitionMapper;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapper, FlowDefinition> {
+
+    private final FormService formService;
 
     public PageQuery<FlowDefinitionVO> pageVo(PageQuery<FlowDefinition> pageQuery, Wrapper<FlowDefinition> queryWrapper) {
         IPage<FlowDefinition> page = this.page(pageQuery.toPage(), queryWrapper);
@@ -74,5 +80,16 @@ public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapp
         } finally {
             IoUtil.closeQuietly(inputStream);
         }
+    }
+
+    public String getRoutePath(Definition definition) {
+        String formCustom = definition.getFormCustom();
+        String formPath = definition.getFormPath();
+        if (EYesNo.N.getValue().equalsIgnoreCase(formCustom)) {
+            return formPath;
+        }
+        // 动态表单
+        FormDO form = formService.getById(formPath);
+        return form.getFormPath();
     }
 }
