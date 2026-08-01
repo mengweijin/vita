@@ -2,7 +2,6 @@ package com.github.mengweijin.vita.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
@@ -104,13 +103,12 @@ public class FileController {
      * Get File list by File
      * </p>
      *
-     * @param fileEntity {@link FileDO}
-     * @return List<File>
+     * @param ids ids
+     * @return List<FileVO>
      */
-    @SaCheckPermission("system:file:select")
-    @GetMapping("/list")
-    public List<FileVO> list(FileDO fileEntity) {
-        return fileService.listVo(Wrappers.lambdaQuery(fileEntity));
+    @GetMapping("/list/{ids}")
+    public List<FileVO> listByIds(@PathVariable("ids") Long[] ids) {
+        return fileService.listVoByIds(Arrays.asList(ids));
     }
 
     /**

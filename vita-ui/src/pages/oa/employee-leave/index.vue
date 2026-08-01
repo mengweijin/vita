@@ -1,14 +1,14 @@
 <route lang="yaml">
 meta:
   title: 休假管理
-  permission: oa:leaveApply:view
+  permission: oa:employeeLeave:view
 </route>
 
 <script setup>
-import { leaveApplyApi } from "@/api/oa/leave-apply-api.js";
-import LeaveApplyEdit from "./components/leave-apply-edit.vue";
-import { useLeaveApply } from "./hooks.js";
-const { columns } = useLeaveApply();
+import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
+import EmployeeLeaveEdit from "./components/employee-leave-edit.vue";
+import { useEmployeeLeave } from "./hooks.js";
+const { columns } = useEmployeeLeave();
 
 const loading = ref(true);
 
@@ -43,7 +43,7 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  leaveApplyApi
+  employeeLeaveApi
     .page(queryParams)
     .then((res) => {
       tableData.value = res.pageRecords;
@@ -72,7 +72,7 @@ const handleEdit = (row) => {
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  leaveApplyApi.remove(ids).then(() => {
+  employeeLeaveApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
@@ -258,7 +258,7 @@ onMounted(() => {
                 text
                 :size="size"
                 @click="handleAdd(scope.row.id)"
-                v-permission="'oa:leaveApply:create'"
+                v-permission="'oa:employeeLeave:create'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -319,11 +319,11 @@ onMounted(() => {
     />
   </div>
 
-  <LeaveApplyEdit
+  <EmployeeLeaveEdit
     v-model:visible="editDialogVisible"
     :data="editData"
     @refresh="loadTableData"
-  ></LeaveApplyEdit>
+  ></EmployeeLeaveEdit>
 </template>
 
 <style scoped></style>

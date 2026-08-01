@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.mybatis.typehandler.CommaDelimitedListTypeHandler;
-import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
-import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.domain.bo.EmployeeLeaveBO;
+import com.github.mengweijin.vita.oa.domain.vo.EmployeeLeaveVO;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -25,13 +25,13 @@ import java.util.List;
  * @since 2026-05-16
  */
 @AutoMappers({
-        @AutoMapper(target = LeaveApplyBO.class),
-        @AutoMapper(target = LeaveApplyVO.class),
+        @AutoMapper(target = EmployeeLeaveBO.class),
+        @AutoMapper(target = EmployeeLeaveVO.class),
 })
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_OA_LEAVE_APPLY")
-public class LeaveApplyDO extends BaseEntity {
+@TableName(value = "VT_OA_EMPLOYEE_LEAVE", autoResultMap = true)
+public class EmployeeLeaveDO extends BaseEntity {
 
     /**
      * 请假类型。关联字典：vt_oa_leave_type

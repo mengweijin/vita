@@ -18,6 +18,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["callback"]);
+
 const router = useRouter();
 
 const resolvedComp = ref(null);
@@ -72,6 +74,7 @@ watch(
     resolvedComp.value = null; // 先清空，避免显示旧组件
     if (newPath) {
       resolvedComp.value = await resolveComponent();
+      emit("callback"); // 通知父组件，组件已加载完成
     }
   },
   { immediate: true },

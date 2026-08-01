@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.dromara.warm.flow.orm.entity.FlowHisTask;
 
+import java.util.List;
+
 /**
  * <p>
  * FlowHis Mapper
@@ -24,5 +26,14 @@ public interface WarmFlowHisTaskMapper extends BaseVitaMapper<FlowHisTask, FlowH
      * @return IPage
      */
     IPage<FlowHisTaskVO> selectPageVo(IPage<FlowHisTaskVO> page, @Param("p") FlowHisTaskVO vo);
+
+    /**
+     * 查询审批记录
+     *
+     * @param instanceId  流程实例 ID
+     * @param nodeTypeKey 节点类型 key 值 {@link org.dromara.warm.flow.core.enums.NodeType}
+     * @return List<FlowHisTaskVO>
+     */
+    List<FlowHisTaskVO> selectApproveLog(Long instanceId, Integer nodeTypeKey);
 }
 

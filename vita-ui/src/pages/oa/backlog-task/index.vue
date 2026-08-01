@@ -60,18 +60,19 @@ const loadTableData = () => {
 /** selected rows */
 const selected = ref([]);
 
+const workflowChartDialogInstanceId = ref(null);
+const workflowChartDialogVisible = ref(false);
+const handleView = (row) => {
+  workflowChartDialogInstanceId.value = row.instanceId;
+  workflowChartDialogVisible.value = true;
+};
+
 const workflowApproveDialogVisible = ref(false);
 const taskId = ref("");
 
 const handleApprove = (row) => {
   taskId.value = row.id;
   workflowApproveDialogVisible.value = true;
-};
-
-const handleRestartWorkflow = (row) => {
-  flowTaskApi.pass(row.id, "重新发起审批").then((res) => {
-    loadTableData();
-  });
 };
 
 const handlePageChange = (currentPage, pageSize) => {
@@ -164,7 +165,7 @@ onMounted(() => {
         v-if="columns.flowName.visible"
         prop="flowName"
         label="流程名称"
-        min-width="100"
+        min-width="160"
       />
       <el-table-column
         v-if="columns.nodeCode.visible"
@@ -176,7 +177,7 @@ onMounted(() => {
         v-if="columns.nodeName.visible"
         prop="nodeName"
         label="节点名称"
-        min-width="100"
+        min-width="120"
       />
       <el-table-column
         v-if="columns.nodeType.visible"
@@ -256,33 +257,27 @@ onMounted(() => {
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
+            <el-tooltip content="查看流程" placement="top">
+              <el-button type="primary" text :size="size" @click="handleView(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:view"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="审批" placement="top">
               <el-button
                 v-if="scope.row.flowStatus === '1'"
                 type="primary"
                 text
                 :size="size"
+                style="margin-left: 0"
                 @click="handleApprove(scope.row)"
               >
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ri:chat-check-line"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="重新发起流程" placement="top">
-              <el-button
-                v-if="scope.row.flowStatus === '6' || scope.row.flowStatus === '9'"
-                type="primary"
-                text
-                :size="size"
-                style="margin-left: 0"
-                @click="handleRestartWorkflow(scope.row)"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:promotion"></Icon>
                   </el-icon>
                 </template>
               </el-button>
@@ -301,6 +296,10 @@ onMounted(() => {
       @change="handlePageChange"
     />
 
+    <VtDialogWorkflowChart
+      v-model:visible="workflowChartDialogVisible"
+      :id="workflowChartDialogInstanceId"
+    />
     <VtDialogWorkflowApprove
       v-model:visible="workflowApproveDialogVisible"
       :task-id="taskId"

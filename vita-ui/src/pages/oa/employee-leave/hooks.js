@@ -1,4 +1,4 @@
-export function useLeaveApply() {
+export function useEmployeeLeave() {
   const columns = reactive({
     selection: { label: "选择列", visible: false },
     index: { label: "序号列", visible: false },

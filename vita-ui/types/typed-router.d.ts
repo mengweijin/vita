@@ -143,16 +143,16 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/oa/leave-apply/': RouteRecordInfo<
-      '/oa/leave-apply/',
-      '/oa/leave-apply',
+    '/oa/employee-leave/': RouteRecordInfo<
+      '/oa/employee-leave/',
+      '/oa/employee-leave',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/oa/leave-apply/workflow/start-form': RouteRecordInfo<
-      '/oa/leave-apply/workflow/start-form',
-      '/oa/leave-apply/workflow/start-form',
+    '/oa/employee-leave/workflow/start-form': RouteRecordInfo<
+      '/oa/employee-leave/workflow/start-form',
+      '/oa/employee-leave/workflow/start-form',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -311,13 +311,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/workflow/form-loader/': RouteRecordInfo<
-      '/workflow/form-loader/',
-      '/workflow/form-loader',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/workflow/instance/': RouteRecordInfo<
       '/workflow/instance/',
       '/workflow/instance',
@@ -466,17 +459,17 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/oa/leave-apply/index.vue': {
+    'src/pages/oa/employee-leave/index.vue': {
       routes:
-        | '/oa/leave-apply/'
+        | '/oa/employee-leave/'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/oa/leave-apply/workflow/start-form.vue': {
+    'src/pages/oa/employee-leave/workflow/start-form.vue': {
       routes:
-        | '/oa/leave-apply/workflow/start-form'
+        | '/oa/employee-leave/workflow/start-form'
       views:
         | never
       pathParamNames:
@@ -653,14 +646,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/workflow/form/index.vue': {
       routes:
         | '/workflow/form/'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
-    'src/pages/workflow/form-loader/index.vue': {
-      routes:
-        | '/workflow/form-loader/'
       views:
         | never
       pathParamNames:

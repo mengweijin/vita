@@ -66,40 +66,20 @@ const loadTableData = () => {
     });
 };
 
-const editDialogVisible = ref(false);
-const editData = ref(null);
-
-const handleAdd = () => {
-  editData.value = null;
-  editDialogVisible.value = true;
-};
-
-const handleEdit = (row) => {
-  // 使用展开运算符，避免数据污染
-  editData.value = { ...row };
-  editDialogVisible.value = true;
-};
-
 /** selected rows */
 const selected = ref([]);
-
-const handleDelete = (ids) => {
-  flowHisTaskApi.remove(ids).then(() => {
-    // 清空已选择
-    selected.value = [];
-    loadTableData();
-  });
-};
-
-const handleBatchDelete = () => {
-  const ids = selected.value.map((item) => item.id).join();
-  handleDelete(ids);
-};
 
 const handlePageChange = (currentPage, pageSize) => {
   queryParams.pageCurrent = currentPage;
   queryParams.pageSize = pageSize;
   loadTableData();
+};
+
+const workflowChartDialogInstanceId = ref(null);
+const workflowChartDialogVisible = ref(false);
+const handleView = (row) => {
+  workflowChartDialogInstanceId.value = row.instanceId;
+  workflowChartDialogVisible.value = true;
 };
 
 onMounted(() => {
@@ -215,7 +195,7 @@ onMounted(() => {
         v-if="columns.flowName.visible"
         prop="flowName"
         label="流程名称"
-        min-width="100"
+        min-width="160"
       />
       <el-table-column v-if="columns.taskId.visible" prop="taskId" label="任务ID" min-width="100" />
       <el-table-column
@@ -228,7 +208,7 @@ onMounted(() => {
         v-if="columns.nodeName.visible"
         prop="nodeName"
         label="节点名称"
-        min-width="100"
+        min-width="120"
       />
       <el-table-column
         v-if="columns.nodeType.visible"
@@ -348,7 +328,6 @@ onMounted(() => {
         align="center"
         width="180"
       />
-
       <el-table-column
         v-if="columns.updateTime.visible"
         prop="updateTime"
@@ -356,66 +335,17 @@ onMounted(() => {
         align="center"
         width="180"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="70">
         <template #default="scope">
           <div>
-            <el-tooltip content="新增" placement="top" v-if="false">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                @click="handleAdd(scope.row.id)"
-                v-permission="'workflow:flowHisTask:create'"
-              >
+            <el-tooltip content="查看流程" placement="top">
+              <el-button type="primary" text :size="size" @click="handleView(scope.row)">
                 <template #icon>
                   <el-icon :size="size">
-                    <Icon icon="ep:plus"></Icon>
+                    <Icon icon="ep:view"></Icon>
                   </el-icon>
                 </template>
               </el-button>
-            </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                style="margin-left: 0px"
-                @click="handleEdit(scope.row)"
-                v-permission="'workflow:flowHisTask:update'"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ep:edit"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
-              <div style="display: inline-block">
-                <el-popconfirm
-                  placement="left"
-                  width="400"
-                  :title="`确定删除【${scope.row.name}】吗？`"
-                  confirm-button-text="确定"
-                  cancel-button-text="取消"
-                  @confirm="handleDelete(scope.row.id)"
-                >
-                  <template #reference>
-                    <el-button
-                      type="danger"
-                      text
-                      :size="size"
-                      v-permission="'workflow:flowHisTask:remove'"
-                    >
-                      <template #icon>
-                        <el-icon :size="size">
-                          <Icon icon="ep:delete"></Icon>
-                        </el-icon>
-                      </template>
-                    </el-button>
-                  </template>
-                </el-popconfirm>
-              </div>
             </el-tooltip>
           </div>
         </template>
@@ -429,6 +359,11 @@ onMounted(() => {
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
       @change="handlePageChange"
+    />
+
+    <VtDialogWorkflowChart
+      v-model:visible="workflowChartDialogVisible"
+      :id="workflowChartDialogInstanceId"
     />
   </div>
 </template>

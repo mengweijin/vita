@@ -1,6 +1,8 @@
 package com.github.mengweijin.vita.workflow.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.v7.core.collection.CollUtil;
+import com.github.mengweijin.vita.framework.constant.Const;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.dto.FlowParams;
 import org.dromara.warm.flow.core.entity.Instance;
+import org.dromara.warm.flow.core.entity.Task;
 import org.dromara.warm.flow.core.service.InsService;
 import org.dromara.warm.flow.core.service.TaskService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 流程实例表 Flow Instance Controller
@@ -70,6 +74,26 @@ public class WarmFlowInstanceController {
         Long userId = LoginHelper.getSessionUserId();
         vo.setCreateBy(userId);
         return this.page(pageQuery, vo);
+    }
+
+    @GetMapping("/query/{id}")
+    public FlowInstanceVO queryById(@PathVariable("id") Long id) {
+        return warmFlowInstanceService.getVoById(id);
+    }
+
+    /**
+     * 提交流程
+     *
+     * @param instanceId 流程实例 ID
+     * @return R<Instance>
+     */
+    @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
+    @PostMapping("/submit/{instanceId}")
+    public R<Instance> submit(@PathVariable("instanceId") Long instanceId) {
+        List<Task> taskList = taskService.getByInsId(instanceId);
+        Task first = CollUtil.getFirst(taskList);
+        Instance instance = taskService.pass(first.getId(), Const.EMPTY, null);
+        return R.ok(instance);
     }
 
     /**

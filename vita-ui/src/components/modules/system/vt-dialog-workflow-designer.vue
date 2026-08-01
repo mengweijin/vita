@@ -71,7 +71,7 @@ onMounted(() => {
     destroy-on-close
     align-center
     @closed="onClosed"
-    fullscreen
+    width="90%"
   >
     <div class="vt-dialog-workflow-designer-wrapper">
       <iframe
@@ -85,6 +85,6 @@ onMounted(() => {
 
 <style scoped>
 .vt-dialog-workflow-designer-wrapper {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 120px);
 }
 </style>

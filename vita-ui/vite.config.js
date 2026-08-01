@@ -8,6 +8,7 @@ import { defineConfig, loadEnv } from "vite";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { VueRouterAutoImports } from "vue-router/unplugin";
 import VueRouter from "vue-router/vite";
+import { fileViewerRenderers } from "@file-viewer/vite-plugin";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -143,6 +144,9 @@ export default defineConfig(({ mode }) => {
           // 自动注册 Element Plus 组件
           ElementPlusResolver(),
         ],
+      }),
+      fileViewerRenderers({
+        copyAssets: true,
       }),
     ],
     resolve: {

@@ -26,3 +26,8 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# file-viewer
+public/vendor/
+public/wasm/
+public/flyfish-viewer-assets.json

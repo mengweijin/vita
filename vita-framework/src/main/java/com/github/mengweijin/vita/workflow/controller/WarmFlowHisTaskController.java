@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.enums.NodeType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 流程任务表 Flow Task Controller
@@ -41,5 +44,10 @@ public class WarmFlowHisTaskController {
         // 只查询中间节点
         vo.setNodeType(NodeType.BETWEEN.getKey());
         return warmFlowHisTaskService.selectPageVo(pageQuery, vo);
+    }
+
+    @GetMapping("/list/approve/log/by/{instanceId}")
+    public List<FlowHisTaskVO> page(@PathVariable("instanceId") Long instanceId) {
+        return warmFlowHisTaskService.listApproveLog(instanceId, NodeType.BETWEEN);
     }
 }

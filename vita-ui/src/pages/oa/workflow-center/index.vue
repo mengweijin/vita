@@ -5,25 +5,25 @@ meta:
 </route>
 
 <script setup>
-import { useWorkflowFormPageStore } from "@/store/workflow-form-page-store.js";
-const workflowFormPageStore = useWorkflowFormPageStore();
+import VtDialogWorkflowFormLoader from "@/components/modules/system/vt-dialog-workflow-form-loader.vue";
 const router = useRouter();
 
-const openLeaveApplyForm = () => {
-  workflowFormPageStore.setData({
-    flowCode: "wf_oa_leave",
-    tabTitle: "请假申请",
-    businessId: null,
-    readonly: false,
-    loading: true,
-  });
-  router.push(`/workflow/form-loader`);
+const flowCode = ref("");
+const businessId = ref("");
+const readonly = ref("");
+const formLoaderVisible = ref(false);
+
+const openEmployeeLeaveForm = () => {
+  flowCode.value = "employee_leave";
+  businessId.value = null;
+  readonly.value = false;
+  formLoaderVisible.value = true;
 };
 
 const handleDevelopment = () => {
   ElMessage.warning({
     duration: 5000,
-    message: "功能未开发！演示请参考【请假申请】模块。",
+    message: "功能未开发！演示请参考【员工请假】模块。",
     showClose: true,
   });
 };
@@ -36,12 +36,12 @@ onMounted(() => {});
     <div class="vt-header" style="margin-top: 5px">人事流程</div>
     <div class="vt-card-container">
       <el-card>
-        <div class="vt-card-content" @click="openLeaveApplyForm">
+        <div class="vt-card-content" @click="openEmployeeLeaveForm">
           <!-- 日历/请假：蓝色 -->
           <el-icon :size="30" color="#409EFF">
             <Icon icon="ep:calendar"></Icon>
           </el-icon>
-          <span>请假申请</span>
+          <span>员工请假</span>
         </div>
       </el-card>
       <el-card>
@@ -50,7 +50,7 @@ onMounted(() => {});
           <el-icon :size="30" color="#67C23A">
             <Icon icon="ep:check"></Icon>
           </el-icon>
-          <span>转正申请</span>
+          <span>员工转正</span>
         </div>
       </el-card>
       <el-card>
@@ -59,7 +59,7 @@ onMounted(() => {});
           <el-icon :size="30" color="#909399">
             <Icon icon="ri:exchange-line"></Icon>
           </el-icon>
-          <span>调岗申请</span>
+          <span>员工调岗</span>
         </div>
       </el-card>
       <el-card>
@@ -68,7 +68,7 @@ onMounted(() => {});
           <el-icon :size="30" color="#F56C6C">
             <Icon icon="ep:remove"></Icon>
           </el-icon>
-          <span>离职申请</span>
+          <span>员工离职</span>
         </div>
       </el-card>
     </div>
@@ -82,7 +82,7 @@ onMounted(() => {});
           <el-icon :size="30" color="#E6A23C">
             <Icon icon="ep:money"></Icon>
           </el-icon>
-          <span>报销申请</span>
+          <span>报销流程</span>
         </div>
       </el-card>
       <el-card>
@@ -95,6 +95,13 @@ onMounted(() => {});
         </div>
       </el-card>
     </div>
+
+    <VtDialogWorkflowFormLoader
+      v-model:visible="formLoaderVisible"
+      :flow-code="flowCode"
+      :business-id="businessId"
+      :readonly="readonly"
+    />
   </div>
 </template>
 

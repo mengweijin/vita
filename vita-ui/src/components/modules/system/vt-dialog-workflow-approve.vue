@@ -41,6 +41,7 @@ const onPass = () => {
     })
     .finally(() => {
       loading.value = false;
+      form.message = "";
     });
 };
 
@@ -55,6 +56,7 @@ const onReject = () => {
     })
     .finally(() => {
       loading.value = false;
+      form.message = "";
     });
 };
 </script>

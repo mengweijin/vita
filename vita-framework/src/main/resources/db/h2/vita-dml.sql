@@ -464,7 +464,7 @@ insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREA
 
 
 -- 表单管理
-INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",FORM_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'/','工作流-行政-员工请假-表单','static','/oa/leave-apply/workflow/start-form',null,1,current_timestamp(),1,current_timestamp());
+INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",FORM_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'/','工作流-行政-员工请假-表单','static','/oa/employee-leave/workflow/start-form',null,1,current_timestamp(),1,current_timestamp());
 
 
 -- 系统公告

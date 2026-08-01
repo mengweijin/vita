@@ -8,8 +8,10 @@ const { filePreviewDialogVisible, filePreviewId, filePreviewName } = storeToRefs
 
 const loginStore = useLoginStore();
 const { VITE_BASE_API } = import.meta.env;
+const basePath = utils.trimSpecified(VITE_BASE_API, "/");
 // 处理路径
-const uploadUrl = `${VITE_BASE_API}/system/file/upload`.replace("//", "/");
+const uploadUrl = `${basePath}/system/file/upload`;
+const downloadPrefixUrl = `${basePath}/system/file/download`;
 
 const props = defineProps({
   showFileList: {
@@ -55,7 +57,10 @@ const props = defineProps({
 
 const modelValue = defineModel({ type: Array, default: () => [] });
 
-const fileList = ref([]);
+const fileList = ref([
+  { name: "文件1", url: "https://example.com/file1" },
+  { name: "文件2", url: "https://example.com/file2" },
+]);
 
 const computedHeaders = computed(() => {
   return {
@@ -84,7 +89,8 @@ const handleSuccess = (response, uploadFile, uploadFiles) => {
 };
 
 const handleRemove = (uploadFile, uploadFiles) => {
-  const id = uploadFile.response[0].id;
+  const fileVO = uploadFile.response[0];
+  const id = fileVO.id;
   // 从 modelValue 中移除 id
   modelValue.value = modelValue.value.filter((item) => item !== id);
 };
@@ -98,7 +104,20 @@ const handlePreview = (uploadFile) => {
 
 const emit = defineEmits(["callback"]);
 
-onMounted(async () => {});
+watchEffect(async () => {
+  if (utils.isEmpty(modelValue.value)) {
+    fileList.value = [];
+    return;
+  }
+  const fileVOList = await fileApi.listByIds(modelValue.value);
+  fileList.value = fileVOList.map((fileVO) => {
+    return {
+      id: fileVO.id,
+      name: fileVO.name,
+      response: [fileVO], // 将 fileVO 包装在 response 数组中，以便与 Element Plus 的上传组件兼容
+    };
+  });
+});
 </script>
 
 <template>
@@ -142,5 +161,15 @@ onMounted(async () => {});
 /* 调整拖拽上传区域的高度 */
 .vt-upload-drag :deep(.el-upload-dragger) {
   padding: 10px;
+}
+
+/* 当上传区域为禁用拖拽状态时，隐藏拖拽区域 */
+.vt-upload-drag :deep(.el-upload.is-disabled .el-upload-dragger) {
+  display: none;
+}
+
+/* 当上传区域为禁用拖拽状态时，调整其外层容器间距 */
+.vt-upload-drag :deep(.el-upload.el-upload--text.is-drag.is-disabled) {
+  margin-top: -10px;
 }
 </style>

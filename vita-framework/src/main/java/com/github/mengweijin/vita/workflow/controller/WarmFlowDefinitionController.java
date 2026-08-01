@@ -75,6 +75,12 @@ public class WarmFlowDefinitionController extends WarmFlowController {
         return MapstructUtils.convertToPageQuery(page, FlowDefinitionVO.class);
     }
 
+    @GetMapping("/query/{id}")
+    public FlowDefinitionVO page(@PathVariable("id") Long id) {
+        FlowDefinition flowDefinition = warmFlowDefinitionService.getById(id);
+        return MapstructUtils.getConverter().convert(flowDefinition, FlowDefinitionVO.class);
+    }
+
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @Override
     @SaCheckPermission(mode = SaMode.OR, value = {"workflow:definition:create", "workflow:definition:update"})

@@ -86,7 +86,7 @@ public class WarmFlowTaskController {
     public R<Instance> reject(@PathVariable("taskId") Long taskId,
                               @RequestParam(name = "message", required = false) String message,
                               @RequestBody(required = false) Map<String, Object> variable) {
-        Instance instance = warmFlowTaskService.reject(taskId, message, variable);
+        Instance instance = taskService.reject(taskId, message, variable);
         return R.ok(instance);
     }
 

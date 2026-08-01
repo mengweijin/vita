@@ -7,7 +7,8 @@ export const fileApi = {
 
   download: (id, fileName = undefined) => http.download(`${URL_PREFIX}/download/${id}`, fileName),
 
-  list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
+  listByIds: (ids) => http.get(`${URL_PREFIX}/list/${ids}`),
+
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),

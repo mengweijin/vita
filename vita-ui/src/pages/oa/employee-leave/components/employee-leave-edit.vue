@@ -1,5 +1,5 @@
 <script setup>
-import { leaveApplyApi } from "@/api/oa/leave-apply-api.js";
+import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
 import utils from "@/utils/utils.js";
 
 const loading = ref(false);
@@ -58,12 +58,12 @@ const onSubmit = () => {
       return;
     }
     if (isEdit) {
-      leaveApplyApi.update(form).then((r) => {
+      employeeLeaveApi.update(form).then((r) => {
         emit("refresh");
         emit("update:visible", false);
       });
     } else {
-      leaveApplyApi.create(form).then((r) => {
+      employeeLeaveApi.create(form).then((r) => {
         emit("refresh");
         emit("update:visible", false);
       });

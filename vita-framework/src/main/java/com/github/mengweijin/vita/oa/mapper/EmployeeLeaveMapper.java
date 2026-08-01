@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.oa.mapper;
 
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
-import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
-import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
+import com.github.mengweijin.vita.oa.domain.entity.EmployeeLeaveDO;
+import com.github.mengweijin.vita.oa.domain.vo.EmployeeLeaveVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2026-05-16
  */
 @Mapper
-public interface LeaveApplyMapper extends BaseVitaMapper<LeaveApplyDO, LeaveApplyVO> {
+public interface EmployeeLeaveMapper extends BaseVitaMapper<EmployeeLeaveDO, EmployeeLeaveVO> {
 
 }
 

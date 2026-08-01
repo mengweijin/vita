@@ -111,6 +111,16 @@ const handleView = (row) => {
   workflowChartDialogVisible.value = true;
 };
 
+const handleEdit = (row) => {
+  alert("功能开发中。。。。。。");
+};
+
+const handleSubmit = (row) => {
+  flowInstanceApi.submit(row.id).then(() => {
+    loadTableData();
+  });
+};
+
 const handleRevoke = (row) => {
   flowInstanceApi.revoke(row.id).then(() => {
     loadTableData();
@@ -236,7 +246,7 @@ onMounted(() => {
         v-if="columns.flowName.visible"
         prop="flowName"
         label="流程名称"
-        min-width="100"
+        min-width="160"
       />
       <el-table-column
         v-if="columns.businessId.visible"
@@ -369,6 +379,47 @@ onMounted(() => {
                   </el-icon>
                 </template>
               </el-button>
+            </el-tooltip>
+            <el-tooltip content="编辑" placement="top">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleEdit(scope.row)"
+                v-if="scope.row.flowStatus === '0' || scope.row.flowStatus === '9'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:edit"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="提交流程" placement="top">
+              <div
+                style="display: inline-block"
+                v-if="scope.row.flowStatus === '0' || scope.row.flowStatus === '9'"
+              >
+                <el-popconfirm
+                  placement="left"
+                  width="400"
+                  :title="`确定提交【${scope.row.id} - ${scope.row.flowName}】吗？`"
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  @confirm="handleSubmit(scope.row)"
+                >
+                  <template #reference>
+                    <el-button type="primary" text :size="size">
+                      <template #icon>
+                        <el-icon :size="size">
+                          <Icon icon="ep:promotion"></Icon>
+                        </el-icon>
+                      </template>
+                    </el-button>
+                  </template>
+                </el-popconfirm>
+              </div>
             </el-tooltip>
             <el-tooltip content="撤销流程" placement="top">
               <div

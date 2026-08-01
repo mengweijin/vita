@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.oa.domain.vo;
 
-import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
+import com.github.mengweijin.vita.oa.domain.entity.EmployeeLeaveDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +12,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class LeaveApplyVO extends LeaveApplyDO {
+public class EmployeeLeaveVO extends EmployeeLeaveDO {
 
 }

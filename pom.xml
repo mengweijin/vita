@@ -20,10 +20,11 @@
         <module>vita-framework</module>
     </modules>
     <properties>
-        <revision>2.0.0-M6</revision>
+        <revision>2.0.0-M7-SNAPSHOT</revision>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>2025.0.3</spring-cloud.version>

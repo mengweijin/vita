@@ -9,8 +9,11 @@ import com.github.mengweijin.vita.workflow.enums.EWarmFlowDelFlag;
 import com.github.mengweijin.vita.workflow.mapper.WarmFlowHisTaskMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.warm.flow.core.enums.NodeType;
 import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 流程实例表 FlowHis Service
@@ -32,8 +35,20 @@ public class WarmFlowHisTaskService extends BaseVitaService<WarmFlowHisTaskMappe
         return PageQuery.of(page);
     }
 
+    /**
+     * 查询审批记录
+     *
+     * @param instanceId 流程实例 ID
+     * @param nodeType   节点类型
+     * @return List<FlowHisTaskVO>
+     */
+    public List<FlowHisTaskVO> listApproveLog(Long instanceId, NodeType nodeType) {
+        return warmFlowHisTaskMapper.selectApproveLog(instanceId, nodeType.getKey());
+    }
+
     @Override
     public LambdaQueryWrapper<FlowHisTask> buildQueryWrapper(FlowHisTask entity) {
         return super.defaultQueryWrapper(entity);
     }
+
 }

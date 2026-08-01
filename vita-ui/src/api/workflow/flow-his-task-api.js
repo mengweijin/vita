@@ -4,4 +4,6 @@ const URL_PREFIX = "/workflow/his-task";
 
 export const flowHisTaskApi = {
   page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+
+  listApproveLog: (instanceId) => http.get(`${URL_PREFIX}/list/approve/log/by/${instanceId}`),
 };

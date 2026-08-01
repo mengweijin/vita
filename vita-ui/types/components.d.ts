@@ -11,7 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    copy: typeof import('./../src/components/modules/system/vt-dialog-workflow-chart copy.vue')['default']
+    copy: typeof import('./../src/components/modules/system/vt-dialog-workflow-approve copy.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -41,6 +41,7 @@ declare module 'vue' {
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElInputOtp: typeof import('element-plus/es')['ElInputOtp']
     ElInputTag: typeof import('element-plus/es')['ElInputTag']
+    ElLink: typeof import('element-plus/es')['ElLink']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
@@ -75,6 +76,7 @@ declare module 'vue' {
     VtDialogWorkflowApprove: typeof import('./../src/components/modules/system/vt-dialog-workflow-approve.vue')['default']
     VtDialogWorkflowChart: typeof import('./../src/components/modules/system/vt-dialog-workflow-chart.vue')['default']
     VtDialogWorkflowDesigner: typeof import('./../src/components/modules/system/vt-dialog-workflow-designer.vue')['default']
+    VtDialogWorkflowFormLoader: typeof import('./../src/components/modules/system/vt-dialog-workflow-form-loader.vue')['default']
     VtEditor: typeof import('./../src/components/modules/common/vt-editor.vue')['default']
     VtIconPicker: typeof import('./../src/components/modules/common/vt-icon-picker.vue')['default']
     VtRadioDict: typeof import('./../src/components/modules/system/vt-radio-dict.vue')['default']
@@ -88,6 +90,7 @@ declare module 'vue' {
     VtTableBarRight: typeof import('./../src/components/modules/common/vt-table-bar-right.vue')['default']
     VtTagDict: typeof import('./../src/components/modules/system/vt-tag-dict.vue')['default']
     VtUpload: typeof import('./../src/components/modules/system/vt-upload.vue')['default']
+    VtUploadPreview: typeof import('./../src/components/modules/system/vt-upload-preview.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

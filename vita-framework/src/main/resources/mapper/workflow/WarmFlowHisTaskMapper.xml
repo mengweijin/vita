@@ -117,4 +117,16 @@
         </where>
         ORDER BY fht.UPDATE_TIME DESC
     </select>
+
+    <select id="selectApproveLog" resultType="com.github.mengweijin.vita.workflow.domain.vo.FlowHisTaskVO">
+        SELECT
+        <include refid="BaseColumnList"/>
+        FROM FLOW_HIS_TASK fht
+        LEFT JOIN FLOW_DEFINITION fd ON fht.DEFINITION_ID=fd.ID
+        LEFT JOIN FLOW_INSTANCE fi ON fht.INSTANCE_ID=fi.ID
+        <where>
+            fht.DEL_FLAG = 0 AND fht.INSTANCE_ID = #{instanceId} AND fht.NODE_TYPE = #{nodeTypeKey}
+        </where>
+        ORDER BY fht.UPDATE_TIME ASC
+    </select>
 </mapper>

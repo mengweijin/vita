@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
-import com.github.mengweijin.vita.framework.enums.EWorkflowCode;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.oa.domain.bo.LeaveApplyBO;
-import com.github.mengweijin.vita.oa.domain.entity.LeaveApplyDO;
-import com.github.mengweijin.vita.oa.domain.vo.LeaveApplyVO;
-import com.github.mengweijin.vita.oa.service.LeaveApplyService;
+import com.github.mengweijin.vita.oa.domain.bo.EmployeeLeaveBO;
+import com.github.mengweijin.vita.oa.domain.entity.EmployeeLeaveDO;
+import com.github.mengweijin.vita.oa.domain.vo.EmployeeLeaveVO;
+import com.github.mengweijin.vita.oa.service.EmployeeLeaveService;
+import com.github.mengweijin.vita.workflow.enums.EWorkflowCode;
 import com.github.mengweijin.vita.workflow.service.WarmFlowInstanceService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +36,12 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/oa/leave-apply")
-public class LeaveApplyController {
+@RequestMapping("/oa/employee-leave")
+public class EmployeeLeaveController {
 
-    private static final String LOG_TITLE = "休假申请";
+    private static final String LOG_TITLE = "员工请假";
 
-    private final LeaveApplyService leaveApplyService;
+    private final EmployeeLeaveService employeeLeaveService;
 
     private final WarmFlowInstanceService warmFlowInstanceService;
 
@@ -49,24 +49,24 @@ public class LeaveApplyController {
      * Get LeaveApplyVO page by LeaveApplyDO
      *
      * @param page       page
-     * @param leaveApply {@link LeaveApplyDO}
+     * @param leaveApply {@link EmployeeLeaveDO}
      * @return PageQuery<LeaveApplyVO>
      */
     @GetMapping("/page")
-    public PageQuery<LeaveApplyVO> page(PageQuery<LeaveApplyDO> page, LeaveApplyDO leaveApply) {
-        LambdaQueryWrapper<LeaveApplyDO> wrapper = leaveApplyService.buildQueryWrapper(leaveApply);
-        return leaveApplyService.pageVo(page, wrapper);
+    public PageQuery<EmployeeLeaveVO> page(PageQuery<EmployeeLeaveDO> page, EmployeeLeaveDO leaveApply) {
+        LambdaQueryWrapper<EmployeeLeaveDO> wrapper = employeeLeaveService.buildQueryWrapper(leaveApply);
+        return employeeLeaveService.pageVo(page, wrapper);
     }
 
     /**
      * Get LeaveApplyVO list by LeaveApplyDO
      *
-     * @param leaveApply {@link LeaveApplyDO}
+     * @param leaveApply {@link EmployeeLeaveDO}
      * @return List<LeaveApplyVO>
      */
     @GetMapping("/list")
-    public List<LeaveApplyVO> list(LeaveApplyDO leaveApply) {
-        return leaveApplyService.listVo(Wrappers.lambdaQuery(leaveApply));
+    public List<EmployeeLeaveVO> list(EmployeeLeaveDO leaveApply) {
+        return employeeLeaveService.listVo(Wrappers.lambdaQuery(leaveApply));
     }
 
     /**
@@ -76,31 +76,31 @@ public class LeaveApplyController {
      * @return LeaveApplyVO
      */
     @GetMapping("/{id}")
-    public LeaveApplyVO getById(@PathVariable("id") Long id) {
-        return leaveApplyService.getVoById(id);
+    public EmployeeLeaveVO getById(@PathVariable("id") Long id) {
+        return employeeLeaveService.getVoById(id);
     }
 
     /**
      * Add LeaveApply
      *
-     * @param leaveApply {@link LeaveApplyDO}
+     * @param leaveApply {@link EmployeeLeaveDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody LeaveApplyBO leaveApply) {
-        boolean bool = leaveApplyService.save(leaveApply);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody EmployeeLeaveBO leaveApply) {
+        boolean bool = employeeLeaveService.save(leaveApply);
         return R.result(bool);
     }
 
     /**
      * Update LeaveApply
      *
-     * @param leaveApply {@link LeaveApplyBO}
+     * @param leaveApply {@link EmployeeLeaveBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody LeaveApplyBO leaveApply) {
-        boolean bool = leaveApplyService.updateById(leaveApply);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody EmployeeLeaveBO leaveApply) {
+        boolean bool = employeeLeaveService.updateById(leaveApply);
         return R.result(bool);
     }
 
@@ -112,18 +112,17 @@ public class LeaveApplyController {
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
-        boolean bool = leaveApplyService.removeByIds(Arrays.asList(ids));
+        boolean bool = employeeLeaveService.removeByIds(Arrays.asList(ids));
         return R.result(bool);
     }
 
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
-    @PostMapping("/saveAndStartWorkflow")
-    public R<Instance> saveAndStartWorkflow(@Validated @RequestBody LeaveApplyBO bo) {
-        boolean bool = leaveApplyService.saveOrUpdate(bo);
+    @PostMapping("/saveWorkflow")
+    public R<Instance> saveWorkflow(@Validated @RequestBody EmployeeLeaveBO bo) {
+        boolean bool = employeeLeaveService.saveOrUpdate(bo);
         if (bool) {
-            String flowCode = EWorkflowCode.WF_OA_LEAVE.getValue();
-            LeaveApplyDO leaveApplyDO = leaveApplyService.getById(bo.getId());
-            Instance instance = warmFlowInstanceService.start(flowCode, leaveApplyDO);
+            String flowCode = EWorkflowCode.EMPLOYEE_LEAVE.getValue();
+            Instance instance = warmFlowInstanceService.start(flowCode, bo.getId());
             return R.ok(instance);
         }
         return R.fail("Save leave apply data failed!");
