@@ -66,7 +66,7 @@
 
 <p align="center">
    <span><strong>Vita（微塔）</strong>：是一款<strong>轻量级快速开发平台应用系统</strong>。</span><br>
-   <span>基于 SpringBoot、sa-token、mybatis-plus、vue、element-plus 等技术，不依赖任何第三方服务。</span>
+   <span>基于 SpringBoot、sa-token、mybatis-plus、warm-flow、vue、element-plus 等技术，不依赖任何第三方服务。</span>
 </p>
 <p style="text-indent:2em;">
    有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西（如：redis, minio/fastdfs，数据库等），以及很复杂的配置文件，自己从零搭建又太耗费时间，<strong>真的太麻烦了！</strong>

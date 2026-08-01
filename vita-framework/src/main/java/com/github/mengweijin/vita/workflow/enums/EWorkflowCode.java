@@ -20,15 +20,15 @@ public enum EWorkflowCode implements IEnum<String> {
     /**
      * 员工入职流程
      */
-    EMPLOYEE_ONBOARDING("employee_leave"),
+    EMPLOYEE_ONBOARDING("employee_onboarding"),
     /**
      * 员工转正流程
      */
-    EMPLOYEE_PROBATION_CONFIRMATION("employee_leave"),
+    EMPLOYEE_PROBATION_CONFIRMATION("employee_probation_confirmation"),
     /**
      * 员工调岗流程
      */
-    EMPLOYEE_TRANSFER("employee_leave"),
+    EMPLOYEE_TRANSFER("employee_transfer"),
     /**
      * 员工离职流程
      */
