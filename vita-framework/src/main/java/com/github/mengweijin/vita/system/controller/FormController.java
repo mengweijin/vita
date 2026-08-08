@@ -42,10 +42,10 @@ public class FormController {
     private FormService formService;
 
     @SaCheckPermission("system:form:select")
-    @GetMapping("/page/root")
+    @GetMapping("/page")
     public PageQuery<FormVO> pageRootTree(PageQuery<FormDO> page, FormDO form) {
-        LambdaQueryWrapper<FormDO> wrapper = formService.buildRootQueryWrapper(form);
-        return formService.pageRootTree(page, wrapper);
+        LambdaQueryWrapper<FormDO> wrapper = formService.buildQueryWrapper(form);
+        return formService.pageVo(page, wrapper);
     }
 
     /**

@@ -237,7 +237,7 @@ onMounted(() => {
       <el-popconfirm
         placement="right"
         width="400"
-        :title="`确定全部删除已选择的【${selected.map((i) => i.name).join()}】吗？`"
+        :title="`确定全部删除已选择的【${selected.map((i) => i.flowName + ' - 版本 ' + i.version).join()}】吗？`"
         confirm-button-text="确定"
         cancel-button-text="取消"
         @confirm="handleBatchDelete"
@@ -487,7 +487,7 @@ onMounted(() => {
                 <el-popconfirm
                   placement="left"
                   width="400"
-                  :title="`确定删除【${scope.row.name}】吗？`"
+                  :title="`确定删除【${scope.row.flowName} - 版本 ${scope.row.version}】吗？`"
                   confirm-button-text="确定"
                   cancel-button-text="取消"
                   @confirm="handleDelete(scope.row.id)"
@@ -509,7 +509,11 @@ onMounted(() => {
                 </el-popconfirm>
               </div>
             </el-tooltip>
-            <el-tooltip content="流程复制" placement="top" v-if="scope.row.isPublish === 1">
+            <el-tooltip
+              content="流程复制"
+              placement="top"
+              v-if="scope.row.isPublish === 1 || scope.row.isPublish === 9"
+            >
               <el-button
                 type="primary"
                 text

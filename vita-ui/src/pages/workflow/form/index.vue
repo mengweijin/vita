@@ -33,7 +33,7 @@ const queryParams = reactive({
   pageCurrent: 1,
   pageSize: 10,
   pageTotal: 0,
-  type: undefined,
+  category: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -46,9 +46,9 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   formApi
-    .pageRoot(queryParams)
+    .page(queryParams)
     .then((res) => {
-      tableData.value = utils.toArrayTree(res.pageRecords);
+      tableData.value = res.pageRecords;
       queryParams.pageTotal = res.pageTotal;
     })
     .finally(() => {

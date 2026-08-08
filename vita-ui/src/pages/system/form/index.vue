@@ -17,11 +17,6 @@ const size = ref("default");
 
 const tableRef = useTemplateRef("tableRef");
 
-const treeProps = reactive({
-  // 父子节点默认联动
-  checkStrictly: false,
-});
-
 const tableData = ref([]);
 
 /**
@@ -33,7 +28,6 @@ const queryParams = reactive({
   pageCurrent: 1,
   pageSize: 10,
   pageTotal: 0,
-  type: undefined,
 });
 
 const queryFormRef = useTemplateRef("queryFormRef");
@@ -46,9 +40,9 @@ const resetQueryForm = () => {
 const loadTableData = () => {
   loading.value = true;
   formApi
-    .pageRoot(queryParams)
+    .page(queryParams)
     .then((res) => {
-      tableData.value = utils.toArrayTree(res.pageRecords);
+      tableData.value = res.pageRecords;
       queryParams.pageTotal = res.pageTotal;
     })
     .finally(() => {
@@ -60,6 +54,13 @@ const loadTableData = () => {
 const editDialogVisible = ref(false);
 const editData = ref(null);
 
+const dialogFormRenderVisible = ref(false);
+const dialogFormRenderFormId = ref(null);
+const handlePreview = (row) => {
+  dialogFormRenderFormId.value = row.id;
+  dialogFormRenderVisible.value = true;
+};
+
 const handleAdd = () => {
   editData.value = null;
   editDialogVisible.value = true;
@@ -69,6 +70,13 @@ const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
   editData.value = { ...row };
   editDialogVisible.value = true;
+};
+
+const dialogFormDesignerVisible = ref(false);
+const dialogFormDesignerFormId = ref(null);
+const handleDesign = (row) => {
+  dialogFormDesignerFormId.value = row.id;
+  dialogFormDesignerVisible.value = true;
 };
 
 /** selected rows */
@@ -106,9 +114,6 @@ onMounted(() => {
     </el-form-item>
     <el-form-item prop="name" label="表单名称">
       <el-input v-model="queryParams.name" placeholder="" clearable />
-    </el-form-item>
-    <el-form-item prop="type" label="表单类型">
-      <VtSelectDict v-model="queryParams.type" :code="'vt_form_type'"></VtSelectDict>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" native-type="submit">
@@ -181,9 +186,7 @@ onMounted(() => {
       ref="tableRef"
       v-loading="loading"
       :data="tableData"
-      :tree-props="treeProps"
       :size="size"
-      row-key="id"
       height="100%"
       stripe
       border
@@ -201,24 +204,26 @@ onMounted(() => {
         min-width="260"
         fixed="left"
       />
-      <el-table-column
-        v-if="columns.type.visible"
-        prop="type"
-        label="表单类型"
-        width="100"
-        align="center"
-      >
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />
+      <el-table-column v-if="columns.rules.visible" prop="rules" label="表单规则" min-width="160">
         <template #default="scope">
-          <VtTagDict :code="'vt_form_type'" :value="scope.row.type" :size="'default'"></VtTagDict>
+          <el-tooltip :content="JSON.stringify(scope.row.rules)" placement="top">
+            <span>{{ JSON.stringify(scope.row.rules) }}</span>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column
-        v-if="columns.formPath.visible"
-        prop="formPath"
-        label="表单路径"
-        min-width="200"
-      />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="100" />
+        v-if="columns.options.visible"
+        prop="options"
+        label="表单配置数据"
+        min-width="160"
+      >
+        <template #default="scope">
+          <el-tooltip :content="JSON.stringify(scope.row.options)" placement="top">
+            <span>{{ JSON.stringify(scope.row.options) }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
@@ -247,9 +252,34 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="220">
         <template #default="scope">
           <div>
+            <el-tooltip content="表单预览" placement="top">
+              <el-button type="primary" text :size="size" @click="handlePreview(scope.row)">
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ep:view"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="表单设计" placement="top">
+              <el-button
+                type="primary"
+                text
+                :size="size"
+                style="margin-left: 0px"
+                @click="handleDesign(scope.row)"
+                v-permission="'system:form:update'"
+              >
+                <template #icon>
+                  <el-icon :size="size">
+                    <Icon icon="ri:input-field"></Icon>
+                  </el-icon>
+                </template>
+              </el-button>
+            </el-tooltip>
             <el-tooltip content="新增" placement="top" v-if="false">
               <el-button
                 type="primary"
@@ -314,16 +344,19 @@ onMounted(() => {
       v-model:current-page="queryParams.pageCurrent"
       v-model:page-size="queryParams.pageSize"
       :total="queryParams.pageTotal"
-      :page-sizes="[10, 20]"
       @change="handlePageChange"
     />
   </div>
 
-  <FormEdit
-    v-model:visible="editDialogVisible"
-    :data="editData"
-    @refresh="loadTableData"
-  ></FormEdit>
+  <FormEdit v-model:visible="editDialogVisible" :data="editData" @refresh="loadTableData" />
+
+  <VtDialogFormDesigner v-model="dialogFormDesignerVisible" :id="dialogFormDesignerFormId" />
+
+  <VtDialogFormRender
+    v-model="dialogFormRenderVisible"
+    :form-id="dialogFormRenderFormId"
+    :title="'动态表单（注意：此处仅为页面预览，接口功能不可用）'"
+  />
 </template>
 
 <style scoped></style>

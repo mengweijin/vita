@@ -1,9 +1,12 @@
 package com.github.mengweijin.vita.system.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.ExtFieldMap;
+import com.github.mengweijin.vita.framework.mybatis.typehandler.JsonTypeHandler;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
 import com.github.mengweijin.vita.system.domain.vo.user.UserProfileVO;
@@ -31,7 +34,7 @@ import java.time.LocalDateTime;
 })
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_USER")
+@TableName(value = "VT_USER", autoResultMap = true)
 public class UserDO extends BaseEntity {
 
     /**
@@ -110,4 +113,9 @@ public class UserDO extends BaseEntity {
      */
     private String remark;
 
+    /**
+     * 扩展字段
+     */
+    @TableField(value = "ext", typeHandler = JsonTypeHandler.class)
+    private ExtFieldMap ext;
 }

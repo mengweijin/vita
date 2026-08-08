@@ -1,6 +1,19 @@
 allowBuilds:
   "@scarf/scarf": true
   core-js: true
+  core-js-pure: set this to true or false
   es5-ext: true
   esbuild: true
   sharp: true
+minimumReleaseAgeExclude:
+  - '@wangeditor-next/basic-modules@6.2.0'
+  - '@wangeditor-next/code-highlight@6.2.0'
+  - '@wangeditor-next/core@6.2.0'
+  - '@wangeditor-next/editor-for-vue@6.2.0'
+  - '@wangeditor-next/editor@6.2.0'
+  - '@wangeditor-next/list-module@6.2.0'
+  - '@wangeditor-next/table-module@6.2.0'
+  - '@wangeditor-next/upload-image-module@6.2.0'
+  - '@wangeditor-next/video-module@6.2.0'
+  - '@vitejs/plugin-legacy@8.2.3'
+  - vite@8.2.1

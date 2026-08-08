@@ -1,0 +1,27 @@
+# For more information, see:
+# Docs: https://docs.github.com/zh/actions
+# Marketplace: https://github.com/marketplace?type=actions
+name: oxfmt and oxlint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  code-oxfmt-oxlint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # 关键：所有 run 命令都在 vita-ui 目录执行
+        working-directory: vita-ui
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v1
+      - run: node --version
+      - run: pnpm test
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run fmt:check
+      - run: pnpm run lint:github

@@ -1,15 +1,18 @@
 package com.github.mengweijin.vita.system.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.mybatis.typehandler.JsonTypeHandler;
 import com.github.mengweijin.vita.system.domain.bo.FormBO;
 import com.github.mengweijin.vita.system.domain.vo.FormVO;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -24,19 +27,8 @@ import lombok.EqualsAndHashCode;
 })
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("VT_FORM")
+@TableName(value = "VT_FORM", autoResultMap = true)
 public class FormDO extends BaseEntity {
-
-    /**
-     * 父 ID
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long parentId;
-
-    /**
-     * 祖级列表
-     */
-    private String ancestors;
 
     /**
      * 表单名称
@@ -44,17 +36,20 @@ public class FormDO extends BaseEntity {
     private String name;
 
     /**
-     * 表单类型（静态表单、动态表单）。关联字典：vt_form_type
+     * 表单的规则和字段的整体配置数据，通常包含多个字段的配置
      */
-    private String type;
+    @TableField(value = "rules", typeHandler = JsonTypeHandler.class)
+    private List<Object> rules;
 
     /**
-     * 静态表单路由路径；或动态表单 ID
+     * 表单的配置数据（例如：布局、尺寸、全局数据等）
      */
-    private String formPath;
+    @TableField(value = "options", typeHandler = JsonTypeHandler.class)
+    private Map<String, Object> options;
 
     /**
      * 备注
      */
     private String remark;
+
 }

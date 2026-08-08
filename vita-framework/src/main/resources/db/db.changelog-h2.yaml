@@ -1,13 +1,16 @@
 databaseChangeLog:
   - include:
-      file: db/h2/vita-ddl.sql
+      file: db/h2/1-vita-ddl.sql
       relativeToChangelogFile: false
   - include:
-      file: db/h2/vita-ddl-warm-flow-all.sql
+      file: db/h2/2-warm-flow-all.sql
       relativeToChangelogFile: false
   - include:
-      file: db/h2/vita-dml.sql
+      file: db/h2/3-vita-dml.sql
       relativeToChangelogFile: false
   - include:
-      file: db/h2/vita-dml-dev.sql
+      file: db/h2/4-vita-vt-form-data.sql
+      relativeToChangelogFile: false
+  - include:
+      file: db/h2/9-vita-dml-dev.sql
       relativeToChangelogFile: false

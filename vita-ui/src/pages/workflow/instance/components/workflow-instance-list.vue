@@ -365,7 +365,7 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="160">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="220">
         <template #default="scope">
           <div>
             <el-tooltip content="查看流程" placement="top">
@@ -477,6 +477,7 @@ onMounted(() => {
               <div
                 style="display: inline-block"
                 v-if="
+                  scope.row.flowStatus === '0' ||
                   scope.row.flowStatus === '4' ||
                   scope.row.flowStatus === '5' ||
                   scope.row.flowStatus === '6'

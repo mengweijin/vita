@@ -19,10 +19,9 @@ const emit = defineEmits(["update:visible", "refresh"]);
 const isEdit = computed(() => !!props.data?.id);
 
 const INITIAL_FORM = {
-  formPath: undefined,
   id: undefined,
   name: undefined,
-  type: undefined,
+  remark: undefined,
 };
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
@@ -81,25 +80,19 @@ watch(
   >
     <el-form ref="formRef" :model="form" label-width="auto">
       <el-form-item
-        prop="type"
-        label="表单类型"
-        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-      >
-        <VtRadioDict v-model="form.type" :code="'vt_form_type'"></VtRadioDict>
-      </el-form-item>
-      <el-form-item
         prop="name"
         label="表单名称"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-      <el-form-item
-        prop="formPath"
-        label="表单路径"
-        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
-      >
-        <el-input v-model="form.formPath" clearable maxlength="300" autocomplete="off" />
+      <el-form-item prop="remark" label="备注">
+        <el-input
+          v-model="form.remark"
+          type="textarea"
+          :readonly="props.readonly"
+          :autosize="{ minRows: 3, maxRows: 8 }"
+        />
       </el-form-item>
     </el-form>
     <template #footer>

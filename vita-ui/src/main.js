@@ -7,16 +7,24 @@ import "default-passive-events";
 
 const app = createApp(App);
 
+// 全局注册 ElementPlus 组件库（FcDesigner 需要全局注册）
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+app.use(ElementPlus);
+
+// 全局注册表单设计器组件
+import FcDesigner from "@form-create/designer";
+app.use(FcDesigner);
+app.use(FcDesigner.formCreate);
+
 import { addCollection, Icon } from "@iconify/vue";
 // 预加载全部 ep、ri、ant-design 图标，以实现离线使用 iconify
 import antDesignIcons from "@iconify-json/ant-design/icons.json";
 import epIcons from "@iconify-json/ep/icons.json";
 import riIcons from "@iconify-json/ri/icons.json";
-
 addCollection(epIcons);
 addCollection(riIcons);
 addCollection(antDesignIcons);
-
 // 全局注册 @iconify/vue 中的 Icon 组件，避免多次导入
 app.component("Icon", Icon);
 

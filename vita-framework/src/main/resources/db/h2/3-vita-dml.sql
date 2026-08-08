@@ -157,7 +157,7 @@ insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150001, 15, 'Y', '已读', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (150002, 15, 'N', '未读', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：表单组件类型
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, '扩展字段表单组件类型', 'vt_ext_prop_form_component_types', null, 1, current_timestamp(), 1, current_timestamp());
+insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (16, '表单字段组件类型', 'vt_field_meta_types', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160001, 16, 'input', '输入框', 'info', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160002, 16, 'input-number', '数字输入框', 'info', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (160003, 16, 'textarea', '文本域', 'info', 3, 'N', null, 1, current_timestamp(), 1, current_timestamp());
@@ -189,10 +189,6 @@ insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, C
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (18, '二级认证模式', 'vt_safe_mode', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180001, 18, 'PASSWORD', '密码认证', 'warning', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (180002, 18, 'TOTP', 'TOTP 动态口令', 'warning', 2, 'N', null, 1, current_timestamp(), 1, current_timestamp());
--- 字典：表单类型
-insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (19, '表单类型', 'vt_form_type', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190001, 19, 'static', '静态表单', 'success', 1, 'N', null, 1, current_timestamp(), 1, current_timestamp());
-insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (190002, 19, 'dynamic', '动态表单', 'warning', 2, 'Y', null, 1, current_timestamp(), 1, current_timestamp());
 -- 字典：请假类型
 insert into VT_DICT_TYPE (ID, NAME, CODE, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (20, '请假类型', 'vt_oa_leave_type', null, 1, current_timestamp(), 1, current_timestamp());
 insert into VT_DICT_DATA (ID, TYPE_ID, VAL, LABEL, TAG, SEQ, DISABLED, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME) values (200001, 20, 'annual_leave', '年假', 'info', 1, 'N', '带薪年假', 1, current_timestamp(), 1, current_timestamp());
@@ -461,10 +457,6 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (1,'系统日志清理','0 0 3 1 * ?','systemLogCleanTask','{ "days": 365 }','N','days：系统日志保留时长，单位：天。超过该配置时间的系统日志将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
 insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (2,'临时目录清理','0 10 3 * * ?','multipartLocationCleanTask','{ "hours": 24 }','N','hours：临时文件保留时长，单位：小时。超过该配置时间的临时文件将被调度任务清理。',1,current_timestamp(),1,current_timestamp());
 insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (3,'文件上传存储路径下的空文件夹清理','0 20 3 ? * 1','fileUploadEmptyDirectoryCleanTask',null,'N','文件上传存储路径下的空文件夹清理任务，防止文件删除后，遗留的空文件夹太多。',1,current_timestamp(),1,current_timestamp());
-
-
--- 表单管理
-INSERT INTO VT_FORM (ID,PARENT_ID,ANCESTORS,NAME,"TYPE",FORM_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES(2043270536503705600,null,'/','工作流-行政-员工请假-表单','static','/oa/employee-leave/workflow/start-form',null,1,current_timestamp(),1,current_timestamp());
 
 
 -- 系统公告

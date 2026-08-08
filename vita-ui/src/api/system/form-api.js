@@ -18,7 +18,9 @@ export const formApi = {
 
   list: (args) => http.get(`${URL_PREFIX}/list`, { params: args }),
 
-  pageRoot: (args) => http.get(`${URL_PREFIX}/page/root`, { params: args }),
+  page: (args) => http.get(`${URL_PREFIX}/page`, { params: args }),
+
+  getById: (id) => http.get(`${URL_PREFIX}/${id}`),
 
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 

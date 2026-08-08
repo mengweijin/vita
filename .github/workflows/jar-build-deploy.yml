@@ -1,0 +1,85 @@
+# For more information, see:
+# Docs: https://docs.github.com/zh/actions
+# Marketplace: https://github.com/marketplace?type=actions
+name: Jar Build Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      clean_db:
+        description: '是否清理数据库'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup pnpm
+        uses: pnpm/setup@v1
+        with:
+          version: "11"
+      - run: |
+          node --version
+          pnpm -v
+
+      - name: Setup JDK（已包含 Maven）
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - run: |
+          java -version
+          javac -version
+          mvn -v
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Build to dist
+        run: |
+          cd ./vita-ui
+          pnpm install --frozen-lockfile
+          pnpm build:java
+
+      - name: Build with Maven
+        run: |
+          mvn package -f pom.xml -Dfile.encoding=UTF-8 -Dmaven.test.skip=true --update-snapshots -Ph2
+          pwd
+          ls -l
+
+      - name: Copy files via SCP
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "/home/runner/work/mengweijin/vita/vita-admin/target/vita-admin.jar"
+          target: "/opt/vita"
+
+      - name: Execute remote SSH commands using SSH key
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/vita
+            docker compose -f /opt/vita/compose.yaml down
+            if [ "${{ inputs.clean_db }}" == "true" ]; then
+              echo "Cleaning database..."
+              rm -rf /opt/vita/cache
+              rm -rf /opt/vita/h2
+              rm -rf /opt/vita/uploads
+            else
+              echo "Skipped database cleanup."
+            fi
+            mv /opt/vita/vita-admin.jar /opt/vita/app.jar
+            docker compose -f /opt/vita/compose.yaml up -d
+            docker compose -f /opt/vita/compose.yaml logs -f -n 200 vita 2>&1 | sed '/Vita startup success\|Vita startup failed/q'

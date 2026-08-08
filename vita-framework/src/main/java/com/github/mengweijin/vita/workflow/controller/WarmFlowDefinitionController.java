@@ -71,7 +71,7 @@ public class WarmFlowDefinitionController extends WarmFlowController {
     }
 
     @GetMapping("/query/{id}")
-    public FlowDefinitionVO page(@PathVariable("id") Long id) {
+    public FlowDefinitionVO queryById(@PathVariable("id") Long id) {
         FlowDefinition flowDefinition = warmFlowDefinitionService.getById(id);
         return MapstructUtils.getConverter().convert(flowDefinition, FlowDefinitionVO.class);
     }
@@ -172,19 +172,16 @@ public class WarmFlowDefinitionController extends WarmFlowController {
         return R.result(bool);
     }
 
-    @GetMapping("/query/routePath/by/flowCode/{flowCode}")
-    public String queryPublishedDefinitionStartFormRoutePathByFlowCode(@PathVariable("flowCode") String flowCode) {
+    @GetMapping("/query/by/flowCode/{flowCode}")
+    public FlowDefinitionVO queryByFlowCode(@PathVariable("flowCode") String flowCode) {
         Definition definition = FlowEngine.defService().getPublishByFlowCode(flowCode);
         if (definition == null) {
             throw new ServerException("No published definition found for flowCode: " + flowCode);
         }
-        return warmFlowDefinitionService.getRoutePath(definition);
-    }
-
-    @GetMapping("/query/routePath/by/id/{id}")
-    public String queryPublishedDefinitionStartFormRoutePathByFlowCode(@PathVariable("id") Long id) {
-        FlowDefinition definition = warmFlowDefinitionService.getById(id);
-        return warmFlowDefinitionService.getRoutePath(definition);
+        if (definition instanceof FlowDefinition def) {
+            return MapstructUtils.getConverter().convert(def, FlowDefinitionVO.class);
+        }
+        throw new ServerException("Unexpected definition type for flowCode: " + flowCode);
     }
 }
 

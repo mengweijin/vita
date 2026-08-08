@@ -6,20 +6,17 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.spring.repository.CrudRepository;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
-import com.github.mengweijin.vita.framework.enums.dict.EYesNo;
 import com.github.mengweijin.vita.framework.exception.ServerException;
+import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
 import com.github.mengweijin.vita.system.service.FormService;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
+import com.github.mengweijin.vita.workflow.mapper.WarmFlowDefinitionMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.FlowEngine;
-import org.dromara.warm.flow.core.entity.Definition;
 import org.dromara.warm.flow.orm.entity.FlowDefinition;
-import org.dromara.warm.flow.orm.mapper.FlowDefinitionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +35,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapper, FlowDefinition> {
+public class WarmFlowDefinitionService extends BaseVitaService<WarmFlowDefinitionMapper, FlowDefinition, FlowDefinitionVO> {
 
     private final FormService formService;
 
@@ -80,16 +77,5 @@ public class WarmFlowDefinitionService extends CrudRepository<FlowDefinitionMapp
         } finally {
             IoUtil.closeQuietly(inputStream);
         }
-    }
-
-    public String getRoutePath(Definition definition) {
-        String formCustom = definition.getFormCustom();
-        String formPath = definition.getFormPath();
-        if (EYesNo.N.getValue().equalsIgnoreCase(formCustom)) {
-            return formPath;
-        }
-        // 动态表单
-        FormDO form = formService.getById(formPath);
-        return form.getFormPath();
     }
 }

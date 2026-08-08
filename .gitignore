@@ -10,6 +10,14 @@ target/
 *.iml
 *.ipr
 
+### gemini
+# gemini-cli settings
+.gemini/
+
+# GitHub App credentials
+gha-creds-*.json
+
+### Vita
 logs
 /h2
 /cache

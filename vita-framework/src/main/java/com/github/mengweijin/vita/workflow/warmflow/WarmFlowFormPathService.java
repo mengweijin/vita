@@ -27,7 +27,7 @@ public class WarmFlowFormPathService implements FormPathService {
             Tree tree = new Tree();
             tree.setId(f.getId().toString());
             tree.setName(f.getName());
-            tree.setParentId(f.getParentId() == null ? null : f.getParentId().toString());
+            tree.setParentId(null);
             tree.setChildren(null);
             return tree;
         }).toList();

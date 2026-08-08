@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
  * @since 2025/9/6
  */
 @Slf4j
-class ExtPropTest {
+class ExtFieldMapTest {
 
     @Test
     @SneakyThrows
     void test() {
-        ExtProp ext = new ExtProp();
+        ExtFieldMap ext = new ExtFieldMap();
         ext.put("username", "admin");
         ext.put("nickname", "管理员");
         ext.put("startTime", LocalDateTime.now(Const.ZONE));
