@@ -19,11 +19,6 @@ export const flowDefinitionApi = {
 
   queryByFlowCode: (flowCode) => http.get(`${URL_PREFIX}/query/by/flowCode/${flowCode}`),
 
-  queryRoutePathById: (id) => http.get(`${URL_PREFIX}/query/routePath/by/id/${id}`),
-
-  queryRoutePathByFlowCode: (flowCode) =>
-    http.get(`${URL_PREFIX}/query/routePath/by/flowCode/${flowCode}`),
-
   remove: (ids) => http.post(`${URL_PREFIX}/remove/${ids}`),
 
   update: (data) => http.post(`${URL_PREFIX}/update`, data),

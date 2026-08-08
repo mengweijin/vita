@@ -170,6 +170,24 @@ watch(
         <el-form-item prop="attachmentId" label="附件">
           <VtUpload v-model="form.attachmentIds" :disabled="props.readonly" :drag="true" />
         </el-form-item>
+        <div v-if="!props.readonly" style="text-align: right">
+          <el-button type="primary" @click="onSubmit">
+            <template #icon>
+              <el-icon>
+                <Icon icon="ep:check"></Icon>
+              </el-icon>
+            </template>
+            保存
+          </el-button>
+          <el-button v-if="false" type="info" @click="onClosed">
+            <template #icon>
+              <el-icon>
+                <Icon icon="ep:close"></Icon>
+              </el-icon>
+            </template>
+            取消
+          </el-button>
+        </div>
       </el-form>
     </div>
   </el-scrollbar>

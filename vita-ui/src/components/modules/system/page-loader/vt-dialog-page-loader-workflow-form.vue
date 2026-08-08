@@ -49,6 +49,26 @@ const onClosed = () => {
         :readonly="props.readonly"
       />
     </el-scrollbar>
+    <template #footer>
+      <div v-if="false">
+        <el-button type="primary" @click="onSave">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:check"></Icon>
+            </el-icon>
+          </template>
+          保存
+        </el-button>
+        <el-button type="info" @click="onClosed">
+          <template #icon>
+            <el-icon>
+              <Icon icon="ep:close"></Icon>
+            </el-icon>
+          </template>
+          取消
+        </el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 

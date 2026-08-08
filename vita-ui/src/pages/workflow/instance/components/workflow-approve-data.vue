@@ -19,8 +19,9 @@ const readonly = ref(true);
 
 onMounted(async () => {
   const flowInstance = await flowInstanceApi.queryById(props.id);
-  routePath.value = await flowDefinitionApi.queryRoutePathById(flowInstance.definitionId);
+  const definition = await flowDefinitionApi.queryById(flowInstance.definitionId);
   businessId.value = flowInstance.businessId;
+  routePath.value = definition.formPath;
 
   utils.sleep(500).then(() => {
     emit("callback");
