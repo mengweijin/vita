@@ -29,7 +29,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VtRoutePageLoader :route-path="routePath" :readonly="readonly" :businessId="businessId" />
+  <VtPageLoaderRoute :route-path="routePath" :readonly="readonly" :businessId="businessId" />
 </template>
 
 <style scoped></style>

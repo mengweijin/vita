@@ -1,9 +1,6 @@
 <script setup>
-import { formApi } from "@/api/system/form-api.js";
-
 const props = defineProps({
-  /** 表单 ID */
-  formId: {
+  definitionId: {
     type: String,
     required: true,
   },
@@ -21,22 +18,13 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "动态表单",
+    default: " ",
   },
 });
 
 const visible = defineModel({ default: false, type: Boolean });
 
-const rule = ref([]);
-const options = ref({});
-const formData = ref({});
-
-const onOpen = () => {
-  formApi.getById(props.formId).then((res) => {
-    rule.value = res.rules;
-    options.value = res.options;
-  });
-};
+const onOpen = () => {};
 
 const onClosed = () => {
   visible.value = false;
@@ -53,12 +41,12 @@ const onClosed = () => {
     @closed="onClosed"
     width="60%"
   >
-    <formCreate
-      :rule="rule"
-      :option="options"
-      v-model="formData"
-      v-model:api="props.api"
-    ></formCreate>
+    <VtPageLoaderWorkflowForm
+      :definition-id="props.definitionId"
+      :business-id="props.businessId"
+      :api="props.api"
+      :readonly="props.readonly"
+    />
   </el-dialog>
 </template>
 

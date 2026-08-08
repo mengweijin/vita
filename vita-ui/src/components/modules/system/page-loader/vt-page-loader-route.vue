@@ -30,13 +30,13 @@ const innerInstance = ref(null);
 // Child components should implement `performAction(...)` to be callable.
 const performAction = async (...args) => {
   if (!innerInstance.value) {
-    console.warn("[VtRoutePageLoader] inner component instance not ready");
+    console.warn("[VtPageLoaderRoute] inner component instance not ready");
     return null;
   }
   if (typeof innerInstance.value.performAction === "function") {
     return await innerInstance.value.performAction(...args);
   }
-  console.warn("[VtRoutePageLoader] inner component has no performAction method");
+  console.warn("[VtPageLoaderRoute] inner component has no performAction method");
   return null;
 };
 
@@ -47,7 +47,7 @@ defineExpose({ performAction });
  */
 const resolveComponent = async () => {
   if (!props.routePath) {
-    console.warn("[VtRoutePageLoader] 未指定要加载的路由路径");
+    console.warn("[VtPageLoaderRoute] 未指定要加载的路由路径");
     return null;
   }
 
@@ -56,7 +56,7 @@ const resolveComponent = async () => {
 
   // 没有匹配到任何路由记录
   if (!matched.length) {
-    console.warn(`[VtRoutePageLoader] 未匹配到路由记录：${props.routePath}`);
+    console.warn(`[VtPageLoaderRoute] 未匹配到路由记录：${props.routePath}`);
     return null;
   }
 
@@ -65,7 +65,7 @@ const resolveComponent = async () => {
   let component = lastRecord.components?.default ?? null;
 
   if (!component) {
-    console.warn(`[VtRoutePageLoader] 路由记录中未找到默认组件：${props.routePath}`);
+    console.warn(`[VtPageLoaderRoute] 路由记录中未找到默认组件：${props.routePath}`);
     return null;
   }
 
@@ -76,7 +76,7 @@ const resolveComponent = async () => {
       // 兼容 ES Module default export 和 CommonJS module.exports
       component = module.default || module;
     } catch (error) {
-      console.error(`[VtRoutePageLoader] 组件加载失败：${props.routePath}`, error);
+      console.error(`[VtPageLoaderRoute] 组件加载失败：${props.routePath}`, error);
       return null;
     }
   }

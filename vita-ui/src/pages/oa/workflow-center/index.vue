@@ -6,13 +6,17 @@ meta:
 
 <script setup>
 import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
+import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
 
-const dialogWorkflowFormLoaderVisible = ref(false);
-const definitionId = ref(null);
+const dialogPageLoaderWorkflowFormVisible = ref(false);
+const dialogPageLoaderWorkflowFormDefinitionId = ref(null);
+const dialogPageLoaderWorkflowFormApi = ref(null);
+
 const openEmployeeLeaveForm = async () => {
   const definition = await flowDefinitionApi.queryByFlowCode("employee_leave");
-  definitionId.value = definition.id;
-  dialogWorkflowFormLoaderVisible.value = true;
+  dialogPageLoaderWorkflowFormDefinitionId.value = definition.id;
+  dialogPageLoaderWorkflowFormApi.value = employeeLeaveApi;
+  dialogPageLoaderWorkflowFormVisible.value = true;
 };
 
 const handleDevelopment = () => {
@@ -91,9 +95,10 @@ onMounted(() => {});
       </el-card>
     </div>
 
-    <VtDialogWorkflowFormLoader
-      v-model="dialogWorkflowFormLoaderVisible"
-      :definition-id="definitionId"
+    <VtDialogPageLoaderWorkflowForm
+      v-model="dialogPageLoaderWorkflowFormVisible"
+      :definition-id="dialogPageLoaderWorkflowFormDefinitionId"
+      :api="dialogPageLoaderWorkflowFormApi"
     />
   </div>
 </template>

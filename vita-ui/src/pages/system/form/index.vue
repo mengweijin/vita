@@ -54,11 +54,11 @@ const loadTableData = () => {
 const editDialogVisible = ref(false);
 const editData = ref(null);
 
-const dialogFormRenderVisible = ref(false);
-const dialogFormRenderFormId = ref(null);
+const dialogPageLoaderFormVisible = ref(false);
+const dialogPageLoaderFormFormId = ref(null);
 const handlePreview = (row) => {
-  dialogFormRenderFormId.value = row.id;
-  dialogFormRenderVisible.value = true;
+  dialogPageLoaderFormFormId.value = row.id;
+  dialogPageLoaderFormVisible.value = true;
 };
 
 const handleAdd = () => {
@@ -352,11 +352,15 @@ onMounted(() => {
 
   <VtDialogFormDesigner v-model="dialogFormDesignerVisible" :id="dialogFormDesignerFormId" />
 
-  <VtDialogFormRender
-    v-model="dialogFormRenderVisible"
-    :form-id="dialogFormRenderFormId"
+  <el-dialog
+    v-model="dialogPageLoaderFormVisible"
     :title="'动态表单（注意：此处仅为页面预览，接口功能不可用）'"
-  />
+    destroy-on-close
+    align-center
+    width="60%"
+  >
+    <VtPageLoaderForm :form-id="dialogPageLoaderFormFormId" />
+  </el-dialog>
 </template>
 
 <style scoped></style>

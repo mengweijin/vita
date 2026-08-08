@@ -59,8 +59,11 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "/home/runner/work/mengweijin/vita/vita-admin/target/vita-admin.jar"
+          source: "vita-admin/target/vita-admin.jar"
           target: "/opt/vita"
+          # 会去掉 vita-admin/target/ 这 2 个目录层级，只保留 vita-admin.jar
+          # 没有这个参数的话，scp 会把 vita-admin.jar 放在 /opt/vita/vita-admin.jar
+          strip_components: 2
 
       - name: Execute remote SSH commands using SSH key
         uses: appleboy/ssh-action@v1

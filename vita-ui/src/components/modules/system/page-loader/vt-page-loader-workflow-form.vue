@@ -1,24 +1,24 @@
 <script setup>
 import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
-import { deptApi } from "@/api/system/dept-api.js";
-import utils from "@/utils/utils.js";
 
 const props = defineProps({
   definitionId: {
     type: String,
     required: true,
   },
-  readonly: {
-    type: Boolean,
-    default: false,
-  },
   businessId: {
     type: String,
     required: false,
   },
+  api: {
+    type: Object,
+    required: false,
+  },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-const visible = defineModel({ default: false, type: Boolean });
 
 const definition = ref(null);
 
@@ -34,17 +34,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VtDialogFormRender
+  <VtPageLoaderForm
     v-if="isFormCustom"
-    v-model="visible"
     :form-id="definition?.formPath"
     :business-id="props.businessId"
-    :readonly="props.readonly"
+    :api="props.api"
   />
-
-  <VtDialogRoutePageLoader
+  <VtPageLoaderRoute
     v-else
-    v-model="visible"
     :route-path="definition?.formPath"
     :business-id="props.businessId"
     :readonly="props.readonly"

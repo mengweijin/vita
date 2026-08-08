@@ -304,13 +304,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/workflow/form/': RouteRecordInfo<
-      '/workflow/form/',
-      '/workflow/form',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/workflow/instance/': RouteRecordInfo<
       '/workflow/instance/',
       '/workflow/instance',
@@ -638,14 +631,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/workflow/definition/index.vue': {
       routes:
         | '/workflow/definition/'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
-    'src/pages/workflow/form/index.vue': {
-      routes:
-        | '/workflow/form/'
       views:
         | never
       pathParamNames:

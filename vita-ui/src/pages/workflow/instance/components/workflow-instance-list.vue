@@ -99,15 +99,15 @@ const handleView = (row) => {
   workflowChartDialogVisible.value = true;
 };
 
-const dialogRoutePageLoaderVisible = ref(false);
-const dialogRoutePageLoaderRoutePath = ref("");
-const dialogRoutePageLoaderBusinessId = ref("");
+const dialogPageLoaderWorkflowFormVisible = ref(false);
+const dialogPageLoaderWorkflowFormDefinitionId = ref(null);
+const dialogPageLoaderWorkflowFormBusinessId = ref(null);
+const dialogPageLoaderWorkflowFormApi = ref(null);
 const handleEdit = async (row) => {
-  dialogRoutePageLoaderRoutePath.value = await flowDefinitionApi.queryRoutePathById(
-    row.definitionId,
-  );
-  dialogRoutePageLoaderBusinessId.value = row.businessId;
-  dialogRoutePageLoaderVisible.value = true;
+  dialogPageLoaderWorkflowFormDefinitionId.value = row.definitionId;
+  dialogPageLoaderWorkflowFormBusinessId.value = row.businessId;
+  dialogPageLoaderWorkflowFormApi.value = null;
+  dialogPageLoaderWorkflowFormVisible.value = true;
 };
 
 const handleSubmit = (row) => {
@@ -527,11 +527,12 @@ onMounted(() => {
       :id="workflowChartDialogInstanceId"
     />
 
-    <VtDialogRoutePageLoader
-      v-model:visible="dialogRoutePageLoaderVisible"
-      :route-path="dialogRoutePageLoaderRoutePath"
-      :business-id="dialogRoutePageLoaderBusinessId"
-      :readonly="false"
+    <VtDialogPageLoaderWorkflowForm
+      v-model="dialogPageLoaderWorkflowFormVisible"
+      :definition-id="dialogPageLoaderWorkflowFormDefinitionId"
+      :business-id="dialogPageLoaderWorkflowFormBusinessId"
+      :api="dialogPageLoaderWorkflowFormApi"
+      :title="'编辑'"
     />
   </div>
 </template>
