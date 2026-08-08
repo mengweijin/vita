@@ -40,12 +40,15 @@ onMounted(async () => {
     :business-id="props.businessId"
     :api="props.api"
   />
-  <VtPageLoaderRoute
-    v-else
-    :route-path="definition?.formPath"
-    :business-id="props.businessId"
-    :readonly="props.readonly"
-  />
+
+  <template v-else>
+    <VtPageLoaderRoute
+      v-if="definition?.formPath"
+      :route-path="definition.formPath"
+      :business-id="props.businessId"
+      :readonly="props.readonly"
+    />
+  </template>
 </template>
 
 <style scoped></style>

@@ -41,12 +41,14 @@ const onClosed = () => {
     @closed="onClosed"
     width="60%"
   >
-    <VtPageLoaderWorkflowForm
-      :definition-id="props.definitionId"
-      :business-id="props.businessId"
-      :api="props.api"
-      :readonly="props.readonly"
-    />
+    <el-scrollbar height="450px">
+      <VtPageLoaderWorkflowForm
+        :definition-id="props.definitionId"
+        :business-id="props.businessId"
+        :api="props.api"
+        :readonly="props.readonly"
+      />
+    </el-scrollbar>
   </el-dialog>
 </template>
 

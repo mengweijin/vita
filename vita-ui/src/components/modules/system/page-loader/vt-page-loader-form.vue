@@ -42,7 +42,7 @@ onMounted(async () => {
     :rule="rule"
     :option="options"
     v-model="formData"
-    v-model:api="props.api"
+    :api="props.api"
   ></formCreate>
 </template>
 

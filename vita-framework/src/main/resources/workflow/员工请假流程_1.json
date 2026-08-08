@@ -94,8 +94,8 @@
   "modelValue": "CLASSICS",
   "category": "10002",
   "version": "1",
-  "formCustom": "Y",
-  "formPath": "2043270536503705600",
+  "formCustom": "N",
+  "formPath": "/oa/employee-leave/workflow/start-form",
   "listenerType": "",
   "listenerPath": ""
 }
