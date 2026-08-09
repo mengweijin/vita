@@ -20,8 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/setup@v1
-      - run: node --version
-      - run: pnpm test
-      - run: pnpm install --frozen-lockfile
+        with:
+          version: "11"
+      - run: |
+          node --version
+          pnpm test
+          pnpm install --frozen-lockfile
       - run: pnpm run fmt:check
       - run: pnpm run lint:github

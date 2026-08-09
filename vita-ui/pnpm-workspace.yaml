@@ -1,7 +1,7 @@
 allowBuilds:
   "@scarf/scarf": true
   core-js: true
-  core-js-pure: set this to true or false
+  core-js-pure: true
   es5-ext: true
   esbuild: true
   sharp: true

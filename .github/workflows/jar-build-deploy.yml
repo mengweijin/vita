@@ -43,7 +43,7 @@ jobs:
       - name: Build to dist
         run: |
           cd ./vita-ui
-          pnpm install --frozen-lockfile
+          pnpm install
           pnpm build:java
 
       - name: Build with Maven
