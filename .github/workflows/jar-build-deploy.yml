@@ -85,4 +85,4 @@ jobs:
             fi
             mv /opt/vita/vita-admin.jar /opt/vita/app.jar
             docker compose -f /opt/vita/compose.yaml up -d
-            sleep 60 && docker ps -a
+            sleep 60 && docker ps -a | grep vita
