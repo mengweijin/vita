@@ -28,7 +28,7 @@ jobs:
           pnpm -v
 
       - name: Setup JDK（已包含 Maven）
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
