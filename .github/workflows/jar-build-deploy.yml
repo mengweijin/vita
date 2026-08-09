@@ -75,6 +75,7 @@ jobs:
           script: |
             cd /opt/vita
             docker compose -f /opt/vita/compose.yaml down
+            echo "inputs.clean_db: ${{ inputs.clean_db }}"
             if [ "${{ inputs.clean_db }}" == "true" ]; then
               echo "Cleaning database..."
               rm -rf /opt/vita/cache
