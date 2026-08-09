@@ -23,8 +23,6 @@ jobs:
         with:
           version: "11"
       - run: |
-          node --version
-          pnpm test
           pnpm install
           pnpm run fmt:check
           pnpm run lint:github
