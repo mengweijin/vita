@@ -85,4 +85,4 @@ jobs:
             fi
             mv /opt/vita/vita-admin.jar /opt/vita/app.jar
             docker compose -f /opt/vita/compose.yaml up -d
-            docker compose -f /opt/vita/compose.yaml logs -f -n 200 vita 2>&1 | sed '/Vita startup success\|Vita startup failed/q'
+            sleep 60 && docker ps -a

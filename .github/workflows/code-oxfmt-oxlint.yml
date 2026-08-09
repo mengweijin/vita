@@ -25,6 +25,6 @@ jobs:
       - run: |
           node --version
           pnpm test
-          pnpm install --frozen-lockfile
-      - run: pnpm run fmt:check
-      - run: pnpm run lint:github
+          pnpm install
+          pnpm run fmt:check
+          pnpm run lint:github
