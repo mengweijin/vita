@@ -1,20 +1,21 @@
 package com.github.mengweijin.vita.workflow.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.v7.core.collection.CollUtil;
-import com.github.mengweijin.vita.framework.constant.Const;
+import cn.hutool.v7.core.map.MapUtil;
 import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.satoken.LoginHelper;
+import com.github.mengweijin.vita.workflow.constant.WorkflowConst;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowInstanceVO;
 import com.github.mengweijin.vita.workflow.service.WarmFlowInstanceService;
+import com.github.mengweijin.vita.workflow.variable.WorkflowVariableHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.warm.flow.core.dto.FlowParams;
 import org.dromara.warm.flow.core.entity.Instance;
-import org.dromara.warm.flow.core.entity.Task;
+import org.dromara.warm.flow.core.enums.SkipType;
 import org.dromara.warm.flow.core.service.InsService;
 import org.dromara.warm.flow.core.service.TaskService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * 流程实例表 Flow Instance Controller
@@ -47,6 +48,8 @@ public class WarmFlowInstanceController {
     private final TaskService taskService;
 
     private final WarmFlowInstanceService warmFlowInstanceService;
+
+    private final WorkflowVariableHandler workflowVariableHandler;
 
     /**
      * 所有流程实例分页查询
@@ -90,9 +93,11 @@ public class WarmFlowInstanceController {
     @Log(title = LOG_TITLE, operationType = EOperationType.OTHER)
     @PostMapping("/submit/{instanceId}")
     public R<Instance> submit(@PathVariable("instanceId") Long instanceId) {
-        List<Task> taskList = taskService.getByInsId(instanceId);
-        Task first = CollUtil.getFirst(taskList);
-        Instance instance = taskService.pass(first.getId(), Const.EMPTY, null);
+        Map<String, Object> entityMap = workflowVariableHandler.getVariable(instanceId);
+        FlowParams flowParams = FlowParams.build();
+        flowParams.skipType(SkipType.PASS.getKey());
+        flowParams.variable(MapUtil.singleton(WorkflowConst.VARIABLE_ENTITY_MAP_KEY, entityMap));
+        Instance instance = taskService.skipByInsId(instanceId, flowParams);
         return R.ok(instance);
     }
 

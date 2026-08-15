@@ -11,36 +11,16 @@ const props = defineProps({
     required: false,
     default: null,
   },
-  /** 传递给目标组件的 readonly 属性 */
-  readonly: {
+  /** 传递给目标组件的 disabled 属性 */
+  disabled: {
     default: false,
     type: Boolean,
   },
 });
 
-const emit = defineEmits(["callback"]);
-
 const router = useRouter();
 
-const resolvedComp = ref(null);
-
-const innerInstance = ref(null);
-
-// Expose a single, generic method to invoke an action on the loaded component.
-// Child components should implement `performAction(...)` to be callable.
-const performAction = async (...args) => {
-  if (!innerInstance.value) {
-    console.warn("[VtPageLoaderRoute] inner component instance not ready");
-    return null;
-  }
-  if (typeof innerInstance.value.performAction === "function") {
-    return await innerInstance.value.performAction(...args);
-  }
-  console.warn("[VtPageLoaderRoute] inner component has no performAction method");
-  return null;
-};
-
-defineExpose({ performAction });
+const resolvedComponent = ref(null);
 
 /**
  * 根据 routePath 解析出最终要渲染的组件（异步组件也可直接使用）
@@ -85,30 +65,18 @@ const resolveComponent = async () => {
   return markRaw(component);
 };
 
-// 监听 routePath 变化，重新解析组件
-watch(
-  () => props.routePath,
-  async (newPath) => {
-    resolvedComp.value = null; // 先清空，避免显示旧组件
-    if (newPath) {
-      resolvedComp.value = await resolveComponent();
-      emit("callback"); // 通知父组件，组件已加载完成
-    }
-  },
-  { immediate: true },
-);
+watchEffect(async () => {
+  if (props.routePath) {
+    resolvedComponent.value = await resolveComponent();
+  }
+});
 </script>
 
 <template>
-  <!-- 
-    1. 添加 key：确保 routePath 变化时，即使组件类型相同，也会强制重新创建实例（重置内部状态）
-    2. v-if：仅在组件解析成功后渲染
-  -->
   <component
-    v-if="resolvedComp"
-    :is="resolvedComp"
-    :readonly="props.readonly"
+    v-if="resolvedComponent"
+    :is="resolvedComponent"
+    :disabled="props.disabled"
     :businessId="props.businessId"
-    ref="innerInstance"
   />
 </template>

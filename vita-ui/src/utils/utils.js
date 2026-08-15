@@ -37,20 +37,22 @@ const extendUtils = {
   },
 
   /**
-   * 写入字符串到指定文件，并触发浏览器下载。
-   * @param {string} content 要写入文件的字符串内容
-   * @param {string} fileName 下载的文件名，默认为 "download.txt"
+   * 文件下载。
+   * contentType 示例："application/octet-stream"，text/plain;charset=utf-8
+   * @param {Blob} blob 下载的文件对象。const blob = new Blob([content], { type: "application/octet-stream" });
+   * @param {string} fileName 下载的文件名。默认为 "download.txt"
    */
-  download: (content, fileName = "download.txt") => {
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  download: (blob, fileName = "download.txt") => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = fileName;
+    a.setAttribute("download", fileName);
     a.click();
     setTimeout(() => {
-      document.body.removeChild(a); // 移除临时a标签
-      URL.revokeObjectURL(url); // 释放内存
+      // 下载完成移除临时元素
+      a.remove();
+      // 释放掉blob对象内存
+      window.URL.revokeObjectURL(url);
     }, 100);
   },
 

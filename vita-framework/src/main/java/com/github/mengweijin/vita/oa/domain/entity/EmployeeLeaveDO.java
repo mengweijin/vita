@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class EmployeeLeaveDO extends BaseEntity {
     /**
      * 请假天数
      */
-    private BigDecimal leaveDays;
+    private Double leaveDays;
 
     /**
      * 请假原因

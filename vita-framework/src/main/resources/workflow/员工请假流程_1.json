@@ -27,7 +27,7 @@
     {
       "nodeType": "1",
       "nodeCode": "launch",
-      "nodeName": "发起",
+      "nodeName": "发起流程",
       "permissionFlag": "",
       "nodeRatio": "0",
       "anyNodeSkip": null,
@@ -95,7 +95,7 @@
   "category": "10002",
   "version": "1",
   "formCustom": "N",
-  "formPath": "/oa/employee-leave/workflow/start-form",
+  "formPath": "/oa/employee-leave/workflow-start-form",
   "listenerType": "",
   "listenerPath": ""
 }

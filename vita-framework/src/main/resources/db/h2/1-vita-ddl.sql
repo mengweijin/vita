@@ -429,8 +429,7 @@ drop table IF EXISTS VT_FORM;
 create TABLE VT_FORM (
   ID                            bigint NOT NULL comment '主键ID',
   NAME                          varchar(255) NOT NULL comment '表单名称',
-  RULES                         text DEFAULT NULL comment '表单的规则和字段的整体配置数据，通常包含多个字段的配置',
-  OPTIONS                       text DEFAULT NULL comment '表单的配置数据（例如：布局、尺寸、全局数据等）',
+  ROUTE_PATH                    varchar(255) NOT NULL comment '路由路径',
   REMARK                        varchar(500) DEFAULT NULL comment '备注',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',

@@ -71,12 +71,11 @@ const treeRef = useTemplateRef("treeRef");
 const treeProps = reactive({
   children: "children",
   disabled: "disabled",
-  label: "name",
+  label: "id",
 });
 
 const treeData = computed(() => {
-  const tree = utils.toArrayTree(templateList.value, { sortKey: "name" });
-  return tree[0]?.children || [];
+  return utils.toArrayTree(templateList.value, { sortKey: "id" });
 });
 
 const contentPreview = ref({});
@@ -113,10 +112,10 @@ defineExpose({ data, visible });
     align-center
     @opened="onOpened"
     @closed="onClosed"
-    width="90%"
+    width="95%"
   >
     <el-container v-loading="loading" class="vt-height">
-      <el-aside width="360px">
+      <el-aside width="500px">
         <el-scrollbar>
           <el-tree
             ref="treeRef"

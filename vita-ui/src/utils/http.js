@@ -213,18 +213,8 @@ axiosInstance.download = (url, fileName = undefined) => {
         }
       }
 
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: response.data.type }),
-      );
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      // 下载完成移除元素
-      document.body.removeChild(link);
-      // 释放掉blob对象
-      window.URL.revokeObjectURL(url);
+      const blob = new Blob([response.data], { type: response.data.type });
+      utils.download(blob, fileName);
     });
 };
 

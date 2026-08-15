@@ -15,7 +15,7 @@ const emit = defineEmits(["callback"]);
 
 const routePath = ref("");
 const businessId = ref("");
-const readonly = ref(true);
+const disabled = ref(true);
 
 onMounted(async () => {
   const flowInstance = await flowInstanceApi.queryById(props.id);
@@ -30,7 +30,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VtPageLoaderRoute :route-path="routePath" :readonly="readonly" :businessId="businessId" />
+  <VtPageLoader :route-path="routePath" :businessId="businessId" :disabled="disabled" />
 </template>
 
 <style scoped></style>

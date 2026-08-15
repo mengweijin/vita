@@ -9,7 +9,7 @@ import { flowDefinitionApi } from "@/api/workflow/flow-definition-api.js";
 import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
 
 const dialogPageLoaderWorkflowFormVisible = ref(false);
-const dialogPageLoaderWorkflowFormDefinitionId = ref(null);
+const dialogPageLoaderWorkflowFormDefinitionId = ref("");
 const dialogPageLoaderWorkflowFormApi = ref(null);
 
 const openEmployeeLeaveForm = async () => {
@@ -34,8 +34,8 @@ onMounted(() => {});
     <!-- 人事流程 -->
     <div class="vt-header" style="margin-top: 5px">人事流程</div>
     <div class="vt-card-container">
-      <el-card>
-        <div class="vt-card-content" @click="openEmployeeLeaveForm">
+      <el-card @click="openEmployeeLeaveForm">
+        <div class="vt-card-content">
           <!-- 日历/请假：蓝色 -->
           <el-icon :size="30" color="#409EFF">
             <Icon icon="ep:calendar"></Icon>
@@ -43,8 +43,8 @@ onMounted(() => {});
           <span>员工请假</span>
         </div>
       </el-card>
-      <el-card>
-        <div class="vt-card-content" @click="handleDevelopment">
+      <el-card @click="handleDevelopment">
+        <div class="vt-card-content">
           <!-- 检查/转正：绿色 -->
           <el-icon :size="30" color="#67C23A">
             <Icon icon="ep:check"></Icon>
@@ -52,8 +52,8 @@ onMounted(() => {});
           <span>员工转正</span>
         </div>
       </el-card>
-      <el-card>
-        <div class="vt-card-content" @click="handleDevelopment">
+      <el-card @click="handleDevelopment">
+        <div class="vt-card-content">
           <!-- 交换/调岗：灰色 -->
           <el-icon :size="30" color="#909399">
             <Icon icon="ri:exchange-line"></Icon>
@@ -61,8 +61,8 @@ onMounted(() => {});
           <span>员工调岗</span>
         </div>
       </el-card>
-      <el-card>
-        <div class="vt-card-content" @click="handleDevelopment">
+      <el-card @click="handleDevelopment">
+        <div class="vt-card-content">
           <!-- 移除/离职：红色 -->
           <el-icon :size="30" color="#F56C6C">
             <Icon icon="ep:remove"></Icon>
@@ -75,8 +75,8 @@ onMounted(() => {});
     <!-- 财务流程 -->
     <div class="vt-header">财务流程</div>
     <div class="vt-card-container">
-      <el-card>
-        <div class="vt-card-content" @click="handleDevelopment">
+      <el-card @click="handleDevelopment">
+        <div class="vt-card-content">
           <!-- 金钱/报销：橙色 -->
           <el-icon :size="30" color="#E6A23C">
             <Icon icon="ep:money"></Icon>
@@ -84,8 +84,8 @@ onMounted(() => {});
           <span>报销流程</span>
         </div>
       </el-card>
-      <el-card>
-        <div class="vt-card-content" @click="handleDevelopment">
+      <el-card @click="handleDevelopment">
+        <div class="vt-card-content">
           <!-- 钱包/预支：金色 -->
           <el-icon :size="30" color="#F7BA2A">
             <Icon icon="ep:wallet"></Icon>
@@ -95,10 +95,10 @@ onMounted(() => {});
       </el-card>
     </div>
 
-    <VtDialogPageLoaderWorkflowForm
+    <VtDialogPageLoaderWorkflow
       v-model="dialogPageLoaderWorkflowFormVisible"
       :definition-id="dialogPageLoaderWorkflowFormDefinitionId"
-      :api="dialogPageLoaderWorkflowFormApi"
+      :title="'流程表单'"
     />
   </div>
 </template>

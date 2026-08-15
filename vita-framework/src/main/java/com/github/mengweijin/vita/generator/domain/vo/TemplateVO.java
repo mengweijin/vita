@@ -1,10 +1,11 @@
 package com.github.mengweijin.vita.generator.domain.vo;
 
-import com.github.mengweijin.vita.framework.util.JarFileUtils;
+import cn.hutool.v7.core.text.CharSequenceUtil;
+import com.github.mengweijin.vita.framework.util.ResourceUtils;
+import com.github.mengweijin.vita.generator.service.TemplateService;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author mengweijin
@@ -15,21 +16,13 @@ public class TemplateVO implements Serializable {
 
     private String id;
 
-    private String parentId;
-
-    private boolean directory;
-
     private String name;
 
     private String content;
 
-    private List<TemplateVO> children;
-
-    public TemplateVO(JarFileUtils.ContentInfo contentInfo) {
-        this.id = contentInfo.getId();
-        this.parentId = contentInfo.getParentId();
-        this.directory = contentInfo.isDirectory();
-        this.name = contentInfo.getName();
-        this.content = contentInfo.getContent();
+    public TemplateVO(ResourceUtils.ResourceInfo resourceInfo) {
+        this.id = CharSequenceUtil.subAfter(resourceInfo.getUrl(), TemplateService.TEMPLATE_DIR, false);
+        this.name = resourceInfo.getName();
+        this.content = resourceInfo.getContent();
     }
 }

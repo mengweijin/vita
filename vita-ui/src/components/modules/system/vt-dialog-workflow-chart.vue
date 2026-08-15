@@ -96,6 +96,6 @@ const onClosed = () => {
 
 <style scoped>
 .vt-dialog-workflow-designer-wrapper {
-  height: calc(100vh - 200px);
+  height: calc(100vh - 300px);
 }
 </style>

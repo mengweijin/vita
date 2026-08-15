@@ -110,17 +110,14 @@ public class GeneratorService {
         String currentBasePath = DOWNLOAD_BASE_TEMP_DIR + IdUtil.fastSimpleUUID();
         List<TemplateVO> templateList = templateService.getTemplateList();
         templateList.forEach(tpl -> {
-            if (!tpl.isDirectory()) {
-                bo.setTemplateId(tpl.getId());
+            bo.setTemplateId(tpl.getId());
+            ContentVO contentVO = this.generate(bo);
 
-                ContentVO contentVO = this.generate(bo);
-                String filePath = CharSequenceUtil.subAfter(tpl.getId(), TemplateService.TEMPLATE_DIR, false);
-                filePath = CharSequenceUtil.replace(filePath, contentVO.getTemplateName(), contentVO.getFileName());
-                String fullPath = String.join(File.separator, currentBasePath, filePath);
-                File file = FileUtil.file(fullPath);
-                FileUtil.mkParentDirs(file);
-                FileUtil.writeUtf8String(contentVO.getContent(), file);
-            }
+            String filePath = CharSequenceUtil.replace(tpl.getId(), contentVO.getTemplateName(), contentVO.getFileName());
+            String fullPath = String.join(File.separator, currentBasePath, filePath);
+            File file = FileUtil.file(fullPath);
+            FileUtil.mkParentDirs(file);
+            FileUtil.writeUtf8String(contentVO.getContent(), file);
         });
 
         File zip = ZipUtil.zip(FileUtil.file(currentBasePath));

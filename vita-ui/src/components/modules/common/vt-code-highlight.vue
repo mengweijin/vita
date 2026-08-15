@@ -57,7 +57,8 @@ const handleCopy = () => {
 };
 
 const handleDownload = () => {
-  utils.download(props.code, props.fileName);
+  const blob = new Blob([props.code], { type: "application/octet-stream" });
+  utils.download(blob, props.fileName);
 };
 </script>
 

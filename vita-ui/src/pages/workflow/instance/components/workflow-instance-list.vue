@@ -183,27 +183,6 @@ onMounted(() => {
 
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
-    <el-col :span="1.5" v-show="selected.length" v-permission="'workflow:definition:remove'">
-      <el-popconfirm
-        placement="right"
-        width="400"
-        :title="`确定全部删除已选择的【${selected.map((i) => i.name).join()}】吗？`"
-        confirm-button-text="确定"
-        cancel-button-text="取消"
-        @confirm="handleBatchDelete"
-      >
-        <template #reference>
-          <el-button type="danger">
-            <template #icon>
-              <el-icon>
-                <Icon icon="ep:delete"></Icon>
-              </el-icon>
-            </template>
-            批量删除
-          </el-button>
-        </template>
-      </el-popconfirm>
-    </el-col>
     <!-- 右侧 -->
     <VtTableBarRight
       :tableRef="tableRef"
@@ -527,11 +506,10 @@ onMounted(() => {
       :id="workflowChartDialogInstanceId"
     />
 
-    <VtDialogPageLoaderWorkflowForm
+    <VtDialogPageLoaderWorkflow
       v-model="dialogPageLoaderWorkflowFormVisible"
       :definition-id="dialogPageLoaderWorkflowFormDefinitionId"
       :business-id="dialogPageLoaderWorkflowFormBusinessId"
-      :api="dialogPageLoaderWorkflowFormApi"
       :title="'编辑'"
     />
   </div>

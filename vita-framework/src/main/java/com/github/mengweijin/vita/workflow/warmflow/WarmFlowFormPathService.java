@@ -25,7 +25,7 @@ public class WarmFlowFormPathService implements FormPathService {
         List<FormVO> list = formService.listVo();
         return list.stream().map(f -> {
             Tree tree = new Tree();
-            tree.setId(f.getId().toString());
+            tree.setId(f.getRoutePath());
             tree.setName(f.getName());
             tree.setParentId(null);
             tree.setChildren(null);

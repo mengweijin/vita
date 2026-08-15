@@ -4,6 +4,7 @@ meta:
 </route>
 
 <script setup>
+import { dialogPageLoaderWorkflowBus } from "@/utils/event-bus.js";
 import { employeeLeaveApi } from "@/api/oa/employee-leave-api.js";
 import utils from "@/utils/utils.js";
 
@@ -12,7 +13,7 @@ const router = useRouter();
 const loading = ref(false);
 
 const props = defineProps({
-  readonly: {
+  disabled: {
     type: Boolean,
     default: false,
   },
@@ -62,18 +63,14 @@ const onSubmit = () => {
     }
     employeeLeaveApi.saveWorkflow(form.value).then((r) => {
       if (r.code === 200) {
+        // 提交成功后，通知祖级组件回调 onSubmitSuccess 方法
+        dialogPageLoaderWorkflowBus.emit("onSubmitSuccess");
+        // 切换到我的流程页签（此处业务需要）
         router.push("/oa/my-workflow");
       }
     });
   });
 };
-
-// Expose a generic performAction that calls the existing onSubmit logic.
-const performAction = async (...args) => {
-  return await onSubmit();
-};
-
-defineExpose({ performAction });
 
 watch(
   () => props.businessId,
@@ -88,14 +85,23 @@ watch(
   },
   { immediate: true },
 );
+
+onMounted(async () => {
+  // 组件挂载时订阅祖级组件调用 onSubmit 的事件
+  dialogPageLoaderWorkflowBus.on(onSubmit);
+});
+
+onUnmounted(() => {
+  dialogPageLoaderWorkflowBus.off(onSubmit);
+});
 </script>
 
 <template>
   <el-scrollbar>
     <div class="vt-leave-apply-container" v-loading="loading">
-      <el-form ref="formRef" :model="form" label-width="auto">
-        <el-form-item v-if="props.readonly" prop="remark" label="休假人">
-          <el-input v-model="form.createByName" :readonly="true" />
+      <el-form ref="formRef" :model="form" :disabled="props.disabled" label-width="auto">
+        <el-form-item v-if="props.disabled" prop="remark" label="休假人">
+          <el-input v-model="form.createByName" :readonly="true" :style="'width: 150px;'" />
         </el-form-item>
         <el-form-item
           prop="leaveType"
@@ -105,7 +111,8 @@ watch(
           <VtSelectDict
             v-model="form.leaveType"
             :code="'vt_oa_leave_type'"
-            :disabled="props.readonly"
+            :disabled="props.disabled"
+            :style="'width: 150px;'"
           ></VtSelectDict>
         </el-form-item>
 
@@ -121,7 +128,7 @@ watch(
             <el-date-picker
               v-model="form.startTime"
               clearable
-              :readonly="props.readonly"
+              :disabled="props.disabled"
               type="datetime"
               value-format="YYYY-MM-DD HH:mm"
               :format="'YYYY-MM-DD HH:mm'"
@@ -136,7 +143,7 @@ watch(
             <el-date-picker
               v-model="form.endTime"
               clearable
-              :readonly="props.readonly"
+              :disabled="props.disabled"
               type="datetime"
               value-format="YYYY-MM-DD HH:mm"
               :format="'YYYY-MM-DD HH:mm'"
@@ -153,7 +160,7 @@ watch(
         >
           <el-input-number
             v-model="form.leaveDays"
-            :readonly="props.readonly"
+            :disabled="props.disabled"
             :min="0.5"
             :step="0.5"
           />
@@ -163,31 +170,13 @@ watch(
           <el-input
             v-model="form.remark"
             type="textarea"
-            :readonly="props.readonly"
+            :disabled="props.disabled"
             :autosize="{ minRows: 3, maxRows: 8 }"
           />
         </el-form-item>
         <el-form-item prop="attachmentId" label="附件">
-          <VtUpload v-model="form.attachmentIds" :disabled="props.readonly" :drag="true" />
+          <VtUpload v-model="form.attachmentIds" :disabled="props.disabled" :drag="true" />
         </el-form-item>
-        <div v-if="!props.readonly" style="text-align: right">
-          <el-button type="primary" @click="onSubmit">
-            <template #icon>
-              <el-icon>
-                <Icon icon="ep:check"></Icon>
-              </el-icon>
-            </template>
-            保存
-          </el-button>
-          <el-button v-if="false" type="info" @click="onClosed">
-            <template #icon>
-              <el-icon>
-                <Icon icon="ep:close"></Icon>
-              </el-icon>
-            </template>
-            取消
-          </el-button>
-        </div>
       </el-form>
     </div>
   </el-scrollbar>
@@ -196,6 +185,5 @@ watch(
 <style scoped>
 .vt-leave-apply-container {
   padding: 0 15px;
-  max-height: calc(100vh - 200px);
 }
 </style>

@@ -21,6 +21,7 @@ const isEdit = computed(() => !!props.data?.id);
 const INITIAL_FORM = {
   id: undefined,
   name: undefined,
+  routePath: undefined,
   remark: undefined,
 };
 
@@ -85,6 +86,13 @@ watch(
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
+      </el-form-item>
+      <el-form-item
+        prop="routePath"
+        label="路由路径"
+        :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
+      >
+        <el-input v-model="form.routePath" clearable autocomplete="off" />
       </el-form-item>
       <el-form-item prop="remark" label="备注">
         <el-input

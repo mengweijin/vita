@@ -27,6 +27,7 @@ public class FormService extends BaseVitaService<FormMapper, FormDO, FormVO> {
     public LambdaQueryWrapper<FormDO> buildQueryWrapper(FormDO form) {
         LambdaQueryWrapper<FormDO> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(form.getId() != null, FormDO::getId, form.getId());
+        wrapper.eq(StrUtil.isNotBlank(form.getRoutePath()), FormDO::getRoutePath, form.getRoutePath());
         wrapper.gt(form.getStartCreateTime() != null, FormDO::getCreateTime, form.getStartCreateTime());
         wrapper.le(form.getEndCreateTime() != null, FormDO::getCreateTime, form.getEndCreateTime());
         wrapper.like(StrUtil.isNotBlank(form.getName()), FormDO::getName, form.getName());

@@ -462,6 +462,10 @@ insert into VT_SCHEDULING_TASK (ID,NAME,CRON,BEAN_NAME,ARGS,DISABLED,REMARK,CREA
 INSERT INTO VT_NOTICE (ID,TITLE,DESCRIPTION,RELEASED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (1948579666135564289,'欢迎使用 Vita（微塔）管理系统！','<p style="text-align: left;"><strong>Vita（中文名：微塔）</strong>：是一款<strong>轻量级快速开发平台应用系统</strong>。</p><p style="text-align: left;">基于 SpringBoot 3、sa-token、mybatis-plus、vite、vue 3、element-plus、javascript 等技术，不依赖任何第三方服务。</p><p style="text-align: left;">有时候我们就想做一个简单的东西，采用已有的开源框架却要依赖一大堆东西，和很复杂的配置文件，自己从零搭建又太耗费时间，<strong>真的太麻烦了！</strong></p><p style="text-align: left;">于是，就有了 <strong>Vita</strong>，它可以帮你节省很多时间和精力，非常适合一个人即一个团队的工作环境。</p><p style="text-align: left;">在线演示：<a href="https://vita.aday.fun" target="_blank">https://vita.aday.fun</a></p>','Y',1,current_timestamp(),1,current_timestamp());
 
 
+-- 表单管理
+INSERT INTO VT_FORM (ID,NAME,ROUTE_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2043270536503705600,'OA-工作流-员工请假','/oa/employee-leave/workflow-start-form',NULL,1,current_timestamp(),1,current_timestamp());
+
+
 -- 用户-角色
 INSERT INTO VT_USER_ROLE (ID,USER_ID,ROLE_ID,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2034125907099107330,2,2,1,current_timestamp(),1,current_timestamp());
 

@@ -10,21 +10,13 @@ const props = defineProps({
     type: String,
     required: false,
   },
-  api: {
-    type: Object,
-    required: false,
-  },
-  readonly: {
+  disabled: {
     type: Boolean,
     default: false,
   },
 });
 
 const definition = ref(null);
-
-const isFormCustom = computed(() => {
-  return definition.value && definition.value.formCustom === "Y";
-});
 
 onMounted(async () => {
   if (props.definitionId) {
@@ -34,21 +26,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VtPageLoaderForm
-    v-if="isFormCustom"
-    :form-id="definition?.formPath"
+  <VtPageLoader
+    v-if="definition?.formPath"
+    :route-path="definition.formPath"
     :business-id="props.businessId"
-    :api="props.api"
+    :disabled="props.disabled"
   />
-
-  <template v-else>
-    <VtPageLoaderRoute
-      v-if="definition?.formPath"
-      :route-path="definition.formPath"
-      :business-id="props.businessId"
-      :readonly="props.readonly"
-    />
-  </template>
 </template>
 
 <style scoped></style>

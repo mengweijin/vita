@@ -8,6 +8,7 @@ meta:
 import { formApi } from "@/api/system/form-api.js";
 import utils from "@/utils/utils.js";
 import { useForm } from "./hooks.js";
+import FormPreview from "./components/form-preview.vue";
 import FormEdit from "./components/form-edit.vue";
 const { columns } = useForm();
 
@@ -54,11 +55,11 @@ const loadTableData = () => {
 const editDialogVisible = ref(false);
 const editData = ref(null);
 
-const dialogPageLoaderFormVisible = ref(false);
-const dialogPageLoaderFormFormId = ref(null);
+const dialogPageLoaderVisible = ref(false);
+const dialogPageLoaderRoutePath = ref(null);
 const handlePreview = (row) => {
-  dialogPageLoaderFormFormId.value = row.id;
-  dialogPageLoaderFormVisible.value = true;
+  dialogPageLoaderRoutePath.value = row.routePath;
+  dialogPageLoaderVisible.value = true;
 };
 
 const handleAdd = () => {
@@ -70,13 +71,6 @@ const handleEdit = (row) => {
   // 使用展开运算符，避免数据污染
   editData.value = { ...row };
   editDialogVisible.value = true;
-};
-
-const dialogFormDesignerVisible = ref(false);
-const dialogFormDesignerFormId = ref(null);
-const handleDesign = (row) => {
-  dialogFormDesignerFormId.value = row.id;
-  dialogFormDesignerVisible.value = true;
 };
 
 /** selected rows */
@@ -201,29 +195,16 @@ onMounted(() => {
         v-if="columns.name.visible"
         prop="name"
         label="表单名称"
-        min-width="260"
+        min-width="240"
         fixed="left"
       />
-      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />
-      <el-table-column v-if="columns.rules.visible" prop="rules" label="表单规则" min-width="160">
-        <template #default="scope">
-          <el-tooltip :content="JSON.stringify(scope.row.rules)" placement="top">
-            <span>{{ JSON.stringify(scope.row.rules) }}</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
       <el-table-column
-        v-if="columns.options.visible"
-        prop="options"
-        label="表单配置数据"
-        min-width="160"
-      >
-        <template #default="scope">
-          <el-tooltip :content="JSON.stringify(scope.row.options)" placement="top">
-            <span>{{ JSON.stringify(scope.row.options) }}</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
+        v-if="columns.routePath.visible"
+        prop="routePath"
+        label="路由路径"
+        min-width="300"
+      />
+      <el-table-column v-if="columns.remark.visible" prop="remark" label="备注" min-width="160" />
       <el-table-column
         v-if="columns.createByName.visible"
         prop="createByName"
@@ -252,7 +233,7 @@ onMounted(() => {
         align="center"
         width="160"
       />
-      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="220">
+      <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="160">
         <template #default="scope">
           <div>
             <el-tooltip content="表单预览" placement="top">
@@ -260,22 +241,6 @@ onMounted(() => {
                 <template #icon>
                   <el-icon :size="size">
                     <Icon icon="ep:view"></Icon>
-                  </el-icon>
-                </template>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip content="表单设计" placement="top">
-              <el-button
-                type="primary"
-                text
-                :size="size"
-                style="margin-left: 0px"
-                @click="handleDesign(scope.row)"
-                v-permission="'system:form:update'"
-              >
-                <template #icon>
-                  <el-icon :size="size">
-                    <Icon icon="ri:input-field"></Icon>
                   </el-icon>
                 </template>
               </el-button>
@@ -348,19 +313,9 @@ onMounted(() => {
     />
   </div>
 
+  <FormPreview v-model="dialogPageLoaderVisible" :route-path="dialogPageLoaderRoutePath" />
+
   <FormEdit v-model:visible="editDialogVisible" :data="editData" @refresh="loadTableData" />
-
-  <VtDialogFormDesigner v-model="dialogFormDesignerVisible" :id="dialogFormDesignerFormId" />
-
-  <el-dialog
-    v-model="dialogPageLoaderFormVisible"
-    :title="'动态表单（注意：此处仅为页面预览，接口功能不可用）'"
-    destroy-on-close
-    align-center
-    width="60%"
-  >
-    <VtPageLoaderForm :form-id="dialogPageLoaderFormFormId" />
-  </el-dialog>
 </template>
 
 <style scoped></style>

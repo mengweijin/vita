@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * @author mengweijin
  * @since 2023/5/20
@@ -49,4 +51,10 @@ public enum EWorkflowCode implements IEnum<String> {
 
     private final String value;
 
+    public static EWorkflowCode fromValue(String value) {
+        return Arrays.stream(EWorkflowCode.values())
+                .filter(i -> i.getValue().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow();
+    }
 }

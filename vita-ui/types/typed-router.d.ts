@@ -150,9 +150,9 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/oa/employee-leave/workflow/start-form': RouteRecordInfo<
-      '/oa/employee-leave/workflow/start-form',
-      '/oa/employee-leave/workflow/start-form',
+    '/oa/employee-leave/workflow-start-form': RouteRecordInfo<
+      '/oa/employee-leave/workflow-start-form',
+      '/oa/employee-leave/workflow-start-form',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -460,9 +460,9 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/oa/employee-leave/workflow/start-form.vue': {
+    'src/pages/oa/employee-leave/workflow-start-form.vue': {
       routes:
-        | '/oa/employee-leave/workflow/start-form'
+        | '/oa/employee-leave/workflow-start-form'
       views:
         | never
       pathParamNames:
