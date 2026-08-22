@@ -1,5 +1,5 @@
 <script setup>
-import { categoryApi } from "@/api/system/category-api.js";
+import { formApi } from "@/api/system/form-workflow-api.js";
 import utils from "@/utils/utils.js";
 
 const props = defineProps({
@@ -19,13 +19,10 @@ const emit = defineEmits(["update:visible", "refresh"]);
 const isEdit = computed(() => !!props.data?.id);
 
 const INITIAL_FORM = {
-  code: undefined,
-  disabled: "N",
   id: undefined,
   name: undefined,
-  parentId: undefined,
+  routePath: undefined,
   remark: undefined,
-  seq: 1,
 };
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
@@ -47,9 +44,9 @@ const onSubmit = async () => {
   const valid = await formRef.value.validate().catch(() => false);
   if (valid) {
     if (isEdit.value) {
-      await categoryApi.update(form.value);
+      await formApi.update(form.value);
     } else {
-      await categoryApi.create(form.value);
+      await formApi.create(form.value);
     }
     emit("refresh");
     emit("update:visible", false);
@@ -71,23 +68,6 @@ watch(
   },
   { immediate: true },
 );
-
-// -------------------------------------
-const categoryList = ref([]);
-
-const treeOptions = computed(() => {
-  // 使用临时数组避免污染原始数据，并转换 disabled 字段值为布尔值
-  const list = categoryList.value.map((item) => ({ ...item, disabled: false }));
-  // 添加全路径名称
-  utils.addFullPath(list, { pathKey: "name" });
-  // 转换为树形结构
-  const tree = utils.toArrayTree(list, { sortKey: "seq" });
-  return tree[0]?.children;
-});
-
-onMounted(async () => {
-  categoryList.value = await categoryApi.list({ code: "vt_workflow" });
-});
 </script>
 
 <template>
@@ -96,54 +76,31 @@ onMounted(async () => {
     :title="isEdit ? '编辑' : '新增'"
     destroy-on-close
     align-center
-    width="40%"
     @closed="onClosed"
+    width="40%"
   >
     <el-form ref="formRef" :model="form" label-width="auto">
-      <el-form-item prop="parentId" label="父节点" v-if="false">
-        <el-tree-select
-          v-model="form.parentId"
-          :data="treeOptions"
-          :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
-          check-strictly
-          filterable
-          clearable
-          default-expand-all
-          placeholder=""
-          :disabled="isEdit"
-        >
-          <template #default="{ data: { name } }">
-            {{ name }}
-          </template>
-        </el-tree-select>
-      </el-form-item>
-
       <el-form-item
         prop="name"
-        label="名称"
+        label="表单名称"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
         <el-input v-model="form.name" clearable maxlength="30" autocomplete="off" />
       </el-form-item>
-
       <el-form-item
-        prop="code"
-        label="编码"
+        prop="routePath"
+        label="路由路径"
         :rules="[{ required: true, message: '必填', trigger: 'blur' }]"
       >
-        <el-input v-model="form.code" clearable maxlength="64" autocomplete="off" />
+        <el-input v-model="form.routePath" clearable autocomplete="off" />
       </el-form-item>
-
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item prop="seq" label="排序">
-            <el-input-number v-model="form.seq" :min="1" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-
       <el-form-item prop="remark" label="备注">
-        <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />
+        <el-input
+          v-model="form.remark"
+          type="textarea"
+          :readonly="props.readonly"
+          :autosize="{ minRows: 3, maxRows: 8 }"
+        />
       </el-form-item>
     </el-form>
     <template #footer>

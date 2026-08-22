@@ -19,6 +19,10 @@ const props = defineProps({
     default: "",
     type: String,
   },
+  loading: {
+    default: false,
+    type: Boolean,
+  },
 });
 
 // 直接计算高亮后的 HTML
@@ -45,11 +49,11 @@ const highlightedHtml = computed(() => {
   }
 });
 
-const handleCopy = () => {
+const handleCopy = (text) => {
   navigator.clipboard
-    .writeText(props.code)
+    .writeText(text)
     .then(() => {
-      ElMessage.success("代码已复制到剪贴板");
+      ElMessage.success("已复制到剪贴板");
     })
     .catch(() => {
       ElMessage.error("复制失败，请手动复制");
@@ -70,7 +74,7 @@ const handleDownload = () => {
         type="primary"
         text
         :size="'small'"
-        @click="handleCopy"
+        @click="handleCopy(props.code)"
         :disabled="utils.isBlank(props.code)"
       >
         <template #icon>
@@ -96,7 +100,7 @@ const handleDownload = () => {
       </el-button>
     </el-tooltip>
   </div>
-  <div style="height: calc(100% - 90px)">
+  <div v-loading="props.loading" style="height: calc(100% - 90px)">
     <el-scrollbar>
       <pre class="vt-code-pre">
         <code class="vt-code" v-html="highlightedHtml"></code>

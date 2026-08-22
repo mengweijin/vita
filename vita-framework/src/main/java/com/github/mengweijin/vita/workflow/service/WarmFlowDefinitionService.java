@@ -10,7 +10,6 @@ import com.github.mengweijin.vita.framework.domain.PageQuery;
 import com.github.mengweijin.vita.framework.exception.ServerException;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
 import com.github.mengweijin.vita.framework.util.MapstructUtils;
-import com.github.mengweijin.vita.system.service.FormService;
 import com.github.mengweijin.vita.workflow.domain.vo.FlowDefinitionVO;
 import com.github.mengweijin.vita.workflow.mapper.WarmFlowDefinitionMapper;
 import lombok.AllArgsConstructor;
@@ -36,8 +35,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class WarmFlowDefinitionService extends BaseVitaService<WarmFlowDefinitionMapper, FlowDefinition, FlowDefinitionVO> {
-
-    private final FormService formService;
 
     public PageQuery<FlowDefinitionVO> pageVo(PageQuery<FlowDefinition> pageQuery, Wrapper<FlowDefinition> queryWrapper) {
         IPage<FlowDefinition> page = this.page(pageQuery.toPage(), queryWrapper);

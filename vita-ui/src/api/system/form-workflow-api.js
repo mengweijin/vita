@@ -1,15 +1,12 @@
 import http from "@/utils/http.js";
 
-const URL_PREFIX = "/system/form";
+const URL_PREFIX = "/system/form-workflow";
 
 /**
  * @typedef {Object} FormDO
  * @property {number} id - 表单ID
- * @property {number} parentId - 父级ID
  * @property {string} name - 表单名称
- * @property {string} type - 表单类型
- * @property {string} staticFormPath - 静态表单路径
- * @property {number} dynamicFormId - 动态表单ID
+ * @property {string} routePath - 表单路由路径
  * @property {string} remark - 备注
  */
 

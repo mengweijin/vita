@@ -220,13 +220,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/system/form/': RouteRecordInfo<
-      '/system/form/',
-      '/system/form',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/system/menu/': RouteRecordInfo<
       '/system/menu/',
       '/system/menu',
@@ -262,13 +255,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/system/test-page': RouteRecordInfo<
-      '/system/test-page',
-      '/system/test-page',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/system/user/': RouteRecordInfo<
       '/system/user/',
       '/system/user',
@@ -290,16 +276,16 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/workflow/category/': RouteRecordInfo<
-      '/workflow/category/',
-      '/workflow/category',
+    '/workflow/definition/': RouteRecordInfo<
+      '/workflow/definition/',
+      '/workflow/definition',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/workflow/definition/': RouteRecordInfo<
-      '/workflow/definition/',
-      '/workflow/definition',
+    '/workflow/form/': RouteRecordInfo<
+      '/workflow/form/',
+      '/workflow/form',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -540,14 +526,6 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/system/form/index.vue': {
-      routes:
-        | '/system/form/'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
     'src/pages/system/menu/index.vue': {
       routes:
         | '/system/menu/'
@@ -588,14 +566,6 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/system/test-page.vue': {
-      routes:
-        | '/system/test-page'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
     'src/pages/system/user/index.vue': {
       routes:
         | '/system/user/'
@@ -620,17 +590,17 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/workflow/category/index.vue': {
+    'src/pages/workflow/definition/index.vue': {
       routes:
-        | '/workflow/category/'
+        | '/workflow/definition/'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/workflow/definition/index.vue': {
+    'src/pages/workflow/form/index.vue': {
       routes:
-        | '/workflow/definition/'
+        | '/workflow/form/'
       views:
         | never
       pathParamNames:

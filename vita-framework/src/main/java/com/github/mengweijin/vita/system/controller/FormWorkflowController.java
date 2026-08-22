@@ -8,10 +8,10 @@ import com.github.mengweijin.vita.framework.domain.R;
 import com.github.mengweijin.vita.framework.enums.dict.EOperationType;
 import com.github.mengweijin.vita.framework.log.operation.Log;
 import com.github.mengweijin.vita.framework.validator.group.Group;
-import com.github.mengweijin.vita.system.domain.bo.FormBO;
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
-import com.github.mengweijin.vita.system.domain.vo.FormVO;
-import com.github.mengweijin.vita.system.service.FormService;
+import com.github.mengweijin.vita.system.domain.bo.FormWorkflowBO;
+import com.github.mengweijin.vita.system.domain.entity.FormWorkflowDO;
+import com.github.mengweijin.vita.system.domain.vo.FormWorkflowVO;
+import com.github.mengweijin.vita.system.service.FormWorkflowService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -34,30 +34,30 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/system/form")
-public class FormController {
+@RequestMapping("/system/form-workflow")
+public class FormWorkflowController {
 
     private static final String LOG_TITLE = "表单管理";
 
-    private FormService formService;
+    private FormWorkflowService formWorkflowService;
 
-    @SaCheckPermission("system:form:select")
+    @SaCheckPermission("system:formWorkflow:select")
     @GetMapping("/page")
-    public PageQuery<FormVO> pageRootTree(PageQuery<FormDO> page, FormDO form) {
-        LambdaQueryWrapper<FormDO> wrapper = formService.buildQueryWrapper(form);
-        return formService.pageVo(page, wrapper);
+    public PageQuery<FormWorkflowVO> pageRootTree(PageQuery<FormWorkflowDO> page, FormWorkflowDO form) {
+        LambdaQueryWrapper<FormWorkflowDO> wrapper = formWorkflowService.buildQueryWrapper(form);
+        return formWorkflowService.pageVo(page, wrapper);
     }
 
     /**
      * Get FormVO list by FormDO
      *
-     * @param form {@link FormDO}
+     * @param form {@link FormWorkflowDO}
      * @return List<FormVO>
      */
-    @SaCheckPermission("system:form:select")
+    @SaCheckPermission("system:formWorkflow:select")
     @GetMapping("/list")
-    public List<FormVO> list(FormDO form) {
-        return formService.listVo(Wrappers.lambdaQuery(form));
+    public List<FormWorkflowVO> list(FormWorkflowDO form) {
+        return formWorkflowService.listVo(Wrappers.lambdaQuery(form));
     }
 
     /**
@@ -67,33 +67,33 @@ public class FormController {
      * @return FormVO
      */
     @GetMapping("/{id}")
-    public FormVO getById(@PathVariable("id") Long id) {
-        return formService.getVoById(id);
+    public FormWorkflowVO getById(@PathVariable("id") Long id) {
+        return formWorkflowService.getVoById(id);
     }
 
     /**
      * Add form
      *
-     * @param form {@link FormDO}
+     * @param form {@link FormWorkflowDO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.INSERT)
-    @SaCheckPermission("system:form:create")
+    @SaCheckPermission("system:formWorkflow:create")
     @PostMapping("/create")
-    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FormBO form) {
-        boolean bool = formService.save(form);
+    public R<Void> create(@Validated({Group.Default.class, Group.Create.class}) @RequestBody FormWorkflowBO form) {
+        boolean bool = formWorkflowService.save(form);
         return R.result(bool);
     }
 
     /**
      * Update form
      *
-     * @param form {@link FormBO}
+     * @param form {@link FormWorkflowBO}
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.UPDATE)
-    @SaCheckPermission("system:form:update")
+    @SaCheckPermission("system:formWorkflow:update")
     @PostMapping("/update")
-    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FormBO form) {
-        boolean bool = formService.updateById(form);
+    public R<Void> update(@Validated({Group.Default.class, Group.Update.class}) @RequestBody FormWorkflowBO form) {
+        boolean bool = formWorkflowService.updateById(form);
         return R.result(bool);
     }
 
@@ -103,10 +103,10 @@ public class FormController {
      * @param ids id
      */
     @Log(title = LOG_TITLE, operationType = EOperationType.REMOVE)
-    @SaCheckPermission("system:form:remove")
+    @SaCheckPermission("system:formWorkflow:remove")
     @PostMapping("/remove/{ids}")
     public R<Void> remove(@PathVariable("ids") Long[] ids) {
-        boolean bool = formService.removeByIds(Arrays.asList(ids));
+        boolean bool = formWorkflowService.removeByIds(Arrays.asList(ids));
         return R.result(bool);
     }
 

@@ -1,16 +1,17 @@
 package com.github.mengweijin.vita.system.domain.vo;
 
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.domain.entity.FormCreateDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * WorkflowForm VO
+ * FormCreate VO
  *
  * @author mengweijin
- * @since 2026-04-12
+ * @since 2026-08-22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FormVO extends FormDO {
+public class FormCreateVO extends FormCreateDO {
+
 }

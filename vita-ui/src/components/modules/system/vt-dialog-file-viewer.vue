@@ -32,11 +32,11 @@ const onClosed = () => {
     destroy-on-close
     align-center
     @closed="onClosed"
-    width="80%"
+    width="95%"
   >
     <!-- el-dialog 的内容区域需要明确高度才能滚动 -->
-    <el-scrollbar style="height: 80vh">
-      <file-viewer v-if="url" :url="url" />
+    <el-scrollbar>
+      <file-viewer v-if="url" :url="url" style="height: 85svh" />
     </el-scrollbar>
   </el-dialog>
 </template>

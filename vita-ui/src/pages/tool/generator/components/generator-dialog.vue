@@ -71,13 +71,14 @@ const treeRef = useTemplateRef("treeRef");
 const treeProps = reactive({
   children: "children",
   disabled: "disabled",
-  label: "id",
+  label: "name",
 });
 
 const treeData = computed(() => {
-  return utils.toArrayTree(templateList.value, { sortKey: "id" });
+  return utils.toArrayTree(templateList.value, { sortKey: "name" });
 });
 
+const codeHighlightLoading = ref(false);
 const contentPreview = ref({});
 
 const handleTreeNodeClick = (data, node) => {
@@ -87,10 +88,16 @@ const handleTreeNodeClick = (data, node) => {
     return;
   }
 
+  codeHighlightLoading.value = true;
   form.templateId = data.id;
-  generatorApi.run(form).then((res) => {
-    contentPreview.value = res;
-  });
+  generatorApi
+    .run(form)
+    .then((res) => {
+      contentPreview.value = res;
+    })
+    .finally(() => {
+      codeHighlightLoading.value = false;
+    });
 };
 
 const removeVelocitySuffix = (fileName) => {
@@ -115,7 +122,7 @@ defineExpose({ data, visible });
     width="95%"
   >
     <el-container v-loading="loading" class="vt-height">
-      <el-aside width="500px">
+      <el-aside width="400px">
         <el-scrollbar>
           <el-tree
             ref="treeRef"
@@ -150,6 +157,7 @@ defineExpose({ data, visible });
         <VtCodeHighlight
           :code="contentPreview?.content"
           :file-name="removeVelocitySuffix(contentPreview?.fileName)"
+          :loading="codeHighlightLoading"
         />
       </el-main>
     </el-container>

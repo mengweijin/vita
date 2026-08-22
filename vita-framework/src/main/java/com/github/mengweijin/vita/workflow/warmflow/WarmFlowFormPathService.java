@@ -1,7 +1,7 @@
 package com.github.mengweijin.vita.workflow.warmflow;
 
-import com.github.mengweijin.vita.system.domain.vo.FormVO;
-import com.github.mengweijin.vita.system.service.FormService;
+import com.github.mengweijin.vita.system.domain.vo.FormWorkflowVO;
+import com.github.mengweijin.vita.system.service.FormWorkflowService;
 import lombok.AllArgsConstructor;
 import org.dromara.warm.flow.core.dto.Tree;
 import org.dromara.warm.flow.ui.service.FormPathService;
@@ -18,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 public class WarmFlowFormPathService implements FormPathService {
 
-    private final FormService formService;
+    private final FormWorkflowService formWorkflowService;
 
     @Override
     public List<Tree> queryFormPath() {
-        List<FormVO> list = formService.listVo();
+        List<FormWorkflowVO> list = formWorkflowService.listVo();
         return list.stream().map(f -> {
             Tree tree = new Tree();
             tree.setId(f.getRoutePath());

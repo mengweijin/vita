@@ -1,8 +1,8 @@
 package com.github.mengweijin.vita.system.mapper;
 
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaMapper;
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
-import com.github.mengweijin.vita.system.domain.vo.FormVO;
+import com.github.mengweijin.vita.system.domain.entity.FormWorkflowDO;
+import com.github.mengweijin.vita.system.domain.vo.FormWorkflowVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2026-04-12
  */
 @Mapper
-public interface FormMapper extends BaseVitaMapper<FormDO, FormVO> {
+public interface FormWorkflowMapper extends BaseVitaMapper<FormWorkflowDO, FormWorkflowVO> {
 
 }
 

@@ -18,9 +18,7 @@ const currentPage = ref(1);
 
 const pageSize = ref(70);
 
-const allIconList = computed(() => {
-  return listIcons(null, iconCollection.value);
-});
+const icons = ref([]);
 
 const currentIconList = ref([]);
 
@@ -31,6 +29,7 @@ const pageIconList = (list) => {
 };
 
 const handleIconCollectionChange = (val) => {
+  icons.value = listIcons(null, iconCollection.value);
   currentPage.value = 1;
   handleSearch();
 };
@@ -44,10 +43,10 @@ const search = ref(null);
 
 const handleSearch = utils.debounce(() => {
   if (search.value) {
-    const filteredList = allIconList.value.filter((icon) => icon.includes(search.value));
-    currentIconList.value = pageIconList(filteredList);
+    icons.value = icons.value.filter((icon) => icon.includes(search.value));
+    currentIconList.value = pageIconList(icons.value);
   } else {
-    currentIconList.value = pageIconList(allIconList.value);
+    currentIconList.value = pageIconList(icons.value);
   }
 }, 1000);
 
@@ -75,6 +74,7 @@ watch(inputValue, (newIcon) => {
 });
 
 onMounted(() => {
+  icons.value = listIcons(null, iconCollection.value);
   handleSearch();
 });
 </script>
@@ -130,7 +130,7 @@ onMounted(() => {
           :page-size="pageSize"
           size="small"
           layout="total, prev, pager, next, jumper"
-          :total="allIconList.length"
+          :total="icons.length"
           @current-change="handleCurrentChange"
         />
 

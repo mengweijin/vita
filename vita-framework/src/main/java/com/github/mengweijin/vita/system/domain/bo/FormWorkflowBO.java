@@ -1,6 +1,6 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
-import com.github.mengweijin.vita.system.domain.entity.FormDO;
+import com.github.mengweijin.vita.system.domain.entity.FormWorkflowDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +12,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FormBO extends FormDO {
+public class FormWorkflowBO extends FormWorkflowDO {
 
 }

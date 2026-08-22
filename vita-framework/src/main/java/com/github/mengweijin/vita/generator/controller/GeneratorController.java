@@ -42,7 +42,8 @@ public class GeneratorController {
     @SaCheckPermission("tools:generator:view")
     @GetMapping("/list/template")
     public List<TemplateVO> listTemplate() {
-        return templateService.getTemplateList();
+        List<TemplateVO> templateList = templateService.loadTemplateList();
+        return templateService.filledParentTemplateList(templateList);
     }
 
     @SaCheckPermission("tools:generator:view")

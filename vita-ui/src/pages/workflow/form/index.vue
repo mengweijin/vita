@@ -1,11 +1,11 @@
 <route lang="yaml">
 meta:
-  title: 表单管理
-  permission: system:form:view
+  title: 流程表单
+  permission: system:formWorkflow:view
 </route>
 
 <script setup>
-import { formApi } from "@/api/system/form-api.js";
+import { formApi } from "@/api/system/form-workflow-api.js";
 import utils from "@/utils/utils.js";
 import { useForm } from "./hooks.js";
 import FormPreview from "./components/form-preview.vue";
@@ -134,7 +134,7 @@ onMounted(() => {
   <!-- 表格头-->
   <el-row :gutter="10" style="padding: 15px 0px">
     <!-- 左侧 -->
-    <el-col :span="1.5" v-permission="'system:form:create'">
+    <el-col :span="1.5" v-permission="'system:formWorkflow:create'">
       <el-button type="primary" @click="handleAdd(null)">
         <template #icon>
           <el-icon>
@@ -144,7 +144,7 @@ onMounted(() => {
         新增
       </el-button>
     </el-col>
-    <el-col :span="1.5" v-show="selected.length" v-permission="'system:form:remove'">
+    <el-col :span="1.5" v-show="selected.length" v-permission="'system:formWorkflow:remove'">
       <el-popconfirm
         placement="right"
         width="400"
@@ -251,7 +251,7 @@ onMounted(() => {
                 text
                 :size="size"
                 @click="handleAdd(scope.row.id)"
-                v-permission="'system:form:create'"
+                v-permission="'system:formWorkflow:create'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -267,7 +267,7 @@ onMounted(() => {
                 :size="size"
                 style="margin-left: 0px"
                 @click="handleEdit(scope.row)"
-                v-permission="'system:form:update'"
+                v-permission="'system:formWorkflow:update'"
               >
                 <template #icon>
                   <el-icon :size="size">
@@ -287,7 +287,12 @@ onMounted(() => {
                   @confirm="handleDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" text :size="size" v-permission="'system:form:remove'">
+                    <el-button
+                      type="danger"
+                      text
+                      :size="size"
+                      v-permission="'system:formWorkflow:remove'"
+                    >
                       <template #icon>
                         <el-icon :size="size">
                           <Icon icon="ep:delete"></Icon>

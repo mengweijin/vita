@@ -313,7 +313,7 @@ create TABLE VT_USER (
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   DELETED                       char(1) DEFAULT 'N' NOT NULL comment '逻辑删除。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
-  EXT                           varchar DEFAULT NULL comment '扩展字段 Map',
+  EXT                           varchar DEFAULT NULL comment '扩展字段表单数据 Map',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
@@ -423,10 +423,10 @@ comment on table VT_SCHEDULING_TASK_LOG is '调度任务日志表';
 
 
 ------------------------------------------------
--- 表单管理表
+-- 工作流表单路由配置表
 ------------------------------------------------
-drop table IF EXISTS VT_FORM;
-create TABLE VT_FORM (
+drop table IF EXISTS VT_FORM_WORKFLOW;
+create TABLE VT_FORM_WORKFLOW (
   ID                            bigint NOT NULL comment '主键ID',
   NAME                          varchar(255) NOT NULL comment '表单名称',
   ROUTE_PATH                    varchar(255) NOT NULL comment '路由路径',
@@ -437,8 +437,29 @@ create TABLE VT_FORM (
   UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
   PRIMARY KEY (ID)
 );
-comment on table VT_FORM is '表单管理表';
-create unique index UIDX_VT_FORM_NAME on VT_FORM(NAME);
+comment on table VT_FORM_WORKFLOW is '工作流表单路由配置表';
+create unique index UIDX_VFW_NAME on VT_FORM_WORKFLOW(NAME);
+
+
+------------------------------------------------
+-- 动态表单管理表
+------------------------------------------------
+drop table IF EXISTS VT_FORM_CREATE;
+create TABLE VT_FORM_CREATE (
+  ID                            bigint NOT NULL comment '主键ID',
+  NAME                          varchar(255) NOT NULL comment '表单名称',
+  CODE                          varchar(255) NOT NULL comment '表单编码',
+  RULES                         text DEFAULT NULL comment '表单的规则和字段的整体配置数据，通常包含多个字段的配置',
+  OPTIONS                       text DEFAULT NULL comment '表单的配置数据（例如：布局、尺寸、全局数据等）',
+  REMARK                        varchar(500) DEFAULT NULL comment '备注',
+  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
+  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
+  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
+  PRIMARY KEY (ID)
+);
+comment on table VT_FORM_CREATE is '表单管理表';
+create unique index UIDX_VFC_NAME on VT_FORM_CREATE(NAME);
 
 
 ------------------------------------------------
@@ -461,30 +482,3 @@ create TABLE VT_OA_EMPLOYEE_LEAVE (
   PRIMARY KEY (ID)
 );
 comment on table VT_OA_EMPLOYEE_LEAVE is '员工请假申请表';
-
-
-------------------------------------------------
--- 扩展字段配置表
-------------------------------------------------
-drop table IF EXISTS VT_FIELD_META;
-create TABLE VT_FIELD_META (
-  ID                            bigint NOT NULL comment '主键ID',
-  TABLE_NAME                    varchar(64) NOT NULL comment '扩展目标表的表名称',
-  FIELD_KEY                     varchar(64) NOT NULL comment '字段 key',
-  FIELD_NAME                    varchar(64) NOT NULL comment '字段名称',
-  FIELD_TYPE                    varchar(64) NOT NULL DEFAULT 'input' comment '表单字段组件类型。关联字典：vt_field_meta_types',
-  FIELD_TYPE_CODE_REF           varchar(64) DEFAULT NULL comment '表单字段组件类型的值关联的编码。比如：字典编码、分类编码等',
-  SEARCHABLE                    char(1) NOT NULL DEFAULT 'N' comment '是否支持查询。[Y, N]',
-  MANDATORY                     char(1) NOT NULL DEFAULT 'N' comment '是否必填。[Y, N]',
-  MIN                           bigint DEFAULT NULL comment '最小长度（字符串）/最小值（数字类型）',
-  MAX                           bigint DEFAULT NULL comment '最大长度（字符串）/最大值（数字类型）',
-  REGEXP                        varchar(255) DEFAULT NULL comment '值约束的正则表达式',
-  VALIDATION_MESSAGE            varchar(255) DEFAULT NULL comment '值验证提示信息',
-  CREATE_BY                     bigint DEFAULT NULL comment '创建者',
-  CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
-  UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
-  UPDATE_TIME 	                datetime NULL DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP comment '更新时间',
-  PRIMARY KEY (ID)
-);
-comment on table VT_FIELD_META is '扩展字段配置表';
-create unique index UIDX_VFM_TNFK on VT_FIELD_META(TABLE_NAME, FIELD_KEY);

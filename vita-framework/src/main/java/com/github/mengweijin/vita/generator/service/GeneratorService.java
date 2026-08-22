@@ -108,7 +108,7 @@ public class GeneratorService {
 
     public File download(GeneratorBO bo) {
         String currentBasePath = DOWNLOAD_BASE_TEMP_DIR + IdUtil.fastSimpleUUID();
-        List<TemplateVO> templateList = templateService.getTemplateList();
+        List<TemplateVO> templateList = templateService.loadTemplateList();
         templateList.forEach(tpl -> {
             bo.setTemplateId(tpl.getId());
             ContentVO contentVO = this.generate(bo);
