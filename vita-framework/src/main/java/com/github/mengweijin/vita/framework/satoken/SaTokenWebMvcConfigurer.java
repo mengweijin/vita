@@ -36,6 +36,7 @@ public class SaTokenWebMvcConfigurer implements WebMvcConfigurer, InitializingBe
             "/**/*.svg",
             "/**/*.jpg",
             "/**/*.png",
+            "/**/*.webp",
             "/**/*.html",
             "/warm-flow-ui/**",
     };
