@@ -41,8 +41,4 @@ app.use(components);
 import router from "@/router/index.js";
 app.use(router);
 
-// 全局注册文件预览组件
-import FileViewer from "@file-viewer/vue3";
-app.use(FileViewer);
-
 app.mount("#app");

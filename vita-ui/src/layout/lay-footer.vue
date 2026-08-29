@@ -7,7 +7,7 @@ const footerYear = ref(new Date().getFullYear());
     <span><a href="https://aday.fun" target="_blank">https://aday.fun</a></span>
     <span
       ><a href="https://vita.aday.fun" target="_blank"
-        ><img src="/favicon.png" style="width: 34px" />&nbsp;微塔管理系统</a
+        ><img src="/webp/favicon.webp" style="width: 34px" />&nbsp;微塔管理系统</a
       ></span
     >
     <span><a href="https://beian.miit.gov.cn" target="_blank">陕ICP备2025064396号</a></span>

@@ -33,7 +33,7 @@ const init = async () => {
       form.mobile = userModel.value?.mobile ?? undefined;
       form.email = userModel.value?.email ?? undefined;
       form.gender = userModel.value?.gender ?? undefined;
-      form.avatar = userModel.value?.avatar ?? "/avatar.jpg";
+      form.avatar = userModel.value?.avatar ?? "/webp/avatar.webp";
 
       loading.value = false;
       break;
@@ -73,7 +73,7 @@ const onSubmit = () => {
 const cropperVisible = ref(false);
 const cropperSrc = ref("");
 const openVtCropper = () => {
-  cropperSrc.value = userModel.value?.avatar ?? "/avatar.jpg";
+  cropperSrc.value = userModel.value?.avatar ?? "/webp/avatar.webp";
   cropperVisible.value = true;
 };
 

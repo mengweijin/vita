@@ -13,7 +13,7 @@ meta:
 /* 全屏固定容器，无视 body 边距，完美覆盖视口 */
 .vt-background {
   /* 背景图片设置（根据实际路径调整） */
-  background-image: url("/404.png");
+  background-image: url("/webp/404.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

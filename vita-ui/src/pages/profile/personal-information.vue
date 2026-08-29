@@ -54,7 +54,7 @@ onMounted(() => {
           <el-descriptions title="" :column="1" :label-width="80" :size="size" border>
             <el-descriptions-item label="头像" label-align="right" width="50" span="2">
               <el-avatar :src="userInfo?.avatar" size="large" v-if="userInfo?.avatar" />
-              <el-avatar src="/avatar.jpg" size="large" v-else />
+              <el-avatar src="/webp/avatar.webp" size="large" v-else />
             </el-descriptions-item>
             <el-descriptions-item label="昵称" label-align="right">
               {{ userInfo?.nickname }}

@@ -1,4 +1,5 @@
 <script setup>
+import { FileViewer } from "@file-viewer/vue3-full";
 import { useLoginStore } from "@/store/login-store.js";
 import { useFilePreviewStore } from "@/store/file-preview-store.js";
 
@@ -36,7 +37,7 @@ const onClosed = () => {
   >
     <!-- el-dialog 的内容区域需要明确高度才能滚动 -->
     <el-scrollbar>
-      <file-viewer v-if="url" :url="url" style="height: 85svh" />
+      <FileViewer v-if="url" :url="url" :options="{ theme: 'dark' }" style="height: 85svh" />
     </el-scrollbar>
   </el-dialog>
 </template>

@@ -238,7 +238,7 @@ onMounted(() => {
           >
             <template #default="{ row }">
               <el-avatar :size="size" :src="row.avatar" v-if="row.avatar" />
-              <el-avatar :size="size" src="/avatar.jpg" v-else />
+              <el-avatar :size="size" src="/webp/avatar.webp" v-else />
             </template>
           </el-table-column>
           <el-table-column

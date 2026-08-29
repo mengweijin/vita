@@ -72,7 +72,7 @@ onUnmounted(() => {
 <template>
   <el-menu mode="horizontal" :ellipsis="false">
     <el-menu-item index="0" style="width: 200px">
-      <img src="/logo.png" alt="logo" />
+      <img src="/images/logo.svg" alt="logo" />
     </el-menu-item>
     <el-menu-item index="1" @click="appStore.toggleSideMenuOpened" class="vt-icon-padding">
       <Icon icon="ep:fold" width="24" height="24" v-if="sideMenuOpened" />
@@ -117,7 +117,7 @@ onUnmounted(() => {
     <el-sub-menu index="99">
       <template #title>
         <el-avatar :src="userStore.user.avatar" v-if="userStore.user?.avatar" />
-        <el-avatar src="/avatar.jpg" v-else />
+        <el-avatar src="/webp/avatar.webp" v-else />
         <span style="margin-left: 10px">{{ userStore.user?.nickname }}</span>
       </template>
       <el-menu-item index="99-1" @click="onUserPersonalInformation()">

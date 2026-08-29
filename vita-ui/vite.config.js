@@ -5,10 +5,8 @@ import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
-import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { VueRouterAutoImports } from "vue-router/unplugin";
 import VueRouter from "vue-router/vite";
-import { fileViewerRenderers } from "@file-viewer/vite-plugin";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -91,42 +89,13 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      ViteImageOptimizer({
-        avif: {
-          lossless: true, // 对AVIF也使用无损压缩
-        },
-        // 仅在打包时生效
-        exclude: [
-          "avatar.jpg",
-          "logo.svg",
-          "logo.png",
-          "favicon.svg",
-          "favicon.png",
-          "favicon-1x1.png",
-          "favicon-white-bg-1x1.png",
-        ],
-        jpeg: {
-          progressive: true, // 生成渐进式JPEG，改善用户体验
-          quality: 85, // JPEG 有损，但85是质量和体积的平衡点
-        },
-        jpg: {
-          progressive: true,
-          quality: 85,
-        },
-        // 配置无损或高质量的有损压缩
-        png: {
-          quality: 60, // 设置100表示无损，若想启用高质量有损，可设为90
-          compressionLevel: 9,
-        },
-        // 跳过体积变大的文件
-        skipOptimizationIfLarger: true,
-        webp: {
-          lossless: true, // 对WebP使用无损压缩
-        },
-      }),
-      legacy({
-        targets: ["defaults", "not IE 11"],
-      }),
+      ...(env.VITE_BUILD_LEGACY === "true"
+        ? [
+            legacy({
+              targets: ["defaults", "not IE 11"],
+            }),
+          ]
+        : []),
       AutoImport({
         // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
         dts: "./types/auto-imports.d.ts",
@@ -144,9 +113,6 @@ export default defineConfig(({ mode }) => {
           // 自动注册 Element Plus 组件
           ElementPlusResolver(),
         ],
-      }),
-      fileViewerRenderers({
-        copyAssets: true,
       }),
     ],
     resolve: {

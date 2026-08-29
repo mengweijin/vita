@@ -43,5 +43,8 @@
   // 指定当前项目使用 vscode-icons 作为图标主题
   "workbench.iconTheme": "vscode-icons",
   // 关闭 prettier，避免与 oxc 冲突
-  "prettier.enable": false
+  "prettier.enable": false,
+  "chat.tools.terminal.autoApprove": {
+    "pnpm": true
+  }
 }

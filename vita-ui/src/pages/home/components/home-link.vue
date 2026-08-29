@@ -17,7 +17,7 @@ onMounted(() => {});
           class="vt-home-link-item-button"
           @click="openBlankUrl('https://aday.fun')"
         >
-          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px" />
+          <img src="/webp/favicon.webp" style="width: 45px; margin-bottom: 10px" />
           &nbsp;个人博客</el-button
         >
       </div>
@@ -28,7 +28,7 @@ onMounted(() => {});
           class="vt-home-link-item-button"
           @click="openBlankUrl('https://vita.aday.fun')"
         >
-          <img src="/favicon.png" style="width: 45px; margin-bottom: 10px" />
+          <img src="/webp/favicon.webp" style="width: 45px; margin-bottom: 10px" />
           &nbsp;在线演示</el-button
         >
       </div>
