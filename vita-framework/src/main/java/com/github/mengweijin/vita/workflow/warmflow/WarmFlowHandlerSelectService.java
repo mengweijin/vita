@@ -32,7 +32,7 @@ import org.dromara.warm.flow.ui.dto.TreeFunDto;
 import org.dromara.warm.flow.ui.service.HandlerSelectService;
 import org.dromara.warm.flow.ui.vo.HandlerFeedBackVo;
 import org.dromara.warm.flow.ui.vo.HandlerSelectVo;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * @since 2026/5/23
  */
 @Slf4j
-@Component
+@Service
 @AllArgsConstructor
 public class WarmFlowHandlerSelectService implements HandlerSelectService {
 

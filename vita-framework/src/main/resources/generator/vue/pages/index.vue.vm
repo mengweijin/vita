@@ -160,10 +160,10 @@ onMounted(() => {
 #foreach($field in ${entityFields})
       <el-table-column v-if="columns.${field.propertyName}.visible" prop="${field.propertyName}" label="${field.propertyName}" min-width="100" />
 #end
-      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="100" />
-      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="180" />
-      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="100" />
-      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="180" />
+      <el-table-column v-if="columns.createByName.visible" prop="createByName" label="创建者" align="center" width="90" />
+      <el-table-column v-if="columns.createTime.visible" prop="createTime" label="创建时间" align="center" width="160" />
+      <el-table-column v-if="columns.updateByName.visible" prop="updateByName" label="更新者" align="center" width="90" />
+      <el-table-column v-if="columns.updateTime.visible" prop="updateTime" label="更新时间" align="center" width="160" />
       <el-table-column v-if="columns.operation.visible" label="操作" fixed="right" width="120">
         <template #default="scope">
           <div>
@@ -213,7 +213,7 @@ onMounted(() => {
       :total="queryParams.pageTotal" @change="handlePageChange" />
   </div>
 
-  <${entityName}Edit v-model:visible="editDialogVisible" :data="editData" @refresh="loadTableData"></${entityName}Edit>
+  <${entityName}Edit v-model="editDialogVisible" :data="editData" @refresh="loadTableData" />
 </template>
 
 <style scoped></style>

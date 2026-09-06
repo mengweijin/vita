@@ -1,5 +1,5 @@
 <script setup>
-import { formApi } from "@/api/system/form-workflow-api.js";
+import { formWorkflowApi } from "@/api/workflow/form-workflow-api.js";
 import utils from "@/utils/utils.js";
 
 const props = defineProps({
@@ -44,9 +44,9 @@ const onSubmit = async () => {
   const valid = await formRef.value.validate().catch(() => false);
   if (valid) {
     if (isEdit.value) {
-      await formApi.update(form.value);
+      await formWorkflowApi.update(form.value);
     } else {
-      await formApi.create(form.value);
+      await formWorkflowApi.create(form.value);
     }
     emit("refresh");
     emit("update:visible", false);

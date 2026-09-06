@@ -313,7 +313,7 @@ create TABLE VT_USER (
   DISABLED                      char(1) DEFAULT 'N' NOT NULL comment '是否禁用。[Y, N]',
   DELETED                       char(1) DEFAULT 'N' NOT NULL comment '逻辑删除。[Y, N]',
   REMARK 	                    varchar(500) comment '备注',
-  EXT                           varchar DEFAULT NULL comment '扩展字段表单数据 Map',
+  EXT                           varchar DEFAULT NULL comment '扩展字段表单数据',
   CREATE_BY                     bigint DEFAULT NULL comment '创建者',
   CREATE_TIME                   datetime NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
   UPDATE_BY 	                bigint DEFAULT NULL comment '更新者',
@@ -460,6 +460,7 @@ create TABLE VT_FORM_CREATE (
 );
 comment on table VT_FORM_CREATE is '表单管理表';
 create unique index UIDX_VFC_NAME on VT_FORM_CREATE(NAME);
+create unique index UIDX_VFC_CODE on VT_FORM_CREATE(CODE);
 
 
 ------------------------------------------------

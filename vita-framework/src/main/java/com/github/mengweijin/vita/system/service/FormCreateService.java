@@ -4,6 +4,7 @@ import cn.hutool.v7.core.text.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.mengweijin.vita.framework.mybatis.BaseVitaService;
+import com.github.mengweijin.vita.framework.util.MapstructUtils;
 import com.github.mengweijin.vita.system.domain.entity.FormCreateDO;
 import com.github.mengweijin.vita.system.domain.vo.FormCreateVO;
 import com.github.mengweijin.vita.system.mapper.FormCreateMapper;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 表单管理表 FormCreate Service
- *  Add @Transactional(rollbackFor = Exception.class) if you need.
+ * Add @Transactional(rollbackFor = Exception.class) if you need.
  *
  * @author mengweijin
  * @since 2026-08-22
@@ -33,5 +34,10 @@ public class FormCreateService extends BaseVitaService<FormCreateMapper, FormCre
         wrapper.gt(formCreate.getStartCreateTime() != null, FormCreateDO::getCreateTime, formCreate.getStartCreateTime());
         wrapper.le(formCreate.getEndCreateTime() != null, FormCreateDO::getCreateTime, formCreate.getEndCreateTime());
         return wrapper;
+    }
+
+    public FormCreateVO getVoByCode(String code) {
+        FormCreateDO formCreateDO = this.lambdaQuery().eq(FormCreateDO::getCode, code).one();
+        return MapstructUtils.getConverter().convert(formCreateDO, FormCreateVO.class);
     }
 }

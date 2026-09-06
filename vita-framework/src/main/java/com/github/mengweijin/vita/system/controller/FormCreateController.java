@@ -78,6 +78,11 @@ public class FormCreateController {
         return formCreateService.getVoById(id);
     }
 
+    @GetMapping("/query/by/code/{code}")
+    public FormCreateVO getVoByCode(@PathVariable("code") String code) {
+        return formCreateService.getVoByCode(code);
+    }
+
     /**
      * Add FormCreate
      *

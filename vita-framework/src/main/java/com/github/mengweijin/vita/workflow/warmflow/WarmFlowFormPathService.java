@@ -5,7 +5,7 @@ import com.github.mengweijin.vita.system.service.FormWorkflowService;
 import lombok.AllArgsConstructor;
 import org.dromara.warm.flow.core.dto.Tree;
 import org.dromara.warm.flow.ui.service.FormPathService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @author mengweijin
  * @since 2026/4/12
  */
-@Component
+@Service
 @AllArgsConstructor
 public class WarmFlowFormPathService implements FormPathService {
 

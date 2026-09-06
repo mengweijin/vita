@@ -7,6 +7,7 @@ import Components from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
 import { VueRouterAutoImports } from "vue-router/unplugin";
 import VueRouter from "vue-router/vite";
+import { fileViewerRenderers } from "@file-viewer/vite-plugin";
 
 // https://cn.vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -67,6 +68,13 @@ export default defineConfig(({ mode }) => {
       enabled: false,
     },
     plugins: [
+      ...(mode === "development"
+        ? []
+        : [
+            fileViewerRenderers({
+              copyAssets: true,
+            }),
+          ]),
       VueRouter({
         // 是否生成 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
         dts: "./types/typed-router.d.ts",
@@ -102,7 +110,7 @@ export default defineConfig(({ mode }) => {
         // 自动导入 vue, pinia 等相关函数，如：ref, reactive, toRef, storeToRefs 等
         imports: ["vue", "pinia", VueRouterAutoImports],
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
-        resolvers: [ElementPlusResolver()],
+        resolvers: [ElementPlusResolver({ importStyle: "css" })],
         // 启用 Vue 3 的模板自动导入功能
         vueTemplate: true,
       }),
@@ -110,8 +118,8 @@ export default defineConfig(({ mode }) => {
         // 是否生成组件的 TypeScript 类型声明（即使是纯 JS 项目也建议生成，以便获得更好的类型提示）
         dts: "./types/components.d.ts",
         resolvers: [
-          // 自动注册 Element Plus 组件
-          ElementPlusResolver(),
+          // 自动注册 Element Plus 组件并导入样式
+          ElementPlusResolver({ importStyle: "css" }),
         ],
       }),
     ],

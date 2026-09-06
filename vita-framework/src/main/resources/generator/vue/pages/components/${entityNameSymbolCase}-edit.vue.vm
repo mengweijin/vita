@@ -5,17 +5,15 @@ import utils from "@/utils/utils.js";
 const loading = ref(false);
 
 const props = defineProps({
-  visible: {
-    type: Boolean,
-    required: true,
-  },
   data: {
     type: Object,
     default: null,
   },
 });
 
-const emit = defineEmits(["update:visible", "refresh"]);
+const visible = defineModel({ default: false, type: Boolean });
+
+const emit = defineEmits(["refresh"]);
 
 /** 必须先把表单字段定义出来，然后再在打开的时候赋初始值，否则影响重置 */
 const INITIAL_FORM = {
@@ -42,7 +40,7 @@ const onReset = () => {
 
 // 取消
 const onCancel = () => {
-  emit("update:visible", false);
+  visible.value = false;
 };
 
 // 提交
@@ -53,15 +51,15 @@ const onSubmit = () => {
 			console.log(fields);
 			return;
 		}
-		if (isEdit) {
-			${entityPropertyName}Api.update(form).then((r) => {
+		if (isEdit.value) {
+			${entityPropertyName}Api.update(form.value).then((r) => {
 				emit("refresh");
-				emit("update:visible", false);
+				visible.value = false;
 			});
 		} else {
-			${entityPropertyName}Api.create(form).then((r) => {
+			${entityPropertyName}Api.create(form.value).then((r) => {
 				emit("refresh");
-				emit("update:visible", false);
+				visible.value = false;
 			});
 		}
 	});
@@ -86,7 +84,7 @@ onMounted(() => {});
 </script>
 
 <template>
-  <el-dialog :model-value="visible" :title="isEdit ? '编辑' : '新增'" destroy-on-close align-center width="40%">
+  <el-dialog v-model="visible" :title="isEdit ? '编辑' : '新增'" destroy-on-close align-center width="40%">
     <div v-loading="loading" class="dialog-wrap">
       <el-form v-loading="loading" ref="formRef" :model="form" label-width="auto">
       #foreach($field in ${entityFields})
@@ -94,6 +92,9 @@ onMounted(() => {});
           <el-input v-model="form.${field.propertyName}" clearable maxlength="30" autocomplete="off" />
         </el-form-item>
       #end
+        <el-form-item prop="remark" label="备注">
+          <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" />
+        </el-form-item>
       </el-form>
     </div>
 

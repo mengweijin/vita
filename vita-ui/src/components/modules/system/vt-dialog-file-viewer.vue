@@ -37,7 +37,12 @@ const onClosed = () => {
   >
     <!-- el-dialog 的内容区域需要明确高度才能滚动 -->
     <el-scrollbar>
-      <FileViewer v-if="url" :url="url" :options="{ theme: 'dark' }" style="height: 85svh" />
+      <FileViewer
+        v-if="url"
+        :url="url"
+        :options="{ theme: 'dark', watermark: { text: '内部预览', opacity: 0.14 } }"
+        style="height: 85svh"
+      />
     </el-scrollbar>
   </el-dialog>
 </template>

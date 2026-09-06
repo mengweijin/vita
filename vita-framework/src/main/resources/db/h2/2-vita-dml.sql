@@ -383,7 +383,7 @@ insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CR
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5003002,5003,'BTN','分类管理-创建','system:category:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5003003,5003,'BTN','分类管理-更新','system:category:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5003004,5003,'BTN','分类管理-删除','system:category:remove',null,4,null,'N',1,current_timestamp(),1,current_timestamp());
-insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5004,5,'MENU','动态表单','system:formCreate:view','/system/form-create',3,'ri:input-field','Y',1,current_timestamp(),1,current_timestamp());
+insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5004,5,'MENU','动态表单','system:formCreate:view','/system/form-create',4,'ri:input-field','N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5004001,5004,'BTN','动态表单-查询','system:formCreate:select',null,1,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5004002,5004,'BTN','动态表单-创建','system:formCreate:create',null,2,null,'N',1,current_timestamp(),1,current_timestamp());
 insert into VT_MENU (ID,PARENT_ID,TYPE,TITLE,PERMISSION,URL,SEQ,ICON,DISABLED,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) values (5004003,5004,'BTN','动态表单-更新','system:formCreate:update',null,3,null,'N',1,current_timestamp(),1,current_timestamp());
@@ -449,6 +449,9 @@ INSERT INTO VT_NOTICE (ID,TITLE,DESCRIPTION,RELEASED,CREATE_BY,CREATE_TIME,UPDAT
 
 -- 流程表单
 INSERT INTO VT_FORM_WORKFLOW (ID,NAME,ROUTE_PATH,REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2043270536503705600,'OA-工作流-员工请假','/oa/employee-leave/workflow-start-form',NULL,1,current_timestamp(),1,current_timestamp());
+
+-- 动态表单
+INSERT INTO VT_FORM_CREATE (ID,NAME,CODE,RULES,"OPTIONS",REMARK,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME) VALUES (2094980740491952130,'用户表 - 扩展表单','VT_USER_EXT','[{"type":"input","field":"pageTheme","title":"页面主题","info":"","$required":false,"_fc_id":"id_Fmqemtjrlahiaic","name":"ref_Fao9mtjrlahiajc","display":true,"hidden":false,"_fc_drag_tag":"input"},{"type":"switch","field":"showFooter","title":"显示页脚","info":"","$required":false,"props":{"activeValue":true,"inactiveValue":false},"_fc_id":"id_Fkoemtjrnbrfaoc","name":"ref_Fzpfmtjrnbrfapc","display":true,"hidden":false,"_fc_drag_tag":"switch"}]','{"resetBtn":{"show":false,"innerText":"重置"},"submitBtn":{"show":true,"innerText":"提交"},"form":{"inline":false,"hideRequiredAsterisk":false,"labelPosition":"right","size":"default","labelWidth":"125px"}}','',1,current_timestamp(),1,current_timestamp());
 
 
 -- 用户-角色

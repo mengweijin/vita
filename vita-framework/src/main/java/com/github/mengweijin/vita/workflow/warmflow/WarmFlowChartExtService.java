@@ -5,7 +5,7 @@ import org.dromara.warm.flow.core.dto.DefJson;
 import org.dromara.warm.flow.core.dto.PromptContent;
 import org.dromara.warm.flow.core.utils.MapUtil;
 import org.dromara.warm.flow.ui.service.ChartExtService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author mengweijin
  * @since 2026/5/23
  */
-@Component
+@Service
 @AllArgsConstructor
 public class WarmFlowChartExtService implements ChartExtService {
 

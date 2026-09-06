@@ -36,6 +36,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WarmFlowDefinitionService extends BaseVitaService<WarmFlowDefinitionMapper, FlowDefinition, FlowDefinitionVO> {
 
+    @Override
     public PageQuery<FlowDefinitionVO> pageVo(PageQuery<FlowDefinition> pageQuery, Wrapper<FlowDefinition> queryWrapper) {
         IPage<FlowDefinition> page = this.page(pageQuery.toPage(), queryWrapper);
         return MapstructUtils.convertToPageQuery(page, FlowDefinitionVO.class);

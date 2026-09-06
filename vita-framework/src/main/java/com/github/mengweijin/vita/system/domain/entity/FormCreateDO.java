@@ -11,8 +11,8 @@ import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -44,13 +44,13 @@ public class FormCreateDO extends BaseEntity {
      * 表单的规则和字段的整体配置数据，通常包含多个字段的配置
      */
     @TableField(value = "rules", typeHandler = JsonTypeHandler.class)
-    private List<Object> rules;
+    private ArrayList<Object> rules;
 
     /**
      * 表单的配置数据（例如：布局、尺寸、全局数据等）
      */
     @TableField(value = "options", typeHandler = JsonTypeHandler.class)
-    private Map<String, Object> options;
+    private HashMap<String, Object> options;
 
     /**
      * 备注

@@ -41,4 +41,12 @@ app.use(components);
 import router from "@/router/index.js";
 app.use(router);
 
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+import FcDesigner from "@form-create/designer";
+// 使用 Element Plus 和 FcDesigner
+app.use(ElementPlus);
+app.use(FcDesigner);
+app.use(FcDesigner.formCreate);
+
 app.mount("#app");

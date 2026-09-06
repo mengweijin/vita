@@ -220,6 +220,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/system/form-create/': RouteRecordInfo<
+      '/system/form-create/',
+      '/system/form-create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/system/menu/': RouteRecordInfo<
       '/system/menu/',
       '/system/menu',
@@ -521,6 +528,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/system/file/index.vue': {
       routes:
         | '/system/file/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/system/form-create/index.vue': {
+      routes:
+        | '/system/form-create/'
       views:
         | never
       pathParamNames:

@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -117,5 +117,5 @@ public class UserDO extends BaseEntity {
      * 扩展字段
      */
     @TableField(value = "ext", typeHandler = JsonTypeHandler.class)
-    private Map<String, Object> ext;
+    private HashMap<String, Object> ext;
 }

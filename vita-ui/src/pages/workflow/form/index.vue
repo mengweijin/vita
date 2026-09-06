@@ -5,7 +5,7 @@ meta:
 </route>
 
 <script setup>
-import { formApi } from "@/api/system/form-workflow-api.js";
+import { formWorkflowApi } from "@/api/workflow/form-workflow-api.js";
 import utils from "@/utils/utils.js";
 import { useForm } from "./hooks.js";
 import FormPreview from "./components/form-preview.vue";
@@ -40,7 +40,7 @@ const resetQueryForm = () => {
 
 const loadTableData = () => {
   loading.value = true;
-  formApi
+  formWorkflowApi
     .page(queryParams)
     .then((res) => {
       tableData.value = res.pageRecords;
@@ -77,7 +77,7 @@ const handleEdit = (row) => {
 const selected = ref([]);
 
 const handleDelete = (ids) => {
-  formApi.remove(ids).then(() => {
+  formWorkflowApi.remove(ids).then(() => {
     // 清空已选择
     selected.value = [];
     loadTableData();
