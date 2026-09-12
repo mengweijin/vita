@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
           </el-form-item>
           <el-form-item style="margin-top: -25px">
             <div class="vt-login-title">
-              <img src="/webp/favicon.webp" style="width: 64px" />&nbsp;微塔管理系统
+              <img src="/images/webp/favicon.webp" style="width: 64px" />&nbsp;微塔管理系统
             </div>
           </el-form-item>
           <el-form-item prop="username" style="margin-top: 0px">
@@ -286,7 +286,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/webp/background.webp");
+  background-image: url("/images/webp/background.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

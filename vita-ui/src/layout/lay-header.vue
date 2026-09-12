@@ -117,7 +117,7 @@ onUnmounted(() => {
     <el-sub-menu index="99">
       <template #title>
         <el-avatar :src="userStore.user.avatar" v-if="userStore.user?.avatar" />
-        <el-avatar src="/webp/avatar.webp" v-else />
+        <el-avatar src="/images/webp/avatar.webp" v-else />
         <span style="margin-left: 10px">{{ userStore.user?.nickname }}</span>
       </template>
       <el-menu-item index="99-1" @click="onUserPersonalInformation()">

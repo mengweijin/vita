@@ -1,7 +1,30 @@
 allowBuilds:
-  "@scarf/scarf": true
-  core-js: true
-  core-js-pure: true
-  es5-ext: true
+  "@scarf/scarf": false
+  core-js: false
+  core-js-pure: false
+  es5-ext: false
 minimumReleaseAgeExclude:
   - vue-router@5.3.1
+  - "@wangeditor-next/basic-modules@6.4.0"
+  - "@wangeditor-next/code-highlight@6.4.0"
+  - "@wangeditor-next/core@6.4.0"
+  - "@wangeditor-next/editor-for-vue@6.4.0"
+  - "@wangeditor-next/editor@6.4.0"
+  - "@wangeditor-next/list-module@6.4.0"
+  - "@wangeditor-next/table-module@6.4.0"
+  - "@wangeditor-next/upload-image-module@6.4.0"
+  - "@wangeditor-next/video-module@6.4.0"
+  - cronstrue@3.25.0 || 3.26.0
+  - "@devframes/hub-ui@0.9.16"
+  - "@devframes/hub@0.9.16"
+  - "@devframes/json-render-ui@0.9.16"
+  - "@devframes/json-render@0.9.16"
+  - "@devframes/plugin-inspect@0.9.16"
+  - "@devframes/plugin-messages@0.9.16"
+  - "@devframes/plugin-terminals@0.9.16"
+  - "@devframes/service-open@0.9.16"
+  - "@devframes/vite@0.9.16"
+  - "@vitejs/devtools-kit@0.7.3"
+  - "@vitejs/devtools@0.7.3"
+  - devframe@0.9.16
+  - vite@8.3.0

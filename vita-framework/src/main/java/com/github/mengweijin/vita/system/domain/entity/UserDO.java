@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.domain.ExtFieldMap;
 import com.github.mengweijin.vita.framework.mybatis.typehandler.JsonTypeHandler;
 import com.github.mengweijin.vita.system.domain.bo.UserBO;
 import com.github.mengweijin.vita.system.domain.bo.UserBasicInformationBO;
@@ -16,7 +17,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 /**
  * <p>
@@ -117,5 +117,5 @@ public class UserDO extends BaseEntity {
      * 扩展字段
      */
     @TableField(value = "ext", typeHandler = JsonTypeHandler.class)
-    private HashMap<String, Object> ext;
+    private ExtFieldMap ext;
 }

@@ -4,12 +4,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 /**
- * <p>
- * JSONObject 对应的扩展字段存储。
- * </p>
+ * JSONArray 对应的扩展字段存储。
  * 实体类：
  * <p>
  * 实体类必须开启 autoResultMap：@TableName(value = "your_table", autoResultMap = true)
@@ -20,19 +18,19 @@ import java.util.LinkedHashMap;
  *
  * @author mengweijin
  * @TableField(value = "ext", typeHandler = JsonTypeHandler.class)
- * private ExtFieldMap ext;
+ * private ExtFieldList ext;
  * }
- * @since 2025/8/3
+ * @since 2026/9/12
  */
 @NoArgsConstructor
-public class ExtFieldMap extends LinkedHashMap<String, Object> implements Serializable {
+public class ExtFieldList extends ArrayList<Object> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public ExtFieldMap(ExtFieldMap map) {
-        if (map != null) {
-            this.putAll(map);
+    public ExtFieldList(ExtFieldList list) {
+        if (list != null) {
+            this.addAll(list);
         }
     }
 }

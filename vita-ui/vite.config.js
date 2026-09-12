@@ -140,7 +140,7 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "0.0.0.0",
       // 开发服务器启动时，自动在浏览器中打开应用程序。
-      open: true,
+      open: false,
       // 端口号
       port: 5173,
       proxy: {
