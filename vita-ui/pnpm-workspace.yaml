@@ -28,3 +28,5 @@ minimumReleaseAgeExclude:
   - "@vitejs/devtools@0.7.3"
   - devframe@0.9.16
   - vite@8.3.0
+  - element-plus@2.14.6
+  - "@types/node@26.6.2"
