@@ -62,7 +62,7 @@ public class DbLoggerAppender extends UnsynchronizedAppenderBase<ILoggingEvent> 
     public void afterPropertiesSet() throws Exception {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME);
-        logger.addAppender(DbLoggerAppender.this);
+        logger.addAppender(this);
         super.start();
     }
 

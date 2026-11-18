@@ -29,7 +29,7 @@ public class SaTokenWebMvcConfigurer implements WebMvcConfigurer, InitializingBe
      * warm-flow-ui 默认访问地址：ip:port/warm-flow-ui/index.html?id=${definitionId}&onlyDesignShow=${onlyDesignShow}&disabled=${disabled}&Authorization=${token}
      * warm-flow-ui 示例：localhost:8080/warm-flow-ui/index.html?id=&onlyDesignShow=false&disabled=false&Authorization=Bearer%20${token}
      */
-    private static final String[] WHITE_LIST = new String[]{
+    private static final String[] WHITE_LIST = {
             "/",
             "/**/*.css",
             "/**/*.js",
