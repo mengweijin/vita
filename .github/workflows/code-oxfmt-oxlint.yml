@@ -23,6 +23,7 @@ jobs:
         with:
           version: "11"
       - run: |
+          pnpm clean --lockfile
           pnpm install
           pnpm run fmt:check
           pnpm run lint:github
