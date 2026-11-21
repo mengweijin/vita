@@ -1,8 +1,12 @@
 package com.github.mengweijin.vita.system.domain.bo;
 
 import cn.hutool.v7.core.regex.RegexPool;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.constant.Regex;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
+import com.github.mengweijin.vita.framework.jackson.StringToLongDeserializer;
 import com.github.mengweijin.vita.framework.validator.annotation.CharsetLength;
 import com.github.mengweijin.vita.framework.validator.annotation.Check;
 import com.github.mengweijin.vita.framework.validator.group.Group;
@@ -32,6 +36,8 @@ public class UserBO extends BaseEntity {
      * 部门 ID
      */
     @NotNull
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long deptId;
 
     /**
@@ -92,10 +98,14 @@ public class UserBO extends BaseEntity {
     /**
      * 角色
      */
+    @JsonSerialize(contentUsing = ToStringSerializer.class)
+    @JsonDeserialize(contentUsing = StringToLongDeserializer.class)
     private List<Long> roleIds;
 
     /**
      * 岗位
      */
+    @JsonSerialize(contentUsing = ToStringSerializer.class)
+    @JsonDeserialize(contentUsing = StringToLongDeserializer.class)
     private List<Long> postIds;
 }

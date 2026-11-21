@@ -24,7 +24,7 @@ const props = defineProps({
   },
 });
 
-const modelValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: [String, Array] });
 
 const postList = ref([]);
 

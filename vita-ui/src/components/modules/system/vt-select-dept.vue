@@ -25,25 +25,26 @@ const props = defineProps({
   },
 });
 
-const modelValue = defineModel({ type: String || Array });
+const modelValue = defineModel({ type: [String, Array] });
 
-const deptList = ref([]);
+const treeDatas = ref([]);
 
-const treeOptions = computed(() => {
-  const list = deptList.value.map((item) => ({ ...item, disabled: item.disabled === "Y" }));
+const toDeptArrayTree = async function () {
+  const deptList = await deptApi.list({ disabled: "N" });
+  const list = deptList.map((item) => ({ ...item, disabled: item.disabled === "Y" }));
   utils.addFullPath(list, { pathKey: "name" });
   return utils.toArrayTree(list, { sortKey: "seq" });
-});
+};
 
 onMounted(async () => {
-  deptList.value = await deptApi.list({ disabled: "N" });
+  treeDatas.value = await toDeptArrayTree();
 });
 </script>
 
 <template>
   <el-tree-select
     v-model="modelValue"
-    :data="treeOptions"
+    :data="treeDatas"
     :props="{ label: 'nameFullPath', value: 'id', children: 'children' }"
     check-strictly
     clearable

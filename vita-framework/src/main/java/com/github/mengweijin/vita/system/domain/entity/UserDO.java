@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.mengweijin.vita.framework.domain.BaseEntity;
 import com.github.mengweijin.vita.framework.domain.ExtFieldMap;
 import com.github.mengweijin.vita.framework.mybatis.typehandler.JsonTypeHandler;
@@ -40,6 +42,7 @@ public class UserDO extends BaseEntity {
     /**
      * 部门 ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long deptId;
 
     /**
